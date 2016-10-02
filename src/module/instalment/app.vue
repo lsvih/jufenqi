@@ -13,7 +13,7 @@
   <flexbox-item class="balance"><div>我的钱包</div><div class="balance-money">{{getBalance()|currency "" 2}}</div></flexbox-item>
 </flexbox>
 <scroller class="block-3" height="calc( 100% - 190px - 44px )" lock-x :prevent-default="false" scrollbarY>
-      <div style="height:900px;width:100%"><img src="banner.png" width="100%">
+      <div style="height:1100px;width:100%"><img src="banner.png" width="100%">
         <div style="width:100%;height:44px;margin-left:calc( (100% - 200px)/2 )"><div class="apply" onclick="location.href='ins-apply.html'">去申请</div></div>
     </div>
 </scroller>
