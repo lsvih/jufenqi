@@ -3,24 +3,42 @@ var Rxports = {
    * 获得当前页面的文件名
    */
   GetThisPage: () => {
-    var urlArr = location.href.split("/")
-    var fileName = urlArr[urlArr.length - 1]
-    var thisPage = fileName.split(".html")[0]
-    return thisPage
+    let urlArr = location.href.split("/")
+    let fileName = urlArr[urlArr.length - 1]
+    return thisPage = fileName.split(".html")[0]
   },
   /**
    * 获取当前页面所带的参数
    */
   GetRequest: () => {
-    var url = location.search;
-    var theRequest = new Object();
+    let url = location.search
+    let theRequest = new Object()
     if (url.indexOf("?") != -1) {
-      var strs = url.substr(1).split("&");
+      let strs = url.substr(1).split("&")
       for (let str of strs) {
-        theRequest[str.split("=")[0]] = unescape(str.split("=")[1]);
+        theRequest[str.split("=")[0]] = unescape(str.split("=")[1])
       }
     }
     return theRequest;
+  },
+  /**
+   * 设置localStorage中的数据
+   * @param {String}   item
+   * @param {String}   key
+   * @param {String|Object|Array}   data
+   * @param {Function} cb
+   */
+  SetLocalData: (item, key, data, cb) => {
+    let tempdata;
+    if (localStorage.getItem(item) == undefined) {
+      localStorage.setItem(item, "{}")
+      tempdata = JSON.parse(localStorage.getItem(item))
+    } else {
+      tempdata = JSON.parse(localStorage.getItem(item))
+    }
+    tempdata[key] = data
+    localStorage.setItem(item, JSON.stringify(tempdata))
+    cb()
   }
 }
 
