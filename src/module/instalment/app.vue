@@ -3,20 +3,19 @@
   <flexbox-item class="block-1">
     <img class="help" src="help.png"><img class="alert" src="alert.png">
     <div class="ins-title">可贷款额度（元）</div>
-    <div class="ins-limit" v-if="getLimit()">{{getLimit()|currency "" 2}}</div>
+    <div class="ins-limit" v-if="limit">{{limit|currency "" 2}}</div>
     <div class="ins-limit" v-else>未申请</div>
     <img class="bg" src="fq_bg.png" width="100%" height="auto">
-
   </flexbox-item>
 </flexbox>
 <flexbox class="vux-1px-t block-2">
   <flexbox-item class="balance vux-1px-r">
     <div>已贷款</div>
-    <div class="balance-money">{{getHasIns()|currency "" 2}}</div>
+    <div class="balance-money">{{ins|currency "" 2}}</div>
   </flexbox-item>
   <flexbox-item class="balance">
     <div>我的钱包</div>
-    <div class="balance-money">{{getBalance()|currency "" 2}}</div>
+    <div class="balance-money">{{balance|currency "" 2}}</div>
   </flexbox-item>
 </flexbox>
 <scroller class="block-3" height="calc( 100% - 190px - 44px )" :lock-x="true" :scrollbar-y="true" >
@@ -56,9 +55,9 @@ export default {
   data() {
     return {
       showLoading: false,
-      limit: !localStorage.user || !JSON.parse(localStorage.user).limit ? null : JSON.parse(localStorage.user).limit,
-      balance: !localStorage.user || !JSON.parse(localStorage.user).balance ? null : JSON.parse(localStorage.user).balance,
-      ins: !localStorage.user || !JSON.parse(localStorage.user).ins ? null : JSON.parse(localStorage.user).ins,
+      limit: this.isDataExist("limit"),
+      balance: this.isDataExist("balance"),
+      ins: this.isDataExist("ins"),
       insList: !localStorage.user || !JSON.parse(localStorage.user).insList ? [] : JSON.parse(localStorage.user).insList
     }
   },
@@ -103,20 +102,14 @@ export default {
     Lib.M.SetLocalData("user", "insList", insList, function() {})
   },
   methods: {
-    getLimit() {
-      return this.limit ? this.limit : null
-    },
-    getHasIns() {
-      return this.ins ? this.ins : 0
-    },
-    getBalance() {
-      return this.balance ? this.balance : 0
-    },
     stopLoading() {
-      this.showLoading = false;
+      this.showLoading = false
     },
     startLoading() {
-      this.showLoading = true;
+      this.showLoading = true
+    },
+    isDataExist(what){
+      return !localStorage.getItem(what) || !JSON.parse(localStorage.user)[what] ? 0 : JSON.parse(localStorage.user)[what]
     }
   }
 }
