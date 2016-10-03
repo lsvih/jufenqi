@@ -3,7 +3,8 @@
   <flexbox-item class="block-1">
     <img class="help" src="help.png"><img class="alert" src="alert.png">
     <div class="ins-title">可贷款额度（元）</div>
-    <div class="ins-limit">{{getLimit()|currency "" 2}}</div>
+    <div class="ins-limit" v-if="getLimit()">{{getLimit()|currency "" 2}}</div>
+    <div class="ins-limit" v-else>未申请</div>
     <img class="bg" src="fq_bg.png" width="100%" height="auto">
 
   </flexbox-item>
@@ -18,7 +19,7 @@
     <div class="balance-money">{{getBalance()|currency "" 2}}</div>
   </flexbox-item>
 </flexbox>
-<scroller style="background-color:#eee;width:100%" class="block-3" height="calc( 100% - 190px - 44px )" lock-x :prevent-default="false" scrollbarY>
+<scroller class="block-3" height="calc( 100% - 190px - 44px )" :lock-x="true" :scrollbar-y="true" >
   <div v-if="!insList.length">
     <div style="height:1100px;width:100%"><img src="banner.png" width="100%">
       <div style="width:100%;height:44px;margin-left:calc( (100% - 200px)/2 )">
@@ -26,10 +27,12 @@
       </div>
     </div>
   </div>
-  <div v-else style="width:100%">
+  <div v-else style="width:100%;padding-bottom:44px;">
     <j-card v-for="insInfo in insList">
       <div>{{insInfo.name}}</div>
-      <j-credit-process :step="insInfo.step" style="width:calc( 100% - 30px )"> </j-credit-process>
+      <div class="ins-insinfo-count">申请总额:<span>{{insInfo.insCount|currency "￥" 2}}</span></div>
+      <div class="ins-insinfo-line"></div>
+      <j-credit-process :step="insInfo.step"></j-credit-process>
     </j-card>
   </div>
 </scroller>
@@ -69,9 +72,9 @@ export default {
     JCreditProcess
   },
   ready() {
+    let that = this;
     if (Lib.M.GetRequest().refresh) {
-      this.startLoading();
-      let that = this;
+      this.startLoading()
       //TODO ajax过程
       setTimeout(() => {
         Lib.M.SetLocalData("user", "limit", "10000", function() {
@@ -101,7 +104,7 @@ export default {
   },
   methods: {
     getLimit() {
-      return this.limit ? this.limit : "未申请"
+      return this.limit ? this.limit : null
     },
     getHasIns() {
       return this.ins ? this.ins : 0
@@ -169,6 +172,8 @@ export default {
 }
 .block-3 {
     position: absolute;
+    background-color: #eee;
+    width: 100%;
 }
 .balance {
     height: 40px;
@@ -185,5 +190,18 @@ export default {
     color: #5965B2;
     font-size: 28px;
     text-align: center;
+}
+.ins-insinfo-count {
+    margin-top: 9px;
+    font-size: 12px;
+    span {
+        color: #5965B2;
+    }
+}
+.ins-insinfo-line {
+    margin: 15px 0 18px;
+    height: 1px;
+    width: 100%;
+    background-color: #eee;
 }
 </style>

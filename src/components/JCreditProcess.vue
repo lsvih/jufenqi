@@ -40,13 +40,14 @@ export default {
 
 <style scoped lang="less">
 .credit-process {
-    width: 310px;
+    width: 90%;
     height: 30px;
     position: absolute;
     left:50%;
-    margin-left:-155px;
+    margin-left:-45%;
     .step {
         position: absolute;
+        width:100%;
         .circle {
             position: absolute;
             left: 16px;
@@ -72,7 +73,7 @@ export default {
 }
 .step-line {
     position: absolute;
-    width: 119px;
+    width: calc( ~"50% - 32px" );
     height: 1px;
     background-color: rgba(153,153,153,.5);
 }
@@ -80,10 +81,10 @@ export default {
     left: 0;
 }
 .step:nth-child(2) {
-    left: 123px;
+    left: calc( ~"50% - 30px " );
 }
 .step:last-child {
-    left: calc(123px+17px+123px);
+    left: calc( ~"100% - 40px ");
 }
 .active .circle{
   border-color:rgba(89,101,178,.5)!important;

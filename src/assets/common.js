@@ -5,7 +5,7 @@ var Rxports = {
   GetThisPage: () => {
     let urlArr = location.href.split("/")
     let fileName = urlArr[urlArr.length - 1]
-    return thisPage = fileName.split(".html")[0]
+    return fileName.split(".html")[0]
   },
   /**
    * 获取当前页面所带的参数
