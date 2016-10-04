@@ -1,13 +1,36 @@
 <template>
-<j-apply-process :step="3">
-</j-apply-process>
-
-<group>
-     <cell class="repay-cell" v-for="repay in repayList" :link="'repayment-detail.html?id='+repay.id">
-       <div class="repay-cell-count">{{repay.count|currency "" 2}}</div>
-       <div class="repay-cell-date">{{repay.date}}</div>
-     <div class="repay-cell-status">{{repay.status}}</div>
-     </cell>
+<div class="block-1">
+  <div class="has-repay-title">已结清本金（元）</div>
+  <div class="has-repay">{{repay.hasRepayCapital|currency "" 2}}</div>
+  <img src="repay-bg.png">
+</div>
+<group title="借款明细">
+  <cell class="repay-cell">
+    <div class="repay-cell-name">借款金额</div>
+    <div class="repay-cell-right">{{repay.count|currency "" 2}}</div>
+  </cell>
+  <cell class="repay-cell">
+    <div class="repay-cell-name">合同期限</div>
+    <div class="repay-cell-right">{{repay.date}}</div>
+  </cell>
+  <cell class="repay-cell">
+    <div class="repay-cell-name">还款方式</div>
+    <div class="repay-cell-right">{{repay.repayType}}</div>
+  </cell>
+</group>
+<group title="还款明细">
+  <cell class="repay-cell">
+    <div class="repay-cell-name">已还本金</div>
+    <div class="repay-cell-right">{{repay.hasRepayCapital|currency "" 2}}</div>
+  </cell>
+  <cell class="repay-cell">
+    <div class="repay-cell-name">已还利息</div>
+    <div class="repay-cell-right">{{repay.hasRepayInterest|currency "" 2}}</div>
+  </cell>
+  <cell class="repay-cell">
+    <div class="repay-cell-name">手续费</div>
+    <div class="repay-cell-right">{{repay.commission|currency "" 2}}</div>
+  </cell>
 </group>
 </template>
 
@@ -18,20 +41,16 @@ import Group from 'vux-components/group'
 export default {
   data() {
     return {
-      repayList:[
-        {
-          "id":1,
-          "date":"2016年10月1日借",
-          "status":"已结清",
-          "count":5000
-        },
-        {
-          "id":2,
-          "date":"2016年10月1日借",
-          "status":"未结清",
-          "count":5000
-        }
-      ]
+      repay: {
+        "id": 1,
+        "date": "2016年10月1日至2016年12月3日",
+        "status": "已结清",
+        "repayType": "等额本金",
+        "count": 5000,
+        "hasRepayCapital": 5000,
+        "hasRepayInterest": 340.16,
+        "commission": 0
+      }
     }
   },
   components: {
@@ -51,32 +70,58 @@ export default {
 </script>
 
 <style>
-body{
+body {
   background-color: #eee;
 }
 </style>
 <style lang="less" scoped>
-.repay-cell{
-  height: 40px;
-  .repay-cell-count{
-    position: absolute;
-    left:15px;
-    top:14px;
-    font-size: 16px;
-  }
-  .repay-cell-date{
-    position: absolute;
-    left:15px;
-    bottom:8px;
-    font-size: 12px;
-    color:#999;
-  }
-  .repay-cell-status{
-    position: absolute;
-    right:28px;
-    top:23px;
-    color:#999;
-    font-size: 12px;
-  }
+.block-1 {
+    height: 150px;
+    width: 100%;
+    position: relative;
+    background-color: #fff;
+    color: #5965B2;
+    .has-repay-title {
+        position: absolute;
+        top: 39px;
+        left: 0;
+        height: auto;
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+    }
+    .has-repay {
+        position: absolute;
+        bottom: 39px;
+        left: 0;
+        height: auto;
+        width: 100%;
+        text-align: center;
+        font-size: 32px;
+    }
+    img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 70px;
+        height: 64px;
+    }
+}
+.repay-cell {
+    height: 24px;
+    position: relative;
+    .repay-cell-name {
+        position: absolute;
+        left: 15px;
+        top: 12px;
+        font-size: 16px;
+    }
+    .repay-cell-right {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        font-size: 12px;
+    }
+
 }
 </style>

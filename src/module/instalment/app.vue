@@ -169,6 +169,7 @@ export default {
     width: 100%;
 }
 .balance {
+    color:#393939;
     height: 40px;
     line-height: 20px;
     text-align: center;

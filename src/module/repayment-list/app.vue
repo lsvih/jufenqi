@@ -1,7 +1,4 @@
 <template>
-<j-apply-process :step="3">
-</j-apply-process>
-
 <group>
      <cell class="repay-cell" v-for="repay in repayList" :link="'repayment-detail.html?id='+repay.id">
        <div class="repay-cell-count">{{repay.count|currency "" 2}}</div>

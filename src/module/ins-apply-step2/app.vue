@@ -1,4 +1,5 @@
 <template>
+<div style="padding-bottom:60px;">
 <j-apply-process :step="2">
 </j-apply-process>
 <group title="装修地址">
@@ -16,6 +17,7 @@
 <popup-picker title="地址" :data="areaList" :columns="3" :show.sync="showAreaPicker" :value.sync="areaSelect" v-ref:areapicker :show-cell="false"></popup-picker>
 <x-button slot="right" style="background-color:rgba(89,101,178,.5);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" onclick="location.href='./ins-apply-step3.html'">下一步</x-button>
 <j-tel></j-tel>
+</div>
 </template>
 
 <script>
