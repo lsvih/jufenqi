@@ -1,5 +1,12 @@
 <template>
+  <header>
+    <div class="location"><img src="location.png" width:"14px" height="20px">北京</div>
+    <div class="search"><input type="search" placeholder="搜索..."><img src="search.png"></div>
+    <img class="alert" src="alert.png" width="22px" height="24px">
+    <img class="cart" src="cart.png" width="24px" height="20px">
+  </header>
 <div class="content">
+
   <swiper class="module-swiper" loop auto height="150px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000">
   </swiper>
   <flexbox class="module-class">
@@ -29,7 +36,7 @@
     <div class="module-description">品牌推荐商品</div>
     <div class="module-detail">了解详情</div>
     <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:goods>
-      <div class="pic_adn_goods-list" :style="{width:pic_and_goods.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
+      <div class="pic_and_goods-list" :style="{width:pic_and_goods.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
         <div class="pic_and_goods-item" v-for="good in pic_and_goods" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
           <x-img :scroller="$refs.goods" :src="good.img"></x-img>
         </div>
@@ -41,28 +48,39 @@
   <!-- Ad module -->
   <div class="module-item ad" :style="{backgroundImage:'url('+ad.img+')'}"></div>
   <!-- module end -->
-  <!-- Brand module TODO-->
+  <!-- Brand module -->
   <div class="module-item">
     <div class="module-title">品牌分类</div>
     <div class="module-description">品牌推荐商品</div>
     <div class="module-detail">了解详情</div>
-    <div class="brand-grid">
-      <div class="brand-grid-1-l">
+    <div class="brand-grid" :style="{height:getScreenWidth()*(.583*.85+.333*1.52)+'px'}" onclick="location.href='brand-list.html'">
+      <div class="brand-grid-1" :style="{height:getScreenWidth()*.583*.85+'px'}">
+      <div class="brand-grid-1-l" :style="{width:getScreenWidth()*.583+'px',height:getScreenWidth()*.583*.85+'px'}">
+        <x-img :src="brandList[0].img"></x-img>
       </div>
-      <div class="brand-grid-1-r-t">
+      <div class="brand-grid-1-r-t" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}">
+          <x-img :src="brandList[1].img"></x-img>
       </div>
-      <div class="brand-grid-1-r-d">
-      </div>
-      <div class="brand-grid-2-l-t">
-      </div>
-      <div class="brand-grid-2-l-d">
-      </div>
-      <div class="brand-grid-2-m">
-      </div>
-      <div class="brand-grid-2-r">
+      <div class="brand-grid-1-r-b" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}">
+          <x-img :src="brandList[2].img"></x-img>
       </div>
     </div>
-    <div class="module-more">查看更多</div>
+    <div class="brand-grid-2" :style="{height:getScreenWidth()*.333*1.52+'px'}">
+      <div class="brand-grid-2-l-t" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}">
+          <x-img :src="brandList[3].img"></x-img>
+      </div>
+      <div class="brand-grid-2-l-b" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}">
+          <x-img :src="brandList[4].img"></x-img>
+      </div>
+      <div class="brand-grid-2-m" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}">
+          <x-img :src="brandList[5].img"></x-img>
+      </div>
+      <div class="brand-grid-2-r" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}">
+          <x-img :src="brandList[6].img"></x-img>
+      </div>
+    </div>
+  </div>
+    <div class="module-more" onclick="location.href='class-list.html'">查看更多</div>
   </div>
   <!-- module end -->
   <!-- Workers module -->
@@ -202,39 +220,65 @@ export default {
         url: 'javascript:',
         name: '郑家园',
         img: 'http://placekitten.com/g/100/130'
-      },{
+      }, {
         url: 'javascript:',
         name: '郑家园',
         img: 'http://placekitten.com/g/100/130'
-      },{
+      }, {
         url: 'javascript:',
         name: '郑家园',
         img: 'http://placekitten.com/g/100/130'
-      },{
+      }, {
         url: 'javascript:',
         name: '郑家园',
         img: 'http://placekitten.com/g/100/130'
-      },{
+      }, {
         url: 'javascript:',
         name: '郑家园',
         img: 'http://placekitten.com/g/100/130'
-      },{
+      }, {
         url: 'javascript:',
         name: '郑家园',
         img: 'http://placekitten.com/g/100/130'
-      },{
+      }, {
         url: 'javascript:',
         name: '郑家园',
         img: 'http://placekitten.com/g/100/130'
-      },{
+      }, {
         url: 'javascript:',
         name: '郑家园',
         img: 'http://placekitten.com/g/100/130'
-      },{
+      }, {
         url: 'javascript:',
         name: '郑家园',
         img: 'http://placekitten.com/g/100/130'
-      },],
+      }, ],
+      brandList: [{
+        url: 'javascript:',
+        img: 'http://placekitten.com/g/220/200'
+      },
+      {
+        url: 'javascript:',
+        img: 'http://placekitten.com/g/155/100'
+      },
+      {
+        url: 'javascript:',
+        img: 'http://placekitten.com/g/155/100'
+      },
+      {
+        url: 'javascript:',
+        img: 'http://placekitten.com/g/125/95'
+      },
+      {
+        url: 'javascript:',
+        img: 'http://placekitten.com/g/125/95'
+      },{
+        url: 'javascript:',
+        img: 'http://placekitten.com/g/125/190'
+      },{
+        url: 'javascript:',
+        img: 'http://placekitten.com/g/125/190'
+      }],
       ad: {
         url: 'javascript:',
         img: 'http://placekitten.com/g/400/126'
@@ -281,7 +325,17 @@ body {
 }
 
 .content {
-  padding-bottom: 44px;
+  padding:44px 0 44px 0;
+}
+header{
+  position: fixed;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 44px;
+  z-index: 5;
+  background-color: #9EBC2B;
+
 }
 </style>
 <style lang="less" scoped>
@@ -354,7 +408,7 @@ body {
         width: 100%;
         text-align: center;
         line-height: 1;
-        padding-top: 4px;
+        padding-top: 15px;
     }
     .module-detail {
         color: #5965B2;
@@ -375,7 +429,7 @@ body {
         border-top: 1px solid #eee;
     }
 }
-.pic_adn_goods-list {
+.pic_and_goods-list {
     height: auto;
     padding: 0 15px 20px;
     position: relative;
@@ -390,22 +444,126 @@ body {
         }
     }
 }
-.worker-list{
-  height: 160px;
-  .worker-item{
+.worker-list {
     height: 160px;
-    width: 100px;
-    margin-right: 10px;
-    text-align: center;
-    display: inline-block;
-    float: left;
-    font-size: 12px;
-  }
+    padding:0 15px;
+    .worker-item {
+        height: 160px;
+        width: 100px;
+        margin-right: 10px;
+        text-align: center;
+        display: inline-block;
+        float: left;
+        font-size: 12px;
+    }
 }
 .ad {
     width: 100%;
     height: 100px;
     background-position: top center;
     background-size: 100% auto;
+}
+.brand-grid{
+  width: 100%;
+  position: relative;
+  div{
+    position: absolute;
+  }
+  .brand-grid-1{
+    top:0;
+    left:0;
+    width: 100%;
+    img{
+      top:0;
+      left:0;
+    }
+  }
+  .brand-grid-1-l{
+    top:0;
+    left:0;
+  }
+  .brand-grid-1-r-t{
+    top:0;
+    right:0;
+  }
+  .brand-grid-1-r-b{
+    bottom:0;
+    right:0;
+  }
+  .brand-grid-2{
+    bottom:0;
+    left:0;
+    width: 100%;
+    img{
+      left:0;
+      bottom: 0;
+    }
+  }
+  .brand-grid-2-l-t{
+    top:0;
+    left:0;
+  }
+  .brand-grid-2-l-b{
+    bottom: 0;
+    left:0;
+  }
+  .brand-grid-2-m{
+    bottom:0;
+    left:33.3%;
+  }
+  .brand-grid-2-r{
+    bottom: 0;
+    right: 0;
+  }
+  img{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+}
+header{
+  .location{
+    position: absolute;
+    left:8.8%;
+    bottom:12px;
+    font-size: 12px;
+    color: #fff;
+    img{
+      vertical-align: bottom;
+      padding-right: 5px;
+    }
+  }
+  .search{
+    input{
+      position: absolute;
+      width: 44%;
+      height: 25px;
+      line-height: 25px;
+      border-radius: 12.5px;
+      border: 1px solid #eee;
+      padding:0 10px 0 20px;
+      top:10px;
+      left:27%;
+      right:27%;
+    }
+    img{
+      position: absolute;
+      width: 13px;
+      height: 12px;
+      top: 17px;
+      left:calc(~"27% + 7px ")
+    }
+
+  }
+  .alert{
+    position: absolute;
+    top:10px;
+    right: 19.4%;
+  }
+  .cart{
+    position: absolute;
+    top:13px;
+    right: 4.27%;
+  }
 }
 </style>
