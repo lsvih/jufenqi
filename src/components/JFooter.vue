@@ -46,7 +46,6 @@ export default {
   },
   ready() {
     var footbar = document.querySelector("footer")
-    footbar.style.top = `${screen.availHeight - footbar.offsetHeight}px`
   }
 }
 </script>
@@ -56,6 +55,7 @@ footer {
     width: 100%;
     height: 44px;
     left: 0;
+    bottom:0;
     z-index: 2;
     background-color: #fff;
     div {

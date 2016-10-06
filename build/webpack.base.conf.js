@@ -83,6 +83,7 @@ module.exports = {
 	}
     ]
   },
+  
   vue: {
     loaders: cssLoaders()
   },
@@ -95,7 +96,10 @@ module.exports = {
     }),
     // 配置提取出的样式文件
     new ExtractTextPlugin('css/[name].css')
-  ]
+  ],
+  externals: {
+    'AMap': 'window.AMap'
+  }
   
   
   

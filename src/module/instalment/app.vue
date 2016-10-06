@@ -33,6 +33,9 @@
       <div class="ins-insinfo-line"></div>
       <j-credit-process :step="insInfo.step"></j-credit-process>
     </j-card>
+    <div style="width:100%;height:44px;margin-left:calc( (100% - 200px)/2 )">
+      <div class="apply" onclick="location.href='ins-apply.html'">去申请</div>
+    </div>
   </div>
 </scroller>
 
