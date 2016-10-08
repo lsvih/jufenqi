@@ -7,24 +7,13 @@
   </flexbox-item>
 </flexbox>
 <flexbox class="block-2">
-  <flexbox-item class="balance">
-    <div>授信额度 (元)</div>
+  <flexbox-item class="balance" onclick="location.href='balance.html'">
+    <div>账户余额 (元)</div>
     <div class="balance-money">{{limit|currency "" 2}}</div>
   </flexbox-item>
-  <flexbox-item class="balance">
-    <div>剩余额度 (元)</div>
+  <flexbox-item class="balance" onclick="location.href='wallet.html'">
+    <div>我的钱包 (元)</div>
     <div class="balance-money">{{balance|currency "" 2}}</div>
-  </flexbox-item>
-</flexbox>
-<flexbox class="block-3">
-  <flexbox-item class="icon-item">
-    <img src="icon/favorite.png"> <div class="icon-item-name">我的收藏</div>
-  </flexbox-item>
-  <flexbox-item class="icon-item">
-    <img src="icon/order.png"> <div class="icon-item-name">我的订单</div>
-  </flexbox-item>
-  <flexbox-item class="icon-item">
-    <img src="icon/refunds.png"> <div class="icon-item-name">我的退款/取消</div>
   </flexbox-item>
 </flexbox>
 <group style="margin-top:-15px">
@@ -38,20 +27,33 @@
     <div class="cell-name">我的认证</div>
   </cell>
 </group>
+<flexbox class="block-3">
+  <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=1'">
+    <img src="icon/order.png"> <div class="icon-item-name">装修订单</div>
+  </flexbox-item>
+  <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=2'">
+    <img src="icon/order.png"> <div class="icon-item-name">主材订单</div>
+  </flexbox-item>
+  <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=3'">
+    <img src="icon/order.png"> <div class="icon-item-name">软装订单</div>
+  </flexbox-item>
+</flexbox>
+
 <group style="margin:-15px 0 44px 0;">
-  <cell link="tel:4000000000" class="cell-item">
-    <div class="cell-icon"><img src="icon/service.png"></div>
-    <div class="cell-name">售后服务</div>
-    <div class="cell-right tel">4000-000-000</div>
+
+
+  <cell link="complaint.html" is-link class="cell-item">
+    <div class="cell-icon"><img src="icon/favorite-icon.png"></div>
+    <div class="cell-name">我的收藏</div>
   </cell>
-  <cell link="tel:4000000000" class="cell-item">
+  <cell class="cell-item">
+    <div class="cell-icon"><img src="icon/service.png"></div>
+    <div class="cell-name">在线客服</div>
+  </cell>
+  <cell onclick='location.href="tel:4000000000"' class="cell-item">
     <div class="cell-icon"><img src="icon/phone.png"></div>
     <div class="cell-name">咨询电话</div>
     <div class="cell-right tel">4000-000-000</div>
-  </cell>
-  <cell link="complaint.html" is-link class="cell-item">
-    <div class="cell-icon"><img src="icon/complaint.png"></div>
-    <div class="cell-name">我要投诉</div>
   </cell>
   <cell link="feed-back.html" is-link class="cell-item">
     <div class="cell-icon"><img src="icon/feedback.png"></div>
