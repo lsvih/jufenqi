@@ -11,14 +11,6 @@
   <div class="zc-butler-tel" onclick="location.href='tel:{{butlerTel}}'"><img src="tel.png"></div>
 </div>
 <div class="content">
-  <group style="margin-top:-1.17647059em;" v-if="status==0">
-    <cell v-for="shop in shopList" is-link class="cell-item" onclick="location.href='shop-detail.html'">
-      <img :src="shop.img" class="shop-logo" width="120px" height="80px">
-      <div class="shop-name">{{shop.name}}</div>
-      <div class="shop-address">{{shop.address}}</div>
-      <div class="shop-rank">评分:{{shop.rank}}</div>
-    </cell>
-  </group>
 
   <div class="zc-list" v-if="status!==0">
     <div class="zc-shop-img"><img :src="preview"></div>
@@ -26,7 +18,7 @@
       <div class="line-1">
         <div class="shop-img"><img :src='shop.img'></div>
         <div class="shop-name">{{shop.name}}</div>
-        <div class="btn" v-if="status==4">去评价</div>
+        <div class="btn" v-if="status==4" onclick="location.href='order-judge.html'">去评价</div>
       </div>
       <cell v-for="zc in shop.zcList" class="zc-cell">
         <div class="zc-name">{{zc.name}}</div>

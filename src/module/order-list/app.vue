@@ -293,6 +293,7 @@ header {
     width: 100%;
     left: 0;
     top: 0;
+    z-index: 30;
 }
 .tab-active {
     color: #9EBC2B !important;

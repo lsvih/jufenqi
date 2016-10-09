@@ -59,6 +59,10 @@
   </group>
 
 </div>
+
+
+
+<previewer :list="worker.productList" v-ref:previewer :options="options"></previewer>
 <footer>
   <div class="icon-item"><img src="share.png">
     <div>分享</div>
@@ -71,7 +75,7 @@
   </div>
   <div class="shop-list" onclick="location.href='shop-list.html'">查看门店</div>
 </footer>
-<previewer :list="productList" v-ref:previewer :options="options"></previewer>
+<previewer :list="worker.productList" v-ref:previewer :options="options"></previewer>
 </template>
 
 <script>
@@ -108,7 +112,7 @@ export default {
           time: '2008-2016',
           address: '北京好参谋俱乐部'
         }],
-        workArea: ["康宝家园", "康宝家园", "康宝家园", "康宝家园"],
+        workArea: ["康宝家园1", "康宝家园2", "康宝家园3", "康宝家园4"],
         productList: [{
           src: 'http://placekitten.com/g/200/126',
           w: 200,
@@ -125,7 +129,7 @@ export default {
           src: 'http://placekitten.com/g/200/126',
           w: 200,
           h: 126
-        }, ]
+        }]
       },
 
       options: {
