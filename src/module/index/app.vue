@@ -17,15 +17,15 @@
   <div class="module-activity">
     <div class="module-activity-left">
       <x-img :src="activityList[0].img">
-        <x-img>
+      </x-img>
     </div>
     <div class="module-activity-right">
       <x-img :src="activityList[1].img">
-        <x-img>
+      </x-img>
     </div>
     <div class="module-activity-right">
       <x-img :src="activityList[2].img">
-        <x-img>
+      </x-img>
     </div>
   </div>
   <!-- Goods module -->
