@@ -431,7 +431,7 @@ header {
         bottom: 10px;
         left: 100px;
         font-size: 12px;
-        color: #5965B2;
+        color: #3ba794;
     }
     .worker-is-favorite {
         position: absolute;

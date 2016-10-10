@@ -1,8 +1,8 @@
 <template>
 <header>
-  <div class="location"><img src="location.png" width="14px" height="20px">北京</div>
+  <div class="location"><img src="location.png" width="16px" height="20px">北京</div>
   <div class="search"><input type="search" placeholder="搜索..."><img src="search.png"></div>
-  <img class="cart" src="cart.png" width="24px" height="20px" onclick="location.href='cart.html'">
+  <img class="cart" src="cart.png" width="20px" height="20px" onclick="location.href='cart.html'">
 </header>
 <div class="content">
   <swiper class="module-swiper" loop auto height="150px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000">
@@ -122,6 +122,11 @@ import Lib from 'assets/Lib.js'
 import Swiper from 'vux-components/swiper'
 import JFooter from 'components/JFooter.vue'
 import XImg from 'vux-components/x-img'
+import fqIcon from './icon/fq-icon.png'
+import rzIcon from './icon/rz-icon.png'
+import zxIcon from './icon/zx-icon.png'
+import zcIcon from './icon/zc-icon.png'
+
 import {
   Flexbox,
   FlexboxItem
@@ -142,20 +147,20 @@ export default {
       }],
       classList: [{
         id: 0,
-        name: '分类',
-        img: 'http://placekitten.com/g/20/20'
+        name: '装修',
+        img: zxIcon
       }, {
         id: 1,
-        name: '分类',
-        img: 'http://placekitten.com/g/20/20'
+        name: '主材',
+        img: zcIcon
       }, {
         id: 2,
-        name: '分类',
-        img: 'http://placekitten.com/g/20/20'
+        name: '软装',
+        img: rzIcon
       }, {
         id: 3,
-        name: '分类',
-        img: 'http://placekitten.com/g/20/20'
+        name: '分期',
+        img: fqIcon
       }],
       activityList: [{
         url: 'javascript:',
@@ -313,7 +318,7 @@ body {
 }
 
 .dot-custom .vux-icon-dot.active {
-  background-color: #9EBC2B!important;
+  background-color: #88C929!important;
   opacity: 1;
 }
 
@@ -328,7 +333,8 @@ header {
   width: 100%;
   height: 44px;
   z-index: 5;
-  background-color: #9EBC2B;
+  background-color: #fff;
+  border-bottom: 1px solid #D8D8D8;
 }
 </style>
 <style lang="less" scoped>
@@ -342,16 +348,16 @@ header {
         height: 100%;
         .module-class-icon {
             position: absolute;
-            top: 31px;
+            top: 27px;
             left: 50%;
-            margin-left: -11px;
-            width: 22px;
-            height: 22px;
+            margin-left: -15px;
+            width: 30px;
+            height: 30px;
         }
         .module-class-name {
             position: absolute;
             left: 0;
-            bottom: 30px;
+            bottom: 21px;
             font-size: 12px;
             width: 100%;
             height: auto;
@@ -404,7 +410,7 @@ header {
         padding-top: 15px;
     }
     .module-detail {
-        color: #5965B2;
+        color: #3BA794;
         font-size: 12px;
         height: 12px;
         width: 100%;
@@ -517,10 +523,10 @@ header {
 header {
     .location {
         position: absolute;
-        left: 8.8%;
+        left: 5.3%;
         bottom: 12px;
         font-size: 12px;
-        color: #fff;
+        color: #393939;
         img {
             vertical-align: bottom;
             padding-right: 5px;
@@ -533,11 +539,16 @@ header {
             height: 25px;
             line-height: 25px;
             border-radius: 12.5px;
-            border: 1px solid #eee;
+            border: 1px solid rgba(57,57,57,.5);
             padding: 0 10px 0 20px;
             top: 10px;
             left: 27%;
             right: 27%;
+        }
+        *[placeholder],
+        [placeholder],
+        input[placeholder] {
+            color: #D8D8D8!important;
         }
         img {
             position: absolute;
@@ -555,8 +566,8 @@ header {
     }
     .cart {
         position: absolute;
-        top: 13px;
-        right: 4.27%;
+        top: 12px;
+        right: 8.8%;
     }
 }
 .scroll-box {

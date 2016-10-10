@@ -3,7 +3,7 @@
 <div class="wallet-title">我的钱包(元)</div>
 <div class="wallet-money">{{money|currency '' 2}}</div>
 
-<x-button class="postal" slot="right"  style="color:#fff;background-color:rgba(89,101,178,1);margin:20px 20px;width:calc( 100% - 40px )" >提现</x-button>
+<x-button class="postal" slot="right"  style="color:#fff;background-color:#88C928;margin:20px 20px;width:calc( 100% - 40px )" >提现</x-button>
 </template>
 
 <script>

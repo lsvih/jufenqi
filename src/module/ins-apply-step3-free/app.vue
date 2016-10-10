@@ -5,7 +5,7 @@
 <group title="请输入详细信息">
 <x-input title="每月收入" type="Number" placeholder="请输入真实的每月收入"></x-input>
 </group>
-<x-button slot="right" style="background-color:rgba(89,101,178,.5);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" onclick="location.href='./ins-apply-success.html?wait=true'">提交</x-button>
+<x-button slot="right" style="background-color:rgb(136,201,40);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" onclick="location.href='./ins-apply-success.html?wait=true'">提交</x-button>
 <j-tel style="margin-top:30px"></j-tel>
 </template>
 

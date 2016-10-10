@@ -6,7 +6,7 @@
 <cell title="在职人员" link="ins-apply-step3-onserving.html" inline-desc="有稳定的收入来源:如教师、公司职员、公务员等" is-link style="height:80px;"></cell>
 <cell title="自由人员" link="ins-apply-step3-free.html" inline-desc="自由职业:如网店卖家、自由撰稿人等" is-link style="height:80px;"></cell>
 </group>
-<!-- <x-button slot="right" style="background-color:rgba(89,101,178,.5);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" onclick="location.href='./ins-apply-step2.html'">下一步</x-button> -->
+<!-- <x-button slot="right" style="background-color:rgb(136,201,40);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" onclick="location.href='./ins-apply-step2.html'">下一步</x-button> -->
 <j-tel style="margin-top:30px"></j-tel>
 </template>
 

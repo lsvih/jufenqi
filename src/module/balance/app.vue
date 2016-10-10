@@ -52,7 +52,7 @@ body{
 .block-1{
   width: 100%;
   height: 130px;
-  background-color: #9EBC2B;
+  background-color: #62676c;
   position: relative;
   .balance-title{
     height: 16px;
@@ -116,7 +116,7 @@ body{
     width: 100%;
     text-align: center;
     font-size: 16px;
-    color: #F5A623;
+    color: #EC5835;
   }
 }
 </style>

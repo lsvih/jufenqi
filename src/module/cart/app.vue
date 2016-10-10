@@ -1,7 +1,7 @@
 <template>
 <div>
   <header>
-    <tab active-color='#9EBC2B' :index.sync="index">
+    <tab active-color='#88C929' :index.sync="index">
       <tab-item active-class="tab-active" :selected="tab === '门店'" @click="tab = '门店'">门店</tab-item>
       <tab-item active-class="tab-active" :selected="tab === '工长'" @click="tab = '工长'">工长</tab-item>
       <tab-item active-class="tab-active" :selected="tab === '软装'" @click="tab = '软装'">软装</tab-item>
@@ -199,7 +199,7 @@ body {
         bottom: 10px;
         left: 145px;
         font-size: 12px;
-        color: #5965B2;
+        color: #3ba794;
     }
     .shop-is-favorite {
         position: absolute;
@@ -234,7 +234,7 @@ body {
         bottom: 10px;
         left: 100px;
         font-size: 12px;
-        color: #5965B2;
+        color: #3ba794;
     }
     .worker-is-favorite {
         position: absolute;
@@ -256,21 +256,21 @@ header {
     z-index: 30;
 }
 .tab-active {
-    color: #9EBC2B !important;
-    border-color: #9EBC2B !important;
+    color: #88C929 !important;
+    border-color: #88C929 !important;
 }
 .click-area-select {
     position: absolute;
     right: 0;
     top: 0;
     height: 100%;
-    width: 50px;
+    width: 66px;
 }
 .click-area-detail {
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
-    width: calc( ~"100% - 50px" );
+    width: calc( ~"100% - 66px" );
 }
 </style>

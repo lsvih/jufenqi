@@ -7,7 +7,7 @@
   <x-textarea :max="200" placeholder="请填写详细地址" :show-counter="false" :height="60" :rows="8" :cols="30"></x-textarea>
 </group>
 <group title="装修面积">
-  <x-input title="装修面积" type="number" placeholder="请输入装修面积"></x-input>
+  <x-input title="装修面积(㎡)" type="number" placeholder="请输入装修面积"></x-input>
 </group>
 <group title="期望贷款信息">
   <x-input title="期望额度(元)" type="number" placeholder="请输入您期望的贷款额度"></x-input>
@@ -15,7 +15,7 @@
 </group>
 <popup-picker title="分期数" :data="insNumberList" :show.sync="showInsNumberPicker" :value.sync="insNumberSelect" v-ref:insNumber :show-cell="false"></popup-picker>
 <popup-picker title="地址" :data="areaList" :columns="3" :show.sync="showAreaPicker" :value.sync="areaSelect" v-ref:areapicker :show-cell="false"></popup-picker>
-<x-button slot="right" style="background-color:rgba(89,101,178,.5);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" onclick="location.href='./ins-apply-step3.html'">下一步</x-button>
+<x-button slot="right" style="background-color:rgb(136,201,40);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" onclick="location.href='./ins-apply-step3.html'">下一步</x-button>
 <j-tel></j-tel>
 </div>
 </template>

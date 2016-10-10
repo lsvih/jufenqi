@@ -2,7 +2,7 @@
 <flexbox>
   <flexbox-item class="block-1">
     <div class="user-icon"><img :src="userIcon"></div>
-    <div class="user-name">{{userName}}<span class="user-rank">{{userRank}}<img src="icon/rank.png"></span></div>
+    <div class="user-name">{{userName}}</div>
     <div class="user-balance">可用提现金额: {{balance|currency "" 2}}(元)</div>
   </flexbox-item>
 </flexbox>
@@ -29,13 +29,13 @@
 </group>
 <flexbox class="block-3">
   <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=1'">
-    <img src="icon/order.png"> <div class="icon-item-name">装修订单</div>
+    <img src="icon/zx-order-icon.png"> <div class="icon-item-name">装修订单</div>
   </flexbox-item>
   <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=2'">
-    <img src="icon/order.png"> <div class="icon-item-name">主材订单</div>
+    <img src="icon/zc-order-icon.png"> <div class="icon-item-name">主材订单</div>
   </flexbox-item>
   <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=3'">
-    <img src="icon/order.png"> <div class="icon-item-name">软装订单</div>
+    <img src="icon/rz-order-icon.png"> <div class="icon-item-name">软装订单</div>
   </flexbox-item>
 </flexbox>
 
@@ -117,7 +117,7 @@ body {
 .block-1 {
     position: relative;
     height: 110px;
-    background-color: #9EBC2B;
+    background-color: #62676C;
     border-bottom: 1px solid #fff;
     color: #fff;
     .user-icon {
@@ -164,10 +164,10 @@ body {
     }
 }
 .block-2 {
-    background-color: #869F42;
-    color: #fff;
+    background-color: #fff;
+    color: #393939;
     .balance:first-child {
-        border-right: 1px solid #fff;
+        border-right: 1px solid #d8d8d8;
     }
     .balance {
         padding: 10px 0;
@@ -183,15 +183,15 @@ body {
         height: 100%;
         img {
             position: absolute;
-            top: 9px;
+            top: 17px;
             left: 50%;
-            margin-left: -20px;
-            width: 40px;
-            height: 40px;
+            margin-left: -12px;
+            width: 24px;
+            height: 24px;
         }
         .icon-item-name{
           position: absolute;
-          bottom: 9px;
+          bottom: 17px;
           left:0;
           width: 100%;
           font-size: 12px;
@@ -247,7 +247,7 @@ body {
         right: 25px;
     }
     .cell-right.tel {
-        color: #5965B2;
+        color: #3BA794;
     }
 }
 </style>

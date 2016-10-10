@@ -309,7 +309,7 @@ header {
         height: 20px;
         line-height: 20px;
         text-align: center;
-        background-color: #9EBC2B;
+        background-color: #88C929;
         border-radius: 2px;
       }
     }
@@ -328,7 +328,7 @@ header {
         top:9px;
         right:15px;
         font-size: 12px;
-        color:#F5A623;
+        color:#EC5835;
         span{
           margin-left:10px;
           color:#999;
@@ -351,7 +351,7 @@ header {
         top:16px;
         right:15px;
         font-size: 12px;
-        color:#F5A623;
+        color:#EC5835;
       }
     }
 }

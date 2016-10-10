@@ -18,8 +18,8 @@
   </group>
 </div>
 
-<x-button slot="right" style="background-color:rgba(89,101,178,.5);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" @click="nextStep(wating)">{{wating?"刷新结果":"激活额度"}}</x-button>
-<x-button slot="right" plain style="border-color:rgba(89,101,178,1);color:rgba(89,101,178,1);margin:20px 20px;width:calc( 100% - 40px )" @click="location.href='./index.html'">返回首页</x-button>
+<x-button slot="right" style="background-color:rgb(136,201,40);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" @click="nextStep(wating)">{{wating?"刷新结果":"激活额度"}}</x-button>
+<x-button slot="right" plain style="border-color:#88c928;color:#88c928;margin:20px 20px;width:calc( 100% - 40px )" @click="location.href='./index.html'">返回首页</x-button>
 
 <j-tel style="margin-top:30px"></j-tel>
 </template>

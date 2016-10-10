@@ -17,6 +17,7 @@
     </cell>
   </group>
 </div>
+<div class="location-ball"><img src="fixed-ball.png"></div>
 </template>
 
 <script>
@@ -101,7 +102,7 @@ body {
         bottom: 10px;
         left: 145px;
         font-size: 12px;
-        color: #5965B2;
+        color: #3BA794;
     }
     .shop-is-favorite {
         position: absolute;
@@ -162,5 +163,17 @@ header {
       top:16px;
       left:calc( ~"(100% - 47px )/3*2 " );
     }
+}
+.location-ball{
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  height: 40px;
+  width: 40px;
+  img{
+    height: 100%;
+  width: 100%;
+
+  }
 }
 </style>

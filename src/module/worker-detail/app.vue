@@ -275,7 +275,7 @@ footer {
         right: 0;
         width: 68%;
         height: 44px;
-        background-color: #9EBC2B;
+        background-color: #88C929;
         line-height: 44px;
         color: #fff;
         text-align: center;

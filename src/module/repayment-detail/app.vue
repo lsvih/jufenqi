@@ -80,7 +80,7 @@ body {
     width: 100%;
     position: relative;
     background-color: #fff;
-    color: #5965B2;
+    color: #3BA794;
     .has-repay-title {
         position: absolute;
         top: 39px;

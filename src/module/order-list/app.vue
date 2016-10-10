@@ -1,7 +1,7 @@
 <template>
 <div>
   <header>
-    <tab active-color='#9EBC2B' :index.sync="index">
+    <tab active-color='#88C929' :index.sync="index">
       <tab-item active-class="tab-active" :selected="index === 0" @click="index = 0">装修订单</tab-item>
       <tab-item active-class="tab-active" :selected="index === 1" @click="index = 1">主材订单</tab-item>
       <tab-item active-class="tab-active" :selected="index === 2" @click="index = 2">软装订单</tab-item>
@@ -296,8 +296,8 @@ header {
     z-index: 30;
 }
 .tab-active {
-    color: #9EBC2B !important;
-    border-color: #9EBC2B !important;
+    color: #88C929 !important;
+    border-color: #88C929 !important;
 }
 .order{
   width: 100%;
@@ -328,7 +328,7 @@ header {
       top:19px;
       right: 15px;
       font-size: 12px;
-      color: #5965B2;
+      color: #3ba794;
     }
   }
   .zc-line-2{
@@ -399,7 +399,7 @@ header {
       font-size: 12px;
       color:#393939;
       span{
-        color:#F5A623;
+        color:#EC5835;
       }
     }
   }

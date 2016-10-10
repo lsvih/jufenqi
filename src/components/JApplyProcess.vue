@@ -62,6 +62,6 @@ export default {
     color: #000!important;
 }
 .active .bottom-line {
-    background-color: rgba(89,101,178,.5)!important;
+    background-color: rgb(136,201,40)!important;
 }
 </style>

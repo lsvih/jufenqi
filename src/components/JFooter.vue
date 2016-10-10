@@ -56,6 +56,7 @@ footer {
     height: 44px;
     left: 0;
     bottom:0;
+    border-top:1px solid #d8d8d8;
     z-index: 2;
     background-color: #fff;
     div {
@@ -83,5 +84,5 @@ footer {
     }
 }
 .active .nav-class-name{
-    color: #9EBC2B!important;
+    color: #88C929!important;
 }</style>

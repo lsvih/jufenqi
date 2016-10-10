@@ -7,7 +7,7 @@
 <x-input title="职&nbsp;&nbsp;位" type="text" placeholder="请填写真实职位"></x-input>
 <x-input title="月薪收入" type="Number" placeholder="请填写实际收入"></x-input>
 </group>
-<x-button slot="right" style="background-color:rgba(89,101,178,.5);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" onclick="location.href='./ins-apply-success.html?wait=true'">提交</x-button>
+<x-button slot="right" style="background-color:rgb(136,201,40);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" onclick="location.href='./ins-apply-success.html?wait=true'">提交</x-button>
 <j-tel style="margin-top:30px"></j-tel>
 </template>
 

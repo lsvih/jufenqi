@@ -87,7 +87,7 @@ export default {
     left: calc( ~"100% - 40px ");
 }
 .active .circle{
-  border-color:rgba(89,101,178,.5)!important;
+  border-color:rgba(136,201,40,.5)!important;
 }
 .active .step-text{
   color:#000!important;

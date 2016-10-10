@@ -35,12 +35,12 @@ export default {
     background-color: #fff;
     .dot {
         position: absolute;
-        top: 23px;
+        top: 22px;
         left: 15px;
         height: 6px;
         width: 6px;
         border-radius: 3px;
-        background-color: #5965B2;
+        background-color: #3BA794;
     }
     .area-title {
         position: absolute;
@@ -100,7 +100,7 @@ export default {
     width: 100%;
     text-align: center;
     span {
-        color: #5965B2;
+        color: #3BA794;
     }
 }
 </style>

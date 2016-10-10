@@ -4,7 +4,7 @@
     <div class="select" @click="select($index)" style="width:calc( 100% - 40px )"></div>
     <img class="bank-logo" :src="bank.icon">
     <div class="bank-name">{{bank.name}}</div>
-    <div class="text">持卡类型:<span>{{bank.cardType}}</span>&nbsp;&nbsp;可申请金额:<span>{{bank.credit|currency "" 2}}</span></div>
+    <div class="text">持卡类型:<span class="card-type">{{bank.cardType}}</span>&nbsp;&nbsp;可申请金额:<span class="credit-count">{{bank.credit|currency "" 2}}</span></div>
     <div class="info" @click="(showInfoNum = $index,showInfo = true,preventDefault())"><img src="info.png"></div>
   </cell>
 </group>
@@ -92,8 +92,11 @@ body {
         bottom: 20px;
         font-size: 12px;
         color: #999;
-        span {
-            color: #DB5F25;
+        .cart-type {
+            color: #3BA794;
+        }
+        .credit-count{
+          color: #ec5835;
         }
     }
     .info {
