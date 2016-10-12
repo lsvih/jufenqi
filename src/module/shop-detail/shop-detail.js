@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './app'
 import Map from 'components/Map'
-
-
+import Resource from 'vue-resource'
+Vue.use(Resource)
 
 
 /* eslint-disable no-new */

@@ -8,7 +8,7 @@
   <swiper class="module-swiper" loop auto height="150px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000">
   </swiper>
   <flexbox class="module-class">
-    <flexbox-item class="module-class-item" v-for="class in classList">
+    <flexbox-item class="module-class-item" v-for="class in classList" @click="gotoCate(class.url)">
       <img class="module-class-icon" :src="class.img">
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
@@ -52,29 +52,29 @@
     <div class="module-title">品牌分类</div>
     <div class="module-description">品牌推荐商品</div>
     <div class="module-detail">了解详情</div>
-    <div class="brand-grid" :style="{height:getScreenWidth()*(.583*.85+.333*1.52)+'px'}" onclick="location.href='brand-list.html'">
+    <div class="brand-grid" :style="{height:getScreenWidth()*(.583*.85+.333*1.52)+'px'}">
       <div class="brand-grid-1" :style="{height:getScreenWidth()*.583*.85+'px'}">
-        <div class="brand-grid-1-l" :style="{width:getScreenWidth()*.583+'px',height:getScreenWidth()*.583*.85+'px'}">
+        <div class="brand-grid-1-l" :style="{width:getScreenWidth()*.583+'px',height:getScreenWidth()*.583*.85+'px'}" @click="gotoBrand(0,brandList[0].name)">
           <x-img :src="brandList[0].img"></x-img>
         </div>
-        <div class="brand-grid-1-r-t" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}">
+        <div class="brand-grid-1-r-t" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}" @click="gotoBrand(1,brandList[1].name)">
           <x-img :src="brandList[1].img"></x-img>
         </div>
-        <div class="brand-grid-1-r-b" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}">
+        <div class="brand-grid-1-r-b" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}" @click="gotoBrand(2,brandList[2].name)">
           <x-img :src="brandList[2].img"></x-img>
         </div>
       </div>
       <div class="brand-grid-2" :style="{height:getScreenWidth()*.333*1.52+'px'}">
-        <div class="brand-grid-2-l-t" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}">
+        <div class="brand-grid-2-l-t" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}" @click="gotoBrand(3,brandList[3].name)">
           <x-img :src="brandList[3].img"></x-img>
         </div>
-        <div class="brand-grid-2-l-b" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}">
+        <div class="brand-grid-2-l-b" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}" @click="gotoBrand(4,brandList[4].name)">
           <x-img :src="brandList[4].img"></x-img>
         </div>
-        <div class="brand-grid-2-m" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}">
+        <div class="brand-grid-2-m" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}" @click="gotoBrand(5,brandList[5].name)">
           <x-img :src="brandList[5].img"></x-img>
         </div>
-        <div class="brand-grid-2-r" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}">
+        <div class="brand-grid-2-r" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}" @click="gotoBrand(6,brandList[6].name)">
           <x-img :src="brandList[6].img"></x-img>
         </div>
       </div>
@@ -148,18 +148,22 @@ export default {
       classList: [{
         id: 0,
         name: '装修',
+        url: 'javascript:',
         img: zxIcon
       }, {
         id: 1,
         name: '主材',
+        url: 'class-list.html',
         img: zcIcon
       }, {
         id: 2,
         name: '软装',
+        url: 'javascript:',
         img: rzIcon
       }, {
         id: 3,
         name: '分期',
+        url: 'javascript:',
         img: fqIcon
       }],
       activityList: [{
@@ -258,25 +262,32 @@ export default {
       }, ],
       brandList: [{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/220/200'
+        name: "家具",
+        img: '/static/images/品类运营/家具.jpg'
       }, {
         url: 'javascript:',
-        img: 'http://placekitten.com/g/155/100'
+        name: "木作",
+        img: '/static/images/品类运营/木作.jpg'
       }, {
         url: 'javascript:',
-        img: 'http://placekitten.com/g/155/100'
+        name: '饰品',
+        img: '/static/images/品类运营/饰品.jpg'
       }, {
         url: 'javascript:',
-        img: 'http://placekitten.com/g/125/95'
+        name: '地板',
+        img: '/static/images/品类运营/地板.jpg'
       }, {
         url: 'javascript:',
-        img: 'http://placekitten.com/g/125/95'
+        name:'智能家居',
+        img: '/static/images/品类运营/智能家居.jpg'
       }, {
         url: 'javascript:',
-        img: 'http://placekitten.com/g/125/190'
+        name:'机电',
+        img: '/static/images/品类运营/机电.jpg'
       }, {
         url: 'javascript:',
-        img: 'http://placekitten.com/g/125/190'
+        name:'瓷砖卫浴',
+        img: '/static/images/品类运营/瓷砖卫浴.jpg'
       }],
       ad: {
         url: 'javascript:',
@@ -301,6 +312,12 @@ export default {
     },
     getScreenWidth() {
       return document.body.clientWidth
+    },
+    gotoBrand(id,name){
+      location.href = `brand-list.html?id=${id}&name=${encodeURIComponent(name)}`
+    },
+    gotoCate(url){
+      location.href = url
     }
 
 
@@ -535,15 +552,15 @@ header {
     .search {
         input {
             position: absolute;
-            width: 44%;
+            width: calc( ~"100% - 54px - 88px" );
             height: 25px;
             line-height: 25px;
             border-radius: 12.5px;
             border: 1px solid rgba(57,57,57,.5);
             padding: 0 10px 0 20px;
             top: 10px;
-            left: 27%;
-            right: 27%;
+            left: 88px;
+            right: 54px;
         }
         *[placeholder],
         [placeholder],
@@ -555,7 +572,7 @@ header {
             width: 13px;
             height: 12px;
             top: 17px;
-            left: calc(~"27% + 7px ");
+            left: 95px;
         }
 
     }
@@ -567,7 +584,7 @@ header {
     .cart {
         position: absolute;
         top: 12px;
-        right: 8.8%;
+        right: 15px;
     }
 }
 .scroll-box {

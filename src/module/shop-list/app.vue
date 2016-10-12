@@ -7,11 +7,11 @@
 </header>
 <div class="content">
   <group style="margin-top:-1.17647059em;">
-    <cell v-for="shop in shopList" class="cell-item" onclick="location.href='shop-detail.html'">
+    <cell v-for="shop in shopList" class="cell-item" @click="gotoShopDetail(shop.id)">
       <img :src="shop.img" class="shop-logo" width="120px" height="80px">
       <div class="shop-name">{{shop.name}}</div>
       <div class="shop-address">{{shop.address}}</div>
-      <div class="shop-rank">评分:{{shop.rank}}</div>
+      <div class="shop-rate">评分:{{shop.rate}}</div>
       <img v-if="isFavorite(shop.id)" class="shop-is-favorite" src="star-fill.png">
       <img v-else class="shop-is-favorite" src="star.png">
     </cell>
@@ -27,32 +27,11 @@ import Cell from 'vux-components/cell'
 export default {
   data() {
     return {
-      address:"朝阳区",
-      shopList: [{
-        id: 1,
-        name: 'hahah',
-        img: 'http://placekitten.com/g/120/80',
-        address: '123sdafsd',
-        rank: 4.7
-      }, {
-        id: 2,
-        name: 'hahah',
-        img: 'http://placekitten.com/g/120/80',
-        address: '123sdafsd',
-        rank: 4.7
-      }, {
-        id: 3,
-        name: 'hahah',
-        img: 'http://placekitten.com/g/120/80',
-        address: '123sdafsd',
-        rank: 4.7
-      }, {
-        id: 4,
-        name: 'hahah',
-        img: 'http://placekitten.com/g/120/80',
-        address: '123sdafsd',
-        rank: 4.7
-      }]
+      address:"全北京",
+      brandId:Lib.M.GetRequest().id,
+      shopList: [],
+      //shopList:[{id,name,img,address,rate}]
+      reqUrl:`${Lib.C.apiUrl}stores?filter=brand_id:${Lib.M.GetRequest().id}`
     }
   },
   components: {
@@ -62,7 +41,28 @@ export default {
   methods: {
     isFavorite(shopId) {
       return true
+    },
+    gotoShopDetail(id){
+      location.href= `shop-detail.html?id=${id}`
     }
+  },
+  ready(){
+    this.$http.get(this.reqUrl).then((res) => {
+      let stores = res.data.data.items
+      let that = this
+      stores.map((store)=>{
+        that.shopList.push({
+          id:store.id,
+          name:store.name,
+          img: null,
+          address:store.address,
+          rate: store.rate?store.rate:"暂无评分"
+        })
+      })
+
+  }, (res) => {
+    console.log(res)//error
+  })
   }
 }
 </script>
@@ -96,8 +96,14 @@ body {
         left: 145px;
         font-size: 12px;
         color: #999;
+        width: calc( ~"100% - 190px" );
+        height: 30px;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
     }
-    .shop-rank {
+    .shop-rate {
         position: absolute;
         bottom: 10px;
         left: 145px;

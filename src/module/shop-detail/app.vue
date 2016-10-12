@@ -7,20 +7,23 @@
   <map class="map" id="map-container" height="240px" :width="getScreenWidth()+'px'">
   </map>
   <group style="margin-top:-1.17647059em">
-    <cell  class="shop-detail">
-      <div class="shop-detail-left">地址:{{address}}</div>
+    <!-- <cell  class="shop-detail">
+      <div class="shop-detail-left" id="address">地址:{{address}}</div>
       <div class="shop-detail-right"><img src="location.png"></div>
-    </cell>
+    </cell> -->
+    <div class="shop-detail address">
+    {{address}}
+    <div class="shop-detail-right"><img src="location.png"></div></div>
     <cell  class="shop-detail">
       <div class="shop-detail-left">电话:{{tel}}</div>
       <div class="shop-detail-right"><img src="tel.png"></div>
     </cell>
   </group>
 
-  <group title="门店详情">
-    <article>123sdfsdfsdfqw</article>
+  <group title="门店详情" v-if="description">
+    <article>{{description}}</article>
   </group>
-  <group title="产品图片">
+  <group title="产品图片" v-if="productList.length">
     <div class="module-item">
       <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:goods>
         <div class="shop-product-list" :style="{width:productList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
@@ -30,9 +33,6 @@
         </div>
       </scroller>
     </div>
-  </group>
-  <group title="门店详情">
-    <article>123sdfsdfsdfqw</article>
   </group>
 </div>
 <footer>
@@ -60,53 +60,27 @@ import Previewer from 'vux-components/previewer'
 export default {
   data() {
     return {
-      name: "居然之家北四环店",
-      address: "北京市朝阳区北四环东路",
-      tel: "010-12345",
-      shop: {
-        logo: 'http://placekitten.com/g/60/60',
-        name: "hahaha",
-        description: "123123"
-      },
-      productList: [{
-        src: 'http://placekitten.com/g/200/126',
-        w: 200,
-        h: 126
-      }, {
-        src: 'http://placekitten.com/g/200/126',
-        w: 200,
-        h: 126
-      }, {
-        src: 'http://placekitten.com/g/200/126',
-        w: 200,
-        h: 126
-      }, {
-        src: 'http://placekitten.com/g/200/126',
-        w: 200,
-        h: 126
-      }, ],
+      id:Lib.M.GetRequest().id,
+      name: null,
+      address: null,
+      tel: null,
+        logo: null,
+        description: null,
+      productList: [],
+      //productList:[img_src,img_src]
       options: {
         getThumbBoundsFn(index) {
-          // find thumbnail element
           let thumbnail = document.querySelectorAll('.product-img')[index]
-            // get window scroll Y
           let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
-            // optionally get horizontal scroll
-            // get position of element relative to viewport
-          let rect = thumbnail.getBoundingClientRect()
-            // w = width
+          let rect = thumbnail.getBoundingClientRect
           return {
             x: rect.left,
             y: rect.top + pageYScroll,
             w: rect.width
           }
-          // Good guide on how to get element coordinates:
-          // http://javascript.info/tutorial/coordinates
         }
       },
-      ready(){
 
-      }
     }
   },
   components: {
@@ -123,6 +97,15 @@ export default {
     getScreenWidth() {
       return document.body.clientWidth
     }
+  },
+  ready(){
+    this.$http.get(`${Lib.C.apiUrl}stores/${this.id}`).then((res)=>{
+      let store = res.data.data
+      this.name = store.name
+      this.address = store.address
+      this.tel = store.phone
+    },(res)=>{console.log(res)//error
+    })
   }
 }
 </script>
@@ -260,8 +243,10 @@ footer {
     position: absolute;
     left:15px;
     top:14px;
+    right:40px;
     font-size: 12px;
     color: #393939;
+    text-align: left;
   }
   .shop-detail-right{
     position: absolute;
@@ -274,6 +259,15 @@ footer {
       width: 100%;
     }
   }
+}
+.shop-detail.address {
+    padding: 16px 45px 16px 15px;
+    font-size: 12px;
+    height: auto;
+    .shop-detail-right{
+      top:50%;
+      margin-top: -10px;
+    }
 }
 .map{
   height: 240px;

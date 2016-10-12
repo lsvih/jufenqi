@@ -16,7 +16,7 @@ var Rxports = {
     if (url.indexOf("?") != -1) {
       let strs = url.substr(1).split("&")
       for (let str of strs) {
-        theRequest[str.split("=")[0]] = unescape(str.split("=")[1])
+        theRequest[str.split("=")[0]] = decodeURIComponent(str.split("=")[1])
       }
     }
     return theRequest;

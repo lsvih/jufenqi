@@ -48,7 +48,7 @@ export default {
     if (Lib.M.GetRequest().wait) {
       setTimeout(() => {
         location.href = "ins-apply-success.html"
-      }, 8000)
+      }, 6000)
     }
   },
   methods: {

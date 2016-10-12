@@ -2,13 +2,13 @@
 <header>
   <div class="brand-logo"><img :src="brand.logo"></div>
   <div class="brand-name">{{brand.name}}</div>
-  <div class="brand-description">{{brand.description}}</div>
+  <div class="brand-description">{{brand.slogon}}</div>
 </header>
 <div class="content">
   <group title="品牌介绍">
-    <article>123sdfsdfsdfqw</article>
+    <article>{{brand.description}}</article>
   </group>
-  <group title="产品图片">
+  <group title="产品图片" v-if="productList.length">
     <div class="module-item">
       <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:goods>
         <div class="brand-product-list" :style="{width:productList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
@@ -18,9 +18,6 @@
         </div>
       </scroller>
     </div>
-  </group>
-  <group title="品牌介绍">
-    <article>123sdfsdfsdfqw</article>
   </group>
 </div>
 <footer>
@@ -33,7 +30,7 @@
   <div class="icon-item" v-else><img src="favorite.png">
     <div>收藏</div>
   </div>
-  <div class="shop-list" onclick="location.href='shop-list.html'">查看门店</div>
+  <div class="shop-list" @click="gotoStores(id)">查看门店</div>
 </footer>
 <previewer :list="productList" v-ref:previewer :options="options"></previewer>
 </template>
@@ -48,45 +45,25 @@ import Previewer from 'vux-components/previewer'
 export default {
   data() {
     return {
+      id: Lib.M.GetRequest().id,
       brand: {
-        logo: 'http://placekitten.com/g/60/60',
-        name: "hahaha",
-        description: "123123"
+        logo: null,
+        name: null,
+        description: null,
+        slogon:null,
       },
-      productList: [{
-        src: 'http://placekitten.com/g/200/126',
-        w: 200,
-        h: 126
-      }, {
-        src: 'http://placekitten.com/g/200/126',
-        w: 200,
-        h: 126
-      }, {
-        src: 'http://placekitten.com/g/200/126',
-        w: 200,
-        h: 126
-      }, {
-        src: 'http://placekitten.com/g/200/126',
-        w: 200,
-        h: 126
-      }, ],
+      productList: [],
+      //productList:[img_src,img_src]
       options: {
         getThumbBoundsFn(index) {
-          // find thumbnail element
           let thumbnail = document.querySelectorAll('.product-img')[index]
-            // get window scroll Y
           let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
-            // optionally get horizontal scroll
-            // get position of element relative to viewport
           let rect = thumbnail.getBoundingClientRect()
-            // w = width
           return {
             x: rect.left,
             y: rect.top + pageYScroll,
             w: rect.width
           }
-          // Good guide on how to get element coordinates:
-          // http://javascript.info/tutorial/coordinates
         }
       }
     }
@@ -104,7 +81,21 @@ export default {
     },
     getScreenWidth() {
       return document.body.clientWidth
+    },
+    gotoStores(id){
+      location.href = `shop-list.html?id=${id}`
     }
+  },
+  ready(){
+    this.$http.get(`${Lib.C.apiUrl}brands/${this.id}`).then((res) => {
+      let brand = res.data.data
+      this.brand.name = brand.name
+      this.brand.logo = brand.logo_img?Lib.C.imgUrl + brand.logo_img:null
+      this.brand.description = brand.description
+      this.slogon = brand.slogon?brand.slogon:null
+  }, (res) => {
+    console.log(res)//error
+  })
   }
 }
 </script>

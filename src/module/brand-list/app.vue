@@ -1,6 +1,6 @@
 <template>
 <group style="margin-top:-1.17647059em;">
-<cell v-for="brand in brandList" class="cell-item" onclick="location.href='brand-detail.html'">
+<cell v-for="brand in brandList" class="cell-item" @click="goBandDetail(brand.id)" v-show="brand.img">
 <img :src="brand.img" class="brand-logo" width="120px" height="80px">
 <div class="brand-name">{{brand.name}}</div>
 <div class="brand-description">{{brand.description}}</div>
@@ -18,38 +18,37 @@ import Cell from 'vux-components/cell'
 export default {
   data() {
     return {
-      brandList:[
-        {
-          id:1,
-          name:'hahah',
-          img:'http://placekitten.com/g/120/80',
-          description:'123sdafsd'
-        },{
-          id:2,
-          name:'hahah',
-          img:'http://placekitten.com/g/120/80',
-          description:'123sdafsd'
-        },{
-          id:3,
-          name:'hahah',
-          img:'http://placekitten.com/g/120/80',
-          description:'123sdafsd'
-        },{
-          id:4,
-          name:'hahah',
-          img:'http://placekitten.com/g/120/80',
-          description:'123sdafsd'
-        }
-      ]
+      className: (Lib.M.GetRequest().name),
+      brandList:[]
+      //brandList:[{id,name,img,description}]
     }
   },
   components: {
     Group,
     Cell,
   },
+  ready(){
+    this.$http.get(`${Lib.C.apiUrl}categories?expand=categoryBrands.brand&max-per-page=500&per-page=500&filter=name:${this.className}`).then((res) => {
+    let brands = res.data.data.items[0].categoryBrands
+    let that = this
+    brands.map((brand)=>{
+      that.brandList.push({
+        id:brand.brand.id,
+        name:brand.brand.name,
+        img:brand.brand.logo_img?Lib.C.imgUrl + brand.brand.logo_img:null,
+        description:brand.brand.description
+      })
+    })
+  }, (res) => {
+    console.log(res)//error
+  })
+  },
   methods: {
     isFavorite(brandId){
-      return true
+      return false
+    },
+    goBandDetail(id){
+      location.href=`brand-detail.html?id=${id}`
     }
   }
 }
@@ -84,6 +83,11 @@ body {
     left:145px;
     font-size: 12px;
     color: #999;
+    width: calc( ~"100% - 190px" );
+    height: 50px;
+    text-align: left;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .brand-is-favorite{
     position: absolute;
