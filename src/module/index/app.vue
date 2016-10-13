@@ -2,7 +2,7 @@
 <header>
   <div class="location"><img src="location.png" width="16px" height="20px">北京</div>
   <div class="search"><input type="search" placeholder="搜索..."><img src="search.png"></div>
-  <img class="cart" src="cart.png" width="20px" height="20px" onclick="location.href='cart.html'">
+  <img class="cart" src="cart.png" width="20px" height="20px">
 </header>
 <div class="content">
   <swiper class="module-swiper" loop auto height="150px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000">
@@ -31,9 +31,8 @@
   <!-- Goods module -->
   <div class="module-item">
     <div class="module-title">有图有价</div>
-    <div class="module-description">品牌推荐商品</div>
+    <div class="module-description">看的到的都能买</div>
     <div class="module-detail">了解详情</div>
-
     <div :style="{width:'100%',height:.8*getScreenWidth()*.63+20+'px'}" class="scroll-box">
       <div class="pic_and_goods-list" :style="{width:pic_and_goods.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
         <div class="pic_and_goods-item" v-for="good in pic_and_goods" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
@@ -50,8 +49,8 @@
   <!-- Brand module -->
   <div class="module-item">
     <div class="module-title">品牌分类</div>
-    <div class="module-description">品牌推荐商品</div>
-    <div class="module-detail">了解详情</div>
+    <div class="module-description">300+品牌，500+建材城，满足你的胃口</div>
+    <div class="module-detail" onclick="location.href='zc-info.html'">了解详情</div>
     <div class="brand-grid" :style="{height:getScreenWidth()*(.583*.85+.333*1.52)+'px'}">
       <div class="brand-grid-1" :style="{height:getScreenWidth()*.583*.85+'px'}">
         <div class="brand-grid-1-l" :style="{width:getScreenWidth()*.583+'px',height:getScreenWidth()*.583*.85+'px'}" @click="gotoBrand(0,brandList[0].name)">
@@ -85,11 +84,11 @@
   <!-- Workers module -->
   <div class="module-item">
     <div class="module-title">工长推荐</div>
-    <div class="module-description">推荐工长推荐工长推荐工长</div>
-    <div class="module-detail">了解详情</div>
+    <div class="module-description">金牌工长，全职监理，保障你的权益</div>
+    <div class="module-detail" onclick="location.href='gz-info.html'">了解详情</div>
     <div :style="{width:'100%',height:'170px'}" class="scroll-box">
       <div class="worker-list" :style="{width:workerList.length*110+'px'}">
-        <div class="worker-item" v-for="worker in workerList" onclick="location.href='worker-detail.html'">
+        <div class="worker-item" v-for="worker in workerList" onclick="location.href='worker-detail.html?id={{worker.id}}&name={{worker.name}}'">
           <img :src="worker.img">
           <div class="worker-name">{{worker.name}}</div>
         </div>
@@ -101,8 +100,7 @@
   <!-- Pictures module -->
   <div class="module-item">
     <div class="module-title">图库</div>
-    <div class="module-description">品牌推荐商品</div>
-    <div class="module-detail">了解详情</div>
+    <div class="module-description"  style="margin-bottom:10px;">实地拍摄，不再是“照骗”</div>
     <div :style="{width:'100%',height:.8*getScreenWidth()*.63+20+'px'}" class="scroll-box">
       <div class="pic_and_goods-list" :style="{width:picList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
         <div class="pic_and_goods-item" v-for="pic in picList" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
@@ -137,18 +135,15 @@ export default {
       bannerIndex: 0,
       bannerList: [{
         url: 'javascript:',
-        img: 'http://7xqzw4.com2.z0.glb.qiniucdn.com/1.jpg'
-      }, {
+        img: '/static/images/banner/banner1.jpg'
+      },{
         url: 'javascript:',
-        img: 'http://7xqzw4.com2.z0.glb.qiniucdn.com/2.jpg'
-      }, {
-        url: 'javascript:',
-        img: 'http://7xqzw4.com2.z0.glb.qiniucdn.com/3.jpg'
+        img: '/static/images/banner/banner2.jpg'
       }],
       classList: [{
         id: 0,
         name: '装修',
-        url: 'javascript:',
+        url: 'worker-list.html',
         img: zxIcon
       }, {
         id: 1,
@@ -163,103 +158,80 @@ export default {
       }, {
         id: 3,
         name: '分期',
-        url: 'javascript:',
+        url: 'instalment.html',
         img: fqIcon
       }],
       activityList: [{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/100'
+        img: '/static/images/ad/jfq.jpg'
       }, {
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/50'
+        img: '/static/images/ad/calc.jpg'
       }, {
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/50'
+        img: '/static/images/ad/gallery.jpg'
       }],
       pic_and_goods: [{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
+        img: '/static/temp/pic_and_price/有图有价1.jpg'
+      },{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
+        img: '/static/temp/pic_and_price/有图有价2.jpg'
+      },{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
+        img: '/static/temp/pic_and_price/有图有价3.jpg'
+      },{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
+        img: '/static/temp/pic_and_price/有图有价4.jpg'
+      },{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
+        img: '/static/temp/pic_and_price/有图有价5.jpg'
       }],
       picList: [{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
+        img: '/static/temp/gallery/gallery1.jpg'
+      },{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
+        img: '/static/temp/gallery/gallery2.jpg'
+      },{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
+        img: '/static/temp/gallery/gallery3.jpg'
+      },{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
+        img: '/static/temp/gallery/gallery4.jpg'
+      },{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
+        img: '/static/temp/gallery/gallery5.jpg'
+      },{
         url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
-        url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
-        url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
-        url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
-      }, {
-        url: 'javascript:',
-        img: 'http://placekitten.com/g/200/126'
+        img: '/static/temp/gallery/gallery6.jpg'
       }],
       workerList: [{
+        id:4,
         url: 'javascript:',
-        name: '郑家园1',
-        img: 'http://placekitten.com/g/100/130'
+        name: '彭学勇',
+        img: '/static/temp/workers/彭学勇.jpg'
       }, {
+        id:1,
         url: 'javascript:',
-        name: '郑家园',
-        img: 'http://placekitten.com/g/100/130'
+        name: '杨爱军',
+        img: '/static/temp/workers/杨爱军.jpg'
       }, {
+        id:3,
         url: 'javascript:',
-        name: '郑家园',
-        img: 'http://placekitten.com/g/100/130'
+        name: '仰宗龙',
+        img: '/static/temp/workers/仰宗龙.jpg'
       }, {
+        id:6,
         url: 'javascript:',
-        name: '郑家园',
-        img: 'http://placekitten.com/g/100/130'
+        name: '雍自民',
+        img: '/static/temp/workers/雍自民.jpg'
       }, {
+        id:2,
         url: 'javascript:',
-        name: '郑家园',
-        img: 'http://placekitten.com/g/100/130'
-      }, {
-        url: 'javascript:',
-        name: '郑家园',
-        img: 'http://placekitten.com/g/100/130'
-      }, {
-        url: 'javascript:',
-        name: '郑家园',
-        img: 'http://placekitten.com/g/100/130'
-      }, {
-        url: 'javascript:',
-        name: '郑家园',
-        img: 'http://placekitten.com/g/100/130'
-      }, {
-        url: 'javascript:',
-        name: '郑家园',
-        img: 'http://placekitten.com/g/100/130'
-      }, ],
+        name: '张林',
+        img: '/static/temp/workers/张林.jpg'
+      }],
       brandList: [{
         url: 'javascript:',
         name: "家具",
@@ -291,7 +263,7 @@ export default {
       }],
       ad: {
         url: 'javascript:',
-        img: 'http://placekitten.com/g/400/126'
+        img: '/static/temp/ad.jpg'
       }
     }
   },
@@ -471,6 +443,9 @@ header {
         display: inline-block;
         float: left;
         font-size: 12px;
+        img{
+          width: 100%;
+        }
     }
 }
 .ad {

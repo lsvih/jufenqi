@@ -20,7 +20,7 @@
   <cell link="repayment-list.html" is-link class="cell-item">
     <div class="cell-icon"><img src="icon/repayment.png"></div>
     <div class="cell-name">我的还款</div>
-    <div class="cell-right">今日待还999元</div>
+    <div class="cell-right">今日待还0元</div>
   </cell>
   <cell class="cell-item">
     <div class="cell-icon"><img src="icon/access.png"></div>
@@ -42,7 +42,7 @@
 <group style="margin:-15px 0 44px 0;">
 
 
-  <cell link="complaint.html" is-link class="cell-item">
+  <cell is-link class="cell-item">
     <div class="cell-icon"><img src="icon/favorite-icon.png"></div>
     <div class="cell-name">我的收藏</div>
   </cell>
@@ -50,10 +50,10 @@
     <div class="cell-icon"><img src="icon/service.png"></div>
     <div class="cell-name">在线客服</div>
   </cell>
-  <cell onclick='location.href="tel:4000000000"' class="cell-item">
+  <cell onclick='location.href="tel:4000390808"' class="cell-item">
     <div class="cell-icon"><img src="icon/phone.png"></div>
     <div class="cell-name">咨询电话</div>
-    <div class="cell-right tel">4000-000-000</div>
+    <div class="cell-right tel">4000-390-808</div>
   </cell>
   <cell link="feed-back.html" is-link class="cell-item">
     <div class="cell-icon"><img src="icon/feedback.png"></div>
@@ -79,9 +79,8 @@ export default {
       limit: this.isDataExist("limit"),
       balance: this.isDataExist("balance"),
       ins: this.isDataExist("ins"),
-      userIcon: "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1397694479,818244779&fm=111&gp=0.jpg",
-      userName: "lsvih",
-      userRank: "V2"
+      userIcon: "/static/temp/user.jpg",
+      userName: "居分期",
     }
   },
   components: {

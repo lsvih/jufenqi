@@ -3,7 +3,7 @@
   <div class="select-address">{{address}}<img src="select.png" class="select-icon"></div>
   <div class="select-class">品类<img src="select.png" class="select-icon"></div>
   <div class="sort">综合排序<img src="select.png" class="select-icon"></div>
-  <span class="cart"  onclick="location.href='cart.html'"><img src="cart.png"></span>
+  <span class="cart"><img src="cart.png"></span>
 </header>
 <div class="content">
   <group style="margin-top:-1.17647059em;">
@@ -129,6 +129,7 @@ header {
     top: 0;
     padding: 16px 0;
     background-color: #fff;
+    z-index: 20;
     border-bottom: 1px solid #eee;
     .cart {
         position:absolute;

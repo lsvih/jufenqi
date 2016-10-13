@@ -1,6 +1,6 @@
 <template>
 <header>
-  <div class="cart"  onclick="location.href='cart.html'"><img src="cart.png"></div>
+  <div class="cart"><img src="cart.png"></div>
   <div class="worker-logo"><img :src="worker.logo"></div>
   <div class="worker-name">{{worker.name}}</div>
   <div class="worker-description"><span class="worker-rank">口碑:<span class="detail-num">{{worker.rank}}</span></span><span>订单:<span class="detail-num">{{worker.orderNum}}</span></span>
@@ -14,7 +14,7 @@
           籍&nbsp;&nbsp;&nbsp;&nbsp;贯:{{worker.origin}}
         </flexbox-item>
         <flexbox-item>
-          施工团队:{{worker.teamPeopleNum}}人
+          施工团队:{{worker.teamPeopleNum}}
         </flexbox-item>
       </flexbox>
       <flexbox class="line">
@@ -36,7 +36,7 @@
     <article>
       <flexbox v-for="experience in worker.workExperience" :class="{'line':$index>=1}">
         <flexbox-item>
-          {{experience.time}}&nbsp;&nbsp;{{experience.address}}
+          {{experience.start_date}}~{{experience.end_date}}&nbsp;&nbsp;{{experience.address}}
         </flexbox-item>
       </flexbox>
     </article>
@@ -46,7 +46,7 @@
       <span v-for="area in worker.workArea">{{area}}&nbsp;&nbsp;</span>
     </article>
   </group>
-  <group title="施工图片">
+  <group title="施工图片" v-show="worker.productList.length">
     <div class="module-item">
       <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:goods>
         <div class="worker-product-list" :style="{width:worker.productList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
@@ -73,7 +73,7 @@
   <div class="icon-item" v-else><img src="favorite.png">
     <div>收藏</div>
   </div>
-  <div class="shop-list" onclick="location.href='shop-list.html'">查看门店</div>
+  <div class="shop-list">添加到备选清单</div>
 </footer>
 <previewer :list="worker.productList" v-ref:previewer :options="options"></previewer>
 </template>
@@ -93,62 +93,33 @@ export default {
   data() {
     return {
       worker: {
-        logo: 'http://placekitten.com/g/80/80',
-        name: "hahaha",
+        id: Lib.M.GetRequest().id,
+        logo: `/static/temp/workers/${Lib.M.GetRequest().name}.jpg`,
+        name: Lib.M.GetRequest().name,
         rank: 4.7,
         orderNum: 1002,
-        origin: '安徽',
-        teamPeopleNum: 12,
-        from: '电工',
-        politics: '党员',
-        workYear: 10,
-        workExperience: [{
-          time: '2008-2016',
-          address: '北京好参谋俱乐部'
-        }, {
-          time: '2008-2016',
-          address: '北京好参谋俱乐部'
-        }, {
-          time: '2008-2016',
-          address: '北京好参谋俱乐部'
-        }],
-        workArea: ["康宝家园1", "康宝家园2", "康宝家园3", "康宝家园4"],
-        productList: [{
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }, {
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }, {
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }, {
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }]
+        origin: null,
+        teamPeopleNum: null,
+        from: null,
+        politics: null,
+        workYear: null,
+        workExperience: [],
+        //workExperience:[{start_date,end_date,address}]
+        workArea: [],
+        //workArea:[community_name,community_name]
+        productList: []
+        //productList:[img_src]
       },
-
       options: {
         getThumbBoundsFn(index) {
-          // find thumbnail element
           let thumbnail = document.querySelectorAll('.product-img')[index]
-            // get window scroll Y
           let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
-            // optionally get horizontal scroll
-            // get position of element relative to viewport
           let rect = thumbnail.getBoundingClientRect()
-            // w = width
           return {
             x: rect.left,
             y: rect.top + pageYScroll,
             w: rect.width
           }
-          // Good guide on how to get element coordinates:
-          // http://javascript.info/tutorial/coordinates
         }
       }
     }
@@ -161,6 +132,67 @@ export default {
     Previewer,
     Flexbox,
     FlexboxItem
+  },
+  ready(){
+    this.$http.get(`${Lib.C.apiUrl}workers/${this.worker.id}?expand=experiences,communities`).then((res) => {
+      let worker = res.data.data
+      console.log(worker)
+      this.worker.origin=worker.native
+      switch (worker.group_size) {
+        case 0:
+          this.worker.teamPeopleNum = "0~10人"
+          break;
+        case 1:
+          this.worker.teamPeopleNum = "11~25人"
+          break;
+        case 2:
+          this.worker.teamPeopleNum = "26~40人"
+          break;
+        case 3:
+          this.worker.teamPeopleNum = "41~55人"
+          break;
+        default:
+          this.worker.teamPeopleNum = "56~100人"
+      }
+      switch (worker.occupation) {
+        case 0:
+          this.worker.from = "水电工"
+          break;
+        case 1:
+          this.worker.from = "油漆工"
+          break;
+        case 2:
+          this.worker.from = "木工"
+          break;
+        default:
+          this.worker.from = "其他"
+      }
+      this.worker.politics=worker.political?"党员":"群众"
+      this.worker.workYear=worker.working_years
+      let that = this
+      if(worker.project_t_imgs_thumbs_l_url!==null){
+        worker.project_t_imgs_thumbs_l_url.map((e)=>{
+          that.worker.productList.push({src:`${Lib.C.serverUrl}${e}`,w:500,h:500})
+        })
+      }
+      if(worker.experiences!==null){
+        worker.experiences.map((e)=>{
+          that.worker.workExperience.push({
+            start_date:e.start_year,
+            end_date:e.end_year,
+            address:e.description
+          })
+        })
+      }
+      if(worker.communities!==null){
+        worker.communities.map((e)=>{
+          that.worker.workArea.push(e.community_name)
+        })
+      }
+
+  }, (res) => {
+    console.log(res)//error
+  })
   },
   methods: {
     isFavorite(workerId) {
@@ -220,8 +252,8 @@ header {
     background-color: #fff;
     .cart {
         position: absolute;
-        height: 19px;
-        width: 24px;
+        height: 20px;
+        width: 20px;
         top: 13px;
         right: 11px;
         img {

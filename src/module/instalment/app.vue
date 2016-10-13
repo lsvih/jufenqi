@@ -1,11 +1,12 @@
 <template>
 <flexbox class="vux-1px-d">
   <flexbox-item class="block-1">
-    <img class="help" src="help.png"><img class="alert" src="alert.png">
+    <!-- <img class="help" src="help.png"><img class="alert" src="alert.png"> -->
     <div class="ins-title">可贷款额度（元）</div>
     <div class="ins-limit" v-if="limit">{{limit|currency "" 2}}</div>
-    <div class="ins-limit" v-else>未申请</div>
-    <img class="bg" src="fq_bg.png" width="100%" height="auto">
+    <div class="ins-limit" v-else>敬请期待</div>
+    <!-- <div class="ins-limit" v-else>未申请</div>
+       <img class="bg" src="fq_bg.png" width="100%" height="auto"> -->
   </flexbox-item>
 </flexbox>
 <flexbox class="vux-1px-t block-2">
@@ -20,10 +21,10 @@
 </flexbox>
 <scroller class="block-3" height="calc( 100% - 190px - 44px )" :lock-x="true" :scrollbar-y="true" >
   <div v-if="!insList.length">
-    <div style="height:1100px;width:100%"><img src="banner.png" width="100%">
-      <div style="width:100%;height:44px;margin-left:calc( (100% - 200px)/2 )">
+    <div style="width:100%" :style="{'height':getScreenWidth() * 1.872 + 'px'}"><img src="/static/temp/分期.jpg" width="100%">
+      <!-- <div style="width:100%;height:44px;margin-left:calc( (100% - 200px)/2 )">
         <div class="apply" onclick="location.href='ins-apply.html'">去申请</div>
-      </div>
+      </div> -->
     </div>
   </div>
   <div v-else style="width:100%;padding-bottom:44px;">
@@ -74,35 +75,36 @@ export default {
     JCreditProcess
   },
   ready() {
-    let that = this;
-    if (Lib.M.GetRequest().refresh) {
-      this.startLoading()
-      //TODO ajax过程
-      setTimeout(() => {
-        Lib.M.SetLocalData("user", "limit", "10000", function() {
-          that.limit = 10000
-          that.stopLoading()
-        })
-      }, 1000)
-    }
-    //Fake data
-    let insList = [{
-      "id": 1232,
-      "name": "1213家装分期",
-      "step": 2,
-      "insCount": 11023,
-    }, {
-      "id": 1232,
-      "name": "111家装分期",
-      "step": 1,
-      "insCount": 11223,
-    }, {
-      "id": 1232,
-      "name": "12313家装分期",
-      "step": 1,
-      "insCount": 223,
-    }]
-    Lib.M.SetLocalData("user", "insList", insList, function() {})
+    localStorage.clear()
+    // let that = this;
+    // if (Lib.M.GetRequest().refresh) {
+    //   this.startLoading()
+    //   //TODO ajax过程
+    //   setTimeout(() => {
+    //     Lib.M.SetLocalData("user", "limit", "10000", function() {
+    //       that.limit = 10000
+    //       that.stopLoading()
+    //     })
+    //   }, 1000)
+    // }
+    // //Fake data
+    // let insList = [{
+    //   "id": 1232,
+    //   "name": "1213家装分期",
+    //   "step": 2,
+    //   "insCount": 11023,
+    // }, {
+    //   "id": 1232,
+    //   "name": "111家装分期",
+    //   "step": 1,
+    //   "insCount": 11223,
+    // }, {
+    //   "id": 1232,
+    //   "name": "12313家装分期",
+    //   "step": 1,
+    //   "insCount": 223,
+    // }]
+    // Lib.M.SetLocalData("user", "insList", insList, function() {})
   },
   methods: {
     stopLoading() {
@@ -113,6 +115,9 @@ export default {
     },
     isDataExist(what){
       return !localStorage.getItem(what) || !JSON.parse(localStorage.user)[what] ? 0 : JSON.parse(localStorage.user)[what]
+    },
+    getScreenWidth() {
+      return document.body.clientWidth
     }
   }
 }
@@ -139,12 +144,14 @@ export default {
         top: 30px;
         font-size: 16px;
         margin-left: -64px;
+        color:#3BA794;
     }
     .ins-limit {
         width: 100%;
         text-align: center;
         top: 66px;
         font-size: 36px;
+        color:#393939;
     }
     .help {
         position: absolute;

@@ -1,7 +1,7 @@
 <template>
 <header>
   <div>{{name}}</div>
-  <img src="cart.png" onclick="location.href='cart.html'">
+  <img src="cart.png">
 </header>
 <div class="content">
   <map class="map" id="map-container" height="240px" :width="getScreenWidth()+'px'">
