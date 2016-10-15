@@ -1,11 +1,10 @@
 
-import 'assets/css.css';
-import C from 'assets/conf';
-import M from 'assets/common';
-
+import 'assets/css.css'
+import C from 'assets/conf'
+import M from 'assets/common'
 
 var Rxports = {
-	M,C
-};
+  M, C
+}
 
 module.exports = Rxports

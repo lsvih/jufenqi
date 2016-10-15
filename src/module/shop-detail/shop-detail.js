@@ -6,7 +6,6 @@ import Map from 'components/Map'
 import Resource from 'vue-resource'
 Vue.use(Resource)
 
-
 /* eslint-disable no-new */
 new Vue({
   el: 'body',
