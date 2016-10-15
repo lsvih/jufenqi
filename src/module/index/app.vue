@@ -108,7 +108,7 @@
         </div>
       </div>
     </div>
-    <div class="module-more">查看更多</div>
+    <div class="module-more" onclick="location.href='gallery.html'">查看更多</div>
   </div>
   <!-- module end -->
 </div>

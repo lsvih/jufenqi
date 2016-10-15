@@ -1,9 +1,8 @@
 <template>
   <waterfall
-       :line="line"
-       :line-gap="200"
-       :min-line-gap="180"
-       :max-line-gap="220"
+      class="waterfall-container"
+       line="v"
+       :line-gap="getScreenWidth()/2"
        :watch="items"
      >
        <!-- each component is wrapped by a waterfall slot -->
@@ -14,9 +13,9 @@
          :order="$index"
          move-class="item-move"
          transition="wf"
-
-       >{{item.bc}}
-         <div class="item" :style="{'backGroundColor':item.bc}" :index="item.index"></div>
+       >
+<img class="item" :index="item.index" :src="item.img">
+         </div>
        </waterfall-slot>
      </waterfall>
 
@@ -30,7 +29,6 @@ import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
 export default {
   data() {
     return {
-      line: 'h',
       items: this.ItemFactory(100),
       isBusy: false
     }
@@ -43,35 +41,28 @@ export default {
     WaterfallSlot,
   },
   methods: {
+    getScreenWidth() {
+      console.log(document.body.clientWidth)
+      return document.body.clientWidth
+    },
     ItemFactory:function(e){
 
       var lastIndex = 0
 
       function generateRandomItems (count) {
         var items = [], i
-        for (i = 0; i < count; i++) {
+        for (let i = 0; i < count; i++) {
+          let w = 100 + ~~(Math.random() * 50)
+          let h = 100 + ~~(Math.random() * 50)
           items[i] = {
             index: lastIndex++,
-            bc: getRandomColor(),
-            width: 100 + ~~(Math.random() * 50),
-            height: 100 + ~~(Math.random() * 50)
+            width: w,
+            height: h,
+            img: `http://lorempixel.com/${w}/${h}`
           }
         }
         return items
       }
-
-      function getRandomColor () {
-        var colors = [
-          'rgba(21,174,103,.5)',
-          'rgba(245,163,59,.5)',
-          'rgba(255,230,135,.5)',
-          'rgba(194,217,78,.5)',
-          'rgba(195,123,177,.5)',
-          'rgba(125,205,244,.5)'
-        ]
-        return colors[~~(Math.random() * colors.length)]
-      }
-
       return  generateRandomItems(e)
 
     },
@@ -92,7 +83,10 @@ export default {
 }
 </script>
 
-
+<style>
+body{
+  background-color: #eee;
+  }</style>
 
 <style lang="less" scoped>
 .apply-success {
@@ -127,5 +121,10 @@ export default {
         text-align: center;
         color: #727272;
     }
+}
+.item{
+  height:calc( ~"100% - 8px" );
+  padding:8px 4px 0 4px;
+  width: calc( ~"100% - 8px" );
 }
 </style>
