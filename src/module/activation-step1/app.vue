@@ -1,11 +1,11 @@
 <template>
 <group style="margin-top:-1.17647059em;">
   <cell class="cell" v-for="bank in bankList">
-    <div class="select" @click="select($index)" style="width:calc( 100% - 40px )"></div>
+    <div class="select" v-tap="select($index)" style="width:calc( 100% - 40px )"></div>
     <img class="bank-logo" :src="bank.icon">
     <div class="bank-name">{{bank.name}}</div>
     <div class="text">持卡类型:<span class="card-type">{{bank.cardType}}</span>&nbsp;&nbsp;可申请金额:<span class="credit-count">{{bank.credit|currency "" 2}}</span></div>
-    <div class="info" @click="(showInfoNum = $index,showInfo = true,preventDefault())"><img src="info.png"></div>
+    <div class="info" v-tap="(showInfoNum = $index,showInfo = true,preventDefault())"><img src="info.png"></div>
   </cell>
 </group>
 <alert :show.sync="showInfo" :title="bankList[showInfoNum].name" button-text="确认">

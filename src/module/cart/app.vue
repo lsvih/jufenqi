@@ -2,9 +2,9 @@
 <div>
   <header>
     <tab active-color='#88C929' :index.sync="index">
-      <tab-item active-class="tab-active" :selected="tab === '门店'" @click="tab = '门店'">门店</tab-item>
-      <tab-item active-class="tab-active" :selected="tab === '工长'" @click="tab = '工长'">工长</tab-item>
-      <tab-item active-class="tab-active" :selected="tab === '软装'" @click="tab = '软装'">软装</tab-item>
+      <tab-item active-class="tab-active" :selected="tab === '门店'" v-tap="tab = '门店'">门店</tab-item>
+      <tab-item active-class="tab-active" :selected="tab === '工长'" v-tap="tab = '工长'">工长</tab-item>
+      <tab-item active-class="tab-active" :selected="tab === '软装'" v-tap="tab = '软装'">软装</tab-item>
     </tab>
   </header>
 
@@ -14,7 +14,7 @@
         <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y>
           <group style="margin-top:-1.17647059em;">
             <cell v-for="shop in shopList" class="cell-item">
-              <div class="click-area-select" @click="selectItem('Shop',shop.id)"></div>
+              <div class="click-area-select" v-tap="selectItem('Shop',shop.id)"></div>
               <div class="click-area-detail" onclick="location.href='shop-detail.html'"></div>
               <img :src="shop.img" class="shop-logo" width="120px" height="80px">
               <div class="shop-name">{{shop.name}}</div>
@@ -32,7 +32,7 @@
         <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y>
           <group style="margin-top:-1.17647059em;">
             <cell v-for="worker in workerList" class="cell-item">
-              <div class="click-area-select" @click="selectItem('Worker',worker.id)"></div>
+              <div class="click-area-select" v-tap="selectItem('Worker',worker.id)"></div>
               <div class="click-area-detail" onclick="location.href='worker-detail.html'"></div>
               <img :src="worker.img" class="worker-logo" width="120px" height="80px">
               <div class="worker-name">{{worker.name}}</div>

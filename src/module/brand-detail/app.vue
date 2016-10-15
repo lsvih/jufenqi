@@ -13,7 +13,7 @@
       <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:goods>
         <div class="brand-product-list" :style="{width:productList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
           <div class="brand-product-item" v-for="good in productList" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-            <x-img class="product-img" :scroller="$refs.goods" :src="good.src" @click="$refs.previewer.show($index)"></x-img>
+            <x-img class="product-img" :scroller="$refs.goods" :src="good.src" v-tap="$refs.previewer.show($index)"></x-img>
           </div>
         </div>
       </scroller>
@@ -30,7 +30,7 @@
   <div class="icon-item" v-else><img src="favorite.png">
     <div>收藏</div>
   </div>
-  <div class="shop-list" @click="gotoStores(id)">查看门店</div>
+  <div class="shop-list" v-tap="gotoStores(id)">查看门店</div>
 </footer>
 <previewer :list="productList" v-ref:previewer :options="options"></previewer>
 </template>

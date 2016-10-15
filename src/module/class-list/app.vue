@@ -1,5 +1,5 @@
 <template>
-<x-img v-for="class in classList" :src="class.url" class="class-item" :style="{width:(getScreenWidth()-41)/2 + 'px',height:(getScreenWidth()-41)/2 /167*100 + 'px'}" @click="gotoClass(class.id)">
+<x-img v-for="class in classList" :src="class.url" class="class-item" :style="{width:(getScreenWidth()-41)/2 + 'px',height:(getScreenWidth()-41)/2 /167*100 + 'px'}" v-tap="gotoClass(class.id)">
 </x-img>
 </template>
 

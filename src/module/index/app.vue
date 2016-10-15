@@ -8,7 +8,7 @@
   <swiper class="module-swiper" loop auto height="150px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000">
   </swiper>
   <flexbox class="module-class">
-    <flexbox-item class="module-class-item" v-for="class in classList" @click="gotoCate(class.url)">
+    <flexbox-item class="module-class-item" v-for="class in classList" v-tap="gotoCate(class.url)">
       <img class="module-class-icon" :src="class.img">
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
@@ -53,27 +53,27 @@
     <div class="module-detail" onclick="location.href='zc-info.html'">了解详情</div>
     <div class="brand-grid" :style="{height:getScreenWidth()*(.583*.85+.333*1.52)+'px'}">
       <div class="brand-grid-1" :style="{height:getScreenWidth()*.583*.85+'px'}">
-        <div class="brand-grid-1-l" :style="{width:getScreenWidth()*.583+'px',height:getScreenWidth()*.583*.85+'px'}" @click="gotoBrand(0,brandList[0].name)">
+        <div class="brand-grid-1-l" :style="{width:getScreenWidth()*.583+'px',height:getScreenWidth()*.583*.85+'px'}" v-tap="gotoBrand(0,brandList[0].name)">
           <x-img :src="brandList[0].img"></x-img>
         </div>
-        <div class="brand-grid-1-r-t" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}" @click="gotoBrand(1,brandList[1].name)">
+        <div class="brand-grid-1-r-t" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}" v-tap="gotoBrand(1,brandList[1].name)">
           <x-img :src="brandList[1].img"></x-img>
         </div>
-        <div class="brand-grid-1-r-b" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}" @click="gotoBrand(2,brandList[2].name)">
+        <div class="brand-grid-1-r-b" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}" v-tap="gotoBrand(2,brandList[2].name)">
           <x-img :src="brandList[2].img"></x-img>
         </div>
       </div>
       <div class="brand-grid-2" :style="{height:getScreenWidth()*.333*1.52+'px'}">
-        <div class="brand-grid-2-l-t" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}" @click="gotoBrand(3,brandList[3].name)">
+        <div class="brand-grid-2-l-t" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}" v-tap="gotoBrand(3,brandList[3].name)">
           <x-img :src="brandList[3].img"></x-img>
         </div>
-        <div class="brand-grid-2-l-b" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}" @click="gotoBrand(4,brandList[4].name)">
+        <div class="brand-grid-2-l-b" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}" v-tap="gotoBrand(4,brandList[4].name)">
           <x-img :src="brandList[4].img"></x-img>
         </div>
-        <div class="brand-grid-2-m" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}" @click="gotoBrand(5,brandList[5].name)">
+        <div class="brand-grid-2-m" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}" v-tap="gotoBrand(5,brandList[5].name)">
           <x-img :src="brandList[5].img"></x-img>
         </div>
-        <div class="brand-grid-2-r" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}" @click="gotoBrand(6,brandList[6].name)">
+        <div class="brand-grid-2-r" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}" v-tap="gotoBrand(6,brandList[6].name)">
           <x-img :src="brandList[6].img"></x-img>
         </div>
       </div>

@@ -14,12 +14,12 @@
   <j-credit-process :step="1" class="process">
   </j-credit-process>
   <group>
-    <cell title="期望贷款" v-bind:value="123|currency '￥' 2" @click="showInsNumberPicker = true" style="height:30px"></cell>
+    <cell title="期望贷款" v-bind:value="123|currency '￥' 2" v-tap="showInsNumberPicker = true" style="height:30px"></cell>
   </group>
 </div>
 
-<x-button slot="right" style="background-color:rgb(136,201,40);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" @click="nextStep(wating)">{{wating?"刷新结果":"激活额度"}}</x-button>
-<x-button slot="right" plain style="border-color:#88c928;color:#88c928;margin:20px 20px;width:calc( 100% - 40px )" @click="location.href='./index.html'">返回首页</x-button>
+<x-button slot="right" style="background-color:rgb(136,201,40);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="nextStep(wating)">{{wating?"刷新结果":"激活额度"}}</x-button>
+<x-button slot="right" plain style="border-color:#88c928;color:#88c928;margin:20px 20px;width:calc( 100% - 40px )" v-tap="location.href='./index.html'">返回首页</x-button>
 
 <j-tel style="margin-top:30px"></j-tel>
 </template>

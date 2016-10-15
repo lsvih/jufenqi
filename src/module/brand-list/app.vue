@@ -1,6 +1,6 @@
 <template>
 <group style="margin-top:-1.17647059em;">
-<cell v-for="brand in brandList" class="cell-item" @click="goBandDetail(brand.id)" v-show="brand.img">
+<cell v-for="brand in brandList" class="cell-item" v-tap="goBandDetail(brand.id)" v-show="brand.img">
 <img :src="brand.img" class="brand-logo" width="120px" height="80px">
 <div class="brand-name">{{brand.name}}</div>
 <div class="brand-description">{{brand.description}}</div>

@@ -29,8 +29,8 @@
 
 
 <div class="select-plan" v-if="status==1">
-<div class="select-item-1" :class="{'active':selectPlan==0}" @click="selectPlan = 0">方案一</div>
-<div class="select-item-2" v-if="plans[1]" :class="{'active':selectPlan==1}" @click="selectPlan = 1">方案二</div>
+<div class="select-item-1" :class="{'active':selectPlan==0}" v-tap="selectPlan = 0">方案一</div>
+<div class="select-item-2" v-if="plans[1]" :class="{'active':selectPlan==1}" v-tap="selectPlan = 1">方案二</div>
 </div>
 
   <group title="设计方案" v-if="status>=1">
@@ -38,7 +38,7 @@
       <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:plan>
         <div class="worker-product-list" :style="{width:plans[selectPlan].plan.length*(.8*getScreenWidth()+10)+  'px',height:.8*getScreenWidth()*.63+'px'}">
           <div class="worker-product-item" v-for="preview in plans[selectPlan].plan" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-            <x-img class="product-img" :scroller="$refs.plan" :src="preview.src" @click="$refs.previewer.show($index)"></x-img>
+            <x-img class="product-img" :scroller="$refs.plan" :src="preview.src" v-tap="$refs.previewer.show($index)"></x-img>
           </div>
         </div>
       </scroller>

@@ -3,7 +3,7 @@
 <j-apply-process :step="2">
 </j-apply-process>
 <group title="装修地址">
-  <cell title="地址" :value="$refs.areapicker.getNameValues()" @click="showAreaPicker = true" style="height:30px" is-link></cell>
+  <cell title="地址" :value="$refs.areapicker.getNameValues()" v-tap="showAreaPicker = true" style="height:30px" is-link></cell>
   <x-textarea :max="200" placeholder="请填写详细地址" :show-counter="false" :height="60" :rows="8" :cols="30"></x-textarea>
 </group>
 <group title="装修面积">
@@ -11,7 +11,7 @@
 </group>
 <group title="期望贷款信息">
   <x-input title="期望额度(元)" type="number" placeholder="请输入您期望的贷款额度"></x-input>
-  <cell title="期望分期数" :value="insNumberSelect" @click="showInsNumberPicker = true" style="height:30px" is-link></cell>
+  <cell title="期望分期数" :value="insNumberSelect" v-tap="showInsNumberPicker = true" style="height:30px" is-link></cell>
 </group>
 <popup-picker title="分期数" :data="insNumberList" :show.sync="showInsNumberPicker" :value.sync="insNumberSelect" v-ref:insNumber :show-cell="false"></popup-picker>
 <popup-picker title="地址" :data="areaList" :columns="3" :show.sync="showAreaPicker" :value.sync="areaSelect" v-ref:areapicker :show-cell="false"></popup-picker>

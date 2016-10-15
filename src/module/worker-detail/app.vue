@@ -51,7 +51,7 @@
       <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:goods>
         <div class="worker-product-list" :style="{width:worker.productList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
           <div class="worker-product-item" v-for="good in worker.productList" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-            <x-img class="product-img" :scroller="$refs.goods" :src="good.src" @click="$refs.previewer.show($index)"></x-img>
+            <x-img class="product-img" :scroller="$refs.goods" :src="good.src" v-tap="$refs.previewer.show($index)"></x-img>
           </div>
         </div>
       </scroller>

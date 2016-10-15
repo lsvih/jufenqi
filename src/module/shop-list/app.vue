@@ -1,13 +1,13 @@
 <template>
 <header>
-  <div class="select-address">{{address}}<img src="select.png" class="select-icon"></div>
-  <div class="select-class">品类<img src="select.png" class="select-icon"></div>
-  <div class="sort">综合排序<img src="select.png" class="select-icon"></div>
+  <div class="select-address" v-tap="(selectType = 0,isShow=true)">{{selectedAddress}}<img src="select.png" class="select-icon"></div>
+  <div class="select-class" v-tap="(selectType = 1,isShow=true)">品类<img src="select.png" class="select-icon"></div>
+  <div class="sort" v-tap="(selectType = 2,isShow=true)">{{selectedSortType}}<img src="select.png" class="select-icon"></div>
   <span class="cart"><img src="cart.png"></span>
 </header>
 <div class="content">
   <group style="margin-top:-1.17647059em;">
-    <cell v-for="shop in shopList" class="cell-item" @click="gotoShopDetail(shop.id)">
+    <cell v-for="shop in shopList" class="cell-item" @tap="gotoShopDetail(shop.id)">
       <img :src="shop.img" class="shop-logo" width="120px" height="80px">
       <div class="shop-name">{{shop.name}}</div>
       <div class="shop-address">{{shop.address}}</div>
@@ -18,25 +18,40 @@
   </group>
 </div>
 <div class="location-ball"><img src="fixed-ball.png"></div>
+<j-select :show="isShow" :num="selectType==0?address.length:(selectType==1?classList.length:sortTypeList.length)">
+  <j-select-item v-show="selectType == 0" v-for="add in address">{{add}}</j-select-item>
+  <j-select-item v-show="selectType == 1" v-for="clazz in classList">{{clazz}}</j-select-item>
+  <j-select-item v-show="selectType == 2" v-for="sortType in sortTypeList">{{sortType}}</j-select-item>
+</j-select>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
 import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
+import JSelect from 'components/JSelect.vue'
+import JSelectItem from 'components/JSelectItem.vue'
 export default {
   data() {
     return {
-      address:"全北京",
+      selectedAddress:"全市",
+      selectedSortType:"综合排序",
+      address:["全市","朝阳","丰台","海淀"],
+      classList:["马桶","地板","门","床","墙","油漆","窗","家电"],
+      sortTypeList:["综合排序","距离最近","评价最高"],
       brandId:Lib.M.GetRequest().id,
       shopList: [],
       //shopList:[{id,name,img,address,rate}]
-      reqUrl:`${Lib.C.apiUrl}stores?filter=brand_id:${Lib.M.GetRequest().id}`
+      reqUrl:`${Lib.C.apiUrl}stores?filter=brand_id:${Lib.M.GetRequest().id}`,
+      isShow:false,
+      selectType:0
     }
   },
   components: {
     Group,
     Cell,
+    JSelect,
+    JSelectItem
   },
   methods: {
     isFavorite(shopId) {
@@ -144,8 +159,9 @@ header {
     }
     div{
       position: absolute;
-      height: 12px;
-      line-height: 12px;
+      top:0;
+      height: 100%;
+      line-height: 45px;
       width: calc( ~"(100% - 44px - 3px )/3");
       text-align: center;
       font-size: 12px;
@@ -157,17 +173,14 @@ header {
       }
     }
     .select-address{
-      top:16px;
       left:0;
       border-right:1px solid #eee;
     }
     .select-class{
-      top:16px;
       left:calc( ~"(100% - 47px )/3" );
       border-right:1px solid #eee;
     }
     .sort{
-      top:16px;
       left:calc( ~"(100% - 47px )/3*2 " );
     }
 }

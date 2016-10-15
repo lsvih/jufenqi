@@ -2,9 +2,9 @@
 <div>
   <header>
     <tab active-color='#88C929' :index.sync="index">
-      <tab-item active-class="tab-active" :selected="index === 0" @click="index = 0">装修订单</tab-item>
-      <tab-item active-class="tab-active" :selected="index === 1" @click="index = 1">主材订单</tab-item>
-      <tab-item active-class="tab-active" :selected="index === 2" @click="index = 2">软装订单</tab-item>
+      <tab-item active-class="tab-active" :selected="index === 0" v-tap="index = 0">装修订单</tab-item>
+      <tab-item active-class="tab-active" :selected="index === 1" v-tap="index = 1">主材订单</tab-item>
+      <tab-item active-class="tab-active" :selected="index === 2" v-tap="index = 2">软装订单</tab-item>
     </tab>
   </header>
 
