@@ -1,8 +1,8 @@
 {
-  "name": "vue-cli-multi-page",
+  "name": "jufenqi-wechat",
   "version": "0.1.0",
-  "description": "基于webpack的 vue js多页面例子",
-  "author": "bluefox",
+  "description": "居分期微信端",
+  "author": "lsvih",
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
