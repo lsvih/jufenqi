@@ -6,6 +6,7 @@ ehthumbs.db
 node_modules/
 dist/
 npm-debug.log
+nohup.out
 
 # Folder config file
 Desktop.ini
