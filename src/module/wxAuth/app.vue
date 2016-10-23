@@ -7,7 +7,7 @@ import Lib from 'assets/Lib.js'
 export default {
   data() {
     return {
-      lastUrl: Lib.M.GetRequest().url,
+      lastUrl: Lib.M.GetRequest().url?`./verifyPhone.html?url=${unescape(Lib.M.GetRequest().url)}`:'./verifyPhone.html?url=index.html',
       code: Lib.M.GetRequest().code,
       appId: "wxe1d923f20f84fac5"
     }
@@ -29,11 +29,12 @@ export default {
             withCredentials: true
           },
           emulateJSON: true
-        }), then((res) => {
-          console.log(res)
+        }).then((res) => {
+          window.localStorage.setItem("user",JSON.stringify(res.data))
+          location.href = lastUrl
         }, (res) => {
           alert("微信登录失败，请稍后重试")
-          location.href = `./index.html`
+          return false;
         })
       } else {
         location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${location.href}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirec`
