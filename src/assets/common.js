@@ -39,6 +39,13 @@ var Rxports = {
     tempdata[key] = data
     window.localStorage.setItem(item, JSON.stringify(tempdata))
     cb()
+  },
+  isAuth:()=>{
+    if(window.localStorage.getItem("user")){
+      return true
+    }else{
+      return false
+    }
   }
 }
 
