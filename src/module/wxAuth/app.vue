@@ -23,9 +23,7 @@ export default {
     getCode() {
       if (this.code) {
         this.$http.post(`${Lib.C.authApi}loginUsingWechat`, {
-          body: {
-            code: this.code
-          }
+          code: this.code
         }, {
           xhr: {
             withCredentials: true
