@@ -34,6 +34,7 @@ export default {
           location.href = lastUrl
         }, (res) => {
           alert("微信登录失败，请稍后重试")
+          console.log(res)
           return false;
         })
       } else {
