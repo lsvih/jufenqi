@@ -14,7 +14,7 @@ export default {
   },
   ready() {
     if (Lib.M.isAuth()) {
-      location.href = lastUrl
+      location.href = this.lastUrl
     } else {
       this.getCode()
     }
@@ -30,8 +30,8 @@ export default {
           },
           emulateJSON: true
         }).then((res) => {
-          window.localStorage.setItem("user",JSON.stringify(res.data))
-          location.href = lastUrl
+          window.localStorage.setItem("user",JSON.stringify(res.data.data))
+          location.href = this.lastUrl
         }, (res) => {
           alert("微信登录失败，请稍后重试")
           console.log(res)
