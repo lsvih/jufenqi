@@ -7,7 +7,7 @@ import Lib from 'assets/Lib.js'
 export default {
   data() {
     return {
-      lastUrl: Lib.M.GetRequest().url?`./verifyPhone.html?url=${unescape(Lib.M.GetRequest().url)}`:'./verifyPhone.html?url=index.html',
+      lastUrl: Lib.M.GetRequest().url?unescape(Lib.M.GetRequest().url):'./index.html',
       code: Lib.M.GetRequest().code,
       appId: "wxe1d923f20f84fac5"
     }
@@ -31,7 +31,11 @@ export default {
           emulateJSON: true
         }).then((res) => {
           window.localStorage.setItem("user",JSON.stringify(res.data.data))
-          location.href = this.lastUrl
+          if(res.data.data.profile.mobile){
+            location.href = this.lastUrl
+          }else{
+            location.href = `./verifyPhone.html?url=${encodeURIComponent(this.lastUrl)}`  
+          }
         }, (res) => {
           alert("微信登录失败，请稍后重试")
           console.log(res)

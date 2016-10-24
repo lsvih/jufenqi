@@ -274,10 +274,6 @@ export default {
     FlexboxItem,
     XImg,
   },
-  ready() {
-
-
-  },
   methods: {
     bannerOnChange(index) {
       this.bannerIndex = index
@@ -291,9 +287,6 @@ export default {
     gotoCate(url){
       location.href = url
     }
-
-
-
   }
 }
 </script>
