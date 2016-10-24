@@ -12,7 +12,7 @@
   <div class="send-agian" v-bind:class="{'alarm':time!==0}" v-tap="time===0?send():return;">{{time!==0?`${time}秒后可重试`:"重新发送"}}</div>
   <div class="line"></div>
   <div class="close" v-tap="close()">关闭</div>
-  <input type="Number" id="verify" v-model="verifyNumber|currency '' 0" unselectable="on" @change="input()">
+  <input type="Number" id="verify" v-model="verifyNumber|currency '' 0" @change="input()">
 </div>
 </template>
 <script>
