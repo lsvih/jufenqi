@@ -19,7 +19,7 @@ export default {
     return {
       user: JSON.parse(localStorage.getItem("user")),
       phoneNumber: "",
-      inVerify: false,
+      inVerify: true,
       loading: false,
       lastUrl: Lib.M.GetRequest().url?unescape(Lib.M.GetRequest().url):'./index.html'
     }
