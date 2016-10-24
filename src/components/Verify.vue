@@ -26,7 +26,7 @@ export default {
   },
   components: {},
   ready(){
-    this.setTime
+    this.setTime()
   },
   methods: {
     setTime(){
@@ -88,7 +88,7 @@ export default {
     .verify-number {
         position: absolute;
         height: 24px;
-        width: 219px;
+        width: 235px;
         left: 50%;
         margin-left: -109.5px;
         top: 44px;
@@ -99,6 +99,7 @@ export default {
             margin-right: 15px;
             text-align: center;
             line-height: 22px;
+            float:left;
         }
     }
     .send-agian{
@@ -106,7 +107,7 @@ export default {
       position: absolute;
       bottom: 55px;
       left: 50%;
-      margin-left: 78px;
+      margin-left: 48px;
     }
     .line{
       position: absolute;
