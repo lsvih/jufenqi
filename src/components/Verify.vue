@@ -99,6 +99,7 @@ export default {
         location.href = this.$parent.lastUrl
       },(res)=>{
         this.alarm = true
+        this.$parent.loading = false
         this.msg = "验证码错误，请重试"
         this.activeInput()
       })
