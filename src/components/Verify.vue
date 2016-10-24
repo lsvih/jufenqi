@@ -12,7 +12,7 @@
   <div class="send-agian" v-bind:class="{'alarm':time!==0}" v-tap="time===0?send():return;">{{time!==0?`${time}秒后可重试`:"重新发送"}}</div>
   <div class="line"></div>
   <div class="close" v-tap="close()">关闭</div>
-  <input type="Number" id="verify" v-model="verifyNumber" unselectable="on" @change="input()">
+  <input type="Number" id="verify" v-model="verifyNumber|currency '' 0" unselectable="on" @change="input()">
 </div>
 </template>
 <script>
@@ -29,6 +29,7 @@ export default {
   },
   components: {},
   ready(){
+    active()
     this.setTime()
   },
   methods: {
@@ -118,6 +119,7 @@ function blur(){
 .verify-block {
     z-index: 22;
     position: absolute;
+    overflow: hidden;
     height: 145px;
     width: calc( ~"100% - 52px" );
     top: calc( ~"50% - 74px" );
@@ -184,7 +186,7 @@ function blur(){
   width: 235px;
   left: 50%;
   margin-left: -109.5px;
-  top: 44px;
+  top: -44px;
   z-index:1;
   color:rgba(255,255,255,0);
   background-color: transparent;
