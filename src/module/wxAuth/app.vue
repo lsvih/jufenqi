@@ -22,7 +22,7 @@ export default {
   methods: {
     getCode() {
       if (this.code) {
-        this.$http.post(`${Lib.C.authApi}loginUsingWechat`, {
+        this.$http.post(`${Lib.C.userApi}auth/loginUsingWechat`, {
           code: this.code
         }, {
           xhr: {
@@ -34,7 +34,7 @@ export default {
           if(res.data.data.profile.mobile){
             location.href = this.lastUrl
           }else{
-            location.href = `./verifyPhone.html?url=${encodeURIComponent(this.lastUrl)}`  
+            location.href = `./verifyPhone.html?url=${encodeURIComponent(this.lastUrl)}`
           }
         }, (res) => {
           alert("微信登录失败，请稍后重试")
