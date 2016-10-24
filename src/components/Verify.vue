@@ -187,9 +187,9 @@ function blur(){
 #verify{
   position: absolute;
   height: 24px;
-  width: 240px;
-  left: 50%;
-  margin-left: -130.5px;
+  width: calc( ~"100% + 500px" );
+  left: 0;
+  margin-left: -500px;
   top: 44px;
   z-index:1;
   color:rgba(255,255,255,0);
