@@ -105,16 +105,20 @@ body {
     }
 }
 .submit {
+    position: absolute;
     border-radius: 5px;
     background-color: #e2e2e2;
     font-size: 16px;
+    color:#fff;
+    text-align: center;
+    line-height: 44px;
     font-weight: bold;
     height: 44px;
     width: calc(~"100% - 30px");
     left: 15px;
     top: 374px;
-    .active {
-        background-color: #88C928;
-    }
+}
+.active {
+    background-color: #88C928!important;
 }
 </style>
