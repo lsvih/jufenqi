@@ -76,6 +76,7 @@ export default {
       let num = String(this.verifyNumber)[index]
       num = num===undefined?"":num
       if(index===5&&num!==""){
+        blur()
         this.$parent.loading = true
         this.submit()
       }
@@ -93,8 +94,8 @@ export default {
         },
         emulateJSON: true
       }).then((res)=>{
-        console.log(res.data.data)
-        // location.href = this.$parent.lastUrl
+        window.localStorage.setItem("user",JSON.stringify(res.data.data))
+        location.href = this.$parent.lastUrl
       },(res)=>{
         this.alarm = true
         this.msg = "验证码错误，请重试"
@@ -108,6 +109,9 @@ export default {
 }
 function active(){
   document.getElementById("verify").focus()
+}
+function blur(){
+  document.getElementById("verify").blur()
 }
 </script>
 <style scoped lang="less">
@@ -176,6 +180,6 @@ function active(){
 }
 .verify{
   z-index:1;
-  color:rgba(255,255,255,0);
+  color:#fff;
 }
 </style>
