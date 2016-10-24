@@ -180,9 +180,15 @@ function blur(){
 }
 #verify{
   position: absolute;
-  left:20px;
-  top:0;
+  height: 24px;
+  width: 235px;
+  left: 50%;
+  margin-left: -109.5px;
+  top: 44px;
   z-index:1;
-  color:#fff;
+  color:rgba(255,255,255,0);
+  background-color: transparent;
+  -webkit-appearance: none;
+  border:none
 }
 </style>
