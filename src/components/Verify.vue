@@ -16,6 +16,7 @@
 </div>
 </template>
 <script>
+import Lib from 'assets/Lib.js'
 export default {
   data() {
     return {
@@ -23,7 +24,7 @@ export default {
       alarm: false,
       time:60,
       timekeeper:null,
-      verifyNumber:null,
+      verifyNumber:"",
     }
   },
   components: {},
@@ -70,14 +71,15 @@ export default {
     },
     input(){
       this.verifyNumber = String(this.verifyNumber.replace(/[^0-9]/g,''));
-      if(this.verifyNumber.length===6){
-        this.$parent.loading = true
-        this.submit()
-      }
     },
     getSingleVerify(index){
       let num = String(this.verifyNumber)[index]
-      return num===undefined?"":num
+      num = num===undefined?"":num
+      if(index===5&&num!==""){
+        this.$parent.loading = true
+        this.submit()
+      }
+      return num
     },
     submit(){
       this.$http.post(`${Lib.C.userApi}auth/registerUsingMobile`, {
@@ -171,5 +173,9 @@ function active(){
 }
 .alarm {
     color: #D0021B;
+}
+.verify{
+  z-index:1;
+  color:rgba(255,255,255,0);
 }
 </style>
