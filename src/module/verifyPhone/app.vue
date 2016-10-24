@@ -7,25 +7,26 @@
 </div>
 <verify v-if="inVerify"></verify>
 <div class="mask" v-if="inVerify"></div>
+<loading :show="loading" text="请稍候..."></loading>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
 import Verify from 'components/Verify.vue'
+import Loading from 'vux-components/loading'
 export default {
   data() {
     return {
       user: JSON.parse(localStorage.getItem("user")),
       phoneNumber: "",
-      inVerify: false
+      inVerify: false,
+      loading: false,
+      lastUrl: Lib.M.GetRequest().url?unescape(Lib.M.GetRequest().url):'./index.html'
     }
   },
   components: {
-    Verify
-  },
-  ready() {
-
-
+    Verify,
+    Loading
   },
   methods: {
     isTruePhoneNum() {
@@ -33,6 +34,7 @@ export default {
       return reg.test(String(this.phoneNumber))
     },
     gotoVerify() {
+      this.loading = true
       this.$http.post(`${Lib.C.userApi}sms/sendCode`, {
         mobile: this.phoneNumber
       }, {
@@ -42,8 +44,10 @@ export default {
         emulateJSON: true
       }).then((res)=>{
         this.inVerify = true
+        this.loading = false
       },(res)=>{
         alert("发送验证码失败，请稍后重试...")
+        this.loading = false
       })
     }
   }

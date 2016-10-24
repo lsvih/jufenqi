@@ -1,17 +1,18 @@
 <template>
 <div class="verify-block">
   <div class="msg" v-bind:class="{'alarm':alarm}">{{msg}}</div>
-  <div class="verify-number">
-    <div class="number-block"></div>
-    <div class="number-block"></div>
-    <div class="number-block"></div>
-    <div class="number-block"></div>
-    <div class="number-block"></div>
-    <div class="number-block"></div>
+  <div class="verify-number" v-tap="activeInput()">
+    <div class="number-block">{{getSingleVerify(0)}}</div>
+    <div class="number-block">{{getSingleVerify(1)}}</div>
+    <div class="number-block">{{getSingleVerify(2)}}</div>
+    <div class="number-block">{{getSingleVerify(3)}}</div>
+    <div class="number-block">{{getSingleVerify(4)}}</div>
+    <div class="number-block">{{getSingleVerify(5)}}</div>
   </div>
-  <div class="send-agian" v-bind:class="{'alarm':time!==0}" v-tap="time!==0?send():return;">{{time!==0?`${time}秒后可重试`:"重新发送"}}</div>
+  <div class="send-agian" v-bind:class="{'alarm':time!==0}" v-tap="time===0?send():return;">{{time!==0?`${time}秒后可重试`:"重新发送"}}</div>
   <div class="line"></div>
   <div class="close" v-tap="close()">关闭</div>
+  <input type="Number" id="verify" v-model="verifyNumber" @change="input()">
 </div>
 </template>
 <script>
@@ -21,7 +22,8 @@ export default {
       msg: "请输入验证码",
       alarm: false,
       time:60,
-      timekeeper:null
+      timekeeper:null,
+      verifyNumber:null,
     }
   },
   components: {},
@@ -40,6 +42,7 @@ export default {
       },1000)
     },
     send(){
+      this.$parent.loading=true
       this.$http.post(`${Lib.C.userApi}sms/sendCode`, {
         mobile: this.$parent.phoneNumber
       }, {
@@ -48,6 +51,7 @@ export default {
         },
         emulateJSON: true
       }).then((res)=>{
+        this.$parent.loading = false
         this.time = 60
         this.timekeeper = setInterval(()=>{
           that.time--
@@ -56,14 +60,52 @@ export default {
           }
         },1000)
       },(res)=>{
+        this.$parent.loading = false
         alert("发送验证码失败，请稍后重试...")
       })
     },
     close(){
       clearInterval(this.timekeeper)
       this.$parent.inVerify = false
+    },
+    input(){
+      this.verifyNumber = String(this.verifyNumber.replace(/[^0-9]/g,''));
+      if(this.verifyNumber.length===6){
+        this.$parent.loading = true
+        this.submit()
+      }
+    },
+    getSingleVerify(index){
+      let num = String(this.verifyNumber)[index]
+      return num===undefined?"":num
+    },
+    submit(){
+      this.$http.post(`${Lib.C.userApi}auth/registerUsingMobile`, {
+        mobile: this.$parent.phoneNumber,
+        userId: JSON.parse(localStorage.getItem("user")).userId,
+        code: this.verifyNumber,
+        // password:??
+      }, {
+        xhr: {
+          withCredentials: true
+        },
+        emulateJSON: true
+      }).then((res)=>{
+        console.log(res.data.data)
+        // location.href = this.$parent.lastUrl
+      },(res)=>{
+        this.alarm = true
+        this.msg = "验证码错误，请重试"
+        this.activeInput()
+      })
+    },
+    activeInput(){
+      active()
     }
   }
+}
+function active(){
+  document.getElementById("verify").focus()
 }
 </script>
 <style scoped lang="less">
