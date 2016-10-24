@@ -178,7 +178,10 @@ function blur(){
 .alarm {
     color: #D0021B;
 }
-.verify{
+#verify{
+  position: absolute;
+  left:20px;
+  top:0;
   z-index:1;
   color:#fff;
 }
