@@ -6,7 +6,7 @@
   <div class="submit" v-bind:class="{'active':isTruePhoneNum()}" v-tap="isTruePhoneNum()?gotoVerify():return;">绑 定</div>
 </div>
 <verify v-if="inVerify"></verify>
-<div class="mask" v-if="inVerify" v-tap="inVerify = false"></div>
+<div class="mask" v-if="inVerify"></div>
 </template>
 
 <script>
@@ -17,7 +17,7 @@ export default {
     return {
       user: JSON.parse(localStorage.getItem("user")),
       phoneNumber: "",
-      inVerify: false
+      inVerify: true
     }
   },
   components: {
