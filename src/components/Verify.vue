@@ -29,6 +29,7 @@ export default {
   },
   components: {},
   ready(){
+    document.getElementById("verify").focus()
     active()
     this.setTime()
   },
@@ -105,6 +106,7 @@ export default {
       })
     },
     activeInput(){
+      document.getElementById("verify").focus()
       active()
     }
   }
