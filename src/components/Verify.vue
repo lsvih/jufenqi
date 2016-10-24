@@ -32,7 +32,7 @@ export default {
     setTime(){
       this.time = 60
       let that = this
-      this.timekeeper = setinterval(()=>{
+      this.timekeeper = setInterval(()=>{
         that.time--
         if(that.time === 0){
           clearInterval(that.timekeeper)
@@ -49,7 +49,7 @@ export default {
         emulateJSON: true
       }).then((res)=>{
         this.time = 60
-        this.timekeeper = setinterval(()=>{
+        this.timekeeper = setInterval(()=>{
           that.time--
           if(that.time === 0){
             clearInterval(that.timekeeper)

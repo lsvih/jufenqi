@@ -17,7 +17,7 @@ export default {
     return {
       user: JSON.parse(localStorage.getItem("user")),
       phoneNumber: "",
-      inVerify: true
+      inVerify: false
     }
   },
   components: {
