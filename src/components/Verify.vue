@@ -97,6 +97,7 @@ export default {
         emulateJSON: true
       }).then((res)=>{
         window.localStorage.setItem("user",JSON.stringify(res.data.data))
+        alert(JSON.parse(localStorage.getItem('user').profile.nickname))
         location.href = this.$parent.lastUrl
       },(res)=>{
         this.alarm = true
@@ -189,7 +190,7 @@ function blur(){
   width: 235px;
   left: 50%;
   margin-left: -109.5px;
-  top: -44px;
+  top: 44px;
   z-index:1;
   color:rgba(255,255,255,0);
   background-color: transparent;
