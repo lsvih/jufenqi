@@ -10,7 +10,7 @@
 </div>
 <div class="content">
 
-  <div class="zc-list" v-if="status!=0">
+  <div class="zc-list">
     <group v-for="shop in shopList">
       <div class="line-1">
         <div class="shop-name">{{shop.name}}</div>
@@ -19,45 +19,58 @@
       <cell v-for="zc in shop.zcList" class="zc-cell">
         <div class="zc-name">{{zc.name}}</div>
       </cell>
-      <div class="line-2">
+      <div class="line-2" v-if="status != 0">
         <div class="line-2-title">正价总额</div>
         <div class="line-2-right" style="color:rgb(255, 204, 102);">{{shop.zjPrice|currency "￥" 2}}</div>
       </div>
-      <div class="line-2">
+      <div class="line-2" v-if="status != 0">
         <div class="line-2-title">特价总额</div>
         <div class="line-2-right" style="color:#88C929;">{{shop.tjPrice|currency "￥" 2}}</div>
       </div>
-      <div class="line-2" style="border-top:5px solid #eee!important;">
+      <div class="line-2" style="border-top:5px solid #eee!important;" v-if="status != 0">
         <div class="line-2-title">总额</div>
         <div class="line-2-right">{{shop.zjPrice+shop.tjPrice|currency "￥" 2}}</div>
       </div>
       <div class="line-3" v-if="status != 2&&status != 3">
+        <div class="appoint-at" v-if="status == 0"><img src="./time.png">{{appointAt}}</div>
         <div class="cancel">{{status == 0?"取消预约":(status == 1?"取消订单":"申请退款")}}</div>
       </div>
     </group>
     <group v-if="status == 1">
-      <div class="line-2">
-        <div class="line-2-title">请选择您的购买方式</div>
-        <div class="line-2-right"><img class="down" src="./down.png"></div>
+      <div class="line-2" style="border-bottom:1px solid #eee;height:30px;line-height:30px;">
+        <div class="line-2-title" style="line-height:30px">请选择您的购买方式</div>
+        <!-- <div class="line-2-right"><img class="down" src="./down.png"></div> -->
       </div>
-      <radio  :options="payments" @on-change="selectPay"></radio>
+      <j-radio :options="payments" @on-change="selectPay"></j-radio>
     </group>
     <group v-if="status == 1">
-      <div class="sumbit-order" :class="{'active':payWay!=''}">确认订单</div>
+      <div class="sumbit-order" :class="{'active':payWay!==''}" v-tap="submitOrder">确认订单</div>
+    </group>
+    <group v-if="status >= 2">
+      <div class="line-2" v-if="insNumber !== ''">
+        <div class="line-2-title">分期支付</div>
+        <div class="line-2-right" style="color:#393939;">{{insNumber}}期</div>
+      </div>
+      <div class="line-2" v-else>
+        <div class="line-2-title">全款支付</div>
+      </div>
     </group>
   </div>
 </div>
+<popup-picker title="分期数" :data="insNumberList" :show.sync="showInsNumberPicker" :value.sync="insNumberSelect" @on-hide="onHideInsSelect" v-ref:insNumber :show-cell="false"></popup-picker>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
 import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
-import Radio from 'vux-components/radio'
+import JRadio from 'components/JRadio.vue'
+import PopupPicker from 'vux-components/popup-picker'
 export default {
   data() {
     return {
       status: 0,
+      appointAt: "2016-11-01 16:00",
       butlerName: "郑家园",
       butlerTel: "18601230123",
       butlerImg: "http://placekitten.com/g/60/60",
@@ -106,17 +119,20 @@ export default {
         status: 4,
         name: "已收货"
       }],
-      payments:[
-        {
-          key:'0',
-          value:'全款购买'
-        },
-        {
-          key:'1',
-          value:'分期购买'
-        }
+      payments: [{
+        key: '0',
+        value: '全款购买'
+      }, {
+        key: '1',
+        value: '分期购买'
+      }],
+      payWay: "",
+      showInsNumberPicker: false,
+      insNumberList: [
+        [3, 6, 9, 12, 24]
       ],
-      payWay:""
+      insNumberSelect: [],
+      insNumber: 3
     }
   },
   ready() {
@@ -125,11 +141,26 @@ export default {
   components: {
     Group,
     Cell,
-    Radio
+    JRadio,
+    PopupPicker
   },
   methods: {
-    selectPay(e){
-      this.payWay = this.payments[Number(e)]
+    selectPay(e) {
+      this.payWay = Number(e)
+    },
+    submitOrder() {
+      if (this.payWay == "") return false
+      if (this.payWay == 1) {
+        this.showInsNumberPicker = true
+      } else {
+        //确认订单代码
+      }
+    },
+    onHideInsSelect(type) {
+      if (type) {
+        console.log(this.insNumberSelect)
+          //确认订单代码
+      }
     }
   }
 }
@@ -314,7 +345,7 @@ header {
         .line-2-title {
             position: absolute;
             top: 0;
-            height:44px;
+            height: 44px;
             line-height: 44px;
             left: 15px;
             font-size: 12px;
@@ -328,12 +359,12 @@ header {
             right: 15px;
             font-size: 12px;
             color: #EC5835;
-            .down{
-              position: absolute;
-              height: 10px;
-              width: 17px;
-              right: 0;
-              top:17px;
+            .down {
+                position: absolute;
+                height: 10px;
+                width: 17px;
+                right: 0;
+                top: 17px;
             }
         }
     }
@@ -351,16 +382,31 @@ header {
             line-height: 30px;
             color: #999;
         }
+        .appoint-at {
+            position: absolute;
+            left: 15px;
+            top: 0;
+            height: 30px;
+            line-height: 30px;
+            color: #999;
+            font-size: 12px;
+            img {
+                vertical-align: middle;
+                height: 12px;
+                width: 12px;
+                margin-right: 5px;
+            }
+        }
     }
 }
-.sumbit-order{
-  height: 44px;
-  width: 100%;
-  line-height: 44px;
-  background-color: #e2e2e2;
-  text-align: center;
-  font-size: 16px;
-  color:#fff;
+.sumbit-order {
+    height: 44px;
+    width: 100%;
+    line-height: 44px;
+    background-color: #e2e2e2;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
 }
 .active {
     background-color: #9EBC2B!important;

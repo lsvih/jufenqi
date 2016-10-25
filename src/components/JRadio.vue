@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import Base from 'vux/libs/base'
+import Base from 'vux/src/libs/base'
 import { getValue, getKey } from 'vux-components/checklist/object-filter'
 
 export default {
@@ -96,10 +96,14 @@ function contains (a, obj) {
 </script>
 
 <style lang="less">
-@import '~vux/styles/weui/widget/weui_cell/weui_check';
-@import '~vux/styles/weui/widget/weui_cell/weui_form/weui_form_common';
-@import '~vux/styles/weui/icon/weui_icon_font';
+@import '~vux/src/styles/weui/widget/weui_cell/weui_check';
+@import '~vux/src/styles/weui/widget/weui_cell/weui_form/weui_form_common';
+@import '~vux/src/styles/weui/icon/weui_icon_font';
 .weui_cell_radio > * {
   pointer-events: none;
+}
+.weui_cell{
+  height: 24px;
+  font-size: 14px;
 }
 </style>

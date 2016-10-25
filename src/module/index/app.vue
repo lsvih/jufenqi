@@ -33,13 +33,15 @@
     <div class="module-title">有图有价</div>
     <div class="module-description">看的到的都能买</div>
     <div class="module-detail">了解详情</div>
-    <div :style="{width:'100%',height:.8*getScreenWidth()*.63+20+'px'}" class="scroll-box">
+    <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+20+'px'}">
+    <div :style="{width:'100%',height:.8*getScreenWidth()*.63+20+40+'px'}" class="scroll-box">
       <div class="pic_and_goods-list" :style="{width:pic_and_goods.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
         <div class="pic_and_goods-item" v-for="good in pic_and_goods" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
           <img :src="good.img">
         </div>
       </div>
     </div>
+  </div>
     <div class="module-more">查看更多</div>
   </div>
   <!-- module end -->
@@ -86,7 +88,8 @@
     <div class="module-title">工长推荐</div>
     <div class="module-description">金牌工长，全职监理，保障你的权益</div>
     <div class="module-detail" onclick="location.href='gz-info.html'">了解详情</div>
-    <div :style="{width:'100%',height:'170px'}" class="scroll-box">
+    <div class="scroll-box-container" :style="{width:'100%',height:'170px'}">
+    <div :style="{width:'100%',height:'210px'}" class="scroll-box">
       <div class="worker-list" :style="{width:workerList.length*110+'px'}">
         <div class="worker-item" v-for="worker in workerList" onclick="location.href='worker-detail.html?id={{worker.id}}&name={{worker.name}}'">
           <img :src="worker.img">
@@ -94,6 +97,7 @@
         </div>
       </div>
     </div>
+  </div>
     <div class="module-more" onclick="location.href='worker-list.html'">查看更多</div>
   </div>
   <!-- end -->
@@ -101,13 +105,15 @@
   <div class="module-item">
     <div class="module-title">图库</div>
     <div class="module-description"  style="margin-bottom:10px;">实地拍摄，不再是“照骗”</div>
-    <div :style="{width:'100%',height:.8*getScreenWidth()*.63+20+'px'}" class="scroll-box">
+    <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+20+'px'}">
+    <div :style="{width:'100%',height:.8*getScreenWidth()*.63+20+40+'px'}" class="scroll-box">
       <div class="pic_and_goods-list" :style="{width:picList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
         <div class="pic_and_goods-item" v-for="pic in picList" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
           <img :src="pic.img">
         </div>
       </div>
     </div>
+  </div>
     <div class="module-more" onclick="location.href='gallery.html'">查看更多</div>
   </div>
   <!-- module end -->
@@ -558,5 +564,8 @@ header {
 .scroll-box {
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
+}
+.scroll-box-container{
+  overflow: hidden;
 }
 </style>
