@@ -23,26 +23,18 @@
       </cell>
       <div class="line-2">
         <div class="line-2-title">正价总额</div>
-        <div class="line-2-right">{{zjPrice|currency "￥" 2}}</div>
+        <div class="line-2-right">{{shop.zjPrice|currency "￥" 2}}</div>
       </div>
       <div class="line-2">
         <div class="line-2-title">特价总额</div>
-        <div class="line-2-right">{{tjPrice|currency "￥" 2}}</div>
+        <div class="line-2-right">{{shop.tjPrice|currency "￥" 2}}</div>
       </div>
-      <div class="line-2">
-          <div class="line-2-title">总额</div>
-          <div class="line-2-right">{{zjPrice+tjPrice|currency "￥" 2}}</div>
-      </div>
-    </group>
-    <group>
       <div class="line-2" style="border-top:5px solid #eee!important;">
-          <div class="line-2-title">订单总额</div>
-          <div class="line-2-right">{{getCount(shopList)|currency "￥" 2}}</div>
+          <div class="line-2-title">总额</div>
+          <div class="line-2-right">{{shop.zjPrice+shop.tjPrice|currency "￥" 2}}</div>
       </div>
     </group>
   </div>
-
-
 </div>
 </template>
 
@@ -112,13 +104,6 @@ export default {
     Cell,
   },
   methods: {
-    getCount(list){
-      let count = 0;
-      list.map((e)=>{
-        count += (e.zjPrice+e.tjPrice)
-      })
-      return count
-    }
   }
 }
 </script>
@@ -211,6 +196,7 @@ header {
 .butler {
     height: 50px;
     width: 100%;
+    z-index: 20;
     border-bottom: 1px solid #eee;
     background-color: #fff;
     position: fixed;
