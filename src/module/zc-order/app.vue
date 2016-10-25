@@ -83,7 +83,7 @@ export default {
         }, {
           name: "材料",
         }],
-        zjPrice: 123094
+        zjPrice: 123094,
         tjPrice: 1235
       }],
       zcStatusList: [{
