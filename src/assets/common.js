@@ -40,10 +40,10 @@ var Rxports = {
     window.localStorage.setItem(item, JSON.stringify(tempdata))
     cb()
   },
-  isAuth:()=>{
-    if(window.localStorage.getItem("user")){
+  isAuth: () => {
+    if (window.localStorage.getItem('user')) {
       return true
-    }else{
+    } else {
       return false
     }
   }

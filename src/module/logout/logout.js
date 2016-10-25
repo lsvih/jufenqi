@@ -1,2 +1,2 @@
 window.localStorage.clear()
-//For logout
+// For logout
