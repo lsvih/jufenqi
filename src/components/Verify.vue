@@ -97,7 +97,6 @@ export default {
         emulateJSON: true
       }).then((res)=>{
         window.localStorage.setItem("user",JSON.stringify(res.data.data))
-        alert(JSON.parse(localStorage.getItem('user').profile.nickname))
         location.href = this.$parent.lastUrl
       },(res)=>{
         this.alarm = true
