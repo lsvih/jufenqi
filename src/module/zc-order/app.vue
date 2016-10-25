@@ -13,24 +13,29 @@
 <div class="content">
 
   <div class="zc-list" v-if="status!==0">
-    <div class="zc-shop-img"><img :src="preview"></div>
     <group v-for="shop in shopList">
       <div class="line-1">
-        <div class="shop-img"><img :src='shop.img'></div>
         <div class="shop-name">{{shop.name}}</div>
         <div class="btn" v-if="status==4" onclick="location.href='order-judge.html'">去评价</div>
       </div>
       <cell v-for="zc in shop.zcList" class="zc-cell">
         <div class="zc-name">{{zc.name}}</div>
-        <div class="zc-price">{{zc.price|currency "￥" 2}}<span>x{{zc.num}}</span></div>
       </cell>
       <div class="line-2">
+        <div class="line-2-title">正价总额</div>
+        <div class="line-2-right">{{zjPrice|currency "￥" 2}}</div>
+      </div>
+      <div class="line-2">
+        <div class="line-2-title">特价总额</div>
+        <div class="line-2-right">{{tjPrice|currency "￥" 2}}</div>
+      </div>
+      <div class="line-2">
           <div class="line-2-title">总额</div>
-          <div class="line-2-right">{{getShopCount(shop.zcList)|currency "￥" 2}}</div>
+          <div class="line-2-right">{{zjPrice+tjPrice|currency "￥" 2}}</div>
       </div>
     </group>
     <group>
-      <div class="line-2">
+      <div class="line-2" style="border-top:5px solid #eee!important;">
           <div class="line-2-title">订单总额</div>
           <div class="line-2-right">{{getCount(shopList)|currency "￥" 2}}</div>
       </div>
@@ -55,44 +60,32 @@ export default {
       shopList: [{
         id: 1,
         name: 'hahah',
-        img: 'http://placekitten.com/g/120/80',
         address: '123sdafsd',
         rank: 4.7,
         zcList: [{
           name: "材料",
-          num: 2,
-          price: 45
         }, {
           name: "材料",
-          num: 2,
-          price: 45
         }, {
           name: "材料",
-          num: 2,
-          price: 45
         }],
+        zjPrice: 1023.12,
+        tjPrice: 12123
       }, {
         id: 2,
         name: 'hahah',
-        img: 'http://placekitten.com/g/120/80',
         address: '123sdafsd',
         rank: 4.7,
         zcList: [{
           name: "材料",
-          num: 2,
-          price: 45
         }, {
           name: "材料",
-          num: 2,
-          price: 45
         }, {
           name: "材料",
-          num: 2,
-          price: 45
         }],
+        zjPrice: 123094
+        tjPrice: 1235
       }],
-      preview: 'http://placekitten.com/g/200/80',
-
       zcStatusList: [{
         status: 0,
         name: "已预约"
@@ -101,16 +94,13 @@ export default {
         name: "待确认"
       }, {
         status: 2,
-        name: "待付款"
+        name: "待支付"
       }, {
         status: 3,
         name: "待收货"
       }, {
         status: 4,
         name: "已收货"
-      },{
-        status: 5,
-        name: "已退货"
       }],
     }
   },
@@ -122,17 +112,10 @@ export default {
     Cell,
   },
   methods: {
-    getShopCount(Array){
-      let count = 0;
-      Array.map((e)=>{
-        count+=(e.price*e.num)
-      })
-      return count
-    },
     getCount(list){
       let count = 0;
       list.map((e)=>{
-        count += this.getShopCount(e.zcList)
+        count += (e.zjPrice+e.tjPrice)
       })
       return count
     }
@@ -279,24 +262,11 @@ header {
       width: 100%;
       height: 50px;
       position: relative;
-      .shop-img{
-        width: 40px;
-        height: 40px;
-        border-radius: 20px;
-        position: absolute;
-        left:15px;
-        top:5px;
-        img{
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-        }
-      }
       .shop-name{
         position: absolute;
-        left:65px;
-        top:19px;
-        font-size: 12px;
+        left:15px;
+        top:17px;
+        font-size: 16px;
         color:#393939;
       }
       .btn{
@@ -339,6 +309,7 @@ header {
       height: 44px;
       width: 100%;
       position: relative;
+      border-top: 1px solid #eee;
       .line-2-title{
         position: absolute;
         top: 16px;

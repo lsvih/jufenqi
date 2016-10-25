@@ -160,19 +160,16 @@ export default {
         name: "已预约"
       }, {
         status: 1,
-        name: "选择方案"
+        name: "待选方案"
       }, {
         status: 2,
-        name: "待付款"
+        name: "待支付"
       }, {
         status: 3,
         name: "待施工"
       }, {
         status: 4,
-        name: "施工完成"
-      },{
-        status: 5,
-        name: "已取消"
+        name: "已完工"
       }],
       options: {
         getThumbBoundsFn(index) {

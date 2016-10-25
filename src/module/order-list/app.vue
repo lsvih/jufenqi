@@ -4,7 +4,7 @@
     <tab active-color='#88C929' :index.sync="index">
       <tab-item active-class="tab-active" :selected="index === 0" v-tap="index = 0">装修订单</tab-item>
       <tab-item active-class="tab-active" :selected="index === 1" v-tap="index = 1">主材订单</tab-item>
-      <tab-item active-class="tab-active" :selected="index === 2" v-tap="index = 2">软装订单</tab-item>
+      <tab-item active-class="tab-active" :selected="index === 2" v-tap="index = 2">退款订单</tab-item>
     </tab>
   </header>
 
@@ -108,11 +108,15 @@ export default {
         },
         {
           status:2,
-          name:"待付款"
+          name:"待支付"
         },
         {
           status:3,
           name:"待收货"
+        },
+        {
+          status:4,
+          name:"已收货"
         }
       ],
       zxStatusList:[
@@ -121,16 +125,16 @@ export default {
           name:"已预约"
         },{
           status:1,
-          name:"选择方式"
+          name:"待选方案"
         },{
           status:2,
-          name:"待付款"
+          name:"待支付"
         },{
           status:3,
           name:"待施工"
         },{
           status:4,
-          name:"施工完成"
+          name:"已完工"
         }
       ],
       zxList:[{
