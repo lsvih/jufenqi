@@ -1,7 +1,7 @@
 <template>
 <header>
   <div class="location"><img src="location.png" width="16px" height="20px">北京</div>
-  <div class="search"><input type="search" placeholder="搜索..."><img src="search.png"></div>
+  <!-- <div class="search"><input type="search" placeholder="搜索..."><img src="search.png"></div> -->
   <img class="cart" src="cart.png" width="20px" height="20px">
 </header>
 <div class="content">
@@ -14,107 +14,112 @@
     </flexbox-item>
   </flexbox>
 
-  <div class="module-activity">
-    <div class="module-activity-left">
+  <div class="activity" :style="{height:.16*getScreenWidth()+20+'px'}">
+    <div class="activity-left" :style="{height:.16*getScreenWidth()+'px',width:(getScreenWidth()-35)/2+'px'}">
       <x-img :src="activityList[0].img">
       </x-img>
     </div>
-    <div class="module-activity-right">
+    <div class="activity-right" :style="{height:.16*getScreenWidth()+'px',width:(getScreenWidth()-35)/2+'px'}">
       <x-img :src="activityList[1].img">
-      </x-img>
-    </div>
-    <div class="module-activity-right">
-      <x-img :src="activityList[2].img">
       </x-img>
     </div>
   </div>
   <!-- Goods module -->
   <div class="module-item">
-    <div class="module-title">有图有价</div>
-    <div class="module-description">看的到的都能买</div>
-    <div class="module-detail">了解详情</div>
-    <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+20+'px'}">
-    <div :style="{width:'100%',height:.8*getScreenWidth()*.63+20+40+'px'}" class="scroll-box">
-      <div class="pic_and_goods-list" :style="{width:pic_and_goods.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
-        <div class="pic_and_goods-item" v-for="good in pic_and_goods" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-          <img :src="good.img">
+    <div class="module-title">有图有价<img src="./arrow.png"></div>
+    <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+'px'}">
+      <div :style="{width:'100%',height:.8*getScreenWidth()*.63+40+'px'}" class="scroll-box">
+        <div class="pic_and_goods-list" :style="{width:pic_and_goods.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
+          <div class="pic_and_goods-item" v-for="good in pic_and_goods" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
+            <img :src="good.img">
+          </div>
         </div>
       </div>
     </div>
-  </div>
-    <div class="module-more">查看更多</div>
+    <div class="module-more">
+      <div class="module-description">看的到的都能买</div>
+      <div class="module-detail">了解详情</div>
+    </div>
   </div>
   <!-- module end -->
   <!-- Ad module -->
-  <div class="module-item ad" :style="{backgroundImage:'url('+ad.img+')'}"></div>
+  <div class="module-item ad"><img v-bind:src="ad.img"></div>
   <!-- module end -->
   <!-- Brand module -->
   <div class="module-item">
-    <div class="module-title">品牌分类</div>
-    <div class="module-description">300+品牌，500+建材城，满足你的胃口</div>
-    <div class="module-detail" onclick="location.href='zc-info.html'">了解详情</div>
-    <div class="brand-grid" :style="{height:getScreenWidth()*(.583*.85+.333*1.52)+'px'}">
-      <div class="brand-grid-1" :style="{height:getScreenWidth()*.583*.85+'px'}">
-        <div class="brand-grid-1-l" :style="{width:getScreenWidth()*.583+'px',height:getScreenWidth()*.583*.85+'px'}" v-tap="gotoBrand(0,brandList[0].name)">
+    <div class="module-title">品牌分类<img src="./arrow.png"></div>
+
+    <div class="brand-grid" :style="{height:((getScreenWidth()-35)*(200/340)+(getScreenWidth()-42)/3+5)+'px'}">
+      <div class="brand-grid-1" :style="{height:(getScreenWidth()-35)*(200/340)+'px'}">
+        <div class="brand-grid-1-l" :style="{width:(getScreenWidth()-35)*(200/340)+'px',height:(getScreenWidth()-35)*(200/340)+'px'}" v-tap="gotoBrand(0,brandList[0].name)">
           <x-img :src="brandList[0].img"></x-img>
         </div>
-        <div class="brand-grid-1-r-t" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}" v-tap="gotoBrand(1,brandList[1].name)">
+        <div class="brand-grid-1-r" :style="{width:(getScreenWidth()-35)*(140/340)+'px',height:(getScreenWidth()-35)*(200/340)+'px'}" v-tap="gotoBrand(1,brandList[1].name)">
           <x-img :src="brandList[1].img"></x-img>
         </div>
-        <div class="brand-grid-1-r-b" :style="{width:getScreenWidth()*(1-.583)+'px',height:getScreenWidth()*.583*.85*.5+'px'}" v-tap="gotoBrand(2,brandList[2].name)">
+      </div>
+      <div class="brand-grid-2" :style="{height:(getScreenWidth()-42)/3+'px'}">
+        <div class="brand-grid-2-l" :style="{width:(getScreenWidth()-42)/3+'px',height:(getScreenWidth()-42)/3+'px'}" v-tap="gotoBrand(2,brandList[2].name)">
           <x-img :src="brandList[2].img"></x-img>
         </div>
-      </div>
-      <div class="brand-grid-2" :style="{height:getScreenWidth()*.333*1.52+'px'}">
-        <div class="brand-grid-2-l-t" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}" v-tap="gotoBrand(3,brandList[3].name)">
+        <div class="brand-grid-2-m" :style="{width:(getScreenWidth()-42)/3+'px',height:(getScreenWidth()-42)/3+'px'}" v-tap="gotoBrand(3,brandList[3].name)">
           <x-img :src="brandList[3].img"></x-img>
         </div>
-        <div class="brand-grid-2-l-b" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52*.5+'px'}" v-tap="gotoBrand(4,brandList[4].name)">
+        <div class="brand-grid-2-r" :style="{width:(getScreenWidth()-42)/3+'px',height:(getScreenWidth()-42)/3+'px'}" v-tap="gotoBrand(4,brandList[4].name)">
           <x-img :src="brandList[4].img"></x-img>
-        </div>
-        <div class="brand-grid-2-m" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}" v-tap="gotoBrand(5,brandList[5].name)">
-          <x-img :src="brandList[5].img"></x-img>
-        </div>
-        <div class="brand-grid-2-r" :style="{width:getScreenWidth()*.333+'px',height:getScreenWidth()*.333*1.52+'px'}" v-tap="gotoBrand(6,brandList[6].name)">
-          <x-img :src="brandList[6].img"></x-img>
         </div>
       </div>
     </div>
-    <div class="module-more" onclick="location.href='class-list.html'">查看更多</div>
+    <div class="module-more">
+      <div class="module-description">300+品牌，500+建材城，满足你的胃口</div>
+      <div class="module-detail" onclick="location.href='zc-info.html'">了解详情</div>
+    </div>
   </div>
   <!-- module end -->
   <!-- Workers module -->
   <div class="module-item">
-    <div class="module-title">工长推荐</div>
-    <div class="module-description">金牌工长，全职监理，保障你的权益</div>
-    <div class="module-detail" onclick="location.href='gz-info.html'">了解详情</div>
-    <div class="scroll-box-container" :style="{width:'100%',height:'170px'}">
-    <div :style="{width:'100%',height:'210px'}" class="scroll-box">
-      <div class="worker-list" :style="{width:workerList.length*110+'px'}">
-        <div class="worker-item" v-for="worker in workerList" onclick="location.href='worker-detail.html?id={{worker.id}}&name={{worker.name}}'">
-          <img :src="worker.img">
-          <div class="worker-name">{{worker.name}}</div>
+    <div class="module-title">工长推荐<img src="./arrow.png"></div>
+    <div class="scroll-box-container" :style="{width:'100%',height:'150px'}">
+      <div :style="{width:'100%',height:'190px'}" class="scroll-box">
+        <div class="worker-list" :style="{width:workerList.length*110+'px'}">
+          <div class="worker-item" v-for="worker in workerList" onclick="location.href='worker-detail.html?id={{worker.id}}&name={{worker.name}}'">
+            <img :src="worker.img">
+            <div class="worker-name">{{worker.name}}</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-    <div class="module-more" onclick="location.href='worker-list.html'">查看更多</div>
+    <div class="module-more">
+      <div class="module-description">金牌工长，全职监理，保障你的权益</div>
+      <div class="module-detail" onclick="location.href='gz-info.html'">了解详情</div>
+    </div>
   </div>
   <!-- end -->
+  <div class="activity" :style="{height:.16*getScreenWidth()+20+'px'}">
+    <div class="activity-left" :style="{height:.16*getScreenWidth()+'px',width:(getScreenWidth()-35)/2+'px'}">
+      <x-img :src="activityList[2].img">
+      </x-img>
+    </div>
+    <div class="activity-right" :style="{height:.16*getScreenWidth()+'px',width:(getScreenWidth()-35)/2+'px'}">
+      <x-img :src="activityList[3].img">
+      </x-img>
+    </div>
+  </div>
   <!-- Pictures module -->
   <div class="module-item">
-    <div class="module-title">图库</div>
-    <div class="module-description"  style="margin-bottom:10px;">实地拍摄，不再是“照骗”</div>
-    <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+20+'px'}">
-    <div :style="{width:'100%',height:.8*getScreenWidth()*.63+20+40+'px'}" class="scroll-box">
-      <div class="pic_and_goods-list" :style="{width:picList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
-        <div class="pic_and_goods-item" v-for="pic in picList" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-          <img :src="pic.img">
+    <div class="module-title">图库<img src="./arrow.png"></div>
+    <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+'px'}">
+      <div :style="{width:'100%',height:.8*getScreenWidth()*.63+40+'px'}" class="scroll-box">
+        <div class="pic_and_goods-list" :style="{width:picList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
+          <div class="pic_and_goods-item" v-for="pic in picList" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
+            <img :src="pic.img">
+          </div>
         </div>
       </div>
     </div>
-  </div>
-    <div class="module-more" onclick="location.href='gallery.html'">查看更多</div>
+    <div class="module-more">
+      <div class="module-description" style="margin-bottom:10px;">实地拍摄，不再是“照骗”</div>
+    </div>
   </div>
   <!-- module end -->
 </div>
@@ -142,7 +147,7 @@ export default {
       bannerList: [{
         url: 'javascript:',
         img: '/static/images/banner/banner1.jpg'
-      },{
+      }, {
         url: 'javascript:',
         img: '/static/images/banner/banner2.jpg'
       }],
@@ -169,107 +174,87 @@ export default {
       }],
       activityList: [{
         url: 'javascript:',
-        img: '/static/images/ad/jfq.jpg'
+        img: '/static/images/ad/t-1.png'
       }, {
         url: 'javascript:',
-        img: '/static/images/ad/calc.jpg'
+        img: '/static/images/ad/t-2.png'
       }, {
         url: 'javascript:',
-        img: '/static/images/ad/gallery.jpg'
+        img: '/static/images/ad/b-1.png'
+      }, {
+        url: 'javascript:',
+        img: '/static/images/ad/b-2.png'
       }],
       pic_and_goods: [{
         url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价1.jpg'
-      },{
+        img: '/static/temp/pic_and_price/有图有价1.png'
+      }, {
         url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价2.jpg'
-      },{
+        img: '/static/temp/pic_and_price/有图有价2.png'
+      }, {
         url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价3.jpg'
-      },{
-        url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价4.jpg'
-      },{
-        url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价5.jpg'
+        img: '/static/temp/pic_and_price/有图有价3.png'
       }],
       picList: [{
         url: 'javascript:',
-        img: '/static/temp/gallery/gallery1.jpg'
-      },{
+        img: '/static/temp/gallery/gallery1.png'
+      }, {
         url: 'javascript:',
-        img: '/static/temp/gallery/gallery2.jpg'
-      },{
+        img: '/static/temp/gallery/gallery2.png'
+      }, {
         url: 'javascript:',
-        img: '/static/temp/gallery/gallery3.jpg'
-      },{
-        url: 'javascript:',
-        img: '/static/temp/gallery/gallery4.jpg'
-      },{
-        url: 'javascript:',
-        img: '/static/temp/gallery/gallery5.jpg'
-      },{
-        url: 'javascript:',
-        img: '/static/temp/gallery/gallery6.jpg'
+        img: '/static/temp/gallery/gallery3.png'
       }],
       workerList: [{
-        id:4,
+        id: 4,
         url: 'javascript:',
         name: '彭学勇',
         img: '/static/temp/workers/彭学勇.jpg'
       }, {
-        id:1,
+        id: 1,
         url: 'javascript:',
         name: '杨爱军',
         img: '/static/temp/workers/杨爱军.jpg'
       }, {
-        id:3,
+        id: 3,
         url: 'javascript:',
         name: '仰宗龙',
         img: '/static/temp/workers/仰宗龙.jpg'
       }, {
-        id:6,
+        id: 6,
         url: 'javascript:',
         name: '雍自民',
         img: '/static/temp/workers/雍自民.jpg'
       }, {
-        id:2,
+        id: 2,
         url: 'javascript:',
         name: '张林',
         img: '/static/temp/workers/张林.jpg'
       }],
       brandList: [{
         url: 'javascript:',
-        name: "家具",
-        img: '/static/images/品类运营/家具.jpg'
+        name: "橱柜",
+        img: '/static/images/新品类运营/橱柜.png'
       }, {
         url: 'javascript:',
-        name: "木作",
-        img: '/static/images/品类运营/木作.jpg'
-      }, {
-        url: 'javascript:',
-        name: '饰品',
-        img: '/static/images/品类运营/饰品.jpg'
+        name: "家电",
+        img: '/static/images/新品类运营/家电.png'
       }, {
         url: 'javascript:',
         name: '地板',
-        img: '/static/images/品类运营/地板.jpg'
+        img: '/static/images/新品类运营/地板.png'
       }, {
         url: 'javascript:',
-        name:'智能家居',
-        img: '/static/images/品类运营/智能家居.jpg'
+        name: '定制家具',
+        img: '/static/images/新品类运营/定制家具.png'
       }, {
         url: 'javascript:',
-        name:'机电',
-        img: '/static/images/品类运营/机电.jpg'
-      }, {
-        url: 'javascript:',
-        name:'瓷砖卫浴',
-        img: '/static/images/品类运营/瓷砖卫浴.jpg'
+        name: '木门',
+        img: '/static/images/新品类运营/木门.png'
       }],
       ad: {
         url: 'javascript:',
-        img: '/static/temp/ad.jpg'
+        img: '/static/temp/ad.png'
       }
     }
   },
@@ -287,10 +272,10 @@ export default {
     getScreenWidth() {
       return document.body.clientWidth
     },
-    gotoBrand(id,name){
+    gotoBrand(id, name) {
       location.href = `brand-list.html?id=${id}&name=${encodeURIComponent(name)}`
     },
-    gotoCate(url){
+    gotoCate(url) {
       location.href = url
     }
   }
@@ -312,6 +297,7 @@ body {
 
 .content {
   padding: 44px 0 44px 0;
+  overflow: hidden;
 }
 
 header {
@@ -336,11 +322,11 @@ header {
         height: 100%;
         .module-class-icon {
             position: absolute;
-            top: 27px;
+            top: 23px;
             left: 50%;
-            margin-left: -15px;
-            width: 30px;
-            height: 30px;
+            margin-left: -20px;
+            width: 40px;
+            height: 40px;
         }
         .module-class-name {
             position: absolute;
@@ -353,26 +339,29 @@ header {
         }
     }
 }
-.module-activity {
-    height: 100px;
-    width: 100%;
+
+.activity {
+  position: relative;
     margin-top: 10px;
-    div {
-        float: left;
+    width: 100%;
+    background-color: #fff;
+    img{
+      height: 100%;
+      width: 100%;
+      border-radius: 5px;
     }
-    img {
-        height: 100%;
-        width: 100%;
+    .activity-left{
+      position: absolute;
+      top:10px;
+      left:15px;
     }
-    .module-activity-left {
-        height: 100%;
-        width: 50%;
-    }
-    .module-activity-right {
-        height: 50%;
-        width: 50%;
+    .activity-right{
+      position: absolute;
+      top:10px;
+      right:15px;
     }
 }
+
 .module-item {
     width: 100%;
     height: auto;
@@ -381,31 +370,21 @@ header {
     margin-top: 10px;
     .module-title {
         color: #393939;
-        font-size: 30px;
+        font-size: 16px;
         height: 30px;
         width: 100%;
-        text-align: center;
+        text-align: left;
         line-height: 1;
+        margin-left: 15px;
         padding-top: 15px;
+        img {
+            height: 12px;
+            width: 7px;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
     }
-    .module-description {
-        color: #999;
-        font-size: 16px;
-        height: 16px;
-        width: 100%;
-        text-align: center;
-        line-height: 1;
-        padding-top: 15px;
-    }
-    .module-detail {
-        color: #3BA794;
-        font-size: 12px;
-        height: 12px;
-        width: 100%;
-        text-align: center;
-        line-height: 1;
-        padding: 8px 0 15px;
-    }
+
     .module-more {
         width: 100%;
         height: 44px;
@@ -413,7 +392,18 @@ header {
         font-size: 16px;
         color: #999;
         text-align: center;
-        border-top: 1px solid #eee;
+        .module-description {
+            font-size: 12px;
+            color: #999;
+            float: left;
+            margin-left: 15px;
+        }
+        .module-detail {
+            color: #3BA794;
+            font-size: 12px;
+            float: right;
+            margin-right: 15px;
+        }
     }
 }
 .pic_and_goods-list {
@@ -442,71 +432,64 @@ header {
         display: inline-block;
         float: left;
         font-size: 12px;
-        img{
-          width: 100%;
+        img {
+            width: 100%;
+        }
+        .worker-name{
+          margin-top: 3px;
         }
     }
 }
 .ad {
     width: 100%;
     height: 100px;
-    background-position: top center;
-    background-size: 100% auto;
+    img{
+      margin: 10px 15px;
+      border-radius: 5px;
+      width: calc(~" 100% - 30px ");
+      height: calc(~" 100% - 20px ");
+    }
 }
 .brand-grid {
     width: 100%;
     position: relative;
     div {
         position: absolute;
+        overflow: hidden;
+        border-radius: 5px;
     }
     .brand-grid-1 {
         top: 0;
         left: 0;
         width: 100%;
-        img {
-            top: 0;
-            left: 0;
-        }
     }
     .brand-grid-1-l {
         top: 0;
-        left: 0;
+        left: 15px;
     }
-    .brand-grid-1-r-t {
+    .brand-grid-1-r {
         top: 0;
-        right: 0;
-    }
-    .brand-grid-1-r-b {
-        bottom: 0;
-        right: 0;
+        right: 15px;
     }
     .brand-grid-2 {
         bottom: 0;
         left: 0;
         width: 100%;
-        img {
-            left: 0;
-            bottom: 0;
-        }
     }
-    .brand-grid-2-l-t {
+    .brand-grid-2-l {
         top: 0;
-        left: 0;
-    }
-    .brand-grid-2-l-b {
-        bottom: 0;
-        left: 0;
+        left: 15px;
     }
     .brand-grid-2-m {
         bottom: 0;
-        left: 33.3%;
+        left: calc( ~"(100% - 42px)/3 + 21px" );
     }
     .brand-grid-2-r {
         bottom: 0;
-        right: 0;
+        right: 15px;
     }
     img {
-        position: absolute;
+        border-radius: 5px;
         height: 100%;
         width: 100%;
     }
@@ -565,7 +548,7 @@ header {
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
 }
-.scroll-box-container{
-  overflow: hidden;
+.scroll-box-container {
+    overflow: hidden;
 }
 </style>
