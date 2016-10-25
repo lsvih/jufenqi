@@ -10,7 +10,7 @@
 </div>
 <div class="content">
 
-  <div class="zc-list" v-if="status!==0">
+  <div class="zc-list" v-if="status!=0">
     <group v-for="shop in shopList">
       <div class="line-1">
         <div class="shop-name">{{shop.name}}</div>
@@ -31,19 +31,19 @@
         <div class="line-2-title">总额</div>
         <div class="line-2-right">{{shop.zjPrice+shop.tjPrice|currency "￥" 2}}</div>
       </div>
-      <div class="line-3" v-if="status !== 2&&status !== 3">
-        <div class="cancel">{{status === 0?"取消预约":(status === 1?"取消订单":"申请退款")}}</div>
+      <div class="line-3" v-if="status != 2&&status != 3">
+        <div class="cancel">{{status == 0?"取消预约":(status == 1?"取消订单":"申请退款")}}</div>
       </div>
     </group>
-    <group v-if="status === 1">
+    <group v-if="status == 1">
       <div class="line-2">
         <div class="line-2-title">请选择您的购买方式</div>
         <div class="line-2-right"><img class="down" src="./down.png"></div>
       </div>
       <radio  :options="payments" @on-change="selectPay"></radio>
     </group>
-    <group v-if="status === 1">
-      <div class="sumbit-order" :class="{'active':payWay!==''}">确认订单</div>
+    <group v-if="status == 1">
+      <div class="sumbit-order" :class="{'active':payWay!=''}">确认订单</div>
     </group>
   </div>
 </div>
