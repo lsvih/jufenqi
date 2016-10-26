@@ -45,6 +45,7 @@ export default {
       },1000)
     },
     send(){
+      let that = this
       this.$parent.loading=true
       this.$http.post(`${Lib.C.userApi}sms/sendCode`, {
         mobile: this.$parent.phoneNumber
