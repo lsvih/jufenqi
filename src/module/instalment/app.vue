@@ -75,7 +75,6 @@ export default {
     JCreditProcess
   },
   ready() {
-    localStorage.clear()
     // let that = this;
     // if (Lib.M.GetRequest().refresh) {
     //   this.startLoading()

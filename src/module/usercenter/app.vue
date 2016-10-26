@@ -79,8 +79,8 @@ export default {
       limit: this.isDataExist("limit"),
       balance: this.isDataExist("balance"),
       ins: this.isDataExist("ins"),
-      userIcon: "/static/temp/user.jpg",
-      userName: "居分期",
+      userIcon: JSON.parse(localStorage.getItem('user')).profile.profileImage,
+      userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
     }
   },
   components: {

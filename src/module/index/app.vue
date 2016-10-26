@@ -2,6 +2,7 @@
 <header>
   <div class="location"><img src="location.png" width="16px" height="20px">北京</div>
   <!-- <div class="search"><input type="search" placeholder="搜索..."><img src="search.png"></div> -->
+  <img src="./logo.png" style="height:19px;width:86px;position:absolute;top:13px;left:calc( 50% - 43px );">
   <img class="cart" src="cart.png" width="20px" height="20px">
 </header>
 <div class="content">
@@ -341,24 +342,24 @@ header {
 }
 
 .activity {
-  position: relative;
+    position: relative;
     margin-top: 10px;
     width: 100%;
     background-color: #fff;
-    img{
-      height: 100%;
-      width: 100%;
-      border-radius: 5px;
+    img {
+        height: 100%;
+        width: 100%;
+        border-radius: 5px;
     }
-    .activity-left{
-      position: absolute;
-      top:10px;
-      left:15px;
+    .activity-left {
+        position: absolute;
+        top: 10px;
+        left: 15px;
     }
-    .activity-right{
-      position: absolute;
-      top:10px;
-      right:15px;
+    .activity-right {
+        position: absolute;
+        top: 10px;
+        right: 15px;
     }
 }
 
@@ -435,19 +436,19 @@ header {
         img {
             width: 100%;
         }
-        .worker-name{
-          margin-top: 3px;
+        .worker-name {
+            margin-top: 3px;
         }
     }
 }
 .ad {
     width: 100%;
     height: 100px;
-    img{
-      margin: 10px 15px;
-      border-radius: 5px;
-      width: calc(~" 100% - 30px ");
-      height: calc(~" 100% - 20px ");
+    img {
+        margin: 10px 15px;
+        border-radius: 5px;
+        width: calc(~" 100% - 30px ");
+        height: calc(~" 100% - 20px ");
     }
 }
 .brand-grid {
