@@ -9,7 +9,7 @@ export default {
     return {
       lastUrl: Lib.M.GetRequest().url?unescape(Lib.M.GetRequest().url):'./index.html',
       code: Lib.M.GetRequest().code,
-      appId: "wxe1d923f20f84fac5"
+      appId: "wx4b13962d7d02786e"
     }
   },
   ready() {

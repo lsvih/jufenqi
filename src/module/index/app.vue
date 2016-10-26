@@ -47,7 +47,7 @@
   <!-- module end -->
   <!-- Brand module -->
   <div class="module-item">
-    <div class="module-title">品牌分类<img src="./arrow.png"></div>
+    <div class="module-title" v-tap="gotoCate('./class-list.html')">品牌分类<img src="./arrow.png"></div>
 
     <div class="brand-grid" :style="{height:((getScreenWidth()-35)*(200/340)+(getScreenWidth()-42)/3+5)+'px'}">
       <div class="brand-grid-1" :style="{height:(getScreenWidth()-35)*(200/340)+'px'}">
@@ -78,8 +78,8 @@
   <!-- module end -->
   <!-- Workers module -->
   <div class="module-item">
-    <div class="module-title">工长推荐<img src="./arrow.png"></div>
-    <div class="scroll-box-container" :style="{width:'100%',height:'150px'}">
+    <div class="module-title" v-tap="gotoCate('./worker-list.html')">工长推荐<img src="./arrow.png"></div>
+    <div class="scroll-box-container" :style="{width:'100%',height:'155px'}">
       <div :style="{width:'100%',height:'190px'}" class="scroll-box">
         <div class="worker-list" :style="{width:workerList.length*110+'px'}">
           <div class="worker-item" v-for="worker in workerList" onclick="location.href='worker-detail.html?id={{worker.id}}&name={{worker.name}}'">
@@ -107,7 +107,7 @@
   </div>
   <!-- Pictures module -->
   <div class="module-item">
-    <div class="module-title">图库<img src="./arrow.png"></div>
+    <div class="module-title" v-tap="gotoCate('./gallery.html')">图库<img src="./arrow.png"></div>
     <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+'px'}">
       <div :style="{width:'100%',height:.8*getScreenWidth()*.63+40+'px'}" class="scroll-box">
         <div class="pic_and_goods-list" :style="{width:picList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
@@ -273,10 +273,10 @@ export default {
       return document.body.clientWidth
     },
     gotoBrand(id, name) {
-      location.href = `brand-list.html?id=${id}&name=${encodeURIComponent(name)}`
+      window.location.href = `brand-list.html?id=${id}&name=${encodeURIComponent(name)}`
     },
     gotoCate(url) {
-      location.href = url
+      window.location.href = url
     }
   }
 }
@@ -331,7 +331,7 @@ header {
         .module-class-name {
             position: absolute;
             left: 0;
-            bottom: 21px;
+            bottom: 18px;
             font-size: 12px;
             width: 100%;
             height: auto;
