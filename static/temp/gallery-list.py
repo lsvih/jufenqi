@@ -29,3 +29,6 @@ o = open("class.json", "w+")
 o.writelines(getfilelist("图库/",["jpg","png"]))
 o.close()
 print "Success!Please check gallery.json"
+
+
+##TODO: This function should get pictures' width and height,try to use PIL or opencv to solve it

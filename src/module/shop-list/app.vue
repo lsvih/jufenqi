@@ -7,7 +7,7 @@
 </header>
 <div class="content">
   <group style="margin-top:-1.17647059em;">
-    <cell v-for="shop in shopList" class="cell-item" @tap="gotoShopDetail(shop.id)">
+    <cell v-for="shop in shopList" class="cell-item" v-tap="gotoShopDetail(shop.id)">
       <img :src="shop.img" class="shop-logo" width="120px" height="80px">
       <div class="shop-name">{{shop.name}}</div>
       <div class="shop-address">{{shop.address}}</div>

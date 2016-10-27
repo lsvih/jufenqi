@@ -2,7 +2,7 @@
 <header>
   <img src="status.png">
   <div class="status">{{zxStatusList[status].name}}</div>
-  <div class="btn" v-if="status==0">取消订单</div>
+  <div class="btn" v-if="status==1">取消预约</div>
 
 </header>
 <div class="butler">
@@ -10,41 +10,13 @@
   <div class="zx-butler-name">{{butlerName}}</div>
   <div class="zx-butler-tel" onclick="location.href='tel:{{butlerTel}}'"><img src="tel.png"></div>
 </div>
-<div class="content">
-  <group style="margin-top:-1.17647059em;" v-if="status==0">
-    <cell class="cell-item" is-link onclick="location.href='worker-detail.html'">
-      <img :src="plans[0].workerImg" class="worker-logo" width="120px" height="80px">
-      <div class="worker-name">{{plans[0].workerName}}</div>
-      <div class="worker-address">{{plans[0].workerDescription}}</div>
-      <div class="worker-rank">评分:{{plans[0].workerRate}}</div>
-    </cell>
-    <cell class="cell-item" is-link onclick="location.href='worker-detail.html'" v-if="plans[1]">
-      <img :src="plans[1].workerImg" class="worker-logo" width="120px" height="80px">
-      <div class="worker-name">{{plans[1].workerName}}</div>
-      <div class="worker-address">{{plans[1].workerDescription}}</div>
-      <div class="worker-rank">评分:{{plans[1].workerRate}}</div>
-    </cell>
-  </group>
-
-
-
-<div class="select-plan" v-if="status==1">
-<div class="select-item-1" :class="{'active':selectPlan==0}" v-tap="selectPlan = 0">方案一</div>
-<div class="select-item-2" v-if="plans[1]" :class="{'active':selectPlan==1}" v-tap="selectPlan = 1">方案二</div>
+<div class="butler" style="top:80px;">
+  <div class="zx-butler-img"><img :src="surveyorImg"></div>
+  <div class="zx-butler-name">{{surveyorName}}</div>
+  <div class="zx-butler-tel" onclick="location.href='tel:{{surveyorTel}}'"><img src="tel.png"></div>
 </div>
-
-  <group title="设计方案" v-if="status>=1">
-    <div class="module-item">
-      <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:plan>
-        <div class="worker-product-list" :style="{width:plans[selectPlan].plan.length*(.8*getScreenWidth()+10)+  'px',height:.8*getScreenWidth()*.63+'px'}">
-          <div class="worker-product-item" v-for="preview in plans[selectPlan].plan" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-            <x-img class="product-img" :scroller="$refs.plan" :src="preview.src" v-tap="$refs.previewer.show($index)"></x-img>
-          </div>
-        </div>
-      </scroller>
-    </div>
-  </group>
-  <div class="contact" v-if="status>=1">
+<div class="content" :style="{paddingTop:status!==1&&status!==2?'130px':'80px'}">
+  <group class="contact" style="margin-top:-1.17647059em;" v-if="status==1||status==2">
     <div class="zc-line-3">
       <div class="zc-butler-img"><img :src="butlerImg"></div>
       <div class="zc-butler-name">{{butlerName}}</div>
@@ -60,22 +32,54 @@
       <div class="zc-butler-name">{{surveyorName}}</div>
       <div class="zc-butler-tel" onclick="location.href='tel:{{surveyorTel}}'"><img src="tel.png"></div>
     </div>
+</div>
+</group>
+
+
+
+<div class="select-plan" v-if="status==3">
+  <div class="select-item-1" :class="{'active':selectPlan==0}" v-tap="selectPlan = 0">方案一</div>
+  <div class="select-item-2" v-if="plans[1]" :class="{'active':selectPlan==1}" v-tap="selectPlan = 1">方案二</div>
+</div>
+
+<group title="设计方案" v-if="status>=3">
+  <div class="module-item">
+    <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:plan>
+      <div class="worker-product-list" :style="{width:plans[selectPlan].plan.length*(.8*getScreenWidth()+10)+  'px',height:.8*getScreenWidth()*.63+'px'}">
+        <div class="worker-product-item" v-for="preview in plans[selectPlan].plan" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
+          <x-img class="product-img" :scroller="$refs.plan" :src="preview.src" v-tap="$refs.previewer.show($index)"></x-img>
+        </div>
+      </div>
+    </scroller>
+  </div>
+</group>
+<div class="contact" v-if="status>=3">
+
+  <div class="zc-line-3">
+    <div class="zc-butler-img"><img :src="plans[selectPlan].workerImg"></div>
+    <div class="zc-butler-name">{{plans[selectPlan].workerName}}</div>
+    <div class="zc-butler-tel" onclick="location.href='tel:{{plans[selectPlan].workerTel}}'"><img src="tel.png"></div>
   </div>
 
-<div v-if="status>=1&&status<=4">
+</div>
+
+<div v-if="status>=3&&status<=6">
   <group title="方案说明">
     <article>{{plans[selectPlan].planExplain}}</article>
   </group>
-  <group title="施工周期">
-    <article>{{plans[selectPlan].planCycle}}</article>
+  <group>
+    <div class="zx-line-4">
+      <div class="zx-line-4-name">施工报价</div>
+      <div class="zx-line-4-right">{{plans[selectPlan].price|currency "" 2}}</div>
+    </div>
   </group>
-  <group title="估价">
-    <article>{{plans[selectPlan].planPrice}}</article>
-  </group>
+
 </div>
 </div>
-<x-button slot="right" style="border-radius:0;background-color:rgb(158, 188, 43);color:#fff;margin:20px 0;width:100%" v-if="status==1">选择当前方案</x-button>
-<x-button slot="right" style="border-radius:0;background-color:rgb(158, 188, 43);color:#fff;margin:20px 0;width:100%" v-if="status==4" onclick="location.href='order-judge.html'">去评价</x-button>
+<div class="status-3-btn">
+<div class="btn-left"><img src="./change.png">更换工长</div>
+<div class="btn-right">选择当前方案</div>
+</div><x-button slot="right" style="border-radius:0;background-color:rgb(158, 188, 43);color:#fff;margin:20px 0;width:100%" v-if="status==7" onclick="location.href='order-judge.html'">去评价</x-button>
 
 <previewer :list="plans[0].plan" v-ref:previewer :options="options"></previewer>
 <previewer v-if="plans[1]" :list="plans[1].plan" v-ref:previewer :options="options"></previewer>
@@ -93,83 +97,95 @@ export default {
   data() {
     return {
       status: 0,
-      butlerName:"郑家园",
-      butlerTel:"18601230123",
-      butlerImg:"http://placekitten.com/g/60/60",
-      surveyorName:"郑家园",
-      surveyorTel:"18601230123",
-      surveyorImg:"http://placekitten.com/g/60/60",
-      selectPlan:0,
-      plans:[
-        {
-          workerName:"郑家园",
-          workerTel:"18601230123",
-          workerDescription:"123123123",
-          workerRate:4.4,
-          workerImg:"http://placekitten.com/g/60/60",
-          planExplain:"asjkl;asejiopawefpiowefpjio",
-          planCycle:"asduasdfej0f893f0",
-          planPrice:"asdfasdf23weasdf",
-          plan: [{
-            src: 'http://placekitten.com/g/200/126',
-            w: 200,
-            h: 126
-          }, {
-            src: 'http://placekitten.com/g/200/126',
-            w: 200,
-            h: 126
-          }, {
-            src: 'http://placekitten.com/g/200/126',
-            w: 200,
-            h: 126
-          }, {
-            src: 'http://placekitten.com/g/200/126',
-            w: 200,
-            h: 126
-          }]
-        },{
-          workerName:"郑家园2",
-          workerTel:"18601230123",
-          workerDescription:"345345345",
-          workerRate:5.0,
-          workerImg:"http://placekitten.com/g/60/60",
-          planExplain:"asjkl;asejiopawefpiowefpjio",
-          planCycle:"asduasdfej0f893f0",
-          planPrice:"asdfasdf23weasdf",
-          plan: [{
-            src: 'http://placekitten.com/g/200/126',
-            w: 200,
-            h: 126
-          }, {
-            src: 'http://placekitten.com/g/200/126',
-            w: 200,
-            h: 126
-          }, {
-            src: 'http://placekitten.com/g/200/126',
-            w: 200,
-            h: 126
-          }, {
-            src: 'http://placekitten.com/g/200/126',
-            w: 200,
-            h: 126
-          }]
-        }
-      ],
+      butlerName: "郑家园",
+      butlerTel: "18601230123",
+      butlerImg: "http://placekitten.com/g/60/60",
+      surveyorName: "郑家园",
+      surveyorTel: "18601230123",
+      surveyorImg: "http://placekitten.com/g/60/60",
+      selectPlan: 0,
+      plans: [{
+        workerName: "郑家园",
+        workerTel: "18601230123",
+        workerDescription: "123123123",
+        workerRate: 4.4,
+        price: 1215,
+        workerImg: "http://placekitten.com/g/60/60",
+        planExplain: "asjkl;asejiopawefpiowefpjio",
+        planCycle: "asduasdfej0f893f0",
+        planPrice: "asdfasdf23weasdf",
+        plan: [{
+          src: 'http://placekitten.com/g/200/126',
+          w: 200,
+          h: 126
+        }, {
+          src: 'http://placekitten.com/g/200/126',
+          w: 200,
+          h: 126
+        }, {
+          src: 'http://placekitten.com/g/200/126',
+          w: 200,
+          h: 126
+        }, {
+          src: 'http://placekitten.com/g/200/126',
+          w: 200,
+          h: 126
+        }]
+      }, {
+        workerName: "郑家园2",
+        workerTel: "18601230123",
+        workerDescription: "345345345",
+        workerRate: 5.0,
+        price: 10213,
+        workerImg: "http://placekitten.com/g/60/60",
+        planExplain: "asjkl;asejiopawefpiowefpjio",
+        planCycle: "asduasdfej0f893f0",
+        planPrice: "asdfasdf23weasdf",
+        plan: [{
+          src: 'http://placekitten.com/g/200/126',
+          w: 200,
+          h: 126
+        }, {
+          src: 'http://placekitten.com/g/200/126',
+          w: 200,
+          h: 126
+        }, {
+          src: 'http://placekitten.com/g/200/126',
+          w: 200,
+          h: 126
+        }, {
+          src: 'http://placekitten.com/g/200/126',
+          w: 200,
+          h: 126
+        }]
+      }],
       zxStatusList: [{
         status: 0,
-        name: "已预约"
+        name: "订单已删除"
       }, {
         status: 1,
-        name: "待选方案"
+        name: "已预约"
       }, {
         status: 2,
-        name: "待支付"
+        name: "已上门"
       }, {
         status: 3,
-        name: "待施工"
+        name: "待选方案"
       }, {
         status: 4,
+        name: "待支付"
+      }, {
+        status: 5,
+        name: "待施工"
+      }, {
+        status: 6,
+        name: "施工中"
+      }, {
+        status: 7,
         name: "已完工"
+      }, {
+        status: 8,
+        name: "订单已取消"
       }],
       options: {
         getThumbBoundsFn(index) {
@@ -215,6 +231,7 @@ export default {
 body {
   background-color: #eee;
 }
+
 article {
   padding: 15px;
   font-size: 12px;
@@ -358,47 +375,47 @@ header {
     }
 }
 
-
-.contact{
-  margin-top: 1px;
-  background-color: #fff;
-.zc-line-3{
-  height: 50px;
-  width: 100%;
-  border-bottom: 1px solid #eee;
-  position: relative;
-  .zc-butler-img{
-    position: absolute;
-    top:5px;
-    left:15px;
-    height: 40px;
-    width: 40px;
-    border-radius: 20px;
-    img{
-      height: 100%;
-      width: 100%;
-      border-radius: 50%;
+.contact {
+    margin-top: 1px;
+    background-color: #fff;
+    .zc-line-3 {
+        height: 50px;
+        width: 100%;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        .zc-butler-img {
+            position: absolute;
+            top: 5px;
+            left: 15px;
+            height: 40px;
+            width: 40px;
+            border-radius: 20px;
+            img {
+                height: 100%;
+                width: 100%;
+                border-radius: 50%;
+            }
+        }
+        .zc-butler-name {
+            position: absolute;
+            bottom: 15px;
+            left: 65px;
+            font-size: 16px;
+            color: #393939;
+        }
+        .zc-butler-tel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            height: 20px;
+            width: 20px;
+            img {
+                height: 100%;
+                width: 100%;
+            }
+        }
     }
-  }
-  .zc-butler-name{
-    position: absolute;
-    bottom: 15px;
-    left:65px;
-    font-size: 16px;
-    color: #393939;
-  }
-  .zc-butler-tel{
-    position: absolute;
-    top:15px;
-    right: 15px;
-    height: 20px;
-    width: 20px;
-    img{
-      height: 100%;
-      width: 100%;
-    }
-  }
-}}
+}
 .cell-item {
     position: relative;
     height: 80px;
@@ -438,35 +455,89 @@ header {
         height: 20px;
     }
 }
-.select-plan{
+.select-plan {
+    width: 100%;
+    height: 40px;
+    background-color: #fff;
+    color: #999;
+    .select-item-1 {
+        width: calc( ~"50% - 1px" );
+        height: 100%;
+        font-size: 16px;
+        line-height: 16px;
+        padding-top: 14px;
+        display: inline-block;
+        float: left;
+        text-align: center;
+        border-right: 1px solid #eee;
+    }
+    .select-item-2 {
+        width: calc( ~"50% - 1px" );
+        height: 100%;
+        font-size: 16px;
+        line-height: 16px;
+        padding-top: 14px;
+        display: inline-block;
+        float: left;
+        text-align: center;
+    }
+    .active {
+        color: #393939;
+    }
+}
+.zx-line-4{
+    position: relative;
+    height: 44px;
+    width: 100%;
+    background-color: #fff;
+    .zx-line-4-name{
+      position: absolute;
+      height: 44px;
+      line-height: 44px;
+      left:15px;
+      top:0;
+      font-size: 12px;
+      color:#393939;
+    }
+    .zx-line-4-right{
+      position: absolute;
+      height: 44px;
+      line-height: 44px;
+      right: 15px;
+      top:0;
+      font-size: 12px;
+      color: rgb(234,89,61);
+    }
+}
+.status-3-btn{
+  position: relative;
   width: 100%;
-  height: 40px;
-  background-color: #fff;
-  color:#999;
-  .select-item-1{
-    width: calc( ~"50% - 1px" );
+  height: 44px;
+  background-color: rgb(158, 188, 43);
+  color:#fff;
+  .btn-left{
+    position: absolute;
     height: 100%;
-    font-size: 16px;
-    line-height: 16px;
-    padding-top: 14px;
-    display: inline-block;
-    float:left;
+    width: 35%;
+    background-color: #fff;
+    line-height: 44px;
     text-align: center;
-    border-right: 1px solid #eee;
-  }
-  .select-item-2{
-    width: calc( ~"50% - 1px" );
-    height: 100%;
-    font-size: 16px;
-    line-height: 16px;
-      padding-top: 14px;
-    display: inline-block;
-    float:left;
-    text-align: center;
-  }
-  .active
-  {
     color:#393939;
+    left: 0;
+    img{
+      vertical-align: middle;
+      margin-right: 6px;
+      height: 15px;
+      width: 16px;
+    }
+  }
+  .btn-right{
+    position: absolute;
+    height: 100%;
+    width: 65%;
+    line-height: 44px;
+    text-align: center;
+    right: 0;
   }
 }
 </style>

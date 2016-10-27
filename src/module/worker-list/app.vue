@@ -1,80 +1,100 @@
 <template>
 <header>
-  <div class="select-address">{{address}}<img src="select.png" class="select-icon"></div>
-  <div class="sort">综合排序<img src="select.png" class="select-icon"></div>
+  <div class="select-address" v-tap="(selectType = 0,isShow=true)">{{selectedAddress}}<img src="select.png" class="select-icon"></div>
+  <div class="sort" v-tap="(selectType = 1,isShow=true)">{{selectedSortType}}<img src="select.png" class="select-icon"></div>
   <span class="cart"><img src="cart.png"></span>
 </header>
 <div class="content">
   <group style="margin-top:-1.17647059em;">
-    <cell v-for="worker in workerList" class="cell-item" onclick="location.href='worker-detail.html?id={{worker.id}}&name={{worker.name}}'">
-      <img :src="worker.img" class="worker-logo" width="120px" height="80px">
-      <div class="worker-name">{{worker.name}}</div>
-      <div class="worker-address">{{worker.goodat}}</div>
-      <div class="worker-rank">评分:{{worker.rank}}</div>
+    <cell v-for="worker in workerList" class="cell-item" v-tap="gotoDetail(worker.userId)">
+      <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
+      <div class="worker-name">{{worker.nickname}}</div>
+      <div class="worker-address">{{worker.nativePlace}}</div>
+      <div class="worker-rank">评分:{{worker.foremanRate}}</div>
       <img v-if="isFavorite(worker.id)" class="worker-is-favorite" src="star-fill.png">
       <img v-else class="worker-is-favorite" src="star.png">
     </cell>
   </group>
 </div>
+<j-select :show="isShow" :num="selectType==0?address.length:sortTypeList.length">
+  <j-select-item v-show="selectType == 0" v-for="add in address">{{add}}</j-select-item>
+  <j-select-item v-show="selectType == 1" v-for="sortType in sortTypeList" v-tap="sortBy(sortType)">{{sortType}}</j-select-item>
+</j-select>
+<loading :show="loading" text="正在加载..."></loading>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
 import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
+import JSelect from 'components/JSelect.vue'
+import JSelectItem from 'components/JSelectItem.vue'
+import Loading from 'vux-components/loading'
 export default {
   data() {
     return {
-      address:"朝阳区",
-      workerList:[{
-        id:4,
-        url: 'javascript:',
-        name: '彭学勇',
-        img: '/static/temp/workers/彭学勇.jpg',
-        goodat: '擅长:水电工',
-        rank: 4.7
-      }, {
-        id:1,
-        url: 'javascript:',
-        name: '杨爱军',
-        img: '/static/temp/workers/杨爱军.jpg',
-        goodat: '擅长:木工',
-        rank: 4.7
-      }, {
-        id:3,
-        url: 'javascript:',
-        name: '仰宗龙',
-        img: '/static/temp/workers/仰宗龙.jpg',
-        goodat: '擅长:水电工',
-        rank: 4.7
-      }, {
-        id:6,
-        url: 'javascript:',
-        name: '雍自民',
-        img: '/static/temp/workers/雍自民.jpg',
-        goodat: '擅长:木工',
-        rank: 4.7
-      }, {
-        id:2,
-        url: 'javascript:',
-        name: '张林',
-        img: '/static/temp/workers/张林.jpg',
-        goodat: '擅长:水电工',
-        rank: 4.7
-      }]
-
-
-
+      workerList: [],
+      //Loading
+      loading: true,
+      //Select
+      selectedAddress: "北京市",
+      selectedSortType: "综合排序",
+      address: ["北京市"],
+      sortTypeList: ["综合排序", "评价最高"],
+      isShow: false,
+      selectType: 0,
     }
   },
   components: {
     Group,
     Cell,
+    JSelect,
+    JSelectItem,
+    Loading
   },
   methods: {
+    getWorkerData(sortOption) {
+      this.workerList = [];
+      this.$http.get(`${Lib.C.userApi}workmanProfiles`, {params:sortOption}).then((res) => {
+        this.workerList = res.data.data
+        this.loading = false
+      }, (res) => {
+        this.loading = false
+        alert("网络连接失败，请刷新重试")
+        window.location.refresh()
+      })
+    },
     isFavorite(workerId) {
       return true
+    },
+    sortBy(sortType) {
+      if (sortType == this.selectedSortType) {
+        this.isShow = false
+        return false
+      } else {
+        this.loading = true
+        switch (sortType) {
+          case "综合排序":
+            this.getWorkerData()
+            this.isShow = false
+            break
+          case "评价最高":
+            this.getWorkerData({
+              sort: "foremanRate,desc"
+            })
+            this.isShow = false
+            break
+          default:
+            return false
+        }
+      }
+    },
+    gotoDetail(workerId){
+      window.location.href = `./worker-detail.html?id=${workerId}`
     }
+  },
+  ready() {
+    this.getWorkerData()
   }
 }
 </script>
@@ -138,38 +158,38 @@ header {
     background-color: #fff;
     border-bottom: 1px solid #eee;
     .cart {
-        position:absolute;
+        position: absolute;
         right: 0;
-        top:0;
+        top: 0;
         height: 44px;
         width: 44px;
-        img{
-          height: 100%;
-          width: 100%;
+        img {
+            height: 100%;
+            width: 100%;
         }
     }
-    div{
-      position: absolute;
-      height: 12px;
-      line-height: 12px;
-      width: calc( ~"(100% - 44px - 3px )/2");
-      text-align: center;
-      font-size: 12px;
-      .select-icon{
-        vertical-align: middle;
-        width: 6px;
-        height: 4px;
-        margin-left: 10px;
-      }
+    div {
+        position: absolute;
+        height: 12px;
+        line-height: 12px;
+        width: calc( ~"(100% - 44px - 3px )/2");
+        text-align: center;
+        font-size: 12px;
+        .select-icon {
+            vertical-align: middle;
+            width: 6px;
+            height: 4px;
+            margin-left: 10px;
+        }
     }
-    .select-address{
-      top:16px;
-      left:0;
-      border-right:1px solid #eee;
+    .select-address {
+        top: 16px;
+        left: 0;
+        border-right: 1px solid #eee;
     }
-    .sort{
-      top:16px;
-      left:calc( ~"(100% - 47px )/2 " );
+    .sort {
+        top: 16px;
+        left: calc( ~"(100% - 47px )/2 " );
     }
 }
 </style>
