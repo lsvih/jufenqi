@@ -1,9 +1,12 @@
 <template>
 <header>
   <div class="cart"><img src="cart.png"></div>
-  <div class="worker-logo"><img :src="worker.logo"></div>
-  <div class="worker-name">{{worker.name}}</div>
-  <div class="worker-description"><span class="worker-rank">口碑:<span class="detail-num">{{worker.rank}}</span></span><span>订单:<span class="detail-num">{{worker.orderNum}}</span></span>
+  <div class="worker-logo"><img :src="worker.profileImage"></div>
+  <div class="worker-name">{{worker.nickname}}</div>
+  <div class="worker-description">
+    <span class="worker-rank">口碑:<span class="detail-num">{{worker.foremanRate}}</span>
+    </span>
+    <span>订单:<span class="detail-num">{{worker.ordersCount}}</span></span>
   </div>
 </header>
 <div class="content">
@@ -11,7 +14,7 @@
     <article>
       <flexbox>
         <flexbox-item>
-          籍&nbsp;&nbsp;&nbsp;&nbsp;贯:{{worker.origin}}
+          籍&nbsp;&nbsp;&nbsp;&nbsp;贯:{{worker.nativePlace}}
         </flexbox-item>
         <flexbox-item>
           施工团队:{{worker.teamPeopleNum}}
@@ -19,15 +22,15 @@
       </flexbox>
       <flexbox class="line">
         <flexbox-item>
-          出生工种:{{worker.from}}
+          出生工种:{{worker.workType}}
         </flexbox-item>
         <flexbox-item>
-          政治面貌:{{worker.politics}}
+          政治面貌:{{worker.politicalStatus}}
         </flexbox-item>
       </flexbox>
       <flexbox class="line">
         <flexbox-item>
-          从业年龄:{{worker.workYear}}
+          从业年龄:{{worker.experience}}
         </flexbox-item>
       </flexbox>
     </article>
@@ -43,15 +46,15 @@
   </group>
   <group title="装修小区">
     <article>
-      <span v-for="area in worker.workArea">{{area}}&nbsp;&nbsp;</span>
+      <span v-for="area in worker.neighbourhood.split('|')">{{area}}&nbsp;&nbsp;</span>
     </article>
   </group>
-  <group title="施工图片" v-show="worker.productList.length">
+  <group title="施工图片" v-show="worker.projectImageList.split('|').length">
     <div class="module-item">
       <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:goods>
-        <div class="worker-product-list" :style="{width:worker.productList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
-          <div class="worker-product-item" v-for="good in worker.productList" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-            <x-img class="product-img" :scroller="$refs.goods" :src="good.src" v-tap="$refs.previewer.show($index)"></x-img>
+        <div class="worker-product-list" :style="{width:worker.projectImageList.split('|').length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
+          <div class="worker-product-item" v-for="good in worker.projectImageList.split('|')" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
+            <x-img class="product-img" :scroller="$refs.goods" :src="good" v-tap="$refs.previewer.show($index)"></x-img>
           </div>
         </div>
       </scroller>
@@ -59,10 +62,6 @@
   </group>
 
 </div>
-
-
-
-<previewer :list="worker.productList" v-ref:previewer :options="options"></previewer>
 <footer>
   <div class="icon-item"><img src="share.png">
     <div>分享</div>
@@ -75,7 +74,7 @@
   </div>
   <div class="shop-list">添加到备选清单</div>
 </footer>
-<previewer :list="worker.productList" v-ref:previewer :options="options"></previewer>
+<previewer :list="mapSrc(worker.projectImageList.split('|'))" v-ref:previewer :options="options"></previewer>
 </template>
 
 <script>
@@ -92,24 +91,7 @@ import {
 export default {
   data() {
     return {
-      worker: {
-        id: Lib.M.GetRequest().id,
-        logo: `/static/temp/workers/${Lib.M.GetRequest().name}.jpg`,
-        name: Lib.M.GetRequest().name,
-        rank: 4.7,
-        orderNum: 1002,
-        origin: null,
-        teamPeopleNum: null,
-        from: null,
-        politics: null,
-        workYear: null,
-        workExperience: [],
-        //workExperience:[{start_date,end_date,address}]
-        workArea: [],
-        //workArea:[community_name,community_name]
-        productList: []
-        //productList:[img_src]
-      },
+      worker: {},
       options: {
         getThumbBoundsFn(index) {
           let thumbnail = document.querySelectorAll('.product-img')[index]
@@ -133,66 +115,19 @@ export default {
     Flexbox,
     FlexboxItem
   },
-  ready(){
-    this.$http.get(`${Lib.C.apiUrl}workers/${this.worker.id}?expand=experiences,communities`).then((res) => {
-      let worker = res.data.data
-      console.log(worker)
-      this.worker.origin=worker.native
-      switch (worker.group_size) {
-        case 0:
-          this.worker.teamPeopleNum = "0~10人"
-          break;
-        case 1:
-          this.worker.teamPeopleNum = "11~25人"
-          break;
-        case 2:
-          this.worker.teamPeopleNum = "26~40人"
-          break;
-        case 3:
-          this.worker.teamPeopleNum = "41~55人"
-          break;
-        default:
-          this.worker.teamPeopleNum = "56~100人"
+  ready() {
+    this.$http.get(`${Lib.C.userApi}workmanProfiles/${Lib.M.GetRequest().id}`).then((res) => {
+      if (res.data.data == null) {
+        window.document.body.style.display = "hidden"
+        alert("您查看的信息不存在,请重新选择")
+        window.history.go(-1)
       }
-      switch (worker.occupation) {
-        case 0:
-          this.worker.from = "水电工"
-          break;
-        case 1:
-          this.worker.from = "油漆工"
-          break;
-        case 2:
-          this.worker.from = "木工"
-          break;
-        default:
-          this.worker.from = "其他"
-      }
-      this.worker.politics=worker.political?"党员":"群众"
-      this.worker.workYear=worker.working_years
-      let that = this
-      if(worker.project_t_imgs_thumbs_l_url!==null){
-        worker.project_t_imgs_thumbs_l_url.map((e)=>{
-          that.worker.productList.push({src:`${Lib.C.serverUrl}${e}`,w:500,h:500})
-        })
-      }
-      if(worker.experiences!==null){
-        worker.experiences.map((e)=>{
-          that.worker.workExperience.push({
-            start_date:e.start_year,
-            end_date:e.end_year,
-            address:e.description
-          })
-        })
-      }
-      if(worker.communities!==null){
-        worker.communities.map((e)=>{
-          that.worker.workArea.push(e.community_name)
-        })
-      }
-
-  }, (res) => {
-    console.log(res)//error
-  })
+      this.worker = res.data.data
+    }, (res) => {
+      window.document.body.style.display = "hidden"
+      alert("您查看的信息不存在,请重新选择")
+      window.history.go(-1)
+    })
   },
   methods: {
     isFavorite(workerId) {
@@ -200,6 +135,13 @@ export default {
     },
     getScreenWidth() {
       return document.body.clientWidth
+    },
+    mapSrc(StringArr){
+      let arr = []
+      StringArr.map((e)=>{
+        arr.push({src:e,w:500,h:500})
+      })
+      return arr
     }
   }
 }
@@ -348,7 +290,7 @@ footer {
 .detail-num {
     color: #5965B2;
 }
-.line{
-  margin-top: 10px;
+.line {
+    margin-top: 10px;
 }
 </style>
