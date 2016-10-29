@@ -7,7 +7,8 @@
   </flexbox-item>
 </flexbox>
 <flexbox class="block-2">
-  <flexbox-item class="balance" onclick="location.href='balance.html'">
+  <flexbox-item class="balance">
+    <!-- <flexbox-item class="balance" onclick="location.href='balance.html'"> -->
     <div>账户余额 (元)</div>
     <div class="balance-money">{{balance|currency "" 2}}</div>
   </flexbox-item>

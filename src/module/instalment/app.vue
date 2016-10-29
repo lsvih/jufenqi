@@ -2,40 +2,24 @@
 <flexbox class="vux-1px-d">
   <flexbox-item class="block-1">
     <!-- <img class="help" src="help.png"><img class="alert" src="alert.png"> -->
-    <div class="ins-title">可贷款额度（元）</div>
-    <div class="ins-limit" v-if="limit">{{limit|currency "" 2}}</div>
-    <div class="ins-limit" v-else>敬请期待</div>
-    <!-- <div class="ins-limit" v-else>未申请</div>
-       <img class="bg" src="fq_bg.png" width="100%" height="auto"> -->
+    <div class="ins-title">已贷款额度（元）</div>
+    <div class="ins-limit" v-if="thisStatus == '已激活'">{{limit|currency "" 2}}</div>
+    <!-- <div class="ins-limit" v-else>敬请期待</div> -->
+    <div class="ins-limit-apply" v-if="thisStatus == '未申请'||thisStatus == '激活失败'||thisStatus == '申请失败'" v-tap="goto('./ins-apply.html')">去申请</div>
+    <div class="ins-limit-apply" v-if="thisStatus == '未激活'" v-tap="goto('./activation-step1.html')">去激活</div>
+    <div class="ins-limit-apply" v-if="thisStatus == '激活中'">激活中</div>
+    <img class="bg" src="fq_bg.png" width="100%" height="auto">
   </flexbox-item>
 </flexbox>
 <flexbox class="vux-1px-t block-2">
-  <flexbox-item class="balance vux-1px-r">
-    <div>已贷款</div>
+  <flexbox-item class="balance">
+    <div>可贷款总额度</div>
     <div class="balance-money">{{ins|currency "" 2}}</div>
   </flexbox-item>
-  <flexbox-item class="balance">
-    <div>我的钱包</div>
-    <div class="balance-money">{{balance|currency "" 2}}</div>
-  </flexbox-item>
 </flexbox>
-<scroller class="block-3" height="calc( 100% - 190px - 44px )" :lock-x="true" :scrollbar-y="true" >
-  <div v-if="!insList.length">
+<scroller class="block-3" height="calc( 100% - 190px - 44px )" :lock-x="true" :scrollbar-y="true">
+  <div>
     <div style="width:100%" :style="{'height':getScreenWidth() * 1.872 + 'px'}"><img src="/static/temp/分期.jpg" width="100%">
-      <!-- <div style="width:100%;height:44px;margin-left:calc( (100% - 200px)/2 )">
-        <div class="apply" onclick="location.href='ins-apply.html'">去申请</div>
-      </div> -->
-    </div>
-  </div>
-  <div v-else style="width:100%;padding-bottom:44px;">
-    <j-card v-for="insInfo in insList">
-      <div>{{insInfo.name}}</div>
-      <div class="ins-insinfo-count">申请总额:<span>{{insInfo.insCount|currency "￥" 2}}</span></div>
-      <div class="ins-insinfo-line"></div>
-      <j-credit-process :step="insInfo.step"></j-credit-process>
-    </j-card>
-    <div style="width:100%;height:44px;margin-left:calc( (100% - 200px)/2 )">
-      <div class="apply" onclick="location.href='ins-apply.html'">去申请</div>
     </div>
   </div>
 </scroller>
@@ -47,8 +31,6 @@
 <script>
 import Lib from 'assets/Lib.js'
 import JFooter from 'components/JFooter.vue'
-import JCard from 'components/JCard.vue'
-import JCreditProcess from 'components/JCreditProcess.vue'
 import {
   Flexbox,
   FlexboxItem
@@ -59,10 +41,27 @@ export default {
   data() {
     return {
       showLoading: false,
-      limit: this.isDataExist("limit"),
-      balance: this.isDataExist("balance"),
-      ins: this.isDataExist("ins"),
-      insList: !localStorage.user || !JSON.parse(localStorage.user).insList ? [] : JSON.parse(localStorage.user).insList
+      limit: 0,
+      balance: 0,
+      ins: 0,
+      status: {
+        'UNSUCCESSFULLY': {
+          "name": "申请失败"
+        },
+        'UNACTIVATED': {
+          "name": "未激活"
+        },
+        'ACTIVATING': {
+          "name": "激活中"
+        },
+        'ACTIVATED': {
+          "name": "已激活"
+        },
+        'DISABLED': {
+          "name": "激活失败"
+        },
+      },
+      thisStatus: "正在查询",
     }
   },
   components: {
@@ -70,50 +69,41 @@ export default {
     Flexbox,
     FlexboxItem,
     Scroller,
-    Loading,
-    JCard,
-    JCreditProcess
+    Loading
   },
   ready() {
-    // let that = this;
-    // if (Lib.M.GetRequest().refresh) {
-    //   this.startLoading()
-    //   //TODO ajax过程
-    //   setTimeout(() => {
-    //     Lib.M.SetLocalData("user", "limit", "10000", function() {
-    //       that.limit = 10000
-    //       that.stopLoading()
-    //     })
-    //   }, 1000)
-    // }
-    // //Fake data
-    // let insList = [{
-    //   "id": 1232,
-    //   "name": "1213家装分期",
-    //   "step": 2,
-    //   "insCount": 11023,
-    // }, {
-    //   "id": 1232,
-    //   "name": "111家装分期",
-    //   "step": 1,
-    //   "insCount": 11223,
-    // }, {
-    //   "id": 1232,
-    //   "name": "12313家装分期",
-    //   "step": 1,
-    //   "insCount": 223,
-    // }]
-    // Lib.M.SetLocalData("user", "insList", insList, function() {})
+    this.$http.get(`${Lib.C.loanApi}loan-applications`, {
+      params: {
+        filter: `userId:${JSON.parse(window.localStorage.getItem('user')).userId}`,
+        sort: "createdAt,desc"
+      }
+    }).then((res) => {
+      try{
+        this.thisStatus = this.getStatus(res.data.data[0].status)
+      }catch(e){
+        this.thisStatus = "未申请"
+      }
+    }, (res) => {
+      alert("查询贷款信息失败，请重试")
+    })
   },
   methods: {
+    getStatus(status) {
+      try {
+        let statusName = eval(`this.status.${status}.name`)
+        return statusName
+      } catch (e) {
+        return "未申请"
+      }
+    },
+    goto(url) {
+      window.location.href = url
+    },
     stopLoading() {
       this.showLoading = false
     },
     startLoading() {
       this.showLoading = true
-    },
-    isDataExist(what){
-      return !localStorage.getItem(what) || !JSON.parse(localStorage.user)[what] ? 0 : JSON.parse(localStorage.user)[what]
     },
     getScreenWidth() {
       return document.body.clientWidth
@@ -143,14 +133,26 @@ export default {
         top: 30px;
         font-size: 16px;
         margin-left: -64px;
-        color:#3BA794;
+        color: #3BA794;
     }
     .ins-limit {
         width: 100%;
         text-align: center;
         top: 66px;
         font-size: 36px;
-        color:#393939;
+        color: #393939;
+    }
+    .ins-limit-apply {
+        top: 66px;
+        text-align: center;
+        width: 150px;
+        height: 44px;
+        line-height: 44px;
+        left: calc(~"50% - 75px");
+        background-color: transparent;
+        border: 1px solid #88C928;
+        color: #88C928;
+        border-radius: 22px;
     }
     .help {
         position: absolute;
@@ -178,11 +180,13 @@ export default {
     width: 100%;
 }
 .balance {
-    color:#393939;
+    color: #999;
     height: 40px;
     line-height: 20px;
     text-align: center;
-    .balance-money {}
+    .balance-money {
+        margin-top: 6px;
+    }
 }
 .apply {
     height: 44px;

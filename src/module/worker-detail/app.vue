@@ -1,6 +1,6 @@
 <template>
 <header>
-  <div class="cart"><img src="cart.png"></div>
+  <div class="cart" v-tap="goto('./cart.html')"><img src="cart.png"></div>
   <div class="worker-logo"><img :src="worker.profileImage"></div>
   <div class="worker-name">{{worker.nickname}}</div>
   <div class="worker-description">
@@ -194,6 +194,9 @@ export default {
       if(type === 'favorite'){
         this.isFavorite = true
       }
+    },
+    goto(url){
+      window.location.href = url
     }
   }
 }

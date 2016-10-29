@@ -11,37 +11,37 @@
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:zx>
           <div>
             <div class="order" v-for="order in zxList">
               <div class="zc-line-1">
-                <div class="zc-user-name">{{order.userName}}</div>
-                <div class="zc-user-address">{{order.userAddress}}</div>
-                <div class="zc-user-more" onclick="location.href='zx-order.html?status={{order.orderStatus}}'">查看详情</div>
+                <div class="zc-user-name">{{order.customerName}}</div>
+                <div class="zc-user-address">{{order.orderLocation+order.orderAddress}}</div>
+                <div class="zc-user-more" v-tap="viewDetail('zx',order.orderNo)">查看详情</div>
               </div>
               <div class="zc-line-2">
-                <div class="zc-order-date"><img src="./time.png">{{order.orderDate}}</div>
-                <div class="zc-order-status">{{zxStatusList[order.orderStatus].name}}</div>
+                <div class="zc-order-date"><img src="./time.png">{{getTime(order.orderTime)}}</div>
+                <div class="zc-order-status">{{zxStatusList[order.status].name}}</div>
               </div>
               <div class="zc-line-3">
-                <div class="zc-butler-img"><img :src="order.butlerImg"></div>
-                <div class="zc-butler-name">{{order.butlerName}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.butlerTel}}'"><img src="tel.png"></div>
+                <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
+                <div class="zc-butler-name">{{order.manager.nickName}}</div>
+                <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="tel.png"></div>
               </div>
               <div class="zc-line-3">
-                <div class="zc-butler-img"><img :src="order.worker1Img"></div>
-                <div class="zc-butler-name">{{order.worker1Name}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.worker1Tel}}'"><img src="tel.png"></div>
+                <div class="zc-butler-img"><img :src="order.planList[0].foreman.profileImage"></div>
+                <div class="zc-butler-name">{{order.planList[0].foreman.nickName}}</div>
+                <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[0].foreman.mobile}}'"><img src="tel.png"></div>
               </div>
-              <div class="zc-line-3" v-if="order.worker2Name">
-                <div class="zc-butler-img"><img :src="order.worker2Img"></div>
-                <div class="zc-butler-name">{{order.worker2Name}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.worker2Tel}}'"><img src="tel.png"></div>
+              <div class="zc-line-3" v-if="order.planList.length===2">
+                <div class="zc-butler-img"><img :src="order.planList[1].foreman.profileImage"></div>
+                <div class="zc-butler-name">{{order.planList[1].foreman.nickName}}</div>
+                <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[1].foreman.mobile}}'"><img src="tel.png"></div>
               </div>
               <div class="zc-line-3">
-                <div class="zc-butler-img"><img :src="order.surveyorImg"></div>
-                <div class="zc-butler-name">{{order.surveyorName}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.surveyorTel}}'"><img src="tel.png"></div>
+                <div class="zc-butler-img"><img :src="order.projectManager.profileImage"></div>
+                <div class="zc-butler-name">{{order.projectManager.nickName}}</div>
+                <div class="zc-butler-tel" onclick="location.href='tel:{{order.projectManager.mobile}}'"><img src="tel.png"></div>
               </div>
             </div>
           </div>
@@ -51,7 +51,7 @@
     </swiper-item>
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:zc>
           <div>
             <div class="order" v-for="order in zcList">
               <div class="zc-line-1">
@@ -139,90 +139,40 @@ export default {
       }],
       zxStatusList: [{
         status: 0,
-        name: "已预约"
+        name: "订单已删除"
       }, {
         status: 1,
-        name: "待选方案"
+        name: "已预约"
       }, {
         status: 2,
-        name: "待支付"
+        name: "已上门"
       }, {
         status: 3,
-        name: "待施工"
+        name: "待选方案"
       }, {
         status: 4,
+        name: "待支付"
+      }, {
+        status: 5,
+        name: "待施工"
+      }, {
+        status: 6,
+        name: "施工中"
+      }, {
+        status: 7,
         name: "已完工"
+      }, {
+        status: 8,
+        name: "订单已取消"
       }],
       tkStatusList: [{
-        status:0,
-        name:"退款中"
-      },{
-        status:1,
-        name:"已退款"
+        status: 0,
+        name: "退款中"
+      }, {
+        status: 1,
+        name: "已退款"
       }],
-      zxList: [{
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 0,
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60",
-        worker1Name: "郑家园",
-        worker1Tel: "18601230123",
-        worker1Img: "http://placekitten.com/g/60/60",
-        worker2Name: "郑家园",
-        worker2Tel: "18601230123",
-        worker2Img: "http://placekitten.com/g/60/60",
-        surveyorName: "郑家园",
-        surveyorTel: "18601230123",
-        surveyorImg: "http://placekitten.com/g/60/60",
-      }, {
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 1,
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60",
-        worker1Name: "郑家园",
-        worker1Tel: "18601230123",
-        worker1Img: "http://placekitten.com/g/60/60",
-        worker2Name: "郑家园",
-        worker2Tel: "18601230123",
-        worker2Img: "http://placekitten.com/g/60/60",
-        surveyorName: "郑家园",
-        surveyorTel: "18601230123",
-        surveyorImg: "http://placekitten.com/g/60/60",
-      }, {
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 2,
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60",
-        worker1Name: "郑家园",
-        worker1Tel: "18601230123",
-        worker1Img: "http://placekitten.com/g/60/60",
-        surveyorName: "郑家园",
-        surveyorTel: "18601230123",
-        surveyorImg: "http://placekitten.com/g/60/60",
-      }, {
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 3,
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60",
-        worker1Name: "郑家园",
-        worker1Tel: "18601230123",
-        worker1Img: "http://placekitten.com/g/60/60",
-        surveyorName: "郑家园",
-        surveyorTel: "18601230123",
-        surveyorImg: "http://placekitten.com/g/60/60",
-      }],
+      zxList: [],
       zcList: [{
         userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
         userAddress: "北京市 朝阳区 光华路",
@@ -264,7 +214,7 @@ export default {
         userAddress: "北京市 朝阳区 光华路",
         orderDate: "2015-12-12",
         orderStatus: 0,
-        shop:"门店1",
+        shop: "门店1",
         butlerName: "郑家园",
         butlerTel: "18601230123",
         butlerImg: "http://placekitten.com/g/60/60"
@@ -273,7 +223,7 @@ export default {
         userAddress: "北京市 朝阳区 光华路",
         orderDate: "2015-12-12",
         orderStatus: 1,
-        shop:"门店1",
+        shop: "门店1",
         orderCount: 400,
         butlerName: "郑家园",
         butlerTel: "18601230123",
@@ -284,7 +234,7 @@ export default {
         orderDate: "2015-12-12",
         orderStatus: 1,
         orderCount: 400,
-        shop:"门店1",
+        shop: "门店1",
         butlerName: "郑家园",
         butlerTel: "18601230123",
         butlerImg: "http://placekitten.com/g/60/60"
@@ -294,7 +244,7 @@ export default {
         orderDate: "2015-12-12",
         orderStatus: 0,
         orderCount: 400,
-        shop:"门店1",
+        shop: "门店1",
         butlerName: "郑家园",
         butlerTel: "18601230123",
         butlerImg: "http://placekitten.com/g/60/60"
@@ -309,7 +259,20 @@ export default {
     Scroller
   },
   ready() {
+    let suc_count = 0
     this.index = (Lib.M.GetRequest().type - 1) || 0
+    this.$http.get(`${Lib.C.orderApi}customer/decorationOrders`, {
+      params: {
+        filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,7]`
+      }
+    }).then((res) => {
+      res.data.data.map((e) => {
+        this.zxList.push(e)
+      })
+      this.$refs.zx.reset()
+    }, (res) => {
+      alert("获取订单失败，请稍候再试QAQ")
+    })
   },
   methods: {
     getTabType(index) {
@@ -332,8 +295,16 @@ export default {
     getScreenHeight() {
       return document.body.clientHeight
     },
-
-
+    getTime(timeStamp) {
+      var d = new Date(timeStamp * 1000);
+      var Y = d.getFullYear() + '-';
+      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-';
+      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate());
+      return Y + M + D
+    },
+    viewDetail(type, orderNo) {
+      eval(`window.location.href='${type}-order.html?orderNo=${orderNo}'`)
+    }
   }
 }
 </script>
@@ -414,14 +385,14 @@ header {
                 margin-right: 5px;
             }
         }
-        .zc-order-shop{
-          position: absolute;
-          top: 0px;
-          left:15px;
-          height: 40px;
-          line-height: 40px;
-          font-size: 14px;
-          color:#393939;
+        .zc-order-shop {
+            position: absolute;
+            top: 0;
+            left: 15px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+            color: #393939;
         }
         .zc-order-status {
             position: absolute;

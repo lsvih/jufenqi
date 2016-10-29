@@ -13,12 +13,12 @@
 
 <div class="pal-2" v-if="status === 1">
   <group style="margin-top:-1.17647059em;">
-    <x-input title="金额" type="Number" :value.sync="po1.money" placeholder="请输入提现金额"></x-input>
+    <x-input title="金额" type="Number" keyboard="number" :value.sync="po1.money" placeholder="请输入提现金额"></x-input>
     <x-input title="收款人" type="Text" :value.sync="po1.people" placeholder="与账号开户姓名一致"></x-input>
     <x-input title="开户行" type="Text" :value.sync="po1.depositBank" placeholder="请输入正确的开户行"></x-input>
-    <x-input title="卡号" type="Number" :value.sync="po1.cardNumber" placeholder="请输入正确的银行卡号"></x-input>
+    <x-input title="卡号" type="Number" keyboard="number" :value.sync="po1.cardNumber" placeholder="请输入正确的银行卡号"></x-input>
   </group>
-  <x-button class="postal-1" :class="{active:isFilledPo1()}" slot="right" style="background-color:#e2e2e2;color:#fff;margin:0 20px;width:calc( 100% - 40px )" v-tap="submitPo1">提交</x-button>
+  <x-button class="postal-1" :class="{active:isFilledPo1()}" slot="right" style="background-color:#e2e2e2;color:#fff;margin:0 20px;width:calc( 100% - 40px )" v-tap="isFilledPo1()?submitPo1():return">提交</x-button>
   <div class="tip">提现将于5-10个工作日内到账</div>
   <j-tel></j-tel>
 </div>
@@ -29,7 +29,7 @@
     <x-input title="金额" type="Number" :value.sync="po2.money" placeholder="请输入提现金额"></x-input>
     <x-input title="微信号" type="Text" :value.sync="po2.account" placeholder="请输入正确的微信号"></x-input>
   </group>
-  <x-button class="postal-1" :class="{active:isFilledPo2()}" slot="right" style="background-color:#e2e2e2;color:#fff;margin:0 20px;width:calc( 100% - 40px )" v-tap="submitPo2">提交</x-button>
+  <x-button class="postal-1" :class="{active:isFilledPo2()}" slot="right" style="background-color:#e2e2e2;color:#fff;margin:0 20px;width:calc( 100% - 40px )" v-tap="isFilledPo2()?submitPo2():return">提交</x-button>
   <j-tel></j-tel>
 </div>
 </template>
@@ -169,6 +169,7 @@ body {
 .pal-3 {
     .postal-1 {
         margin-top: 94px !important;
+        margin-bottom: 20px !important;
     }
 }
 .active {

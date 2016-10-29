@@ -1,88 +1,85 @@
 <template>
 <header>
   <img src="status.png">
-  <div class="status">{{zxStatusList[status].name}}</div>
-  <div class="btn" v-if="status==1">取消预约</div>
+  <div class="status">{{zxStatusList[order.status].name}}</div>
+  <div class="btn" v-if="order.status==1">取消预约</div>
 
 </header>
 <div class="butler">
-  <div class="zx-butler-img"><img :src="butlerImg"></div>
-  <div class="zx-butler-name">{{butlerName}}</div>
-  <div class="zx-butler-tel" onclick="location.href='tel:{{butlerTel}}'"><img src="tel.png"></div>
+  <div class="zx-butler-img"><img :src="order.manager.profileImage"></div>
+  <div class="zx-butler-name">{{order.manager.nickName}}</div>
+  <div class="zx-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="tel.png"></div>
 </div>
 <div class="butler" style="top:80px;">
-  <div class="zx-butler-img"><img :src="surveyorImg"></div>
-  <div class="zx-butler-name">{{surveyorName}}</div>
-  <div class="zx-butler-tel" onclick="location.href='tel:{{surveyorTel}}'"><img src="tel.png"></div>
+  <div class="zx-butler-img"><img :src="order.projectManager.profileImage"></div>
+  <div class="zx-butler-name">{{order.projectManager.nickName}}</div>
+  <div class="zx-butler-tel" onclick="location.href='tel:{{order.projectManager.mobile}}'"><img src="tel.png"></div>
 </div>
-<div class="content" :style="{paddingTop:status!==1&&status!==2?'130px':'80px'}">
-  <group class="contact" style="margin-top:-1.17647059em;" v-if="status==1||status==2">
+<div class="content" :style="{paddingTop:order.status!==1&&order.status!==2?'130px':'80px'}">
+  <group class="contact" style="margin-top:-1.17647059em;" v-if="order.status==1||order.status==2">
     <div class="zc-line-3">
-      <div class="zc-butler-img"><img :src="butlerImg"></div>
-      <div class="zc-butler-name">{{butlerName}}</div>
-      <div class="zc-butler-tel" onclick="location.href='tel:{{butlerTel}}'"><img src="tel.png"></div>
+      <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
+      <div class="zc-butler-name">{{order.manager.nickName}}</div>
+      <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="tel.png"></div>
     </div>
     <div class="zc-line-3">
-      <div class="zc-butler-img"><img :src="plans[selectPlan].workerImg"></div>
-      <div class="zc-butler-name">{{plans[selectPlan].workerName}}</div>
-      <div class="zc-butler-tel" onclick="location.href='tel:{{plans[selectPlan].workerTel}}'"><img src="tel.png"></div>
+      <div class="zc-butler-img"><img :src="order.planList[selectPlan].foreman.profileImage"></div>
+      <div class="zc-butler-name">{{order.planList[selectPlan].foreman.nickName}}</div>
+      <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[selectPlan].foreman.mobile}}'"><img src="tel.png"></div>
     </div>
     <div class="zc-line-3">
-      <div class="zc-butler-img"><img :src="surveyorImg"></div>
-      <div class="zc-butler-name">{{surveyorName}}</div>
-      <div class="zc-butler-tel" onclick="location.href='tel:{{surveyorTel}}'"><img src="tel.png"></div>
+      <div class="zc-butler-img"><img :src="order.projectManager.profileImage"></div>
+      <div class="zc-butler-name">{{order.projectManager.nickName}}</div>
+      <div class="zc-butler-tel" onclick="location.href='tel:{{order.projectManager.mobile}}'"><img src="tel.png"></div>
     </div>
 </div>
 </group>
-
-
-
-<div class="select-plan" v-if="status==3">
+<div class="select-plan" v-if="order.status==3">
   <div class="select-item-1" :class="{'active':selectPlan==0}" v-tap="selectPlan = 0">方案一</div>
-  <div class="select-item-2" v-if="plans[1]" :class="{'active':selectPlan==1}" v-tap="selectPlan = 1">方案二</div>
+  <div class="select-item-2" v-if="order.planList[1]" :class="{'active':selectPlan==1}" v-tap="selectPlan = 1">方案二</div>
 </div>
 
-<group title="设计方案" v-if="status>=3">
+<group title="设计方案" v-if="order.status>=3">
   <div class="module-item">
     <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:plan>
-      <div class="worker-product-list" :style="{width:plans[selectPlan].plan.length*(.8*getScreenWidth()+10)+  'px',height:.8*getScreenWidth()*.63+'px'}">
-        <div class="worker-product-item" v-for="preview in plans[selectPlan].plan" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
+      <div class="worker-product-list" :style="{width:order.planList[selectPlan].images.length*(.8*getScreenWidth()+10)+  'px',height:.8*getScreenWidth()*.63+'px'}">
+        <div class="worker-product-item" v-for="preview in order.planList[selectPlan].images" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
           <x-img class="product-img" :scroller="$refs.plan" :src="preview.src" v-tap="$refs.previewer.show($index)"></x-img>
         </div>
       </div>
     </scroller>
   </div>
 </group>
-<div class="contact" v-if="status>=3">
+<div class="contact" v-if="order.status>=3">
 
   <div class="zc-line-3">
-    <div class="zc-butler-img"><img :src="plans[selectPlan].workerImg"></div>
-    <div class="zc-butler-name">{{plans[selectPlan].workerName}}</div>
-    <div class="zc-butler-tel" onclick="location.href='tel:{{plans[selectPlan].workerTel}}'"><img src="tel.png"></div>
+    <div class="zc-butler-img"><img :src="order.planList[selectPlan].foreman.profileImage"></div>
+    <div class="zc-butler-name">{{order.planList[selectPlan].foreman.nickName}}</div>
+    <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[selectPlan].foreman.mobile}}'"><img src="tel.png"></div>
   </div>
 
 </div>
 
-<div v-if="status>=3&&status<=6">
+<div v-if="order.status>=3&&order.status<=6">
   <group title="方案说明">
-    <article>{{plans[selectPlan].planExplain}}</article>
+    <article>{{order.planList[selectPlan].description}}</article>
   </group>
   <group>
     <div class="zx-line-4">
       <div class="zx-line-4-name">施工报价</div>
-      <div class="zx-line-4-right">{{plans[selectPlan].price|currency "" 2}}</div>
+      <div class="zx-line-4-right">{{order.planList[selectPlan].price|currency "" 2}}</div>
     </div>
   </group>
 
 </div>
 </div>
-<div class="status-3-btn">
-<div class="btn-left"><img src="./change.png">更换工长</div>
-<div class="btn-right">选择当前方案</div>
-</div><x-button slot="right" style="border-radius:0;background-color:rgb(158, 188, 43);color:#fff;margin:20px 0;width:100%" v-if="status==7" onclick="location.href='order-judge.html'">去评价</x-button>
-
-<previewer :list="plans[0].plan" v-ref:previewer :options="options"></previewer>
-<previewer v-if="plans[1]" :list="plans[1].plan" v-ref:previewer :options="options"></previewer>
+<div class="status-3-btn" v-if="order.status === 3">
+  <div class="btn-left"><img src="./change.png">更换工长</div>
+  <div class="btn-right">选择当前方案</div>
+</div>
+<!-- <x-button slot="right" style="border-radius:0;background-color:rgb(158, 188, 43);color:#fff;margin:20px 0;width:100%" v-if="order.status==7" onclick="location.href='order-judge.html'">去评价</x-button> -->
+<previewer :list="order.planList[0].images" v-ref:previewer :options="options"></previewer>
+<previewer v-if="order.planList[1]" :list="order.planList[1].images" v-ref:previewer :options="options"></previewer>
 </template>
 
 <script>
@@ -96,69 +93,7 @@ import Previewer from 'vux-components/previewer'
 export default {
   data() {
     return {
-      status: 0,
-      butlerName: "郑家园",
-      butlerTel: "18601230123",
-      butlerImg: "http://placekitten.com/g/60/60",
-      surveyorName: "郑家园",
-      surveyorTel: "18601230123",
-      surveyorImg: "http://placekitten.com/g/60/60",
-      selectPlan: 0,
-      plans: [{
-        workerName: "郑家园",
-        workerTel: "18601230123",
-        workerDescription: "123123123",
-        workerRate: 4.4,
-        price: 1215,
-        workerImg: "http://placekitten.com/g/60/60",
-        planExplain: "asjkl;asejiopawefpiowefpjio",
-        planCycle: "asduasdfej0f893f0",
-        planPrice: "asdfasdf23weasdf",
-        plan: [{
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }, {
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }, {
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }, {
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }]
-      }, {
-        workerName: "郑家园2",
-        workerTel: "18601230123",
-        workerDescription: "345345345",
-        workerRate: 5.0,
-        price: 10213,
-        workerImg: "http://placekitten.com/g/60/60",
-        planExplain: "asjkl;asejiopawefpiowefpjio",
-        planCycle: "asduasdfej0f893f0",
-        planPrice: "asdfasdf23weasdf",
-        plan: [{
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }, {
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }, {
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }, {
-          src: 'http://placekitten.com/g/200/126',
-          w: 200,
-          h: 126
-        }]
-      }],
+      order: {},
       zxStatusList: [{
         status: 0,
         name: "订单已删除"
@@ -189,27 +124,24 @@ export default {
       }],
       options: {
         getThumbBoundsFn(index) {
-          // find thumbnail element
           let thumbnail = document.querySelectorAll('.product-img')[index]
-            // get window scroll Y
           let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
-            // optionally get horizontal scroll
-            // get position of element relative to viewport
           let rect = thumbnail.getBoundingClientRect()
-            // w = width
           return {
             x: rect.left,
             y: rect.top + pageYScroll,
             w: rect.width
           }
-          // Good guide on how to get element coordinates:
-          // http://javascript.info/tutorial/coordinates
         }
       }
     }
   },
   ready() {
-    this.status = Lib.M.GetRequest().status
+    this.$http.get(`${Lib.C.orderApi}customer/decorationOrders/${Lib.M.GetRequest().orderNo}`).then((res) => {
+      this.order = res.data.data
+    }, (res) => {
+      alert("获取订单失败，请稍候再试QAQ")
+    })
   },
   components: {
     Group,
@@ -485,59 +417,59 @@ header {
         color: #393939;
     }
 }
-.zx-line-4{
+.zx-line-4 {
     position: relative;
     height: 44px;
     width: 100%;
     background-color: #fff;
-    .zx-line-4-name{
-      position: absolute;
-      height: 44px;
-      line-height: 44px;
-      left:15px;
-      top:0;
-      font-size: 12px;
-      color:#393939;
+    .zx-line-4-name {
+        position: absolute;
+        height: 44px;
+        line-height: 44px;
+        left: 15px;
+        top: 0;
+        font-size: 12px;
+        color: #393939;
     }
-    .zx-line-4-right{
-      position: absolute;
-      height: 44px;
-      line-height: 44px;
-      right: 15px;
-      top:0;
-      font-size: 12px;
-      color: rgb(234,89,61);
+    .zx-line-4-right {
+        position: absolute;
+        height: 44px;
+        line-height: 44px;
+        right: 15px;
+        top: 0;
+        font-size: 12px;
+        color: rgb(234,89,61);
     }
 }
-.status-3-btn{
-  position: relative;
-  width: 100%;
-  height: 44px;
-  background-color: rgb(158, 188, 43);
-  color:#fff;
-  .btn-left{
-    position: absolute;
-    height: 100%;
-    width: 35%;
-    background-color: #fff;
-    line-height: 44px;
-    text-align: center;
-    color:#393939;
-    left: 0;
-    img{
-      vertical-align: middle;
-      margin-right: 6px;
-      height: 15px;
-      width: 16px;
+.status-3-btn {
+    position: relative;
+    width: 100%;
+    height: 44px;
+    background-color: rgb(158, 188, 43);
+    color: #fff;
+    .btn-left {
+        position: absolute;
+        height: 100%;
+        width: 35%;
+        background-color: #fff;
+        line-height: 44px;
+        text-align: center;
+        color: #393939;
+        left: 0;
+        img {
+            vertical-align: middle;
+            margin-right: 6px;
+            height: 15px;
+            width: 16px;
+        }
     }
-  }
-  .btn-right{
-    position: absolute;
-    height: 100%;
-    width: 65%;
-    line-height: 44px;
-    text-align: center;
-    right: 0;
-  }
+    .btn-right {
+        position: absolute;
+        height: 100%;
+        width: 65%;
+        line-height: 44px;
+        text-align: center;
+        right: 0;
+    }
 }
 </style>
