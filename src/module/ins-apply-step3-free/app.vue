@@ -3,9 +3,9 @@
 </j-apply-process>
 
 <group title="请输入详细信息">
-<x-input title="每月收入" type="Number" placeholder="请输入真实的每月收入"></x-input>
+<x-input title="每月收入" :value.sync="monthlyIncome" keyborad="number" type="Number" placeholder="请输入真实的每月收入"></x-input>
 </group>
-<x-button slot="right" style="background-color:rgb(136,201,40);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" onclick="location.href='./ins-apply-success.html?wait=true'">提交</x-button>
+<x-button slot="right" :class="{'btn-active':isFilled()}" style="background-color:#e2e2e2;color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="isFilled()?nextStep():return">提交</x-button>
 <j-tel style="margin-top:30px"></j-tel>
 </template>
 
@@ -20,7 +20,8 @@ import JTel from 'components/JTel.vue'
 export default {
   data() {
     return {
-      selected:1
+      selected:1,
+      monthlyIncome:null
     }
   },
   components: {
@@ -32,13 +33,21 @@ export default {
     JTel
   },
   ready() {
-
-
   },
   methods: {
-
-
-
+    isFilled(){
+      return this.monthlyIncome!==null
+    },
+    nextStep(){
+      let data = JSON.parse(window.localStorage.getItem("apply-info"))
+      data.isIncumbent = false
+      data.monthlyIncome = this.monthlyIncome
+      this.$http.post(`${Lib.C.loanApi}user-application`,data).then((res)=>{
+        window.location.href = './ins-apply-success.html?wait=true'
+      },(res)=>{
+        alert("提交申请失败，请稍候重试...")
+      })
+    }
   }
 }
 </script>
@@ -46,5 +55,8 @@ export default {
 <style>
 body{
   background-color: #eee;
+}
+.btn-active{
+  background-color: rgb(136,201,40)!important;
 }
 </style>
