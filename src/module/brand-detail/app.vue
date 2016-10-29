@@ -83,7 +83,7 @@ export default {
       return document.body.clientWidth
     },
     gotoStores(id){
-      location.href = `shop-list.html?id=${id}`
+      location.href = `shop-list.html?id=${id}&brandId=${this.id}&brandName=`
     }
   },
   ready(){

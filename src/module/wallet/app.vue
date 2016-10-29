@@ -1,48 +1,185 @@
 <template>
+<div class="block-1">
+  <div class="balance-title">我的钱包(元)</div>
+  <div class="balance-money">{{wallet|currency '' 2}}</div>
+</div>
 
-<div class="wallet-title">我的钱包(元)</div>
-<div class="wallet-money">{{money|currency '' 2}}</div>
+<div class="pal-1" v-if="status === 0">
+  <x-button class="postal-1" slot="right" style="color:#fff;background-color:#88C928;margin:0 20px;width:calc( 100% - 40px )" v-tap="status = 1">银行卡提现</x-button>
+  <x-button class="postal-2" slot="right" style="color:#fff;background-color:#88C928;margin:0 20px;width:calc( 100% - 40px )" v-tap="status = 2">微信提现</x-button>
+  <div class="tip">提现将于5-10个工作日内到账</div>
+  <j-tel></j-tel>
+</div>
 
-<x-button class="postal" slot="right"  style="color:#fff;background-color:#88C928;margin:20px 20px;width:calc( 100% - 40px )" >提现</x-button>
+<div class="pal-2" v-if="status === 1">
+  <group style="margin-top:-1.17647059em;">
+    <x-input title="金额" type="Number" :value.sync="po1.money" placeholder="请输入提现金额"></x-input>
+    <x-input title="收款人" type="Text" :value.sync="po1.people" placeholder="与账号开户姓名一致"></x-input>
+    <x-input title="开户行" type="Text" :value.sync="po1.depositBank" placeholder="请输入正确的开户行"></x-input>
+    <x-input title="卡号" type="Number" :value.sync="po1.cardNumber" placeholder="请输入正确的银行卡号"></x-input>
+  </group>
+  <x-button class="postal-1" :class="{active:isFilledPo1()}" slot="right" style="background-color:#e2e2e2;color:#fff;margin:0 20px;width:calc( 100% - 40px )" v-tap="submitPo1">提交</x-button>
+  <div class="tip">提现将于5-10个工作日内到账</div>
+  <j-tel></j-tel>
+</div>
+
+
+<div class="pal-3" v-if="status === 2">
+  <group style="margin-top:-1.17647059em;">
+    <x-input title="金额" type="Number" :value.sync="po2.money" placeholder="请输入提现金额"></x-input>
+    <x-input title="微信号" type="Text" :value.sync="po2.account" placeholder="请输入正确的微信号"></x-input>
+  </group>
+  <x-button class="postal-1" :class="{active:isFilledPo2()}" slot="right" style="background-color:#e2e2e2;color:#fff;margin:0 20px;width:calc( 100% - 40px )" v-tap="submitPo2">提交</x-button>
+  <j-tel></j-tel>
+</div>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
 import XButton from 'vux-components/x-button'
+import JTel from 'components/JTel.vue'
+import XInput from 'vux-components/x-input'
+import Group from 'vux-components/group'
 export default {
   data() {
     return {
-      money:999
+      wallet: 0,
+      status: 0, //0=待选择提现，1=银行卡提现，2=微信提现
+      po1: {
+        money: "",
+        people: "",
+        depositBank: "",
+        cardNumber: ""
+      },
+      po2: {
+        money: "",
+        account: ""
+      }
     }
   },
   components: {
     XButton,
+    JTel,
+    XInput,
+    Group
   },
   methods: {
-
+    //银行提现
+    isFilledPo1() {
+      let info = this.po1
+      return (/^[1-9]\d*$|^[1-9]\d*\.\d*$|^0\.\d*[1-9]\d*$/g.test(info.money) && info.money <= this.wallet && info.people !== "" && this.depositBank !== "" && /^(\d{16}|\d{19})$/.test(info.cardNumber))
+    },
+    submitPo1() {
+      this.$http.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToBankcard`, {
+        amount: this.po1.money,
+        accountName: this.po1.people,
+        bankcardNo: this.po1.cardNumber,
+        depositBank: this.po1.depositBank
+      }, {
+        xhr: {
+          withCredentials: true
+        },
+        emulateJSON: true
+      }).then((res) => {
+        alert("提现申请已提交")
+        this.wallet = res.data.data.balance
+        this.status = 0
+      }, (res) => {
+        alert("提现失败，请稍后再试")
+      })
+    },
+    //微信提现
+    isFilledPo2() {
+      let info = this.po2
+      return (/^[1-9]\d*$|^[1-9]\d*\.\d*$|^0\.\d*[1-9]\d*$/g.test(info.money) && info.money <= this.wallet && info.account !== "")
+    },
+    submitPo2() {
+      this.$http.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToWechat`, {
+        amount: this.po2.money,
+        wechatId: this.po2.account,
+      }, {
+        xhr: {
+          withCredentials: true
+        },
+        emulateJSON: true
+      }).then((res) => {
+        alert("提现申请已提交")
+        this.wallet = res.data.data.balance
+        this.status = 0
+      }, (res) => {
+        alert("提现失败，请稍后再试")
+      })
+    }
+  },
+  ready() {
+    this.$http.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+      this.wallet = res.data.data.balance
+    }, (res) => {
+      alert("网络连接失败，请稍候重试")
+      window.location.reload()
+    })
   }
 }
 </script>
 
-
+<style>
+body {
+  background-color: #eee;
+}
+</style>
 <style lang="less" scoped>
-.wallet-title{
-margin-top: 90px;
-width: 100%;
-height: 16px;
-font-size: 16px;
-text-align: center;
-color: #393939;
+.block-1 {
+    width: 100%;
+    height: 130px;
+    background-color: #62676c;
+    position: relative;
+    .balance-title {
+        height: 16px;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        top: 29px;
+        left: 0;
+        font-size: 16px;
+        color: #fff;
+    }
+    .balance-money {
+        height: 36px;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        bottom: 29px;
+        font-size: 36px;
+        color: #fff;
+    }
 }
-.wallet-money{
-margin-top: 20px;
-width: 100%;
-height: 36px;
-font-size: 36px;
-text-align: center;
-color: #393939;
+.pal-1 {
+    .postal-1 {
+        margin-top: 186px !important;
+    }
+    .postal-2 {
+        margin-top: 20px !important;
+    }
 }
-.postal{
-  margin-top: 100px!important;
+.pal-2 {
+    .postal-1 {
+        margin-top: 50px !important;
+    }
+}
+.pal-3 {
+    .postal-1 {
+        margin-top: 94px !important;
+    }
+}
+.active {
+    background-color: #88C928!important;
+}
+.tip {
+    font-size: 12px;
+    height: 12px;
+    line-height: 12px;
+    width: 100%;
+    text-align: center;
+    margin: 20px 0 10px;
 }
 </style>

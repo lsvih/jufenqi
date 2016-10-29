@@ -30,18 +30,14 @@
       </flexbox>
       <flexbox class="line">
         <flexbox-item>
-          从业年龄:{{worker.experience}}
+          从业年龄:{{getTime(worker.startTime)}}年
         </flexbox-item>
       </flexbox>
     </article>
   </group>
   <group title="从业经历">
     <article>
-      <flexbox v-for="experience in worker.workExperience" :class="{'line':$index>=1}">
-        <flexbox-item>
-          {{experience.start_date}}~{{experience.end_date}}&nbsp;&nbsp;{{experience.address}}
-        </flexbox-item>
-      </flexbox>
+      {{worker.experience}}
     </article>
   </group>
   <group title="装修小区">
@@ -66,15 +62,16 @@
   <div class="icon-item"><img src="share.png">
     <div>分享</div>
   </div>
-  <div class="icon-item" v-if="isFavorite()"><img src="favorite.png">
+  <div class="icon-item" v-if="isFavorite" v-tap="cancelFavorite"><img src="favorite-fill.png">
+    <div>已收藏</div>
+  </div>
+  <div class="icon-item" v-else v-tap="addWorkerTo('favorite')"><img src="favorite.png">
     <div>收藏</div>
   </div>
-  <div class="icon-item" v-else><img src="favorite.png">
-    <div>收藏</div>
-  </div>
-  <div class="shop-list">添加到备选清单</div>
+  <div class="shop-list" v-tap="addWorkerTo('cart')">添加到备选清单</div>
 </footer>
 <previewer :list="mapSrc(worker.projectImageList.split('|'))" v-ref:previewer :options="options"></previewer>
+<toast :show.sync="showToast" :text="toastText"></toast>
 </template>
 
 <script>
@@ -84,6 +81,7 @@ import Scroller from 'vux-components/scroller'
 import XImg from 'vux-components/x-img'
 import Cell from 'vux-components/cell'
 import Previewer from 'vux-components/previewer'
+import Toast from 'vux-components/toast'
 import {
   Flexbox,
   FlexboxItem
@@ -91,6 +89,9 @@ import {
 export default {
   data() {
     return {
+      showToast: false,
+      toastText: "",
+      isFavorite:false,
       worker: {},
       options: {
         getThumbBoundsFn(index) {
@@ -113,7 +114,8 @@ export default {
     XImg,
     Previewer,
     Flexbox,
-    FlexboxItem
+    FlexboxItem,
+    Toast
   },
   ready() {
     this.$http.get(`${Lib.C.userApi}workmanProfiles/${Lib.M.GetRequest().id}`).then((res) => {
@@ -123,6 +125,7 @@ export default {
         window.history.go(-1)
       }
       this.worker = res.data.data
+      this.isFavorite = this._isFavorite()
     }, (res) => {
       window.document.body.style.display = "hidden"
       alert("您查看的信息不存在,请重新选择")
@@ -130,20 +133,80 @@ export default {
     })
   },
   methods: {
-    isFavorite(workerId) {
-      return true
-    },
     getScreenWidth() {
       return document.body.clientWidth
     },
-    mapSrc(StringArr){
+    mapSrc(StringArr) {
       let arr = []
-      StringArr.map((e)=>{
-        arr.push({src:e,w:500,h:500})
+      StringArr.map((e) => {
+        arr.push({
+          src: e,
+          w: 500,
+          h: 500
+        })
       })
       return arr
+    },
+    getTime(t){
+      let a = new Date(t)
+      let b = new Date()
+      return b.getYear() - a.getYear()
+    },
+    cancelFavorite(){
+      let list = JSON.parse(window.localStorage.getItem('favorite'))
+      for(let i in list.worker){
+        if(list.worker[i].userId === this.worker.userId){
+          list.worker.$remove(list.worker[i])
+        }
+      }
+      window.localStorage.setItem('favorite',JSON.stringify(list))
+      this.isFavorite = false
+    },
+    _isFavorite() {
+      if(!localStorage.getItem('favorite')){
+        localStorage.setItem('favorite',JSON.stringify({worker:[],shop:[]}))
+        return false
+      }
+      return findSameWorker(this.worker.userId, JSON.parse(localStorage.getItem('favorite')).worker)
+    },
+    addWorkerTo(type) {
+      if (window.localStorage.getItem(type)) {
+        let list = JSON.parse(window.localStorage.getItem(type))
+        if (findSameWorker(this.worker.userId, list.worker)) {
+          this.toastText = "已添加"
+          this.showToast = true
+        } else {
+          list.worker.push(this.worker)
+          window.localStorage.setItem(type, JSON.stringify(list))
+          this.toastText = "添加成功"
+          this.showToast = true
+        }
+      } else {
+        let list = {
+          worker: [],
+          shop: []
+        }
+        list.worker.push(this.worker)
+        window.localStorage.setItem(type, JSON.stringify(list))
+        this.toastText = "添加成功"
+        this.showToast = true
+      }
+      if(type === 'favorite'){
+        this.isFavorite = true
+      }
     }
   }
+}
+/**
+ * 在列表中找到userId相同的项
+ */
+function findSameWorker(userId, workerList) {
+  for(let worker of workerList){
+    if(worker.userId === userId){
+      return true
+    }
+  }
+  return false
 }
 </script>
 

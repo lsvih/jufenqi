@@ -3,24 +3,24 @@
   <flexbox-item class="block-1">
     <div class="user-icon"><img :src="userIcon"></div>
     <div class="user-name">{{userName}}</div>
-    <div class="user-balance">可用提现金额: {{balance|currency "" 2}}(元)</div>
+    <div class="user-balance">授信金额: {{loan|currency "" 2}}(元)</div>
   </flexbox-item>
 </flexbox>
 <flexbox class="block-2">
   <flexbox-item class="balance" onclick="location.href='balance.html'">
     <div>账户余额 (元)</div>
-    <div class="balance-money">{{limit|currency "" 2}}</div>
+    <div class="balance-money">{{balance|currency "" 2}}</div>
   </flexbox-item>
   <flexbox-item class="balance" onclick="location.href='wallet.html'">
     <div>我的钱包 (元)</div>
-    <div class="balance-money">{{balance|currency "" 2}}</div>
+    <div class="balance-money">{{wallet|currency "" 2}}</div>
   </flexbox-item>
 </flexbox>
 <group style="margin-top:-15px">
-  <cell link="repayment-list.html" is-link class="cell-item">
+  <cell class="cell-item">
     <div class="cell-icon"><img src="icon/repayment.png"></div>
     <div class="cell-name">我的还款</div>
-    <div class="cell-right">今日待还0元</div>
+    <div class="cell-right">今日待还{{repaymentPerMonth}}元</div>
   </cell>
   <cell class="cell-item">
     <div class="cell-icon"><img src="icon/access.png"></div>
@@ -29,13 +29,16 @@
 </group>
 <flexbox class="block-3">
   <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=1'">
-    <img src="icon/zx-order-icon.png"> <div class="icon-item-name">装修订单</div>
+    <img src="icon/zx-order-icon.png">
+    <div class="icon-item-name">装修订单</div>
   </flexbox-item>
   <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=2'">
-    <img src="icon/zc-order-icon.png"> <div class="icon-item-name">主材订单</div>
+    <img src="icon/zc-order-icon.png">
+    <div class="icon-item-name">主材订单</div>
   </flexbox-item>
   <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=3'">
-    <img src="icon/rz-order-icon.png"> <div class="icon-item-name">软装订单</div>
+    <img src="icon/rz-order-icon.png">
+    <div class="icon-item-name">软装订单</div>
   </flexbox-item>
 </flexbox>
 
@@ -76,9 +79,10 @@ export default {
   data() {
     return {
       showLoading: false,
-      limit: this.isDataExist("limit"),
-      balance: this.isDataExist("balance"),
-      ins: this.isDataExist("ins"),
+      loan: 0,
+      balance: 0,
+      wallet: 0,
+      repaymentPerMonth: 0,
       userIcon: JSON.parse(localStorage.getItem('user')).profile.profileImage,
       userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
     }
@@ -91,7 +95,16 @@ export default {
     Cell
   },
   ready() {
-
+    this.$http.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+      let walletInfo = res.data.data
+      this.loan = walletInfo.loanAmount
+      this.balance = walletInfo.availableAmount
+      this.wallet = walletInfo.balance
+      this.repaymentPerMonth = Number(walletInfo.repayment.currentMonthRepayment)
+    }, (res) => {
+      alert("网络连接失败，请稍候重试")
+      window.location.reload()
+    })
   },
   methods: {
     stopLoading() {
@@ -99,9 +112,6 @@ export default {
     },
     startLoading() {
       this.showLoading = true
-    },
-    isDataExist(what) {
-      return !localStorage.getItem(what) || !JSON.parse(localStorage.user)[what] ? 0 : JSON.parse(localStorage.user)[what]
     }
   }
 }
@@ -188,14 +198,14 @@ body {
             width: 24px;
             height: 24px;
         }
-        .icon-item-name{
-          position: absolute;
-          bottom: 17px;
-          left:0;
-          width: 100%;
-          font-size: 12px;
-          color:#393939;
-          text-align: center;
+        .icon-item-name {
+            position: absolute;
+            bottom: 17px;
+            left: 0;
+            width: 100%;
+            font-size: 12px;
+            color: #393939;
+            text-align: center;
         }
     }
 }
@@ -243,7 +253,7 @@ body {
         position: absolute;
         font-size: 12px;
         top: 15px;
-        right: 25px;
+        right: 15px;
     }
     .cell-right.tel {
         color: #3BA794;

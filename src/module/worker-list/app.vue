@@ -6,12 +6,14 @@
 </header>
 <div class="content">
   <group style="margin-top:-1.17647059em;">
-    <cell v-for="worker in workerList" class="cell-item" v-tap="gotoDetail(worker.userId)">
+    <cell v-for="worker in workerList" class="cell-item">
       <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
       <div class="worker-name">{{worker.nickname}}</div>
       <div class="worker-address">{{worker.nativePlace}}</div>
       <div class="worker-rank">评分:{{worker.foremanRate}}</div>
-      <img v-if="isFavorite(worker.id)" class="worker-is-favorite" src="star-fill.png">
+      <div class="detail-click-area" v-tap="gotoDetail(worker.userId)"></div>
+      <div class="favorite-click-area" v-tap="worker.favorite?cancelFavorite(worker.userId,$index):addFavorite($index)"></div>
+      <img v-if="worker.favorite" class="worker-is-favorite" src="star-fill.png">
       <img v-else class="worker-is-favorite" src="star.png">
     </cell>
   </group>
@@ -40,7 +42,8 @@ export default {
       selectedAddress: "北京市",
       selectedSortType: "综合排序",
       address: ["北京市"],
-      sortTypeList: ["综合排序", "评价最高"],
+      // sortTypeList: ["综合排序", "评价最高"],
+      sortTypeList: ["综合排序"],
       isShow: false,
       selectType: 0,
     }
@@ -55,17 +58,46 @@ export default {
   methods: {
     getWorkerData(sortOption) {
       this.workerList = [];
-      this.$http.get(`${Lib.C.userApi}workmanProfiles`, {params:sortOption}).then((res) => {
-        this.workerList = res.data.data
+      this.$http.get(`${Lib.C.userApi}workmanProfiles`, {
+        params: sortOption
+      }).then((res) => {
+        let data = res.data.data
+        data.map((e)=>{
+          e.favorite = this.isFavorite(e.userId)
+        })
+        this.workerList = data
         this.loading = false
       }, (res) => {
         this.loading = false
         alert("网络连接失败，请刷新重试")
-        window.location.refresh()
+        window.location.reload()
       })
     },
     isFavorite(workerId) {
-      return true
+      if (!localStorage.getItem('favorite')) {
+        localStorage.setItem('favorite', JSON.stringify({
+          worker: [],
+          shop: []
+        }))
+        return false
+      }
+      return findSameWorker(workerId, JSON.parse(localStorage.getItem('favorite')).worker)
+    },
+    addFavorite(index) {
+      let list = JSON.parse(window.localStorage.getItem('favorite'))
+      list.worker.push(this.workerList[index])
+      window.localStorage.setItem('favorite', JSON.stringify(list))
+      this.workerList[index].favorite = true
+    },
+    cancelFavorite(workerId,index) {
+      let list = JSON.parse(window.localStorage.getItem('favorite'))
+      for (let i in list.worker) {
+        if (list.worker[i].userId === workerId) {
+          list.worker.$remove(list.worker[i])
+        }
+      }
+      this.workerList[index].favorite = false
+      window.localStorage.setItem('favorite', JSON.stringify(list))
     },
     sortBy(sortType) {
       if (sortType == this.selectedSortType) {
@@ -89,13 +121,24 @@ export default {
         }
       }
     },
-    gotoDetail(workerId){
+    gotoDetail(workerId) {
       window.location.href = `./worker-detail.html?id=${workerId}`
     }
   },
   ready() {
     this.getWorkerData()
   }
+}
+/**
+ * 在列表中找到userId相同的项
+ */
+function findSameWorker(userId, workerList) {
+  for (let worker of workerList) {
+    if (worker.userId === userId) {
+      return true
+    }
+  }
+  return false
 }
 </script>
 
@@ -191,5 +234,21 @@ header {
         top: 16px;
         left: calc( ~"(100% - 47px )/2 " );
     }
+}
+.favorite-click-area {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50px;
+    height: 100%;
+    z-index: 1;
+}
+.detail-click-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(~"100% - 50px");
+    height: 100%;
+    z-index: 1;
 }
 </style>
