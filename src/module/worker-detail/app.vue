@@ -37,7 +37,7 @@
   </group>
   <group title="从业经历">
     <article>
-      {{worker.experience}}
+      <p v-for="exp in worker.experience.split('|')">{{exp}}</p>
     </article>
   </group>
   <group title="装修小区">

@@ -3,7 +3,7 @@
   <div class="location"><img src="location.png" width="16px" height="20px">北京</div>
   <!-- <div class="search"><input type="search" placeholder="搜索..."><img src="search.png"></div> -->
   <img src="./logo.png" style="height:19px;width:86px;position:absolute;top:13px;left:calc( 50% - 43px );">
-  <img class="cart" src="cart.png" width="20px" height="20px">
+  <img class="cart" src="cart.png" width="20px" height="20px" v-tap="gotoCate('./cart.html')">
 </header>
 <div class="content">
   <swiper class="module-swiper" loop auto height="150px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000">

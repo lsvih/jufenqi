@@ -50,7 +50,7 @@ export default {
         logo: null,
         name: null,
         description: null,
-        slogon:null,
+        slogon: null,
       },
       productList: [],
       //productList:[img_src,img_src]
@@ -82,20 +82,20 @@ export default {
     getScreenWidth() {
       return document.body.clientWidth
     },
-    gotoStores(id){
-      location.href = `shop-list.html?id=${id}&brandId=${this.id}&brandName=`
+    gotoStores(id) {
+      location.href = `shop-list.html?id=${id}`
     }
   },
-  ready(){
-    this.$http.get(`${Lib.C.apiUrl}brands/${this.id}`).then((res) => {
+  ready() {
+    this.$http.get(`${Lib.C.merApi}brands/${this.id}`).then((res) => {
       let brand = res.data.data
       this.brand.name = brand.name
-      this.brand.logo = brand.logo_img?Lib.C.imgUrl + brand.logo_img:null
-      this.brand.description = brand.description
-      this.slogon = brand.slogon?brand.slogon:null
-  }, (res) => {
-    console.log(res)//error
-  })
+      this.brand.logo = brand.logoImg
+      this.brand.description = brand.intro
+      this.slogon = brand.slogon
+    }, (res) => {
+      console.log(res) //error
+    })
   }
 }
 </script>

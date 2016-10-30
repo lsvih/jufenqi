@@ -71,7 +71,7 @@ export default {
       let city = this.$refs.area.getNameValues()
       let that = this
       let appointstamp = new Date(this.appoint_at)
-      appointstamp = appointstamp.getTime() / 1000
+      appointstamp = appointstamp.getTime()
       this.$http.post(`${Lib.C.orderApi}customer/decorationOrders`, {
         customerName:this.name,
         customerMobile:this.phone,

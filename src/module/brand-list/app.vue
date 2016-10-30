@@ -1,9 +1,9 @@
 <template>
 <group style="margin-top:-1.17647059em;">
-<cell v-for="brand in brandList" class="cell-item" v-tap="goBandDetail(brand.id)" v-show="brand.img">
-<img :src="brand.img" class="brand-logo" width="120px" height="80px">
+<cell v-for="brand in brandList" class="cell-item" v-tap="goBandDetail(brand.id)">
+<img :src="brand.logoImg" class="brand-logo" width="120px" height="80px">
 <div class="brand-name">{{brand.name}}</div>
-<div class="brand-description">{{brand.description}}</div>
+<div class="brand-description">{{brand.intro}}</div>
 <img v-if="isFavorite(brand.id)" class="brand-is-favorite" src="star-fill.png">
 <img v-else class="brand-is-favorite" src="star.png">
 </cell>
@@ -18,7 +18,6 @@ import Cell from 'vux-components/cell'
 export default {
   data() {
     return {
-      className: (Lib.M.GetRequest().name),
       brandList:[]
       //brandList:[{id,name,img,description}]
     }
@@ -28,17 +27,8 @@ export default {
     Cell,
   },
   ready(){
-    this.$http.get(`${Lib.C.apiUrl}categories?expand=categoryBrands.brand&max-per-page=500&per-page=500&filter=name:${this.className}`).then((res) => {
-    let brands = res.data.data.items[0].categoryBrands
-    let that = this
-    brands.map((brand)=>{
-      that.brandList.push({
-        id:brand.brand.id,
-        name:brand.brand.name,
-        img:brand.brand.logo_img?Lib.C.imgUrl + brand.brand.logo_img:null,
-        description:brand.brand.description
-      })
-    })
+    this.$http.get(`${Lib.C.merApi}categories/${Lib.M.GetRequest().id}`).then((res) => {
+    this.brandList = res.data.data.brands
   }, (res) => {
     console.log(res)//error
   })

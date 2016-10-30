@@ -34,17 +34,16 @@ import JSelectItem from 'components/JSelectItem.vue'
 export default {
   data() {
     return {
-      selectedAddress:"全市",
-      selectedSortType:"综合排序",
-      address:["全市","朝阳","丰台","海淀"],
-      classList:["马桶","地板","门","床","墙","油漆","窗","家电"],
-      sortTypeList:["综合排序","距离最近","评价最高"],
-      brandId:Lib.M.GetRequest().id,
+      selectedAddress: "全市",
+      selectedSortType: "综合排序",
+      address: ["北京市"],
+      classList: ["马桶", "地板", "门", "床", "墙", "油漆", "窗", "家电"],
+      sortTypeList: ["综合排序", "距离最近", "评价最高"],
+      brandId: Lib.M.GetRequest().id,
       shopList: [],
       //shopList:[{id,name,img,address,rate}]
-      reqUrl:`${Lib.C.apiUrl}stores?filter=brand_id:${Lib.M.GetRequest().id}`,
-      isShow:false,
-      selectType:0
+      isShow: false,
+      selectType: 0
     }
   },
   components: {
@@ -57,27 +56,17 @@ export default {
     isFavorite(shopId) {
       return true
     },
-    gotoShopDetail(id){
-      location.href= `shop-detail.html?id=${id}`
+    gotoShopDetail(id) {
+      location.href = `shop-detail.html?id=${id}`
     }
   },
-  ready(){
-    this.$http.get(this.reqUrl).then((res) => {
-      let stores = res.data.data.items
-      let that = this
-      stores.map((store)=>{
-        that.shopList.push({
-          id:store.id,
-          name:store.name,
-          img: null,
-          address:store.address,
-          rate: store.rate?store.rate:"暂无评分"
-        })
-      })
-
-  }, (res) => {
-    console.log(res)//error
-  })
+  ready() {
+    this.$http.get(`${Lib.C.merApi}brands/${this.brandId}`).then((res) => {
+      let brand = res.data.data
+      this.shopList = brand.stores
+    }, (res) => {
+      console.log(res) //error
+    })
   }
 }
 </script>
@@ -147,53 +136,53 @@ header {
     z-index: 20;
     border-bottom: 1px solid #eee;
     .cart {
-        position:absolute;
+        position: absolute;
         right: 0;
-        top:0;
+        top: 0;
         height: 44px;
         width: 44px;
-        img{
-          height: 100%;
-          width: 100%;
+        img {
+            height: 100%;
+            width: 100%;
         }
     }
-    div{
-      position: absolute;
-      top:0;
-      height: 100%;
-      line-height: 45px;
-      width: calc( ~"(100% - 44px - 3px )/3");
-      text-align: center;
-      font-size: 12px;
-      .select-icon{
-        vertical-align: middle;
-        width: 6px;
-        height: 4px;
-        margin-left: 10px;
-      }
+    div {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        line-height: 45px;
+        width: calc( ~"(100% - 44px - 3px )/3");
+        text-align: center;
+        font-size: 12px;
+        .select-icon {
+            vertical-align: middle;
+            width: 6px;
+            height: 4px;
+            margin-left: 10px;
+        }
     }
-    .select-address{
-      left:0;
-      border-right:1px solid #eee;
+    .select-address {
+        left: 0;
+        border-right: 1px solid #eee;
     }
-    .select-class{
-      left:calc( ~"(100% - 47px )/3" );
-      border-right:1px solid #eee;
+    .select-class {
+        left: calc( ~"(100% - 47px )/3" );
+        border-right: 1px solid #eee;
     }
-    .sort{
-      left:calc( ~"(100% - 47px )/3*2 " );
+    .sort {
+        left: calc( ~"(100% - 47px )/3*2 " );
     }
 }
-.location-ball{
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  height: 40px;
-  width: 40px;
-  img{
-    height: 100%;
-  width: 100%;
+.location-ball {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    height: 40px;
+    width: 40px;
+    img {
+        height: 100%;
+        width: 100%;
 
-  }
+    }
 }
 </style>

@@ -2,7 +2,7 @@
 <header>
   <div class="select-address" v-tap="(selectType = 0,isShow=true)">{{selectedAddress}}<img src="select.png" class="select-icon"></div>
   <div class="sort" v-tap="(selectType = 1,isShow=true)">{{selectedSortType}}<img src="select.png" class="select-icon"></div>
-  <span class="cart"><img src="cart.png"></span>
+  <span class="cart" v-tap="goto('./cart.html?type=2')"><img src="cart.png"></span>
 </header>
 <div class="content">
   <group style="margin-top:-1.17647059em;">
@@ -123,6 +123,9 @@ export default {
     },
     gotoDetail(workerId) {
       window.location.href = `./worker-detail.html?id=${workerId}`
+    },
+    goto(url){
+      window.location.href = url
     }
   },
   ready() {

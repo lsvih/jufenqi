@@ -2,44 +2,28 @@
 <group style="margin-top:-1.17647059em;">
   <cell class="cell" v-for="bank in bankList">
     <div class="select" v-tap="select($index)" style="width:calc( 100% - 40px )"></div>
-    <img class="bank-logo" :src="bank.icon">
-    <div class="bank-name">{{bank.name}}</div>
-    <div class="text">持卡类型:<span class="card-type">{{bank.cardType}}</span>&nbsp;&nbsp;可申请金额:<span class="credit-count">{{bank.credit|currency "" 2}}</span></div>
-    <div class="info" v-tap="(showInfoNum = $index,showInfo = true,preventDefault())"><img src="info.png"></div>
+    <img class="bank-logo" :src="bank.logoImg">
+    <div class="bank-name">{{bank.bankName}}</div>
+    <div class="text">
+      <!-- 持卡类型:<span class="card-type">{{bank.cardType}}</span>&nbsp;&nbsp; -->
+      可申请金额:<span class="credit-count">{{bank.bankQuota|currency "" 2}}</span></div>
+    <!-- <div class="info" v-tap="(showInfoNum = $index,showInfo = true,preventDefault())"><img src="info.png"></div> -->
   </cell>
 </group>
-<alert :show.sync="showInfo" :title="bankList[showInfoNum].name" button-text="确认">
+<!-- <alert :show.sync="showInfo" :title="bankList[showInfoNum].name" button-text="确认">
   <p style="text-align:center;">{{bankList[showInfoNum].text}}</p>
-</alert>
+</alert> -->
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
 import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
-import Alert from 'vux-components/alert'
+// import Alert from 'vux-components/alert'
 export default {
   data() {
     return {
-      bankList: [{
-        "name": "中国银行",
-        "cardType": "信用卡",
-        "credit": 15000,
-        "icon": "http://img1.imgtn.bdimg.com/it/u=1358184335,3457136256&fm=21&gp=0.jpg",
-        "text": "123jdafjkl;qf2jef80qsdgjasvjiopasvjioapsdfh1eu809d-vhjzcvjkospdcvjioqpwfji0qwefjioapsvjklzxcvbnjkizvjioapsdfjiopqwefji09/n/n/n/qwerqwefaispdfjkoapsdfjiozpxcvjiop"
-      }, {
-        "name": "中国银行",
-        "cardType": "信用卡",
-        "credit": 15000,
-        "icon": "http://img1.imgtn.bdimg.com/it/u=1358184335,3457136256&fm=21&gp=0.jpg",
-        "text": "123jdafjkl;qf2jef80qsdgjasvjiopasvjioapsdfh1eu809d-vhjzcvjkospdcvjioqpwfji0qwefjioapsvjklzxcvbnjkizvjioapsdfjiopqwefji09/n/n/n/qwerqwefaispdfjkoapsdfjiozpxcvjiop"
-      }, {
-        "name": "中国银行",
-        "cardType": "信用卡",
-        "credit": 15000,
-        "icon": "http://img1.imgtn.bdimg.com/it/u=1358184335,3457136256&fm=21&gp=0.jpg",
-        "text": "123jdafjkl;qf2jef80qsdgjasvjiopasvji\n\n\noapsdfh1eu809d-vhjzcvjkospdcvjioqpwfji0qwefjioapsvjklzxcvbnjkizvjioapsdfjiopqwefji09/n/n/n/qwerqwefaispdfjkoapsdfjiozpxcvjiop"
-      }],
+      bankList: [],
       showInfo: false,
       showInfoNum: 0
     }
@@ -47,12 +31,27 @@ export default {
   components: {
     Group,
     Cell,
-    Alert
+    // Alert
   },
   methods: {
-    select: (bankSub) => {
-        location.href=`activation-step2.html?bank=${bankSub}`
+    select: (index) => {
+      let data = JSON.parse(localStorage.getItem("apply-info"))
+      data.bank = this.bankList[index].bank
+      localStorage.setItem("apply-info",JSON.stringify(data))
+      location.href = `activation-step2.html`
     }
+  },
+  ready() {
+    this.$http.get(`${Lib.C.loanApi}loan-application-schemes`, {
+      params: {
+        filter: `userId:${JSON.parse(localStorage.getItem('user')).userId}`,
+        sort: "createdAt,desc"
+      }
+    }).then((res) => {
+      this.bankList = res.data.data
+    }, (res) => {
+      alert("获取银行列表失败，请稍候再试...")
+    })
   }
 }
 </script>
@@ -65,12 +64,12 @@ body {
 <style scoped lang="less">
 .cell {
     height: 77px;
-    .select{
-      position: absolute;
-      z-index: 2;
-      left: 0;
-      top:0;
-      height: 100%;
+    .select {
+        position: absolute;
+        z-index: 2;
+        left: 0;
+        top: 0;
+        height: 100%;
     }
     .bank-logo {
         width: 40px;
@@ -95,8 +94,8 @@ body {
         .cart-type {
             color: #3BA794;
         }
-        .credit-count{
-          color: #ec5835;
+        .credit-count {
+            color: #ec5835;
         }
     }
     .info {

@@ -4,7 +4,7 @@
     <tab active-color='#88C929' :index.sync="index">
       <tab-item active-class="tab-active" :selected="tab === '门店'" v-tap="tab = '门店'">门店</tab-item>
       <tab-item active-class="tab-active" :selected="tab === '工长'" v-tap="tab = '工长'">工长</tab-item>
-      <tab-item active-class="tab-active" :selected="tab === '软装'" v-tap="tab = '软装'">软装</tab-item>
+      <!-- <tab-item active-class="tab-active" :selected="tab === '软装'" v-tap="tab = '软装'">软装</tab-item> -->
     </tab>
   </header>
 
@@ -49,9 +49,9 @@
         <div class="submit-btn" :class="{'select-active':isSelectWorkers()}" v-tap="isSelectWorkers()?selectWorkers():return">预约</div>
       </div>
     </swiper-item>
-    <swiper-item>
+    <!-- <swiper-item>
       <div class="tab-swiper vux-center">3</div>
-    </swiper-item>
+    </swiper-item> -->
   </swiper>
   <toast :show.sync="showToast" :text="toastText"></toast>
 </div>
