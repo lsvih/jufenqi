@@ -2,35 +2,30 @@
 <header>
   <img src="status.png">
   <div class="status">{{zxStatusList[order.status].name}}</div>
-  <div class="btn" v-if="order.status==1">取消预约</div>
+  <div class="btn" v-if="order.status==1" v-tap="cancelOrder()">取消预约</div>
 
 </header>
 <div class="butler">
   <div class="zx-butler-img"><img :src="order.manager.profileImage"></div>
-  <div class="zx-butler-name">{{order.manager.nickName}}</div>
+  <div class="zx-butler-name">{{order.manager.nickname}}</div>
   <div class="zx-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="tel.png"></div>
 </div>
 <div class="butler" style="top:80px;">
   <div class="zx-butler-img"><img :src="order.projectManager.profileImage"></div>
-  <div class="zx-butler-name">{{order.projectManager.nickName}}</div>
+  <div class="zx-butler-name">{{order.projectManager.nickname}}</div>
   <div class="zx-butler-tel" onclick="location.href='tel:{{order.projectManager.mobile}}'"><img src="tel.png"></div>
 </div>
-<div class="content" :style="{paddingTop:order.status!==1&&order.status!==2?'130px':'80px'}">
+<div class="content">
   <group class="contact" style="margin-top:-1.17647059em;" v-if="order.status==1||order.status==2">
     <div class="zc-line-3">
-      <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
-      <div class="zc-butler-name">{{order.manager.nickName}}</div>
-      <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="tel.png"></div>
+      <div class="zc-butler-img"><img :src="order.planList[0].foreman.profileImage"></div>
+      <div class="zc-butler-name">{{order.planList[0].foreman.nickname}}</div>
+      <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[0].foreman.mobile}}'"><img src="tel.png"></div>
     </div>
-    <div class="zc-line-3">
-      <div class="zc-butler-img"><img :src="order.planList[selectPlan].foreman.profileImage"></div>
-      <div class="zc-butler-name">{{order.planList[selectPlan].foreman.nickName}}</div>
-      <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[selectPlan].foreman.mobile}}'"><img src="tel.png"></div>
-    </div>
-    <div class="zc-line-3">
-      <div class="zc-butler-img"><img :src="order.projectManager.profileImage"></div>
-      <div class="zc-butler-name">{{order.projectManager.nickName}}</div>
-      <div class="zc-butler-tel" onclick="location.href='tel:{{order.projectManager.mobile}}'"><img src="tel.png"></div>
+    <div class="zc-line-3" v-if="order.planList.length">
+      <div class="zc-butler-img"><img :src="order.planList[1].foreman.profileImage"></div>
+      <div class="zc-butler-name">{{order.planList[1].foreman.nickname}}</div>
+      <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[1].foreman.mobile}}'"><img src="tel.png"></div>
     </div>
 </div>
 </group>
@@ -54,7 +49,7 @@
 
   <div class="zc-line-3">
     <div class="zc-butler-img"><img :src="order.planList[selectPlan].foreman.profileImage"></div>
-    <div class="zc-butler-name">{{order.planList[selectPlan].foreman.nickName}}</div>
+    <div class="zc-butler-name">{{order.planList[selectPlan].foreman.nickname}}</div>
     <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[selectPlan].foreman.mobile}}'"><img src="tel.png"></div>
   </div>
 
@@ -74,7 +69,7 @@
 </div>
 </div>
 <div class="status-3-btn" v-if="order.status === 3">
-  <div class="btn-left"><img src="./change.png">更换工长</div>
+  <div class="btn-left" v-tap="cancelOrder(true)"><img src="./change.png">更换工长</div>
   <div class="btn-right">选择当前方案</div>
 </div>
 <!-- <x-button slot="right" style="border-radius:0;background-color:rgb(158, 188, 43);color:#fff;margin:20px 0;width:100%" v-if="order.status==7" onclick="location.href='order-judge.html'">去评价</x-button> -->
@@ -154,6 +149,18 @@ export default {
   methods: {
     getScreenWidth() {
       return document.body.clientWidth
+    },
+    cancelOrder(isJump){
+      this.$http.post(`${Lib.C.orderApi}customer/decorationOrders/${Lib.M.GetRequest().orderNo}/confirmCancel`).then((res) => {
+        if(isJump){
+          window.location.href = "./worker-list.html"
+        }else{
+          alert("取消订单成功")
+          window.location.href = './order-list.html'
+        }
+      }, (res) => {
+        alert("取消订单失败，请稍候再试QAQ")
+      })
     }
   }
 }
@@ -211,7 +218,7 @@ article {
     }
 }
 .content {
-    padding-top: 80px;
+    padding-top: 130px;
 }
 header {
     position: fixed;

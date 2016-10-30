@@ -25,22 +25,22 @@
               </div>
               <div class="zc-line-3">
                 <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
-                <div class="zc-butler-name">{{order.manager.nickName}}</div>
+                <div class="zc-butler-name">{{order.manager.nickname}}</div>
                 <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="tel.png"></div>
               </div>
               <div class="zc-line-3">
                 <div class="zc-butler-img"><img :src="order.planList[0].foreman.profileImage"></div>
-                <div class="zc-butler-name">{{order.planList[0].foreman.nickName}}</div>
+                <div class="zc-butler-name">{{order.planList[0].foreman.nickname}}</div>
                 <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[0].foreman.mobile}}'"><img src="tel.png"></div>
               </div>
               <div class="zc-line-3" v-if="order.planList.length===2">
                 <div class="zc-butler-img"><img :src="order.planList[1].foreman.profileImage"></div>
-                <div class="zc-butler-name">{{order.planList[1].foreman.nickName}}</div>
+                <div class="zc-butler-name">{{order.planList[1].foreman.nickname}}</div>
                 <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[1].foreman.mobile}}'"><img src="tel.png"></div>
               </div>
               <div class="zc-line-3">
                 <div class="zc-butler-img"><img :src="order.projectManager.profileImage"></div>
-                <div class="zc-butler-name">{{order.projectManager.nickName}}</div>
+                <div class="zc-butler-name">{{order.projectManager.nickname}}</div>
                 <div class="zc-butler-tel" onclick="location.href='tel:{{order.projectManager.mobile}}'"><img src="tel.png"></div>
               </div>
             </div>
