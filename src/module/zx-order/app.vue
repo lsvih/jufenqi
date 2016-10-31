@@ -22,7 +22,7 @@
       <div class="zc-butler-name">{{order.planList[0].foreman.nickname}}</div>
       <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[0].foreman.mobile}}'"><img src="tel.png"></div>
     </div>
-    <div class="zc-line-3" v-if="order.planList.length">
+    <div class="zc-line-3" v-if="order.planList.length==2">
       <div class="zc-butler-img"><img :src="order.planList[1].foreman.profileImage"></div>
       <div class="zc-butler-name">{{order.planList[1].foreman.nickname}}</div>
       <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[1].foreman.mobile}}'"><img src="tel.png"></div>

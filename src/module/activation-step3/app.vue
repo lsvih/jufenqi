@@ -81,10 +81,10 @@ export default {
         data.idCardFrontImgInsert = ["http://"+this.cardF.server]
         data.idCardBackImgInsert = ["http://"+this.cardB.server]
         data.idCardHandImgInsert = ["http://"+this.cardP.server]
-        this.$http.put(`${Lib.C.loanApi}loan-application-schemes`,data).then((res)=>{
+        this.$http.put(`${Lib.C.loanApi}user-activate`,data).then((res)=>{
           alert("激活信息填写成功，请等待工作人员联系!")
           console.log(res)
-          // location.href = './instalment.html'
+          location.href = './instalment.html'
         },(res)=>{
           alert("网络连接失败，请重试")
         })

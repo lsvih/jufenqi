@@ -1,55 +1,55 @@
 <template>
 <header>
   <img src="status.png">
-  <div class="status">{{zcStatusList[status].name}}</div>
+  <div class="status">{{zcStatusList[order.status].name}}</div>
 </header>
 <div class="butler">
-  <div class="zc-butler-img"><img :src="butlerImg"></div>
-  <div class="zc-butler-name">{{butlerName}}</div>
-  <div class="zc-butler-tel" onclick="location.href='tel:{{butlerTel}}'"><img src="tel.png"></div>
+  <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
+  <div class="zc-butler-name">{{order.manager.nickname}}</div>
+  <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="tel.png"></div>
 </div>
 <div class="content">
 
   <div class="zc-list">
-    <group v-for="shop in shopList">
+    <group v-for="shop in order.subOrders">
       <div class="line-1">
-        <div class="shop-name">{{shop.name}}</div>
-        <div class="btn" v-if="status==4" onclick="location.href='order-judge.html'">去评价</div>
+        <div class="shop-name">{{shop.store.name}}</div>
+        <div class="btn" v-if="order.status==5" onclick="location.href='order-judge.html'">去评价</div>
       </div>
-      <cell v-for="zc in shop.zcList" class="zc-cell">
-        <div class="zc-name">{{zc.name}}</div>
+      <cell v-for="zc in shop.brands" class="zc-cell">
+        <div class="zc-name">{{zc}}</div>
       </cell>
-      <div class="line-2" v-if="status != 0">
+      <div class="line-2" v-if="order.status > 1">
         <div class="line-2-title">正价总额</div>
-        <div class="line-2-right" style="color:rgb(255, 204, 102);">{{shop.zjPrice|currency "￥" 2}}</div>
+        <div class="line-2-right" style="color:rgb(255, 204, 102);">{{shop.normalAmount|currency "￥" 2}}</div>
       </div>
-      <div class="line-2" v-if="status != 0">
+      <div class="line-2" v-if="order.status > 1">
         <div class="line-2-title">特价总额</div>
-        <div class="line-2-right" style="color:#88C929;">{{shop.tjPrice|currency "￥" 2}}</div>
+        <div class="line-2-right" style="color:#88C929;">{{shop.specialAmount|currency "￥" 2}}</div>
       </div>
       <div class="line-2" style="border-top:5px solid #eee!important;" v-if="status != 0">
         <div class="line-2-title">总额</div>
-        <div class="line-2-right">{{shop.zjPrice+shop.tjPrice|currency "￥" 2}}</div>
+        <div class="line-2-right">{{shop.normalAmount+shop.specialAmount|currency "￥" 2}}</div>
       </div>
-      <div class="line-3" v-if="status != 2&&status != 3">
-        <div class="appoint-at" v-if="status == 0"><img src="./time.png">{{appointAt}}</div>
-        <div class="cancel">{{status == 0?"取消预约":(status == 1?"取消订单":"申请退款")}}</div>
+      <div class="line-3" v-if="order.status ==1||order.status == 2||order.status ==5">
+        <div class="appoint-at" v-if="order.status == 1"><img src="./time.png">{{getTime(order.orderTime)}}</div>
+        <div class="cancel">{{order.status == 1?"取消预约":(order.status == 2?"取消订单":"申请退款")}}</div>
       </div>
     </group>
-    <group v-if="status == 1">
+    <group v-if="order.status == 2">
       <div class="line-2" style="border-bottom:1px solid #eee;height:30px;line-height:30px;">
         <div class="line-2-title" style="line-height:30px">请选择您的购买方式</div>
         <!-- <div class="line-2-right"><img class="down" src="./down.png"></div> -->
       </div>
       <j-radio :options="payments" @on-change="selectPay"></j-radio>
     </group>
-    <group v-if="status == 1">
+    <group v-if="order.status == 2">
       <div class="sumbit-order" :class="{'active':payWay!==''}" v-tap="submitOrder">确认订单</div>
     </group>
-    <group v-if="status >= 2">
-      <div class="line-2" v-if="insNumber !== ''">
+    <group v-if="order.status > 2">
+      <div class="line-2" v-if="order.stageCount !== ''">
         <div class="line-2-title">分期支付</div>
-        <div class="line-2-right" style="color:#393939;">{{insNumber}}期</div>
+        <div class="line-2-right" style="color:#393939;">{{order.stageCount}}期</div>
       </div>
       <div class="line-2" v-else>
         <div class="line-2-title">全款支付</div>
@@ -69,55 +69,34 @@ import PopupPicker from 'vux-components/popup-picker'
 export default {
   data() {
     return {
-      status: 0,
-      appointAt: "2016-11-01 16:00",
-      butlerName: "郑家园",
-      butlerTel: "18601230123",
-      butlerImg: "http://placekitten.com/g/60/60",
-      shopList: [{
-        id: 1,
-        name: 'hahah',
-        address: '123sdafsd',
-        rank: 4.7,
-        zcList: [{
-          name: "材料",
-        }, {
-          name: "材料",
-        }, {
-          name: "材料",
-        }],
-        zjPrice: 1023.12,
-        tjPrice: 12123
-      }, {
-        id: 2,
-        name: 'hahah',
-        address: '123sdafsd',
-        rank: 4.7,
-        zcList: [{
-          name: "材料",
-        }, {
-          name: "材料",
-        }, {
-          name: "材料",
-        }],
-        zjPrice: 123094,
-        tjPrice: 1235
-      }],
+      order: {},
       zcStatusList: [{
         status: 0,
-        name: "已预约"
+        name: "订单已删除"
       }, {
         status: 1,
-        name: "待确认"
+        name: "已预约"
       }, {
         status: 2,
-        name: "待支付"
+        name: "待确认"
       }, {
         status: 3,
-        name: "待收货"
+        name: "待付款"
       }, {
         status: 4,
+        name: "待收货"
+      }, {
+        status: 5,
         name: "已收货"
+      }, {
+        status: 6,
+        name: "退款中"
+      }, {
+        status: 7,
+        name: "已退款"
+      }, {
+        status: 8,
+        name: "已取消"
       }],
       payments: [{
         key: '0',
@@ -136,7 +115,11 @@ export default {
     }
   },
   ready() {
-    this.status = Lib.M.GetRequest().status
+    this.$http.get(`${Lib.C.mOrderApi}customer/materialOrders/${Lib.M.GetRequest().orderNo}`).then((res) => {
+      this.order = res.data.data
+    }, (res) => {
+      alert("获取订单失败，请稍候再试QAQ")
+    })
   },
   components: {
     Group,
@@ -161,7 +144,14 @@ export default {
         console.log(this.insNumberSelect)
           //确认订单代码
       }
-    }
+    },
+    getTime(timeStamp) {
+      var d = new Date(timeStamp);
+      var Y = d.getFullYear() + '-';
+      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-';
+      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate());
+      return Y + M + D
+    },
   }
 }
 </script>

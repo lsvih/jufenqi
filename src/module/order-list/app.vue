@@ -57,21 +57,21 @@
           <div>
             <div class="order" v-for="order in zcList">
               <div class="zc-line-1">
-                <div class="zc-user-name">{{order.userName}}</div>
-                <div class="zc-user-address">{{order.userAddress}}</div>
-                <div class="zc-user-more" onclick="location.href='zc-order.html?status={{order.orderStatus}}'">查看详情</div>
+                <div class="zc-user-name">{{order.customerName}}</div>
+                <!-- <div class="zc-user-address">{{order.userAddress}}</div> -->
+                <div class="zc-user-more" v-tap="viewDetail('zc',order.orderNo)">查看详情</div>
               </div>
               <div class="zc-line-2">
-                <div class="zc-order-date"><img src="./time.png">{{order.orderDate}}</div>
-                <div class="zc-order-status">{{zcStatusList[order.orderStatus].name}}</div>
+                <div class="zc-order-date"><img src="./time.png">{{getTime(order.orderTime)}}</div>
+                <div class="zc-order-status">{{zcStatusList[order.status].name}}</div>
               </div>
               <div class="zc-line-3">
-                <div class="zc-butler-img"><img :src="order.butlerImg"></div>
-                <div class="zc-butler-name">{{order.butlerName}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.butlerTel}}'"><img src="tel.png"></div>
+                <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
+                <div class="zc-butler-name">{{order.manager.nickname}}</div>
+                <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobuil}}'"><img src="tel.png"></div>
               </div>
-              <div class="zc-line-4" v-if="order.orderStatus > 0">
-                <div class="zc-count">总额<span>{{order.orderCount|currency "￥" 2}}</span></div>
+              <div class="zc-line-4" v-if="order.status > 1">
+                <div class="zc-count">总额<span>{{order.normalAmountTotal + order.specialAmountTotal|currency "￥" 2}}</span></div>
               </div>
             </div>
           </div>
@@ -83,24 +83,24 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:tk>
           <div>
             <div class="order" v-for="order in tkList">
               <div class="zc-line-1">
-                <div class="zc-user-name">{{order.userName}}</div>
-                <div class="zc-user-address">{{order.userAddress}}</div>
+                <div class="zc-user-name">{{order.customerName}}</div>
+                <!-- <div class="zc-user-address">{{order.userAddress}}</div> -->
               </div>
               <div class="zc-line-2">
-                <div class="zc-order-shop">{{order.shop}}</div>
-                <div class="zc-order-status">{{tkStatusList[order.orderStatus].name}}</div>
+                <div class="zc-order-shop">{{order.store.name}}</div>
+                <div class="zc-order-status">{{zcStatusList[order.status].name}}</div>
               </div>
               <div class="zc-line-3">
-                <div class="zc-butler-img"><img :src="order.butlerImg"></div>
-                <div class="zc-butler-name">{{order.butlerName}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.butlerTel}}'"><img src="tel.png"></div>
+                <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
+                <div class="zc-butler-name">{{order.manager.nickname}}</div>
+                <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="tel.png"></div>
               </div>
-              <div class="zc-line-4" v-if="order.orderStatus > 0">
-                <div class="zc-count">退款金额<span>{{order.orderCount|currency "￥" 2}}</span></div>
+              <div class="zc-line-4" v-if="order.status > 0">
+                <div class="zc-count">退款金额<span>{{order.customerRefundAmount|currency "￥" 2}}</span></div>
               </div>
             </div>
           </div>
@@ -129,19 +129,31 @@ export default {
       index: 0,
       zcStatusList: [{
         status: 0,
-        name: "已预约"
+        name: "订单已删除"
       }, {
         status: 1,
-        name: "待确认"
+        name: "已预约"
       }, {
         status: 2,
-        name: "待支付"
+        name: "待确认"
       }, {
         status: 3,
-        name: "待收货"
+        name: "待付款"
       }, {
         status: 4,
+        name: "待收货"
+      }, {
+        status: 5,
         name: "已收货"
+      }, {
+        status: 6,
+        name: "退款中"
+      }, {
+        status: 7,
+        name: "已退款"
+      }, {
+        status: 8,
+        name: "已取消"
       }],
       zxStatusList: [{
         status: 0,
@@ -171,90 +183,9 @@ export default {
         status: 8,
         name: "订单已取消"
       }],
-      tkStatusList: [{
-        status: 0,
-        name: "退款中"
-      }, {
-        status: 1,
-        name: "已退款"
-      }],
       zxList: [],
-      zcList: [{
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 0,
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60"
-      }, {
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 2,
-        orderCount: 400,
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60"
-      }, {
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 1,
-        orderCount: 400,
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60"
-      }, {
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 3,
-        orderCount: 400,
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60"
-      }],
-      tkList: [{
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 0,
-        shop: "门店1",
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60"
-      }, {
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 1,
-        shop: "门店1",
-        orderCount: 400,
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60"
-      }, {
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 1,
-        orderCount: 400,
-        shop: "门店1",
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60"
-      }, {
-        userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        userAddress: "北京市 朝阳区 光华路",
-        orderDate: "2015-12-12",
-        orderStatus: 0,
-        orderCount: 400,
-        shop: "门店1",
-        butlerName: "郑家园",
-        butlerTel: "18601230123",
-        butlerImg: "http://placekitten.com/g/60/60"
-      }]
+      zcList: [],
+      tkList: []
     }
   },
   components: {
@@ -276,6 +207,30 @@ export default {
         this.zxList.push(e)
       })
       this.$refs.zx.reset()
+    }, (res) => {
+      alert("获取订单失败，请稍候再试QAQ")
+    })
+    this.$http.get(`${Lib.C.mOrderApi}customer/materialRefundOrders`, {
+      params: {
+        filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[6,7]`
+      }
+    }).then((res) => {
+      res.data.data.map((e) => {
+        this.tkList.push(e)
+      })
+      this.$refs.tk.reset()
+    }, (res) => {
+      alert("获取订单失败，请稍候再试QAQ")
+    })
+    this.$http.get(`${Lib.C.mOrderApi}customer/materialOrders`, {
+      params: {
+        filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,5]`
+      }
+    }).then((res) => {
+      res.data.data.map((e) => {
+        this.zcList.push(e)
+      })
+      this.$refs.zc.reset()
     }, (res) => {
       alert("获取订单失败，请稍候再试QAQ")
     })
