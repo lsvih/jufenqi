@@ -45,7 +45,9 @@
               </div>
             </div>
           </div>
-          <div v-if="zxList.length==0">暂无订单</div>
+          <div v-if="zxList.length==0">
+            <div class="no-data"><img src="no-data.png"><span>暂无订单</span></div>
+          </div>
         </scroller>
       </div>
     </swiper-item>
@@ -73,7 +75,9 @@
               </div>
             </div>
           </div>
-          <div v-if="zcList.length==0">暂无订单</div>
+          <div v-if="zcList.length==0">
+            <div class="no-data"><img src="no-data.png"><span>暂无订单</span></div>
+          </div>
         </scroller>
       </div>
     </swiper-item>
@@ -100,7 +104,9 @@
               </div>
             </div>
           </div>
-          <div v-if="tkList.length==0">暂无订单</div>
+          <div v-if="tkList.length==0">
+            <div class="no-data"><img src="no-data.png"><span>暂无订单</span></div>
+          </div>
         </scroller>
       </div>
     </swiper-item>
@@ -453,6 +459,29 @@ header {
                 color: #EC5835;
             }
         }
+    }
+}
+.no-data {
+    position: relative;
+    width: 100%;
+    img {
+        position: absolute;
+        top: 220px;
+        left: calc( ~"50% - 30.5px" );
+        height: 71px;
+        width: 71px;
+    }
+    span {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 16px;
+        font-size: 16px;
+        line-height: 16px;
+        left: 0;
+        top: 291px;
+        color: #DADADA;
+        text-align: center;
     }
 }
 </style>

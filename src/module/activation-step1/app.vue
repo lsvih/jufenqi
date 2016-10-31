@@ -2,7 +2,7 @@
 <group style="margin-top:-1.17647059em;">
   <cell class="cell" v-for="bank in bankList">
     <div class="select" v-tap="select($index)" style="width:calc( 100% - 40px )"></div>
-    <img class="bank-logo" :src="bank.logoImg">
+    <img class="bank-logo" :src="bank.bank.logoImg">
     <div class="bank-name">{{bank.bankName}}</div>
     <div class="text">
       <!-- 持卡类型:<span class="card-type">{{bank.cardType}}</span>&nbsp;&nbsp; -->
@@ -34,10 +34,10 @@ export default {
     // Alert
   },
   methods: {
-    select: (index) => {
+    select(index) {
       let data = JSON.parse(localStorage.getItem("apply-info"))
       data.bank = this.bankList[index].bank
-      localStorage.setItem("apply-info",JSON.stringify(data))
+      localStorage.setItem("apply-info", JSON.stringify(data))
       location.href = `activation-step2.html`
     }
   },
@@ -49,6 +49,10 @@ export default {
       }
     }).then((res) => {
       this.bankList = res.data.data
+      if(!localStorage.getItem("apply-info")){
+        let a = JSON.parse(JSON.stringify(res.data.data[0].loanApplication))
+        localStorage.setItem("apply-info",JSON.stringify(a))
+      }
     }, (res) => {
       alert("获取银行列表失败，请稍候再试...")
     })
