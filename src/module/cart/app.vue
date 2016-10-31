@@ -25,6 +25,9 @@
             </cell>
           </group>
         </scroller>
+        <div v-if="shopList.length == 0" class="no-data-container">
+          <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>
+        </div>
         <div class="submit-btn" :class="{'select-active':isSelectShop()}" v-tap="isSelectShop()?selectShop():return">预约</div>
       </div>
     </swiper-item>
@@ -46,6 +49,9 @@
             </cell>
           </group>
         </scroller>
+        <div v-if="workerList.length == 0" class="no-data-container">
+          <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>
+        </div>
         <div class="submit-btn" :class="{'select-active':isSelectWorkers()}" v-tap="isSelectWorkers()?selectWorkers():return">预约</div>
       </div>
     </swiper-item>
@@ -327,5 +333,34 @@ header {
 }
 .select-active {
     background-color: #88C928!important;
+}
+.no-data-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.no-data {
+    position: relative;
+    width: 100%;
+    img {
+        position: absolute;
+        top: 160px;
+        left: calc( ~"50% - 35.5px" );
+        height: 65px;
+        width: 71px;
+    }
+    span {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 16px;
+        font-size: 16px;
+        line-height: 16px;
+        left: 0;
+        top: 241px;
+        color: #DADADA;
+        text-align: center;
+    }
 }
 </style>

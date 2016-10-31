@@ -467,7 +467,7 @@ header {
     img {
         position: absolute;
         top: 220px;
-        left: calc( ~"50% - 30.5px" );
+        left: calc( ~"50% - 35.5px" );
         height: 71px;
         width: 71px;
     }
@@ -479,7 +479,7 @@ header {
         font-size: 16px;
         line-height: 16px;
         left: 0;
-        top: 291px;
+        top: 307px;
         color: #DADADA;
         text-align: center;
     }
