@@ -1,7 +1,7 @@
 <template>
 <group style="margin-top:-1.17647059em;">
 <cell v-for="brand in brandList" class="cell-item" v-tap="goBandDetail(brand.id)">
-<img :src="brand.logoImg" class="brand-logo" width="120px" height="80px">
+<img :src="img+brand.logoImg" class="brand-logo" width="120px" height="80px">
 <div class="brand-name">{{brand.name}}</div>
 <div class="brand-description">{{brand.intro}}</div>
 <!-- <img v-if="isFavorite(brand.id)" class="brand-is-favorite" src="star-fill.png">
@@ -18,7 +18,8 @@ import Cell from 'vux-components/cell'
 export default {
   data() {
     return {
-      brandList:[]
+      brandList:[],
+      img:Lib.C.imgUrl
       //brandList:[{id,name,img,description}]
     }
   },

@@ -115,7 +115,7 @@ export default {
     }
   },
   ready() {
-    this.$http.get(`${Lib.C.mOrderApi}customer/materialOrders/${Lib.M.GetRequest().orderNo}`).then((res) => {
+    this.$http.get(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}`).then((res) => {
       this.order = res.data.data
     }, (res) => {
       alert("获取订单失败，请稍候再试QAQ")

@@ -3,12 +3,12 @@
   <div class="select-address" v-tap="(selectType = 0,isShow=true)">{{selectedAddress}}<img src="select.png" class="select-icon"></div>
   <div class="select-class" v-tap="(selectType = 1,isShow=true)">品类<img src="select.png" class="select-icon"></div>
   <div class="sort" v-tap="(selectType = 2,isShow=true)">{{selectedSortType}}<img src="select.png" class="select-icon"></div>
-  <span class="cart"><img src="cart.png"></span>
+  <span class="cart" v-tap="goto('./cart.html')"><img src="cart.png"></span>
 </header>
 <div class="content">
   <group style="margin-top:-1.17647059em;">
     <cell v-for="shop in shopList" class="cell-item">
-      <img :src="shop.img" class="shop-logo" width="120px" height="80px">
+      <!-- <img :src="shop.img" class="shop-logo" width="120px" height="80px"> -->
       <div class="shop-name">{{shop.name}}</div>
       <div class="shop-address">{{shop.address}}</div>
       <div class="shop-rate">评分:{{shop.rate}}</div>
@@ -103,7 +103,10 @@ export default {
         }
       }
       window.localStorage.setItem(type, JSON.stringify(list))
-    }
+    },
+    goto(url){
+      location.href = url
+    },
   },
   ready() {
     if (!localStorage.getItem("favorite")) {
@@ -168,14 +171,14 @@ body {
     .shop-name {
         position: absolute;
         top: 10px;
-        left: 145px;
+        left: 15px;
         font-size: 12px;
         color: #393939;
     }
     .shop-address {
         position: absolute;
         top: 38px;
-        left: 145px;
+        left: 15px;
         font-size: 12px;
         color: #999;
         width: calc( ~"100% - 190px" );
@@ -188,7 +191,7 @@ body {
     .shop-rate {
         position: absolute;
         bottom: 10px;
-        left: 145px;
+        left: 15px;
         font-size: 12px;
         color: #3BA794;
     }

@@ -1,6 +1,6 @@
 <template>
 <header>
-  <div class="brand-logo"><img :src="brand.logo"></div>
+  <div class="brand-logo"><img :src="img+brand.logo"></div>
   <div class="brand-name">{{brand.name}}</div>
   <div class="brand-description">{{brand.slogon}}</div>
 </header>
@@ -45,6 +45,7 @@ import Previewer from 'vux-components/previewer'
 export default {
   data() {
     return {
+      img:Lib.C.imgUrl,
       id: Lib.M.GetRequest().id,
       brand: {
         logo: null,

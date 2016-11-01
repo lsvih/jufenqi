@@ -25,7 +25,7 @@
         <div v-if="shopList.length == 0" class="no-data-container">
           <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>
         </div>
-        <div class="submit-btn" :class="{'select-active':shopList.length>0}" v-tap="shopList.length>0?selectShop():return">预约</div>
+        <div class="submit-btn" :class="{'select-active':shopList.length>0}" v-tap="shopList.length>0?goto('./select-shop.html'):return">预约</div>
         <!-- <div class="submit-btn" :class="{'select-active':isSelectShop()}" v-tap="isSelectShop()?selectShop():return">预约</div> -->
       </div>
     </swiper-item>
@@ -158,10 +158,10 @@ export default {
           serviceManagers: [1]
         })
       })
-      this.$http.post(`${Lib.C.mOrderApi}customer/materialOrders`, {
+      this.$http.post(`${Lib.C.mOrderApi}materialOrders`, {
         customerName: JSON.parse(localStorage.getItem('user')).profile.nickname,
         customerMobile: JSON.parse(localStorage.getItem('user')).profile.mobile,
-        subAppList: subList
+        subApptList: subList
       }).then((res) => {
         this.showLoading = false
         this.toastText = "预约成功！"
@@ -205,7 +205,13 @@ body {
         left: 15px;
         top: 0;
         height: 60px;
-        line-height: 60px;
+        line-height: 40px;
+    }
+    .shop-address{
+        position: absolute;
+        font-size: 12px;
+        left:15px;
+        bottom: 15px;
     }
 }
 .shop-brand {

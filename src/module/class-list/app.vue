@@ -1,5 +1,5 @@
 <template>
-<x-img v-for="class in classList" :src="class.showImg" class="class-item" :style="{width:(getScreenWidth()-41)/2 + 'px',height:(getScreenWidth()-41)/2 /167*100 + 'px'}" v-tap="gotoClass(class.id)">
+<x-img v-for="class in classList" :src="img+class.showImg" class="class-item" :style="{width:(getScreenWidth()-41)/2 + 'px',height:(getScreenWidth()-41)/2 /167*100 + 'px'}" v-tap="gotoClass(class.id)">
 </x-img>
 </template>
 
@@ -9,7 +9,8 @@ import XImg from 'vux-components/x-img'
 export default {
   data() {
     return {
-      classList: []
+      classList: [],
+      img: Lib.C.imgUrl
     }
   },
   components: {

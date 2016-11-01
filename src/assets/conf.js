@@ -11,7 +11,7 @@ var Rxports = {
   wxApi:'http://wangyb.net:8080/wechat/api/',
   serverUrl: 'http://101.200.78.103:90/',
   apiUrl: 'http://101.200.78.103:90/jfq/api/web/',
-  imgUrl: 'http://101.200.78.103:90/jfq/uploads/imgs/'
+  imgUrl: 'http://oexqgmcri.bkt.clouddn.com/'
 }
 
 module.exports = Rxports

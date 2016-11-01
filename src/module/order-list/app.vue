@@ -198,7 +198,7 @@ export default {
   ready() {
     let suc_count = 0
     this.index = (Lib.M.GetRequest().type - 1) || 0
-    this.$http.get(`${Lib.C.orderApi}customer/decorationOrders`, {
+    this.$http.get(`${Lib.C.orderApi}decorationOrders`, {
       params: {
         filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,7]`
       }
@@ -210,7 +210,7 @@ export default {
     }, (res) => {
       alert("获取订单失败，请稍候再试QAQ")
     })
-    this.$http.get(`${Lib.C.mOrderApi}customer/materialRefundOrders`, {
+    this.$http.get(`${Lib.C.mOrderApi}materialSubOrders`, {
       params: {
         filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[6,7]`
       }
@@ -222,7 +222,7 @@ export default {
     }, (res) => {
       alert("获取订单失败，请稍候再试QAQ")
     })
-    this.$http.get(`${Lib.C.mOrderApi}customer/materialOrders`, {
+    this.$http.get(`${Lib.C.mOrderApi}materialOrders`, {
       params: {
         filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,5]`
       }

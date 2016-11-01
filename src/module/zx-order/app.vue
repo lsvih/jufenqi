@@ -132,7 +132,7 @@ export default {
     }
   },
   ready() {
-    this.$http.get(`${Lib.C.orderApi}customer/decorationOrders/${Lib.M.GetRequest().orderNo}`).then((res) => {
+    this.$http.get(`${Lib.C.orderApi}decorationOrders/${Lib.M.GetRequest().orderNo}`).then((res) => {
       this.order = res.data.data
     }, (res) => {
       alert("获取订单失败，请稍候再试QAQ")
@@ -151,7 +151,7 @@ export default {
       return document.body.clientWidth
     },
     cancelOrder(isJump){
-      this.$http.post(`${Lib.C.orderApi}customer/decorationOrders/${Lib.M.GetRequest().orderNo}/confirmCancel`).then((res) => {
+      this.$http.post(`${Lib.C.orderApi}decorationOrders/${Lib.M.GetRequest().orderNo}/confirmCancel`).then((res) => {
         if(isJump){
           window.location.href = "./worker-list.html"
         }else{
