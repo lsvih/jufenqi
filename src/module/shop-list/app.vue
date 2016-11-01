@@ -7,13 +7,16 @@
 </header>
 <div class="content">
   <group style="margin-top:-1.17647059em;">
-    <cell v-for="shop in shopList" class="cell-item" v-tap="gotoShopDetail(shop.id)">
+    <cell v-for="shop in shopList" class="cell-item">
       <img :src="shop.img" class="shop-logo" width="120px" height="80px">
       <div class="shop-name">{{shop.name}}</div>
       <div class="shop-address">{{shop.address}}</div>
       <div class="shop-rate">评分:{{shop.rate}}</div>
-      <img v-if="isFavorite(shop.id)" class="shop-is-favorite" src="star-fill.png">
-      <img v-else class="shop-is-favorite" src="star.png">
+      <img class="shop-call" src='./tel.png' onclick="location.href='tel:{{shop.phone}}'">
+      <img v-if="shop.favorite" class="shop-is-favorite" src="star-fill.png" v-tap="cancelFav('favorite',brandId,shop.id,$index)">
+      <img v-else class="shop-is-favorite" src="star.png" v-tap="addFav('favorite',$index)">
+      <img v-if="shop.cart" class="shop-is-cart" src="is-cart.png" v-tap="cancelFav('cart',brandId,shop.id,$index)">
+      <img v-else class="shop-is-cart" src="add-cart.png" v-tap="addFav('cart',$index)">
     </cell>
   </group>
 </div>
@@ -40,6 +43,7 @@ export default {
       classList: ["马桶", "地板", "门", "床", "墙", "油漆", "窗", "家电"],
       sortTypeList: ["综合排序", "距离最近", "评价最高"],
       brandId: Lib.M.GetRequest().id,
+      brandName: Lib.M.GetRequest().name,
       shopList: [],
       //shopList:[{id,name,img,address,rate}]
       isShow: false,
@@ -53,21 +57,95 @@ export default {
     JSelectItem
   },
   methods: {
-    isFavorite(shopId) {
+    isFav(type, brandId, shopId) {
+      if (!localStorage.getItem(type)) {
+        localStorage.setItem(type, JSON.stringify({
+          worker: [],
+          shop: []
+        }))
+        return false
+      }
+      return findIsShop(brandId, shopId, JSON.parse(localStorage.getItem(type)).shop)
+    },
+    addFav(type, index) {
+      let list = JSON.parse(window.localStorage.getItem(type))
+      for (let i in list.shop) {
+        if (list.shop[i].id === this.shopList[index].id) {
+          list.shop[i].brand.push({
+            name: this.brandName,
+            id: this.brandId
+          })
+          localStorage.setItem(type, JSON.stringify(list))
+          this.shopList[index][type] = true
+          return true
+        }
+      }
+      list.shop.push({
+        id: this.shopList[index].id,
+        name: this.shopList[index].name,
+        address: this.shopList[index].address,
+        brand: [{
+          id: this.brandId,
+          name: this.brandName
+        }]
+      })
+      this.shopList[index][type] = true
+      localStorage.setItem(type, JSON.stringify(list))
       return true
     },
-    gotoShopDetail(id) {
-      location.href = `shop-detail.html?id=${id}`
+    cancelFav(type, brandId, shopId, index) {
+      let list = JSON.parse(window.localStorage.getItem(type))
+      for (let i in list.shop) {
+        if (list.shop[i].id === shopId) {
+          let brandIndex = list.shop[i].brand.indexOf(brandId)
+          list.shop[i].brand.$remove(list.shop[i].brand[brandIndex])
+          this.shopList[index][type] = false
+        }
+      }
+      window.localStorage.setItem(type, JSON.stringify(list))
     }
   },
   ready() {
+    if (!localStorage.getItem("favorite")) {
+      localStorage.setItem("favorite", JSON.stringify({
+        worker: [],
+        shop: []
+      }))
+    }
+    if (!localStorage.getItem("cart")) {
+      localStorage.setItem("cart", JSON.stringify({
+        worker: [],
+        shop: []
+      }))
+    }
     this.$http.get(`${Lib.C.merApi}brands/${this.brandId}`).then((res) => {
       let brand = res.data.data
-      this.shopList = brand.stores
+      brand.stores.map((shop) => {
+        shop.favorite = findIsShop(this.brandId, shop.id, JSON.parse(localStorage.getItem("favorite")).shop)
+        shop.cart = findIsShop(this.brandId, shop.id, JSON.parse(localStorage.getItem("cart")).shop)
+        this.shopList.push(shop)
+      })
     }, (res) => {
       console.log(res) //error
     })
   }
+}
+
+/**
+ * 查找是否被收藏
+ */
+function findIsShop(brandId, shopId, shopList) {
+  for (let shop of shopList) {
+    if (shop.id === shopId) {
+      for (let brand of shop.brand) {
+        if (brand.id === brandId) return true
+      }
+      return false
+    } else {
+      return false
+    }
+  }
+  return false
 }
 </script>
 
@@ -96,7 +174,7 @@ body {
     }
     .shop-address {
         position: absolute;
-        top: 44px;
+        top: 38px;
         left: 145px;
         font-size: 12px;
         color: #999;
@@ -116,8 +194,22 @@ body {
     }
     .shop-is-favorite {
         position: absolute;
-        top: 40px;
+        bottom: 10px;
+        right: 115px;
+        width: 20px;
+        height: 20px;
+    }
+    .shop-is-cart {
+        position: absolute;
+        bottom: 10px;
         right: 15px;
+        width: 80px;
+        height: 20px;
+    }
+    .shop-call {
+        position: absolute;
+        bottom: 52px;
+        right:15px;
         width: 20px;
         height: 20px;
     }

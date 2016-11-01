@@ -24,13 +24,13 @@
   <div class="icon-item"><img src="share.png">
     <div>分享</div>
   </div>
-  <div class="icon-item" v-if="isFavorite()"><img src="favorite.png">
+  <!-- <div class="icon-item" v-if="isFavorite()"><img src="favorite.png">
     <div>收藏</div>
   </div>
   <div class="icon-item" v-else><img src="favorite.png">
     <div>收藏</div>
-  </div>
-  <div class="shop-list" v-tap="gotoStores(id)">查看门店</div>
+  </div> -->
+  <div class="shop-list" v-tap="gotoStores(id,brand.name)">查看门店</div>
 </footer>
 <previewer :list="productList" v-ref:previewer :options="options"></previewer>
 </template>
@@ -82,8 +82,8 @@ export default {
     getScreenWidth() {
       return document.body.clientWidth
     },
-    gotoStores(id) {
-      location.href = `shop-list.html?id=${id}`
+    gotoStores(id,name) {
+      location.href = `shop-list.html?id=${id}&name=${name}`
     }
   },
   ready() {

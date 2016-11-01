@@ -4,8 +4,8 @@
 <img :src="brand.logoImg" class="brand-logo" width="120px" height="80px">
 <div class="brand-name">{{brand.name}}</div>
 <div class="brand-description">{{brand.intro}}</div>
-<img v-if="isFavorite(brand.id)" class="brand-is-favorite" src="star-fill.png">
-<img v-else class="brand-is-favorite" src="star.png">
+<!-- <img v-if="isFavorite(brand.id)" class="brand-is-favorite" src="star-fill.png">
+<img v-else class="brand-is-favorite" src="star.png"> -->
 </cell>
 </group>
 

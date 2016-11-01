@@ -11,29 +11,27 @@
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-88+'px'" lock-x scroller-y>
-          <group style="margin-top:-1.17647059em;">
-            <cell v-for="shop in shopList" class="cell-item">
-              <div class="click-area-select" v-tap="selectItem('Shop',shop.id)"></div>
-              <div class="click-area-detail" onclick="location.href='shop-detail.html'"></div>
-              <img :src="shop.img" class="shop-logo" width="120px" height="80px">
+        <scroller :height="getScreenHeight()-88+'px'" lock-x scroller-y v-if="shopList.length > 0">
+          <group style="margin-top:-1.17647059em;" v-for="shop in shopList">
+            <cell class="shop-item">
               <div class="shop-name">{{shop.name}}</div>
               <div class="shop-address">{{shop.address}}</div>
-              <div class="shop-rank">评分:{{shop.rank}}</div>
-              <img v-if="isSelect('Shop',shop.id)" class="shop-is-favorite" src="selected.png">
-              <img v-else class="shop-is-favorite" src="toselect.png">
+            </cell>
+            <cell class="shop-brand" v-for="brand in shop.brand">
+              <div class="brand-name">{{brand.name}}</div>
             </cell>
           </group>
         </scroller>
         <div v-if="shopList.length == 0" class="no-data-container">
           <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>
         </div>
-        <div class="submit-btn" :class="{'select-active':isSelectShop()}" v-tap="isSelectShop()?selectShop():return">预约</div>
+        <div class="submit-btn" :class="{'select-active':shopList.length>0}" v-tap="shopList.length>0?selectShop():return">预约</div>
+        <!-- <div class="submit-btn" :class="{'select-active':isSelectShop()}" v-tap="isSelectShop()?selectShop():return">预约</div> -->
       </div>
     </swiper-item>
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-88+'px'" lock-x scroller-y>
+        <scroller :height="getScreenHeight()-88+'px'" lock-x scroller-y v-if="workerList.length > 0">
           <group style="margin-top:-1.17647059em;">
             <cell v-for="worker in workerList" class="cell-item">
               <div class="click-area-select" v-tap="selectItem('Worker',worker.userId)"></div>
@@ -60,6 +58,7 @@
     </swiper-item> -->
   </swiper>
   <toast :show.sync="showToast" :text="toastText"></toast>
+  <loading :show.sync="showLoading" text="正在预约，请稍候"></loading>
 </div>
 </template>
 
@@ -75,6 +74,7 @@ import Swiper from 'vux-components/swiper'
 import SwiperItem from 'vux-components/swiper-item'
 import Scroller from 'vux-components/scroller'
 import Toast from 'vux-components/toast'
+import Loading from 'vux-components/loading'
 export default {
   data() {
     return {
@@ -82,34 +82,10 @@ export default {
       tab: '门店',
       showToast: false,
       toastText: "",
+      showLoading: false,
       workerList: window.localStorage.getItem("cart") ? JSON.parse(window.localStorage.getItem("cart")).worker : [],
-      shopList: [{
-        id: 1,
-        name: 'hahah',
-        img: 'http://placekitten.com/g/120/80',
-        address: '123sdafsd',
-        rank: 4.7
-      }, {
-        id: 2,
-        name: 'hahah',
-        img: 'http://placekitten.com/g/120/80',
-        address: '123sdafsd',
-        rank: 4.7
-      }, {
-        id: 3,
-        name: 'hahah',
-        img: 'http://placekitten.com/g/120/80',
-        address: '123sdafsd',
-        rank: 4.7
-      }, {
-        id: 4,
-        name: 'hahah',
-        img: 'http://placekitten.com/g/120/80',
-        address: '123sdafsd',
-        rank: 4.7
-      }],
+      shopList: window.localStorage.getItem("cart") ? JSON.parse(window.localStorage.getItem("cart")).shop : [],
       selectWorker: [],
-      selectShop: []
     }
   },
   components: {
@@ -120,7 +96,8 @@ export default {
     Swiper,
     SwiperItem,
     Scroller,
-    Toast
+    Toast,
+    Loading
   },
   methods: {
     isSelect(type, id) {
@@ -153,8 +130,6 @@ export default {
             this.workerList.$remove(e)
           }
         })
-      } else {
-
       }
       window.localStorage.setItem('cart', JSON.stringify({
         worker: this.workerList,
@@ -168,7 +143,38 @@ export default {
       return !!this.selectShop.length
     },
     selectShop() {
-      this.goto(`select-shop.html?select=${this.selectShop.join('|')}`)
+      this.showLoading = true
+      let subList = []
+      let list = JSON.parse(localStorage.cart).shop
+      list.map((shop) => {
+        let brands = []
+        shop.brand.map((brand) => {
+          brands.push(brand.name)
+        })
+        subList.push({
+          guideId: 1,
+          storeId: shop.id,
+          brands: brands,
+          serviceManagers: [1]
+        })
+      })
+      this.$http.post(`${Lib.C.mOrderApi}customer/materialOrders`, {
+        customerName: JSON.parse(localStorage.getItem('user')).profile.nickname,
+        customerMobile: JSON.parse(localStorage.getItem('user')).profile.mobile,
+        subAppList: subList
+      }).then((res) => {
+        this.showLoading = false
+        this.toastText = "预约成功！"
+        this.showToast = true
+        let list = JSON.parse(localStorage.cart)
+        list.shop = []
+        localStorage.setItem("cart", JSON.stringify(list))
+        this.shopList = []
+      }, (res) => {
+        this.showLoading = false
+        this.toastText = "网络中断，请重试"
+        this.showToast = true
+      })
     },
     selectWorkers() {
       this.goto(`select-worker.html?select=${this.selectWorker.join('|')}`)
@@ -191,48 +197,31 @@ body {
 }
 </style>
 <style scoped lang="less">
+.shop-item {
+    position: relative;
+    height: 40px;
+    .shop-name {
+        position: absolute;
+        left: 15px;
+        top: 0;
+        height: 60px;
+        line-height: 60px;
+    }
+}
+.shop-brand {
+    .brand-name {
+        position: absolute;
+        top: 0;
+        left: 15px;
+        font-size: 14px;
+        height: 40px;
+        line-height: 40px;
+    }
+}
 .cell-item {
     position: relative;
     height: 80px;
-    .shop-logo {
-        position: absolute;
-        top: 10px;
-        left: 15px;
-        width: 120px;
-        height: 80px;
-    }
-    .shop-name {
-        position: absolute;
-        top: 10px;
-        left: 145px;
-        font-size: 12px;
-        color: #393939;
-    }
-    .shop-address {
-        position: absolute;
-        top: 44px;
-        left: 145px;
-        font-size: 12px;
-        color: #999;
-    }
-    .shop-rank {
-        position: absolute;
-        bottom: 10px;
-        left: 145px;
-        font-size: 12px;
-        color: #3ba794;
-    }
-    .shop-is-favorite {
-        position: absolute;
-        top: 70px;
-        right: 15px;
-        width: 80px;
-        height: 20px;
-        img {
-            height: 100%;
-            width: 100%;
-        }
-    }
+
     .worker-logo {
         position: absolute;
         top: 10px;
