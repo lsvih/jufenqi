@@ -61,7 +61,7 @@ export default {
         })
         subList.push({
           guideId: 1,
-          storeId: shop.id,
+          storeId: shop.userId,
           brands: brands,
           serviceManagers: [1]
         })

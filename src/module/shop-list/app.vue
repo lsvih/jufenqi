@@ -82,6 +82,7 @@ export default {
       }
       list.shop.push({
         id: this.shopList[index].id,
+        userId:this.shopList[index].userId,
         name: this.shopList[index].name,
         address: this.shopList[index].address,
         brand: [{
