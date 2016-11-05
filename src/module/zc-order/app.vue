@@ -136,13 +136,23 @@ export default {
       if (this.payWay == 1) {
         this.showInsNumberPicker = true
       } else {
-        //确认订单代码
+        this.$http.post(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}/customerConfirmMaterial?payMethod=1&stageCount=1`).then((res) => {
+            alert("订单已更新！")
+            location.reload()
+        }, (res) => {
+            alert("更新订单失败，请稍后重试")
+        })
       }
     },
     onHideInsSelect(type) {
       if (type) {
-        console.log(this.insNumberSelect)
-          //确认订单代码
+        this.$http.post(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}/customerConfirmMaterial?payMethod=2&stageCount=${this.insNumberSelect[0]}`).then((res) => {
+            alert("订单已更新！")
+            location.reload()
+        }, (res) => {
+            alert("更新订单失败，请稍后重试")
+            location.reload()
+        })
       }
     },
     getTime(timeStamp) {

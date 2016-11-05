@@ -39,7 +39,7 @@
     <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:plan>
       <div class="worker-product-list" :style="{width:order.planList[selectPlan].images.length*(.8*getScreenWidth()+10)+  'px',height:.8*getScreenWidth()*.63+'px'}">
         <div class="worker-product-item" v-for="preview in order.planList[selectPlan].images" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-          <x-img class="product-img" :scroller="$refs.plan" :src="preview.src" v-tap="$refs.previewer.show($index)"></x-img>
+          <x-img class="product-img" :scroller="$refs.plan" :src="preview" v-tap="$refs.previewer.show($index)"></x-img>
         </div>
       </div>
     </scroller>
@@ -70,7 +70,7 @@
 </div>
 <div class="status-3-btn" v-if="order.status === 3">
   <div class="btn-left" v-tap="cancelOrder(true)"><img src="./change.png">更换工长</div>
-  <div class="btn-right">选择当前方案</div>
+  <div class="btn-right" v-tap="selectPlan()">选择当前方案</div>
 </div>
 <!-- <x-button slot="right" style="border-radius:0;background-color:rgb(158, 188, 43);color:#fff;margin:20px 0;width:100%" v-if="order.status==7" onclick="location.href='order-judge.html'">去评价</x-button> -->
 <previewer :list="order.planList[0].images" v-ref:previewer :options="options"></previewer>
@@ -89,6 +89,7 @@ export default {
   data() {
     return {
       order: {},
+      selectPlan: 0,
       zxStatusList: [{
         status: 0,
         name: "订单已删除"
@@ -150,16 +151,25 @@ export default {
     getScreenWidth() {
       return document.body.clientWidth
     },
-    cancelOrder(isJump){
+    cancelOrder(isJump) {
       this.$http.post(`${Lib.C.orderApi}decorationOrders/${Lib.M.GetRequest().orderNo}/confirmCancel`).then((res) => {
-        if(isJump){
+        if (isJump) {
           window.location.href = "./worker-list.html"
-        }else{
+        } else {
           alert("取消订单成功")
           window.location.href = './order-list.html'
         }
       }, (res) => {
         alert("取消订单失败，请稍候再试QAQ")
+      })
+    },
+    selectPlan() {
+      let planId = this.order.planList[selectPlan].id
+      this.$http.post(`${Lib.C.orderApi}decorationOrders/${Lib.M.GetRequest().orderNo}/confirmSelect?planId=${planId}`).then((res) => {
+        alert("订单已更新！")
+        location.reload()
+      }, (res) => {
+        alert("更新订单失败，请稍后重试")
       })
     }
   }

@@ -236,23 +236,6 @@ export default {
     })
   },
   methods: {
-    getTabType(index) {
-      console.log(index)
-      switch (index) {
-        case 0:
-          return '装修订单'
-          break
-        case 1:
-          return '主材订单'
-          break
-        case 2:
-          return '软装订单'
-          break
-        default:
-          return '装修订单'
-          break
-      }
-    },
     getScreenHeight() {
       return document.body.clientHeight
     },

@@ -20,6 +20,9 @@ export default {
     }
   },
   methods: {
+    getTimestamp(){
+      return new Date().getTime()
+    },
     getCode() {
       if (this.code) {
         this.$http.post(`${Lib.C.userApi}auth/loginUsingWechat`, {
@@ -42,7 +45,7 @@ export default {
           return false;
         })
       } else {
-        location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${location.href}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirec`
+        location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${location.href}&response_type=code&scope=snsapi_userinfo&state=${this.getTimestamp()}#wechat_redirec`
       }
     }
   }
