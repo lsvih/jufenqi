@@ -172,7 +172,7 @@ export default {
       })
     },
     selectCurrentlyPlan() {
-      let planId = this.order.planList[selectPlan].id
+      let planId = this.order.planList[this.selectPlan].id
       axios.post(`${Lib.C.orderApi}decorationOrders/${Lib.M.GetRequest().orderNo}/confirmSelect?planId=${planId}`).then((res) => {
         alert("订单已更新！")
         location.reload()
