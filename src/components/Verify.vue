@@ -22,100 +22,100 @@ export default {
     return {
       msg: "请输入验证码",
       alarm: false,
-      time:60,
-      timekeeper:null,
-      verifyNumber:"",
+      time: 60,
+      timekeeper: null,
+      verifyNumber: "",
     }
   },
   components: {},
-  ready(){
+  ready() {
     document.getElementById("verify").focus()
     active()
     this.setTime()
   },
   methods: {
-    setTime(){
+    setTime() {
       this.time = 60
       let that = this
-      this.timekeeper = setInterval(()=>{
+      this.timekeeper = setInterval(() => {
         that.time--
-        if(that.time === 0){
-          clearInterval(that.timekeeper)
-        }
-      },1000)
-    },
-    send(){
-      let that = this
-      this.$parent.loading=true
-      this.$http.post(`${Lib.C.userApi}sms/sendCode`, {
-        mobile: this.$parent.phoneNumber
-      }, {
-        xhr: {
-          withCredentials: true
-        },
-        emulateJSON: true
-      }).then((res)=>{
-        this.$parent.loading = false
-        this.time = 60
-        this.timekeeper = setInterval(()=>{
-          that.time--
-          if(that.time === 0){
+          if (that.time === 0) {
             clearInterval(that.timekeeper)
           }
-        },1000)
-      },(res)=>{
+      }, 1000)
+    },
+    send() {
+      let that = this
+      this.$parent.loading = true
+      axios.post(`${Lib.C.userApi}sms/sendCode`, {
+        params: {
+          mobile: this.$parent.phoneNumber
+        },
+        withCredentials: true,
+        responseType: true
+      }).then((res) => {
+        this.$parent.loading = false
+        this.time = 60
+        this.timekeeper = setInterval(() => {
+          that.time--
+            if (that.time === 0) {
+              clearInterval(that.timekeeper)
+            }
+        }, 1000)
+      }, (res) => {
         this.$parent.loading = false
         alert("发送验证码失败，请稍后重试...")
       })
     },
-    close(){
+    close() {
       clearInterval(this.timekeeper)
       this.$parent.inVerify = false
     },
-    input(){
-      this.verifyNumber = String(this.verifyNumber.replace(/[^0-9]/g,''));
+    input() {
+      this.verifyNumber = String(this.verifyNumber.replace(/[^0-9]/g, ''));
     },
-    getSingleVerify(index){
+    getSingleVerify(index) {
       let num = String(this.verifyNumber)[index]
-      num = num===undefined?"":num
-      if(index===5&&num!==""){
+      num = num === undefined ? "" : num
+      if (index === 5 && num !== "") {
         blur()
         this.$parent.loading = true
         this.submit()
       }
       return num
     },
-    submit(){
-      this.$http.post(`${Lib.C.userApi}auth/registerUsingMobile`, {
-        mobile: this.$parent.phoneNumber,
-        userId: JSON.parse(localStorage.getItem("user")).userId,
-        code: this.verifyNumber,
-        // password:??
-      }, {
-        xhr: {
-          withCredentials: true
+    submit() {
+      axios.post(`${Lib.C.userApi}auth/registerUsingMobile`, {}, {
+        params: {
+          mobile: this.$parent.phoneNumber,
+          userId: JSON.parse(localStorage.getItem("user")).userId,
+          code: this.verifyNumber,
+          // password:??
         },
-        emulateJSON: true
-      }).then((res)=>{
-        window.localStorage.setItem("user",JSON.stringify(res.data.data))
+        withCredentials: true,
+        responseType: true
+      }).then((res) => {
+        window.localStorage.setItem("user", JSON.stringify(res.data.data))
         location.href = this.$parent.lastUrl
-      },(res)=>{
+      }, (res) => {
         this.alarm = true
         this.$parent.loading = false
         this.msg = "验证码错误，请重试"
         this.activeInput()
       })
     },
-    activeInput(){
+    activeInput() {
       document.getElementById("verify").focus()
       active()
     }
   }
 }
-function active(){
+
+function active() {
   document.getElementById("verify").focus()
 }
-function blur(){
+
+function blur() {
   document.getElementById("verify").blur()
 }
 </script>
@@ -153,48 +153,48 @@ function blur(){
             margin-right: 15px;
             text-align: center;
             line-height: 22px;
-            float:left;
+            float: left;
         }
     }
-    .send-agian{
-      font-size: 12px;
-      position: absolute;
-      bottom: 55px;
-      left: 50%;
-      margin-left: 48px;
+    .send-agian {
+        font-size: 12px;
+        position: absolute;
+        bottom: 55px;
+        left: 50%;
+        margin-left: 48px;
     }
-    .line{
-      position: absolute;
-      height: 1px;
-      width: 100;
-      background-color: #d8d8d8;
-      bottom:44px;
-      left:0;
+    .line {
+        position: absolute;
+        height: 1px;
+        width: 100;
+        background-color: #d8d8d8;
+        bottom: 44px;
+        left: 0;
     }
-    .close{
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 44px;
-      width: 100%;
-      line-height: 44px;
-      text-align: center;
+    .close {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 44px;
+        width: 100%;
+        line-height: 44px;
+        text-align: center;
     }
 }
 .alarm {
     color: #D0021B;
 }
-#verify{
-  position: absolute;
-  height: 24px;
-  width: calc( ~"100% + 500px" );
-  left: 0;
-  margin-left: -500px;
-  top: 44px;
-  z-index:1;
-  color:rgba(255,255,255,0);
-  background-color: transparent;
-  -webkit-appearance: none;
-  border:none
+#verify {
+    position: absolute;
+    height: 24px;
+    width: calc( ~"100% + 500px" );
+    left: 0;
+    margin-left: -500px;
+    top: 44px;
+    z-index: 1;
+    color: rgba(255,255,255,0);
+    background-color: transparent;
+    -webkit-appearance: none;
+    border: none;
 }
 </style>

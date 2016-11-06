@@ -6,6 +6,7 @@
 <script>
 import Lib from 'assets/Lib.js'
 import XImg from 'vux-components/x-img'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -17,11 +18,11 @@ export default {
     XImg
   },
   ready(){
-    this.$http.get(`${Lib.C.merApi}categories`, {
+    axios.get(`${Lib.C.merApi}categories`,{}, {
       params: {size:1000}
     }).then((res) => {
       this.classList = res.data.data
-    }, (res) => {
+    }).catch((res) => {
       alert("网络连接失败，请刷新重试")
       window.location.reload()
     })

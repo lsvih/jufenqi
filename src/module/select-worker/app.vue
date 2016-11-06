@@ -35,6 +35,13 @@ import XInput from 'vux-components/x-input'
 import Datetime from 'vux-components/datetime'
 import Loading from 'vux-components/loading'
 import Alert from 'vux-components/alert'
+import axios from 'axios'
+try {
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+} catch (e) {
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   components: {
     PopupPicker,
@@ -47,16 +54,16 @@ export default {
     Loading,
     Alert
   },
-  ready(){
+  ready() {
     this.selectWorkers = Lib.M.GetRequest().select.split("|")
-    JSON.parse(window.localStorage.getItem("cart")).worker.map((e)=>{
-      if(~this.selectWorkers.indexOf(String(e.userId))){
+    JSON.parse(window.localStorage.getItem("cart")).worker.map((e) => {
+      if (~this.selectWorkers.indexOf(String(e.userId))) {
         this.workerList.push(e)
       }
     })
   },
   methods: {
-    goto(url){
+    goto(url) {
       window.location.href = url
     },
     _show: function() {
@@ -72,21 +79,20 @@ export default {
       let that = this
       let appointstamp = new Date(this.appoint_at)
       appointstamp = appointstamp.getTime()
-      this.$http.post(`${Lib.C.orderApi}decorationOrders`, {
-        customerName:this.name,
-        customerMobile:this.phone,
-        orderTime:appointstamp,
-        orderLocation:city,
-        orderAddress:this.address,
-        foreman1Id:this.selectWorkers[0],
-        foreman2Id:this.selectWorkers[1]
-      }, {
-        xhr: {
-          withCredentials: true
-        }
+      axios.post(`${Lib.C.orderApi}decorationOrders`, {}, {
+        params: {
+          customerName: this.name,
+          customerMobile: this.phone,
+          orderTime: appointstamp,
+          orderLocation: city,
+          orderAddress: this.address,
+          foreman1Id: this.selectWorkers[0],
+          foreman2Id: this.selectWorkers[1]
+        },
+        withCredentials: true,
       }).then((res) => {
         window.location.href = "./appointment-success.html?type=1"
-      }, (res) => {
+      }).catch((res) => {
         alert("预约失败，请稍候再试QAQ")
         this.showLoading = false
       })
@@ -180,36 +186,36 @@ export default {
       phone: JSON.parse(window.localStorage.getItem("user")).profile.mobile,
       address: "",
       appoint_at: "",
-      workerList:[],
-      selectWorkers:[]
+      workerList: [],
+      selectWorkers: []
     }
   }
 }
 </script>
 <style lang="less">
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 ::-webkit-input-placeholder {
-  text-align: right;
+    text-align: right;
 }
 body {
-  background-color: #eee;
-  margin: 0;
+    background-color: #eee;
+    margin: 0;
 }
 .to-calculate {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 44px;
-  text-align: center;
-  line-height: 44px;
-  background-color: #e2e2e2;
-  color:#fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 44px;
+    text-align: center;
+    line-height: 44px;
+    background-color: #e2e2e2;
+    color: #fff;
 }
-.btn-active{
-  background-color: #88C928!important;
+.btn-active {
+    background-color: #88C928!important;
 }
 .cell-item {
     position: relative;

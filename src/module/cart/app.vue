@@ -75,6 +75,13 @@ import SwiperItem from 'vux-components/swiper-item'
 import Scroller from 'vux-components/scroller'
 import Toast from 'vux-components/toast'
 import Loading from 'vux-components/loading'
+import axios from 'axios'
+try {
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+} catch (e) {
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
@@ -158,10 +165,12 @@ export default {
           serviceManagers: [1]
         })
       })
-      this.$http.post(`${Lib.C.mOrderApi}materialOrders`, {
-        customerName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-        customerMobile: JSON.parse(localStorage.getItem('user')).profile.mobile,
-        subApptList: subList
+      axios.post(`${Lib.C.mOrderApi}materialOrders`, {}, {
+        params: {
+          customerName: JSON.parse(localStorage.getItem('user')).profile.nickname,
+          customerMobile: JSON.parse(localStorage.getItem('user')).profile.mobile,
+          subApptList: subList
+        }
       }).then((res) => {
         this.showLoading = false
         this.toastText = "预约成功！"
@@ -170,7 +179,7 @@ export default {
         list.shop = []
         localStorage.setItem("cart", JSON.stringify(list))
         this.shopList = []
-      }, (res) => {
+      }).catch((res) => {
         this.showLoading = false
         this.toastText = "网络中断，请重试"
         this.showToast = true
@@ -207,10 +216,10 @@ body {
         height: 60px;
         line-height: 40px;
     }
-    .shop-address{
+    .shop-address {
         position: absolute;
         font-size: 12px;
-        left:15px;
+        left: 15px;
         bottom: 15px;
     }
 }

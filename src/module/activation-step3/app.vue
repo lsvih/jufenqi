@@ -15,6 +15,13 @@ import Lib from 'assets/Lib.js'
 import ToUploadPhoto from 'components/JToUploadPhoto.vue'
 import XButton from 'vux-components/x-button'
 import JTel from 'components/JTel.vue'
+import axios from 'axios'
+try{
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+}catch(e){
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
@@ -29,9 +36,9 @@ export default {
     JTel
   },
   ready() {
-    this.$http.post(`${Lib.C.wxApi}mp/jsapiTicket`, location.href).then((res) => {
+    axios.post(`${Lib.C.wxApi}mp/jsapiTicket`, location.href).then((res) => {
       wxReady(res.data.data)
-    }, (res) => {
+    }).catch((res) => {
       alert("网络连接失败，请刷新重试")
       console.log(res.data.data)
     })
@@ -81,11 +88,11 @@ export default {
         data.idCardFrontImgInsert = ["http://"+this.cardF.server]
         data.idCardBackImgInsert = ["http://"+this.cardB.server]
         data.idCardHandImgInsert = ["http://"+this.cardP.server]
-        this.$http.put(`${Lib.C.loanApi}user-activate`,data).then((res)=>{
+        axios.put(`${Lib.C.loanApi}user-activate`,data).then((res)=>{
           alert("激活信息填写成功，请等待工作人员联系!")
           console.log(res)
           location.href = './instalment.html'
-        },(res)=>{
+        }).catch((res)=>{
           alert("网络连接失败，请重试")
         })
       }

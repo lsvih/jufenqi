@@ -40,6 +40,13 @@ import XButton from 'vux-components/x-button'
 import JTel from 'components/JTel.vue'
 import XInput from 'vux-components/x-input'
 import Group from 'vux-components/group'
+import axios from 'axios'
+try {
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+} catch (e) {
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
@@ -70,21 +77,20 @@ export default {
       return (/^[1-9]\d*$|^[1-9]\d*\.\d*$|^0\.\d*[1-9]\d*$/g.test(info.money) && info.money <= this.wallet && info.people !== "" && this.depositBank !== "" && /^(\d{16}|\d{19})$/.test(info.cardNumber))
     },
     submitPo1() {
-      this.$http.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToBankcard`, {
-        amount: this.po1.money,
-        accountName: this.po1.people,
-        bankcardNo: this.po1.cardNumber,
-        depositBank: this.po1.depositBank
-      }, {
-        xhr: {
-          withCredentials: true
+      axios.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToBankcard`, {}, {
+        params: {
+          amount: this.po1.money,
+          accountName: this.po1.people,
+          bankcardNo: this.po1.cardNumber,
+          depositBank: this.po1.depositBank
         },
-        emulateJSON: true
+        withCredentials: true,
+        responseType: true
       }).then((res) => {
         alert("提现申请已提交")
         this.wallet = res.data.data.balance
         this.status = 0
-      }, (res) => {
+      }).catch((res) => {
         alert("提现失败，请稍后再试")
       })
     },
@@ -94,27 +100,26 @@ export default {
       return (/^[1-9]\d*$|^[1-9]\d*\.\d*$|^0\.\d*[1-9]\d*$/g.test(info.money) && info.money <= this.wallet && info.account !== "")
     },
     submitPo2() {
-      this.$http.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToWechat`, {
-        amount: this.po2.money,
-        wechatId: this.po2.account,
-      }, {
-        xhr: {
-          withCredentials: true
+      axios.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToWechat`, {}, {
+        param: {
+          amount: this.po2.money,
+          wechatId: this.po2.account,
         },
-        emulateJSON: true
+        withCredentials: true,
+        responseType: true
       }).then((res) => {
         alert("提现申请已提交")
         this.wallet = res.data.data.balance
         this.status = 0
-      }, (res) => {
+      }).catch((res) => {
         alert("提现失败，请稍后再试")
       })
     }
   },
   ready() {
-    this.$http.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+    axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
       this.wallet = res.data.data.balance
-    }, (res) => {
+    }).catch((res) => {
       alert("网络连接失败，请稍候重试")
       window.location.reload()
     })

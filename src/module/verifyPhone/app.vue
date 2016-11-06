@@ -14,6 +14,7 @@
 import Lib from 'assets/Lib.js'
 import Verify from 'components/Verify.vue'
 import Loading from 'vux-components/loading'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -21,7 +22,7 @@ export default {
       phoneNumber: "",
       inVerify: false,
       loading: false,
-      lastUrl: Lib.M.GetRequest().url?unescape(Lib.M.GetRequest().url):'./index.html'
+      lastUrl: Lib.M.GetRequest().url ? unescape(Lib.M.GetRequest().url) : './index.html'
     }
   },
   components: {
@@ -35,17 +36,16 @@ export default {
     },
     gotoVerify() {
       this.loading = true
-      this.$http.post(`${Lib.C.userApi}sms/sendCode`, {
-        mobile: this.phoneNumber
-      }, {
-        xhr: {
-          withCredentials: true
+      axios.post(`${Lib.C.userApi}sms/sendCode`, {}, {
+        params: {
+          mobile: this.phoneNumber
         },
-        emulateJSON: true
-      }).then((res)=>{
+        withCredentials: true,
+        responseType: true
+      }).then((res) => {
         this.inVerify = true
         this.loading = false
-      },(res)=>{
+      }).catch((res) => {
         alert("发送验证码失败，请稍后重试...")
         this.loading = false
       })

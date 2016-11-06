@@ -42,6 +42,7 @@ import Scroller from 'vux-components/scroller'
 import XImg from 'vux-components/x-img'
 import Cell from 'vux-components/cell'
 import Previewer from 'vux-components/previewer'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -88,13 +89,13 @@ export default {
     }
   },
   ready() {
-    this.$http.get(`${Lib.C.merApi}brands/${this.id}`).then((res) => {
+    axios.get(`${Lib.C.merApi}brands/${this.id}`).then((res) => {
       let brand = res.data.data
       this.brand.name = brand.name
       this.brand.logo = brand.logoImg
       this.brand.description = brand.intro
       this.slogon = brand.slogon
-    }, (res) => {
+    }).catch((res) => {
       console.log(res) //error
     })
   }

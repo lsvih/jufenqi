@@ -19,6 +19,13 @@ import Group from 'vux-components/group/'
 import Cell from 'vux-components/cell/'
 import XButton from 'vux-components/x-button'
 import JTel from 'components/JTel.vue'
+import axios from 'axios'
+try{
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+}catch(e){
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
@@ -46,9 +53,9 @@ export default {
       data.monthlyIncome = this.monthlyIncome
       data.company = this.company
       data.position = this.position
-      this.$http.post(`${Lib.C.loanApi}user-application`,data).then((res)=>{
+      axios.post(`${Lib.C.loanApi}user-application`,data).then((res)=>{
         window.location.href = './ins-apply-success.html?wait=true'
-      },(res)=>{
+      }).catch((res)=>{
         alert("提交申请失败，请稍候重试...")
       })
     }

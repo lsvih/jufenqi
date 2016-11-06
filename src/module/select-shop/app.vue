@@ -31,6 +31,13 @@ import Picker from 'vux-components/picker'
 import XInput from 'vux-components/x-input'
 import Datetime from 'vux-components/datetime'
 import Loading from 'vux-components/loading'
+import axios from 'axios'
+try {
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+} catch (e) {
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   components: {
     PopupPicker,
@@ -41,14 +48,13 @@ export default {
     Loading,
     Datetime
   },
-  ready(){
-  },
+  ready() {},
   methods: {
-    goto(url){
+    goto(url) {
       window.location.href = url
     },
     isFillData: function() {
-      return this.name != "" && this.appoint_at != "" && this.phone!== null
+      return this.name != "" && this.appoint_at != "" && this.phone !== null
     },
     submit() {
       this.showLoading = true
@@ -66,10 +72,12 @@ export default {
           serviceManagers: [1]
         })
       })
-      this.$http.post(`${Lib.C.mOrderApi}materialOrders`, {
-        customerName: this.name,
-        customerMobile: this.phone,
-        subApptList: subList
+      axios.post(`${Lib.C.mOrderApi}materialOrders`, {}, {
+        params: {
+          customerName: this.name,
+          customerMobile: this.phone,
+          subApptList: subList
+        }
       }).then((res) => {
         this.showLoading = false
         alert("预约成功!")
@@ -78,7 +86,7 @@ export default {
         localStorage.setItem("cart", JSON.stringify(list))
         this.shopList = []
         location.href = "./cart.html"
-      }, (res) => {
+      }).catch((res) => {
         this.showLoading = false
         alert("网络连接中断，请稍候再试")
       })
@@ -90,35 +98,35 @@ export default {
       name: "",
       phone: JSON.parse(window.localStorage.getItem("user")).profile.mobile,
       appoint_at: "",
-      shopList:JSON.parse(localStorage.cart).shop,
+      shopList: JSON.parse(localStorage.cart).shop,
     }
   }
 }
 </script>
 <style lang="less">
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 ::-webkit-input-placeholder {
-  text-align: right;
+    text-align: right;
 }
 body {
-  background-color: #eee;
-  margin: 0;
+    background-color: #eee;
+    margin: 0;
 }
 .to-calculate {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 44px;
-  text-align: center;
-  line-height: 44px;
-  background-color: #e2e2e2;
-  color:#fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 44px;
+    text-align: center;
+    line-height: 44px;
+    background-color: #e2e2e2;
+    color: #fff;
 }
-.btn-active{
-  background-color: #88C928!important;
+.btn-active {
+    background-color: #88C928!important;
 }
 .cell-item {
     position: relative;
@@ -212,10 +220,10 @@ body {
         height: 60px;
         line-height: 40px;
     }
-    .shop-address{
+    .shop-address {
         position: absolute;
         font-size: 12px;
-        left:15px;
+        left: 15px;
         bottom: 15px;
     }
 }

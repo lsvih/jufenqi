@@ -86,6 +86,7 @@ import {
   Flexbox,
   FlexboxItem
 } from 'vux-components/flexbox'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -118,7 +119,7 @@ export default {
     Toast
   },
   ready() {
-    this.$http.get(`${Lib.C.userApi}workmanProfiles/${Lib.M.GetRequest().id}`).then((res) => {
+    axios.get(`${Lib.C.userApi}workmanProfiles/${Lib.M.GetRequest().id}`).then((res) => {
       if (res.data.data == null) {
         window.document.body.style.display = "hidden"
         alert("您查看的信息不存在,请重新选择")
@@ -126,7 +127,7 @@ export default {
       }
       this.worker = res.data.data
       this.isFavorite = this._isFavorite()
-    }, (res) => {
+    }).catch((res) => {
       window.document.body.style.display = "hidden"
       alert("您查看的信息不存在,请重新选择")
       window.history.go(-1)

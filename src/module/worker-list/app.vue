@@ -32,6 +32,7 @@ import Cell from 'vux-components/cell'
 import JSelect from 'components/JSelect.vue'
 import JSelectItem from 'components/JSelectItem.vue'
 import Loading from 'vux-components/loading'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -58,7 +59,7 @@ export default {
   methods: {
     getWorkerData(sortOption) {
       this.workerList = [];
-      this.$http.get(`${Lib.C.userApi}workmanProfiles`, {
+      axios.get(`${Lib.C.userApi}workmanProfiles`, {},{
         params: sortOption
       }).then((res) => {
         let data = res.data.data
@@ -67,7 +68,7 @@ export default {
         })
         this.workerList = data
         this.loading = false
-      }, (res) => {
+      }).catch((res) => {
         this.loading = false
         alert("网络连接失败，请刷新重试")
         window.location.reload()

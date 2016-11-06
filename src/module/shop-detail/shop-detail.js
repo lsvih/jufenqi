@@ -3,8 +3,6 @@ import App from './app'
 import vueTap from 'v-tap'
 Vue.use(vueTap)
 import Map from 'components/Map'
-import Resource from 'vue-resource'
-Vue.use(Resource)
 
 /* eslint-disable no-new */
 new Vue({

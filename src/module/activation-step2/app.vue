@@ -12,6 +12,13 @@ import Lib from 'assets/Lib.js'
 import ToUploadPhoto from 'components/JToUploadPhoto.vue'
 import XButton from 'vux-components/x-button'
 import JTel from 'components/JTel.vue'
+import axios from 'axios'
+try{
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+}catch(e){
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
@@ -25,9 +32,9 @@ export default {
     JTel
   },
   ready() {
-    this.$http.post(`${Lib.C.wxApi}mp/jsapiTicket`, location.href).then((res) => {
+    axios.post(`${Lib.C.wxApi}mp/jsapiTicket`, location.href).then((res) => {
       wxReady(res.data.data)
-    }, (res) => {
+    }).catch((res) => {
       alert("网络连接失败，请刷新重试")
       console.log(res.data.data)
     })

@@ -19,6 +19,13 @@
 import Lib from 'assets/Lib.js'
 import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
+import axios from 'axios'
+try{
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+}catch(e){
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 // import Alert from 'vux-components/alert'
 export default {
   data() {
@@ -42,7 +49,7 @@ export default {
     }
   },
   ready() {
-    this.$http.get(`${Lib.C.loanApi}loan-application-schemes`, {
+    axios.get(`${Lib.C.loanApi}loan-application-schemes`,{},{
       params: {
         filter: `userId:${JSON.parse(localStorage.getItem('user')).userId}`,
         sort: "createdAt,desc"
@@ -53,7 +60,7 @@ export default {
         let a = JSON.parse(JSON.stringify(res.data.data[0].loanApplication))
         localStorage.setItem("apply-info",JSON.stringify(a))
       }
-    }, (res) => {
+    }).catch((res) => {
       alert("获取银行列表失败，请稍候再试...")
     })
   }

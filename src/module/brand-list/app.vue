@@ -15,6 +15,8 @@
 import Lib from 'assets/Lib.js'
 import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
+import axios from 'axios'
+
 export default {
   data() {
     return {
@@ -28,9 +30,9 @@ export default {
     Cell,
   },
   ready(){
-    this.$http.get(`${Lib.C.merApi}categories/${Lib.M.GetRequest().id}`).then((res) => {
+    axios.get(`${Lib.C.merApi}categories/${Lib.M.GetRequest().id}`).then((res) => {
     this.brandList = res.data.data.brands
-  }, (res) => {
+  }).catch((res) => {
     console.log(res)//error
   })
   },

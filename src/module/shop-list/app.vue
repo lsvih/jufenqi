@@ -34,6 +34,7 @@ import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
 import JSelect from 'components/JSelect.vue'
 import JSelectItem from 'components/JSelectItem.vue'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -122,14 +123,14 @@ export default {
         shop: []
       }))
     }
-    this.$http.get(`${Lib.C.merApi}brands/${this.brandId}`).then((res) => {
+    axios.get(`${Lib.C.merApi}brands/${this.brandId}`).then((res) => {
       let brand = res.data.data
       brand.stores.map((shop) => {
         shop.favorite = findIsShop(this.brandId, shop.id, JSON.parse(localStorage.getItem("favorite")).shop)
         shop.cart = findIsShop(this.brandId, shop.id, JSON.parse(localStorage.getItem("cart")).shop)
         this.shopList.push(shop)
       })
-    }, (res) => {
+    }).catch((res) => {
       console.log(res) //error
     })
   }

@@ -57,6 +57,7 @@ import Scroller from 'vux-components/scroller'
 import XImg from 'vux-components/x-img'
 import Cell from 'vux-components/cell'
 import Previewer from 'vux-components/previewer'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -99,12 +100,12 @@ export default {
     }
   },
   ready(){
-    this.$http.get(`${Lib.C.apiUrl}stores/${this.id}`).then((res)=>{
+    axios.get(`${Lib.C.apiUrl}stores/${this.id}`).then((res)=>{
       let store = res.data.data
       this.name = store.name
       this.address = store.address
       this.tel = store.phone
-    },(res)=>{console.log(res)//error
+    }).catch((res)=>{console.log(res)//error
     })
   }
 }

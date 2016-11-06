@@ -37,6 +37,13 @@ import {
 } from 'vux-components/flexbox'
 import Loading from 'vux-components/loading'
 import Scroller from "vux-components/scroller"
+import axios from 'axios'
+try{
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+}catch(e){
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
@@ -72,7 +79,7 @@ export default {
     Loading
   },
   ready() {
-    this.$http.get(`${Lib.C.loanApi}loan-applications`, {
+    axios.get(`${Lib.C.loanApi}loan-applications`,{}, {
       params: {
         filter: `userId:${JSON.parse(window.localStorage.getItem('user')).userId}`,
         sort: "createdAt,desc"
@@ -83,7 +90,7 @@ export default {
       }catch(e){
         this.thisStatus = "未申请"
       }
-    }, (res) => {
+    }).catch((res) => {
       alert("查询贷款信息失败，请重试")
     })
   },

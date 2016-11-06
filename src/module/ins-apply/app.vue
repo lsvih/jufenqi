@@ -24,12 +24,19 @@ import Cell from 'vux-components/cell/'
 import XButton from 'vux-components/x-button'
 import JTel from 'components/JTel.vue'
 import Loading from 'vux-components/loading'
+import axios from 'axios'
+try {
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+} catch (e) {
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
-      name: window.localStorage.getItem("apply-info")?JSON.parse(window.localStorage.getItem("apply-info")).fullname:null,
-      creditNum: window.localStorage.getItem("apply-info")?JSON.parse(window.localStorage.getItem("apply-info")).idCardNo:null,
-      phone: window.localStorage.getItem("apply-info")?JSON.parse(window.localStorage.getItem("apply-info")).mobile:null,
+      name: window.localStorage.getItem("apply-info") ? JSON.parse(window.localStorage.getItem("apply-info")).fullname : null,
+      creditNum: window.localStorage.getItem("apply-info") ? JSON.parse(window.localStorage.getItem("apply-info")).idCardNo : null,
+      phone: window.localStorage.getItem("apply-info") ? JSON.parse(window.localStorage.getItem("apply-info")).mobile : null,
       verify: null,
       time: 0,
       timekeeper: null,
@@ -51,11 +58,11 @@ export default {
 
   },
   methods: {
-    isExist(){
+    isExist() {
       return !localStorage.getItem("apply-info")
     },
     isFilled() {
-      if(!this.isExist()) return true
+      if (!this.isExist()) return true
       let creditReg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
       return (this.name !== null && creditReg.test(this.creditNum) && this.verify !== null)
     },
@@ -67,13 +74,12 @@ export default {
         let that = this
         this.loadingText = "正在发送验证码..."
         this.showLoading = true
-        this.$http.post(`${Lib.C.userApi}sms/sendCode`, {
-          mobile: this.phone
-        }, {
-          xhr: {
-            withCredentials: true
+        axios.post(`${Lib.C.userApi}sms/sendCode`, {}, {
+          params: {
+            mobile: this.phone
           },
-          emulateJSON: true
+          withCredentials: true,
+          responseType: true
         }).then((res) => {
           this.showLoading = false
           this.time = 60
@@ -83,26 +89,25 @@ export default {
                 clearInterval(that.timekeeper)
               }
           }, 1000)
-        }, (res) => {
+        }).catch((res) => {
           alert("发送验证码失败，请稍后重试...")
           this.showLoading = false
         })
       }
     },
     nextStep() {
-      if(!this.isExist()){
+      if (!this.isExist()) {
         window.location.href = "./ins-apply-step2.html"
       }
       this.loadingText = "正在验证手机号..."
       this.showLoading = true
-      this.$http.post(`${Lib.C.userApi}sms/consumeCode`, {
-        mobile: this.phone,
-        code: this.verify
-      }, {
-        xhr: {
-          withCredentials: true
+      axios.post(`${Lib.C.userApi}sms/consumeCode`, {}, {
+        params: {
+          mobile: this.phone,
+          code: this.verify
         },
-        emulateJSON: true
+        withCredentials: true,
+        responseType: true
       }).then((res) => {
         this.loadingText = "验证成功，正在保存数据..."
         window.localStorage.setItem("apply-info", JSON.stringify({
@@ -136,10 +141,10 @@ export default {
           /**月收入*/
           monthlyIncome: null,
           /**状态*/
-          "status":"UNSUCCESSFULLY"
+          "status": "UNSUCCESSFULLY"
         }))
         window.location.href = "./ins-apply-step2.html"
-      }, (res) => {
+      }).catch((res) => {
         alert("验证失败,请稍后重试...")
         this.showLoading = false
       })

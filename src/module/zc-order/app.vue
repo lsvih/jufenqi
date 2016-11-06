@@ -66,6 +66,13 @@ import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
 import JRadio from 'components/JRadio.vue'
 import PopupPicker from 'vux-components/popup-picker'
+import axios from 'axios'
+try {
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+} catch (e) {
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
@@ -115,9 +122,9 @@ export default {
     }
   },
   ready() {
-    this.$http.get(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}`).then((res) => {
+    axios.get(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}`).then((res) => {
       this.order = res.data.data
-    }, (res) => {
+    }).catch((res) => {
       alert("获取订单失败，请稍候再试QAQ")
     })
   },
@@ -136,27 +143,27 @@ export default {
       if (this.payWay == 1) {
         this.showInsNumberPicker = true
       } else {
-        this.$http.post(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}/customerConfirmMaterial?payMethod=1&stageCount=1`).then((res) => {
-            alert("订单已更新！")
-            location.reload()
-        }, (res) => {
-            alert("更新订单失败，请稍后重试")
+        axios.post(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}/customerConfirmMaterial?payMethod=1&stageCount=1`).then((res) => {
+          alert("订单已更新！")
+          location.reload()
+        }).catch((res) => {
+          alert("更新订单失败，请稍后重试")
         })
       }
     },
     onHideInsSelect(type) {
       if (type) {
-        this.$http.post(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}/customerConfirmMaterial?payMethod=2&stageCount=${this.insNumberSelect[0]}`).then((res) => {
-            alert("订单已更新！")
-            location.reload()
-        }, (res) => {
-            alert("更新订单失败，请稍后重试")
-            location.reload()
+        axios.post(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}/customerConfirmMaterial?payMethod=2&stageCount=${this.insNumberSelect[0]}`).then((res) => {
+          alert("订单已更新！")
+          location.reload()
+        }).catch((res) => {
+          alert("更新订单失败，请稍后重试")
+          location.reload()
         })
       }
     },
     getTime(timeStamp) {
-      var d = new Date(timeStamp*1000);
+      var d = new Date(timeStamp * 1000);
       var Y = d.getFullYear() + '-';
       var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-';
       var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate());
