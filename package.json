@@ -11,6 +11,7 @@
     "test": "npm run unit && npm run e2e"
   },
   "dependencies": {
+    "axios": "^0.15.2",
     "babel-runtime": "^6.0.0",
     "clean-webpack-plugin": "^0.1.10",
     "glob": "^7.0.5",
@@ -73,7 +74,6 @@
     "vue-hot-reload-api": "^1.2.0",
     "vue-html-loader": "^1.0.0",
     "vue-loader": "^8.2.1",
-    "vue-resource": "^0.9.3",
     "vue-router": "^0.7.5",
     "vue-style-loader": "^1.0.0",
     "vue-waterfall": "^0.2.3",

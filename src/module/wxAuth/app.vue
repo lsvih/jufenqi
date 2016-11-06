@@ -4,48 +4,42 @@
 
 <script>
 import Lib from 'assets/Lib.js'
+import axios from 'axios'
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 export default {
   data() {
     return {
-      lastUrl: Lib.M.GetRequest().url?unescape(Lib.M.GetRequest().url):'./index.html',
+      lastUrl: Lib.M.GetRequest().url ? decodeURIComponent(Lib.M.GetRequest().url) : decodeURIComponent('./index.html'),
       code: Lib.M.GetRequest().code,
       appId: "wx4b13962d7d02786e"
     }
   },
   ready() {
     if (Lib.M.isAuth()) {
-      location.href = this.lastUrl
+      location.href = decodeURIComponent(this.lastUrl)
     } else {
-      this.getCode()
-    }
-  },
-  methods: {
-    getTimestamp(){
-      return new Date().getTime()
-    },
-    getCode() {
       if (this.code) {
-        this.$http.post(`${Lib.C.userApi}auth/loginUsingWechat`, {
-          code: this.code
-        }, {
-          xhr: {
-            withCredentials: true
+        axios.post(`${Lib.C.userApi}auth/loginUsingWechat`, {}, {
+          params: {
+            code: this.code
           },
-          emulateJSON: true
+          withCredentials: true,
+          responseType: 'json'
         }).then((res) => {
-          window.localStorage.setItem("user",JSON.stringify(res.data.data))
-          if(res.data.data.profile.mobile){
-            location.href = this.lastUrl
-          }else{
+          let userInfo = JSON.stringify(res.data.data)
+          window.localStorage.setItem("user", userInfo)
+          if (JSON.parse(localStorage.getItem('user')).profile.mobile) {
+            location.href = decodeURIComponent(this.lastUrl)
+          } else {
             location.href = `./verifyPhone.html?url=${encodeURIComponent(this.lastUrl)}`
           }
-        }, (res) => {
+        }).catch((res) => {
           alert("微信登录失败，请稍后重试")
           console.log(res)
           return false;
         })
       } else {
-        location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${location.href}&response_type=code&scope=snsapi_userinfo&state=${this.getTimestamp()}#wechat_redirec`
+        location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${encodeURIComponent(location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirec`
       }
     }
   }

@@ -76,6 +76,13 @@ import {
   Flexbox,
   FlexboxItem
 } from 'vux-components/flexbox'
+import axios from 'axios'
+try{
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+}catch(e){
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
@@ -96,13 +103,13 @@ export default {
     Cell
   },
   ready() {
-    this.$http.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+    axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
       let walletInfo = res.data.data
       this.loan = walletInfo.loanAmount
       this.balance = walletInfo.availableAmount
       this.wallet = walletInfo.balance
       this.repaymentPerMonth = Number(walletInfo.repayment.currentMonthRepayment)
-    }, (res) => {
+    }).catch((res) => {
       alert("网络连接失败，请稍候重试")
       window.location.reload()
     })
