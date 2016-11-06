@@ -92,7 +92,7 @@ export default {
     return {
       showToast: false,
       toastText: "",
-      isFavorite:false,
+      isFavorite: false,
       worker: {},
       options: {
         getThumbBoundsFn(index) {
@@ -148,24 +148,27 @@ export default {
       })
       return arr
     },
-    getTime(t){
+    getTime(t) {
       let a = new Date(t)
       let b = new Date()
       return b.getYear() - a.getYear()
     },
-    cancelFavorite(){
+    cancelFavorite() {
       let list = JSON.parse(window.localStorage.getItem('favorite'))
-      for(let i in list.worker){
-        if(list.worker[i].userId === this.worker.userId){
+      for (let i in list.worker) {
+        if (list.worker[i].userId === this.worker.userId) {
           list.worker.$remove(list.worker[i])
         }
       }
-      window.localStorage.setItem('favorite',JSON.stringify(list))
+      window.localStorage.setItem('favorite', JSON.stringify(list))
       this.isFavorite = false
     },
     _isFavorite() {
-      if(!localStorage.getItem('favorite')){
-        localStorage.setItem('favorite',JSON.stringify({worker:[],shop:[]}))
+      if (!localStorage.getItem('favorite')) {
+        localStorage.setItem('favorite', JSON.stringify({
+          worker: [],
+          shop: []
+        }))
         return false
       }
       return findSameWorker(this.worker.userId, JSON.parse(localStorage.getItem('favorite')).worker)
@@ -192,11 +195,15 @@ export default {
         this.toastText = "添加成功"
         this.showToast = true
       }
-      if(type === 'favorite'){
+      if (type === 'favorite') {
         this.isFavorite = true
+      } else {
+        setTimeout(() => {
+          history.go(-1)
+        }, 500)
       }
     },
-    goto(url){
+    goto(url) {
       window.location.href = url
     }
   }
@@ -205,8 +212,8 @@ export default {
  * 在列表中找到userId相同的项
  */
 function findSameWorker(userId, workerList) {
-  for(let worker of workerList){
-    if(worker.userId === userId){
+  for (let worker of workerList) {
+    if (worker.userId === userId) {
       return true
     }
   }

@@ -23,12 +23,17 @@
                 <div class="zc-order-date"><img src="./time.png">{{getTime(order.orderTime)}}</div>
                 <div class="zc-order-status">{{zxStatusList[order.status].name}}</div>
               </div>
-              <div class="zc-line-3">
+              <div class="zc-line-3" v-if="order.manager.nickname">
                 <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
                 <div class="zc-butler-name">{{order.manager.nickname}}</div>
                 <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="tel.png"></div>
               </div>
-              <div class="zc-line-3">
+              <div class="zc-line-3" v-if="order.projectManager.nickname">
+                <div class="zc-butler-img"><img :src="order.projectManager.profileImage"></div>
+                <div class="zc-butler-name">{{order.projectManager.nickname}}</div>
+                <div class="zc-butler-tel" onclick="location.href='tel:{{order.projectManager.mobile}}'"><img src="tel.png"></div>
+              </div>
+              <div class="zc-line-3" v-if="order.planList[0].foreman.nickname">
                 <div class="zc-butler-img"><img :src="order.planList[0].foreman.profileImage"></div>
                 <div class="zc-butler-name">{{order.planList[0].foreman.nickname}}</div>
                 <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[0].foreman.mobile}}'"><img src="tel.png"></div>
@@ -38,11 +43,7 @@
                 <div class="zc-butler-name">{{order.planList[1].foreman.nickname}}</div>
                 <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[1].foreman.mobile}}'"><img src="tel.png"></div>
               </div>
-              <div class="zc-line-3">
-                <div class="zc-butler-img"><img :src="order.projectManager.profileImage"></div>
-                <div class="zc-butler-name">{{order.projectManager.nickname}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.projectManager.mobile}}'"><img src="tel.png"></div>
-              </div>
+
             </div>
           </div>
           <div v-if="zxList.length==0">
@@ -207,7 +208,8 @@ export default {
     this.index = (Lib.M.GetRequest().type - 1) || 0
     axios.get(`${Lib.C.orderApi}decorationOrders`, {
       params: {
-        filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,7]`
+        filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,7]`,
+        sort: 'createdAt,desc'
       }
     }).then((res) => {
       res.data.data.map((e) => {
@@ -219,7 +221,8 @@ export default {
     })
     axios.get(`${Lib.C.mOrderApi}materialSubOrders`,{
       params: {
-        filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[6,7]`
+        filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[6,7]`,
+        sort: 'createdAt,desc'
       }
     }).then((res) => {
       res.data.data.map((e) => {
@@ -231,7 +234,8 @@ export default {
     })
     axios.get(`${Lib.C.mOrderApi}materialOrders`,{
       params: {
-        filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,5]`
+        filter: `customerId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,5]`,
+        sort: 'createdAt,desc'
       }
     }).then((res) => {
       res.data.data.map((e) => {

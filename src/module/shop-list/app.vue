@@ -11,7 +11,7 @@
       <!-- <img :src="shop.img" class="shop-logo" width="120px" height="80px"> -->
       <div class="shop-name">{{shop.name}}</div>
       <div class="shop-address">{{shop.address}}</div>
-      <div class="shop-rate">评分:{{shop.rate}}</div>
+      <div class="shop-rate">评分:5.0</div>
       <img class="shop-call" src='./tel.png' onclick="location.href='tel:{{shop.phone}}'">
       <img v-if="shop.favorite" class="shop-is-favorite" src="star-fill.png" v-tap="cancelFav('favorite',brandId,shop.id,$index)">
       <img v-else class="shop-is-favorite" src="star.png" v-tap="addFav('favorite',$index)">

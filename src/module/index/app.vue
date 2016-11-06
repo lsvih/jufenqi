@@ -108,7 +108,8 @@
   </div>
   <!-- Pictures module -->
   <div class="module-item">
-    <div class="module-title" v-tap="gotoCate('./gallery.html')">图库<img src="./arrow.png"></div>
+    <!-- <div class="module-title" v-tap="gotoCate('./gallery.html')">图库<img src="./arrow.png"></div> -->
+      <div class="module-title">图库<img src="./arrow.png"></div>
     <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+'px'}">
       <div :style="{width:'100%',height:.8*getScreenWidth()*.63+40+'px'}" class="scroll-box">
         <div class="pic_and_goods-list" :style="{width:picList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">

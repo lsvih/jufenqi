@@ -87,6 +87,8 @@ export default {
     }).then((res) => {
       try{
         this.thisStatus = this.getStatus(res.data.data[0].status)
+        this.ins = res.data.data[0].totalQuota
+        this.limit = res.data.data[0].loanQuota
       }catch(e){
         this.thisStatus = "未申请"
       }

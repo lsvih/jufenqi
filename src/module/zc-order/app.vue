@@ -2,6 +2,7 @@
 <header>
   <img src="status.png">
   <div class="status">{{zcStatusList[order.status].name}}</div>
+  <div class="btn" v-if="order.status==1||order.status==2" v-tap="cancelOrder()">取消预约</div>
 </header>
 <div class="butler">
   <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
@@ -27,13 +28,12 @@
         <div class="line-2-title">特价总额</div>
         <div class="line-2-right" style="color:#88C929;">{{shop.specialAmount|currency "￥" 2}}</div>
       </div>
-      <div class="line-2" style="border-top:5px solid #eee!important;" v-if="status != 0">
+      <div class="line-2" style="border-top:5px solid #eee!important;" v-if="status > 1 ">
         <div class="line-2-title">总额</div>
         <div class="line-2-right">{{shop.normalAmount+shop.specialAmount|currency "￥" 2}}</div>
       </div>
       <div class="line-3" v-if="order.status ==1||order.status == 2||order.status ==5">
         <div class="appoint-at" v-if="order.status == 1"><img src="./time.png">{{getTime(order.orderTime)}}</div>
-        <div class="cancel">{{order.status == 1?"取消预约":(order.status == 2?"取消订单":"申请退款")}}</div>
       </div>
     </group>
     <group v-if="order.status == 2">
@@ -151,6 +151,13 @@ export default {
         })
       }
     },
+    cancelOrder(){
+      axios.post(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}/confirmCancel`).then((res) => {
+        history.go(-1)
+      }).catch((res) => {
+        alert("取消订单失败，请稍后重试")
+      })
+    },
     onHideInsSelect(type) {
       if (type) {
         axios.post(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}/customerConfirmMaterial?payMethod=2&stageCount=${this.insNumberSelect[0]}`).then((res) => {
@@ -244,6 +251,18 @@ header {
         height: 12px;
         font-size: 12px;
         color: #393939;
+    }
+    .btn {
+        position: absolute;
+        right: 15px;
+        top: 5px;
+        width: 60px;
+        height: 20px;
+        border: 1px solid #393939;
+        font-size: 12px;
+        color: #393939;
+        line-height: 20px;
+        text-align: center;
     }
 }
 .butler {

@@ -47,7 +47,7 @@ export default {
     send() {
       let that = this
       this.$parent.loading = true
-      axios.post(`${Lib.C.userApi}sms/sendCode`, {
+      axios.post(`${Lib.C.userApi}sms/sendCode`,{}, {
         params: {
           mobile: this.$parent.phoneNumber
         },
@@ -62,7 +62,7 @@ export default {
               clearInterval(that.timekeeper)
             }
         }, 1000)
-      }, (res) => {
+      }).catch((res) => {
         this.$parent.loading = false
         alert("发送验证码失败，请稍后重试...")
       })
@@ -97,7 +97,7 @@ export default {
       }).then((res) => {
         window.localStorage.setItem("user", JSON.stringify(res.data.data))
         location.href = this.$parent.lastUrl
-      }, (res) => {
+      }).catch((res) => {
         this.alarm = true
         this.$parent.loading = false
         this.msg = "验证码错误，请重试"

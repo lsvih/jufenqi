@@ -16,9 +16,10 @@
             <cell class="shop-item">
               <div class="shop-name">{{shop.name}}</div>
               <div class="shop-address">{{shop.address}}</div>
+              <div class="shop-del" v-tap="deleteShop(shop.id)">删除门店</div>
             </cell>
             <cell class="shop-brand" v-for="brand in shop.brand">
-              <div class="brand-name">{{brand.name}}</div>
+              <div class="brand-name">品牌: {{brand.name}}</div>
             </cell>
           </group>
         </scroller>
@@ -40,7 +41,7 @@
               <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
               <div class="worker-name">{{worker.nickname}}</div>
               <div class="worker-address">{{worker.nativePlace}}</div>
-              <div class="worker-rank">评分:{{worker.rating}}</div>
+              <div class="worker-rank">评分:5.0</div>
               <div class="worker-del">删除</div>
               <img v-if="isSelect('Worker',worker.userId)" class="worker-is-favorite" src="selected.png">
               <img v-else class="worker-is-favorite" src="toselect.png">
@@ -149,6 +150,20 @@ export default {
     isSelectShop() {
       return !!this.selectShop.length
     },
+    deleteShop(id) {
+      let tempData = JSON.parse(localStorage.getItem("cart"))
+      for (let i in tempData.shop) {
+        if (tempData.shop[i].id == id) {
+          tempData.shop.$remove(tempData.shop[i])
+        }
+      }
+      localStorage.setItem("cart",JSON.stringify(tempData))
+      for (let j in this.shopList) {
+        if (this.shopList[j].id == id) {
+          this.shopList.$remove(this.shopList[j])
+        }
+      }
+    },
     selectShop() {
       this.showLoading = true
       let subList = []
@@ -220,7 +235,17 @@ body {
         position: absolute;
         font-size: 12px;
         left: 15px;
-        bottom: 15px;
+        bottom: 9px;
+    }
+    .shop-del {
+        position: absolute;
+        font-size: 12px;
+        right: 15px;
+        top: 0;
+        height: 60px;
+        width: 50px;
+        color: #d8d8d8;
+        line-height: 40px;
     }
 }
 .shop-brand {
@@ -287,6 +312,7 @@ body {
 }
 .content {
     padding-top: 44px;
+    margin-bottom: 44px;
 }
 header {
     position: fixed;

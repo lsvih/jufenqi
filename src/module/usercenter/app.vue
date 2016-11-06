@@ -39,7 +39,7 @@
   </flexbox-item>
   <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=3'">
     <img src="icon/rz-order-icon.png">
-    <div class="icon-item-name">软装订单</div>
+    <div class="icon-item-name">退款订单</div>
   </flexbox-item>
 </flexbox>
 

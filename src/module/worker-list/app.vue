@@ -10,7 +10,7 @@
       <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
       <div class="worker-name">{{worker.nickname}}</div>
       <div class="worker-address">{{worker.nativePlace}}</div>
-      <div class="worker-rank">评分:{{worker.foremanRate}}</div>
+      <div class="worker-rank">评分:5.0</div>
       <div class="detail-click-area" v-tap="gotoDetail(worker.userId)"></div>
       <div class="favorite-click-area" v-tap="worker.favorite?cancelFavorite(worker.userId,$index):addFavorite($index)"></div>
       <img v-if="worker.favorite" class="worker-is-favorite" src="star-fill.png">

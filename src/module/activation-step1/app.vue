@@ -86,7 +86,7 @@ body {
         width: 40px;
         height: 40px;
         position: absolute;
-        top: 15px;
+        top: 31px;
         left: 20px;
     }
     .bank-name {

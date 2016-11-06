@@ -1,7 +1,7 @@
 <template>
 <div>
   <popup-picker title="地区" :data="area" :columns="3" :show-cell="false" :show.sync="showSelect" :value.sync="areaSelect" show-name v-ref:area></popup-picker>
-  <group style="margin-top:-1.17647059em;margin-bottom:44px;">
+  <group style="margin-top:-1.17647059em;">
     <x-input title="姓名" :value.sync="name" name="username" placeholder="请输入您的真实姓名" :show-clear="false"> </x-input>
     <x-input title="电话" :value.sync="phone" name="mobile" placeholder="请输入正确的电话号码" keyboard="number" is-type="china-mobile"></x-input>
     <datetime style="height:24px;" :value.sync="appoint_at" placeholder="请选择预约时间" :min-year=2016 :max-year=2017 format="YYYY-MM-DD HH:mm" title="时间" year-row="{value}年" month-row="{value}月" day-row="{value}日" hour-row="{value}点" minute-row="{value}分" confirm-text="完成"
@@ -10,7 +10,7 @@
   <div class="to-calculate" v-bind:class="{'btn-active':isFillData()}" v-tap="isFillData()?submit():return;">确定</div>
   <loading :show="showLoading" text="正在预约，请稍后..."></loading>
 </div>
-<group title="预约列表">
+<group title="预约列表" stlye="margin-bottom:44px;">
   <group style="margin-top:-1.17647059em;" v-for="shop in shopList">
     <cell class="shop-item">
       <div class="shop-name">{{shop.name}}</div>
@@ -109,14 +109,14 @@ a {
     text-decoration: none;
 }
 ::-webkit-input-placeholder {
-    text-align: right;
+    text-align: left;
 }
 body {
     background-color: #eee;
     margin: 0;
 }
 .to-calculate {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;

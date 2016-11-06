@@ -101,7 +101,7 @@ export default {
     },
     submitPo2() {
       axios.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToWechat`, {}, {
-        param: {
+        params: {
           amount: this.po2.money,
           wechatId: this.po2.account,
         },

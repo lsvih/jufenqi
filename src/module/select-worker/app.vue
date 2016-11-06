@@ -1,7 +1,7 @@
 <template>
 <div>
   <popup-picker title="地区" :data="area" :columns="3" :show-cell="false" :show.sync="showSelect" :value.sync="areaSelect" show-name v-ref:area></popup-picker>
-  <group style="margin-top:-1.17647059em;margin-bottom:44px;">
+  <group style="margin-top:-1.17647059em;">
     <x-input title="姓名" :value.sync="name" name="username" placeholder="请输入您的真实姓名" :show-clear="false"> </x-input>
     <x-input title="电话" :value.sync="phone" name="mobile" placeholder="请输入正确的电话号码" keyboard="number" is-type="china-mobile"></x-input>
     <datetime style="height:24px;" :value.sync="appoint_at" placeholder="请选择预约时间" :min-year=2016 :max-year=2017 format="YYYY-MM-DD HH:mm" title="时间" year-row="{value}年" month-row="{value}月" day-row="{value}日" hour-row="{value}点" minute-row="{value}分" confirm-text="完成"
@@ -14,13 +14,13 @@
   <alert :show.sync="showAlert" title="居分期">网络连接失败，请稍后再试</alert>
   <alert :show.sync="showSuccess" title="居分期" @on-hide="appoint_ok">预约成功，请等待管家联系</alert>
 </div>
-<group title="预约列表">
+<group title="预约列表" style="margin-bottom:44px;">
   <cell v-for="worker in workerList" class="cell-item">
     <div class="click-area-detail" v-tap="goto('worker-detail.html?id='+worker.userId)"></div>
     <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
     <div class="worker-name">{{worker.nickname}}</div>
     <div class="worker-address">{{worker.nativePlace}}</div>
-    <div class="worker-rank">评分:{{worker.rating}}</div>
+    <div class="worker-rank">评分:5.0</div>
   </cell>
 </group>
 </template>
@@ -78,7 +78,7 @@ export default {
       let city = this.$refs.area.getNameValues()
       let that = this
       let appointstamp = new Date(this.appoint_at)
-      appointstamp = appointstamp.getTime()
+      appointstamp = appointstamp.getTime()/1000
       axios.post(`${Lib.C.orderApi}decorationOrders`, {
         customerName: this.name,
         customerMobile: this.phone,
@@ -196,14 +196,14 @@ a {
     text-decoration: none;
 }
 ::-webkit-input-placeholder {
-    text-align: right;
+    text-align: left;
 }
 body {
     background-color: #eee;
     margin: 0;
 }
 .to-calculate {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
