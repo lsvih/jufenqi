@@ -70,7 +70,7 @@
 </div>
 <div class="status-3-btn" v-if="order.status === 3">
   <div class="btn-left" v-tap="cancelOrder(true)"><img src="./change.png">更换工长</div>
-  <div class="btn-right" v-tap="selectPlan()">选择当前方案</div>
+  <div class="btn-right" v-tap="selectCurrentlyPlan()">选择当前方案</div>
 </div>
 <!-- <x-button slot="right" style="border-radius:0;background-color:rgb(158, 188, 43);color:#fff;margin:20px 0;width:100%" v-if="order.status==7" onclick="location.href='order-judge.html'">去评价</x-button> -->
 <previewer :list="order.planList[0].images" v-ref:previewer :options="options"></previewer>
@@ -171,7 +171,7 @@ export default {
         alert("取消订单失败，请稍候再试QAQ")
       })
     },
-    selectPlan() {
+    selectCurrentlyPlan() {
       let planId = this.order.planList[selectPlan].id
       axios.post(`${Lib.C.orderApi}decorationOrders/${Lib.M.GetRequest().orderNo}/confirmSelect?planId=${planId}`).then((res) => {
         alert("订单已更新！")
