@@ -59,7 +59,7 @@ export default {
   methods: {
     getWorkerData(sortOption) {
       this.workerList = [];
-      axios.get(`${Lib.C.userApi}workmanProfiles`, {},{
+      axios.get(`${Lib.C.userApi}workmanProfiles`,{
         params: sortOption
       }).then((res) => {
         let data = res.data.data

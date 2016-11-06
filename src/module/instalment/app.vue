@@ -79,7 +79,7 @@ export default {
     Loading
   },
   ready() {
-    axios.get(`${Lib.C.loanApi}loan-applications`,{}, {
+    axios.get(`${Lib.C.loanApi}loan-applications`, {
       params: {
         filter: `userId:${JSON.parse(window.localStorage.getItem('user')).userId}`,
         sort: "createdAt,desc"

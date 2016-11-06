@@ -18,7 +18,7 @@ export default {
     XImg
   },
   ready(){
-    axios.get(`${Lib.C.merApi}categories`,{}, {
+    axios.get(`${Lib.C.merApi}categories`, {
       params: {size:1000}
     }).then((res) => {
       this.classList = res.data.data

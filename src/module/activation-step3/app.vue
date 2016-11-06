@@ -36,7 +36,7 @@ export default {
     JTel
   },
   ready() {
-    axios.post(`${Lib.C.wxApi}mp/jsapiTicket`, location.href).then((res) => {
+    axios.post(`${Lib.C.wxApi}mp/jsapiTicket`, {url:location.href}).then((res) => {
       wxReady(res.data.data)
     }).catch((res) => {
       alert("网络连接失败，请刷新重试")

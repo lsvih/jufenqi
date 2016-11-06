@@ -1,13 +1,13 @@
 <template>
 <div>
   <popup-picker title="地区" :data="area" :columns="3" :show-cell="false" :show.sync="showSelect" :value.sync="areaSelect" show-name v-ref:area></popup-picker>
-  <group style="margin-top:-1.17647059em">
+  <group style="margin-top:-1.17647059em;margin-bottom:44px;">
     <x-input title="姓名" :value.sync="name" name="username" placeholder="请输入您的真实姓名" :show-clear="false"> </x-input>
     <x-input title="电话" :value.sync="phone" name="mobile" placeholder="请输入正确的电话号码" keyboard="number" is-type="china-mobile"></x-input>
     <datetime style="height:24px;" :value.sync="appoint_at" placeholder="请选择预约时间" :min-year=2016 :max-year=2017 format="YYYY-MM-DD HH:mm" title="时间" year-row="{value}年" month-row="{value}月" day-row="{value}日" hour-row="{value}点" minute-row="{value}分" confirm-text="完成"
         cancel-text="取消"></datetime>
   </group>
-  <div class="to-calculate" style="position:absolute" v-bind:class="{'btn-active':isFillData()}" v-tap="isFillData()?submit():return;">确定</div>
+  <div class="to-calculate" v-bind:class="{'btn-active':isFillData()}" v-tap="isFillData()?submit():return;">确定</div>
   <loading :show="showLoading" text="正在预约，请稍后..."></loading>
 </div>
 <group title="预约列表">
@@ -72,13 +72,14 @@ export default {
           serviceManagers: [1]
         })
       })
-      axios.post(`${Lib.C.mOrderApi}materialOrders`, {}, {
-        params: {
+      let appointTime = new Date(this.appoint_at)
+      appointTime = appointTime.getTime()/1000
+      axios.post(`${Lib.C.mOrderApi}materialOrders`,{
           customerName: this.name,
           customerMobile: this.phone,
+          orderTime: appointTime,
           subApptList: subList
-        }
-      }).then((res) => {
+        }).then((res) => {
         this.showLoading = false
         alert("预约成功!")
         let list = JSON.parse(localStorage.cart)
@@ -124,6 +125,7 @@ body {
     line-height: 44px;
     background-color: #e2e2e2;
     color: #fff;
+    z-index: 5;
 }
 .btn-active {
     background-color: #88C928!important;
