@@ -221,7 +221,6 @@ export default {
     //   this.classList = res.data.data
     // }).catch((res) => {
     //   alert("网络连接失败，请刷新重试")
-    //   window.location.reload()
     // })
   },
   methods: {
@@ -280,7 +279,7 @@ body {
   right: 0;
   overflow-x: hidden;
   overflow-y: scroll;
-  height: calc(~"100% - 16px");
+  height: calc(~"100% - 32px");
   width: calc(~"100% - 81px - 18px");
   padding: 16px 9px;
   .content-item{
