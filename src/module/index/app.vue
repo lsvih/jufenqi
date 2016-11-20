@@ -1,12 +1,12 @@
 <template>
-<div class="search"><img src="/static/images/icon/search.png"></div>
-<div class="click" v-tap="openMenu = !openMenu" :class="{open:openMenu}"><img src="/static/images/icon/click.png"></div>
+<div class="search"><img src="../../static/images/icon/search.png"></div>
+<div class="click" v-tap="openMenu = !openMenu" :class="{open:openMenu}"><img src="../../static/images/icon/click.png"></div>
 <div class="menu" :class="{'menu-active':openMenu}">
 <div class="menu-tri"></div>
 <div class="menu-content">
-<div class="menu-item"><img src="/static/images/icon/写评论.png">去点评</div>
-<div class="menu-item"><img src="/static/images/icon/添加门店.png">添加门店</div>
-<div class="menu-item"><img src="/static/images/icon/扫一扫.png">扫一扫</div>
+<div class="menu-item"><img src="../../static/images/icon/写评论.png">去点评</div>
+<div class="menu-item"><img src="../../static/images/icon/添加门店.png">添加门店</div>
+<div class="menu-item"><img src="../../static/images/icon/扫一扫.png">扫一扫</div>
 </div>
 </div>
 <div class="content">
@@ -14,36 +14,36 @@
   </swiper>
   <flexbox class="module-class">
     <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5" v-tap="gotoCate(class.url)">
-      <img class="module-class-icon" :src="`/static/images/icon/${class.name}.png`">
+      <img class="module-class-icon" :src="`../../static/images/icon/${class.name}.png`">
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
   </flexbox>
   <flexbox class="module-class">
     <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5 5" v-tap="gotoCate(class.url)">
-      <img class="module-class-icon" :src="`/static/images/icon/${class.name}.png`">
+      <img class="module-class-icon" :src="`../../static/images/icon/${class.name}.png`">
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
   </flexbox>
   <!-- Operative module -->
   <div class="module-item operative" :style="{height:.5*getScreenWidth()+'px'}">
     <div class="operative-left-block" :style="{width:.5*getScreenWidth()-1+'px',height:.5*getScreenWidth()+'px'}">
-      <img src="/static/images/首页活动运营/活动1.png" width="100%" height="100%">
+      <img src="../../static/images/首页活动运营/活动1.png" width="100%" height="100%">
     </div>
     <div class="operative-right-block-1" :style="{width:.5*getScreenWidth()+'px',height:.5/3*getScreenWidth()-1+'px'}">
-      <img src="/static/images/首页活动运营/活动2.png" width="100%" height="100%">
+      <img src="../../static/images/首页活动运营/活动2.png" width="100%" height="100%">
     </div>
     <div class="operative-right-block-2" :style="{width:.5*getScreenWidth()+'px',height:.5/3*getScreenWidth()-1+'px',top:.5/3*getScreenWidth()+'px'}">
-      <img src="/static/images/首页活动运营/活动3.png" width="100%" height="100%">
+      <img src="../../static/images/首页活动运营/活动3.png" width="100%" height="100%">
     </div>
     <div class="operative-right-block-3" :style="{width:.5*getScreenWidth()+'px',height:.5/3*getScreenWidth()+'px'}">
-      <img src="/static/images/首页活动运营/活动4.png" width="100%" height="100%">
+      <img src="../../static/images/首页活动运营/活动4.png" width="100%" height="100%">
     </div>
   </div>
   <!-- module end -->
   <!-- Video module -->
   <div class="module-item">
-    <div class="play"><img src="/static/images/play.png"></div>
-    <img src="/static/temp/video.png" width="100%" height="auto">
+    <div class="play"><img src="../../static/images/play.png"></div>
+    <img src="../../static/temp/video.png" width="100%" height="auto">
 </div>
   <!-- module end -->
   <!-- Goods module -->
@@ -111,13 +111,13 @@ export default {
       bannerIndex: 0,
       bannerList: [{
         url: 'javascript:',
-        img: '/static/images/banner/banner1.png'
+        img: '../../static/images/banner/banner1.png'
       },{
         url: 'javascript:',
-        img: '/static/images/banner/banner2.png'
+        img: '../../static/images/banner/banner2.png'
       },{
         url: 'javascript:',
-        img: '/static/images/banner/banner3.png'
+        img: '../../static/images/banner/banner3.png'
       }],
       classList: [{
         id: 0,
@@ -162,34 +162,34 @@ export default {
       }],
       pic_and_goods: [{
         url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价1.png'
+        img: '../../static/temp/pic_and_price/有图有价1.png'
       }, {
         url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价2.png'
+        img: '../../static/temp/pic_and_price/有图有价2.png'
       }, {
         url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价3.png'
+        img: '../../static/temp/pic_and_price/有图有价3.png'
       }],
       specialList: [{
         url: 'javascript:',
-        img: '/static/images/specials/专题一.png',
+        img: '../../static/images/specials/专题一.png',
         name: '极简风家具专题',
         description: '精选极简风家具'
       }, {
         url: 'javascript:',
-        img: '/static/images/specials/专题二.png',
+        img: '../../static/images/specials/专题二.png',
         name: '新中式生活',
         description: '传统风格全新演绎'
       }],
       serviceList: [{
         url: 'javascript:',
-        img: '/static/images/services/免费设计.png'
+        img: '../../static/images/services/免费设计.png'
       }, {
         url: 'javascript:',
-        img: '/static/images/services/免费量房.png'
+        img: '../../static/images/services/免费量房.png'
       }, {
         url: 'javascript:',
-        img: '/static/images/services/免费验房.png'
+        img: '../../static/images/services/免费验房.png'
       }],
       openMenu:false
     }
