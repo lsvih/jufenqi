@@ -1,13 +1,14 @@
 <template>
-<div class="search"><img src="/static/images/icon/search.png"></div>
+<div class="search">
+  <img src="/static/images/icon/search.png"></div>
 <div class="click" v-tap="openMenu = !openMenu" :class="{open:openMenu}"><img src="/static/images/icon/click.png"></div>
 <div class="menu" :class="{'menu-active':openMenu}">
-<div class="menu-tri"></div>
-<div class="menu-content">
-<div class="menu-item"><img src="/static/images/icon/写评论.png">去点评</div>
-<div class="menu-item"><img src="/static/images/icon/添加门店.png">添加门店</div>
-<div class="menu-item"><img src="/static/images/icon/扫一扫.png">扫一扫</div>
-</div>
+  <div class="menu-tri"></div>
+  <div class="menu-content">
+    <div class="menu-item"><img src="/static/images/icon/写评论.png">去点评</div>
+    <div class="menu-item"><img src="/static/images/icon/添加门店.png">添加门店</div>
+    <div class="menu-item"><img src="/static/images/icon/扫一扫.png">扫一扫</div>
+  </div>
 </div>
 <div class="content">
   <swiper class="module-swiper" loop auto height="200px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000">
@@ -24,6 +25,23 @@
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
   </flexbox>
+  <!-- Service module -->
+  <div class="module-item">
+    <div class="module-title-block"></div>
+    <div class="module-title">服务</div>
+    <div class="service">
+      <div class="service-1"><img :src="serviceList[0].img" v-tap="gotoCate(serviceList[0].url)"></div>
+      <div class="service-2"><img :src="serviceList[1].img" v-tap="gotoCate(serviceList[1].url)"></div>
+      <div class="service-3"><img :src="serviceList[2].img" v-tap="gotoCate(serviceList[2].url)"></div>
+    </div>
+  </div>
+  <!-- module end -->
+  <!-- Video module -->
+  <div class="module-item">
+    <div class="play"><img src="/static/images/play.png"></div>
+    <img src="/static/temp/video.png" width="100%" height="auto">
+  </div>
+  <!-- module end -->
   <!-- Operative module -->
   <div class="module-item operative" :style="{height:.5*getScreenWidth()+'px'}">
     <div class="operative-left-block" :style="{width:.5*getScreenWidth()-1+'px',height:.5*getScreenWidth()+'px'}">
@@ -40,12 +58,7 @@
     </div>
   </div>
   <!-- module end -->
-  <!-- Video module -->
-  <div class="module-item">
-    <div class="play"><img src="/static/images/play.png"></div>
-    <img src="/static/temp/video.png" width="100%" height="auto">
-</div>
-  <!-- module end -->
+
   <!-- Goods module -->
   <div class="module-item">
     <div class="module-title-block"></div>
@@ -65,17 +78,7 @@
     </div>
   </div>
   <!-- module end -->
-  <!-- Service module -->
-  <div class="module-item">
-    <div class="module-title-block"></div>
-    <div class="module-title">服务</div>
-    <div class="service">
-      <div class="service-1"><img :src="serviceList[0].img" v-tap="gotoCate(serviceList[0].url)"></div>
-      <div class="service-2"><img :src="serviceList[1].img" v-tap="gotoCate(serviceList[1].url)"></div>
-      <div class="service-3"><img :src="serviceList[2].img" v-tap="gotoCate(serviceList[2].url)"></div>
-    </div>
-  </div>
-  <!-- module end -->
+
   <!-- Special module -->
   <div class="module-item">
     <div class="module-title-block"></div>
@@ -112,10 +115,10 @@ export default {
       bannerList: [{
         url: 'javascript:',
         img: '/static/images/banner/banner1.png'
-      },{
+      }, {
         url: 'javascript:',
         img: '/static/images/banner/banner2.png'
-      },{
+      }, {
         url: 'javascript:',
         img: '/static/images/banner/banner3.png'
       }],
@@ -141,19 +144,19 @@ export default {
         url: 'javascript:',
       }, {
         id: 5,
-        name: '家装建材',
+        name: '建材',
         url: 'javascript:',
       }, {
         id: 6,
-        name: '住宅家具',
+        name: '家具',
         url: 'javascript:',
       }, {
         id: 7,
-        name: '家纺家饰',
+        name: '家纺',
         url: 'javascript:',
       }, {
         id: 8,
-        name: '生活百货',
+        name: '家电',
         url: 'javascript:',
       }, {
         id: 9,
@@ -191,7 +194,7 @@ export default {
         url: 'javascript:',
         img: '/static/images/services/免费验房.png'
       }],
-      openMenu:false
+      openMenu: false
     }
   },
   components: {
@@ -401,17 +404,17 @@ body {
         padding: 5px 15px 5px 5.5px;
     }
 }
-.play{
-  position: absolute;
-  z-index: 2;
-  height: 30px;
-  width: 30px;
-  left: calc(~"50% - 15px");
-  top: calc(~"50% - 15px");
-  img{
-    height: 100%;
-    width: 100%;
-  }
+.play {
+    position: absolute;
+    z-index: 2;
+    height: 30px;
+    width: 30px;
+    left: calc(~"50% - 15px");
+    top: calc(~"50% - 15px");
+    img {
+        height: 100%;
+        width: 100%;
+    }
 }
 .scroll-box {
     overflow-x: scroll;
@@ -420,91 +423,91 @@ body {
 .scroll-box-container {
     overflow: hidden;
 }
-.search{
-  position: fixed;
-  top:10px;
-  left:10px;
-  height: 30px;
-  width: 30px;
-  background-color: rgba(0, 0, 0, .2);
-  border-radius: 50%;
-  z-index: 5;
-  img{
-    position: absolute;
-    top:5px;
-    left: 5px;
-    height: 20px;
-    width: 20px;
-  }
-}
-.click{
-  position: fixed;
-  top:10px;
-  right:10px;
-  height: 30px;
-  width: 30px;
-  background-color: rgba(0, 0, 0, .2);
-  border-radius: 50%;
-  z-index: 5;
-  transform:rotate(45deg);
-  transition: .5s;
-  img{
-    position: absolute;
-    top:5px;
-    left: 5px;
-    height: 20px;
-    width: 20px;
-  }
-}
-.open{
-  transform:rotate(0);
-}
-.menu{
-  position: fixed;
-  height: 0;
-  width: 116px;
-  top:40px;
-  right: 0;
-  overflow: hidden;
-  z-index: 5;
-  transition: .5s;
-  .menu-tri{
-    position: absolute;
-    height: 10px;
-    width: 10px;
-    background-color: #fff;
-    transform: rotate(45deg);
-    right: 20px;
-    top:3px;
-  }
-  .menu-content{
-    position: absolute;
-    top: 7px;
-    right: 0;
-    background-color: #fff;
-    height: 122px;
-    width: 116px;
-    .menu-item{
-      position: relative;
-      height: 40px;
-      margin-left: 10px;
-      width: calc(~"100% - 10px");
-      border-bottom: 1px solid #eee;
-      font-size: 12px;
-      color:#999;
-      line-height: 40px;
-      padding-left: 35px;
-      img{
+.search {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    height: 30px;
+    width: 30px;
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: 50%;
+    z-index: 5;
+    img {
         position: absolute;
-        left:10px;
-        top:10px;
+        top: 5px;
+        left: 5px;
         height: 20px;
         width: 20px;
-      }
     }
-  }
 }
-.menu-active{
-  height: 130px;
+.click {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    height: 30px;
+    width: 30px;
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: 50%;
+    z-index: 5;
+    transform: rotate(45deg);
+    transition: 0.5s;
+    img {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        height: 20px;
+        width: 20px;
+    }
+}
+.open {
+    transform: rotate(0);
+}
+.menu {
+    position: fixed;
+    height: 0;
+    width: 116px;
+    top: 40px;
+    right: 0;
+    overflow: hidden;
+    z-index: 5;
+    transition: 0.5s;
+    .menu-tri {
+        position: absolute;
+        height: 10px;
+        width: 10px;
+        background-color: #fff;
+        transform: rotate(45deg);
+        right: 20px;
+        top: 3px;
+    }
+    .menu-content {
+        position: absolute;
+        top: 7px;
+        right: 0;
+        background-color: #fff;
+        height: 122px;
+        width: 116px;
+        .menu-item {
+            position: relative;
+            height: 40px;
+            margin-left: 10px;
+            width: calc(~"100% - 10px");
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+            color: #999;
+            line-height: 40px;
+            padding-left: 35px;
+            img {
+                position: absolute;
+                left: 10px;
+                top: 10px;
+                height: 20px;
+                width: 20px;
+            }
+        }
+    }
+}
+.menu-active {
+    height: 130px;
 }
 </style>
