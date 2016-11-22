@@ -1,7 +1,8 @@
 <template>
 <div class="search">
   <img src="/static/images/icon/search.png"></div>
-<div class="click" v-tap="openMenu = !openMenu" :class="{open:openMenu}"><img src="/static/images/icon/click.png"></div>
+<div class="click" :class="{open:openMenu}"><img src="/static/images/icon/click.png"></div>
+<div class="menu-click-area" v-tap="openMenu = !openMenu"></div>
 <div class="menu" :class="{'menu-active':openMenu}">
   <div class="menu-tri"></div>
   <div class="menu-content">
@@ -38,7 +39,7 @@
   <!-- module end -->
   <!-- Video module -->
   <div class="module-item">
-     <iframe height="300px" width="340px" src="http://player.youku.com/embed/XMTMwODU3NTk4OA==" frameborder=0 allowfullscreen></iframe>
+     <iframe frameborder="0" width="100%" height="200" src="https://v.qq.com/iframe/player.html?vid=t0327rvrkwx&tiny=0&auto=0" allowfullscreen></iframe>
   </div>
   <!-- module end -->
   <!-- Operative module -->
@@ -144,23 +145,23 @@ export default {
       }, {
         id: 5,
         name: '建材',
-        url: 'javascript:',
+        url: './class-list.html?type=0',
       }, {
         id: 6,
         name: '家具',
-        url: 'javascript:',
+        url: './class-list.html?type=1',
       }, {
         id: 7,
         name: '家纺',
-        url: 'javascript:',
+        url: './class-list.html?type=2',
       }, {
         id: 8,
         name: '家电',
-        url: 'javascript:',
+        url: './class-list.html?type=3',
       }, {
         id: 9,
         name: '全部分类',
-        url: 'javascript:',
+        url: './all-class.html',
       }],
       pic_and_goods: [{
         url: 'javascript:',
@@ -184,13 +185,13 @@ export default {
         description: '传统风格全新演绎'
       }],
       serviceList: [{
-        url: 'javascript:',
+        url: './free-design.html',
         img: '/static/images/services/免费设计.png'
       }, {
-        url: 'javascript:',
+        url: './free-gauge.html',
         img: '/static/images/services/免费量房.png'
       }, {
-        url: 'javascript:',
+        url: './free-verify.html',
         img: '/static/images/services/免费验房.png'
       }],
       openMenu: false
@@ -438,6 +439,14 @@ body {
         height: 20px;
         width: 20px;
     }
+}
+.menu-click-area{
+    position: fixed;
+    top:5px;
+    right: 5px;
+    height: 40px;
+    width: 40px;
+    z-index: 6;
 }
 .click {
     position: fixed;
