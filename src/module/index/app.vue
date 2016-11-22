@@ -38,8 +38,7 @@
   <!-- module end -->
   <!-- Video module -->
   <div class="module-item">
-    <div class="play"><img src="/static/images/play.png"></div>
-    <img src="/static/temp/video.png" width="100%" height="auto">
+     <iframe height="300px" width="340px" src="http://player.youku.com/embed/XMTMwODU3NTk4OA==" frameborder=0 allowfullscreen></iframe>
   </div>
   <!-- module end -->
   <!-- Operative module -->
