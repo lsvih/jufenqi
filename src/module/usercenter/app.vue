@@ -3,13 +3,13 @@
   <flexbox-item class="block-1">
     <div class="user-icon"><img :src="userIcon"></div>
     <div class="user-name">{{userName}}</div>
-    <div class="user-balance">授信金额: {{loan|currency "" 2}}(元)</div>
+    <div class="user-balance">贷款金额: {{loan|currency "" 2}}(元)</div>
   </flexbox-item>
 </flexbox>
 <flexbox class="block-2">
   <flexbox-item class="balance">
     <!-- <flexbox-item class="balance" onclick="location.href='balance.html'"> -->
-    <div>账户余额 (元)</div>
+    <div>已消费金额 (元)</div>
     <div class="balance-money">{{balance|currency "" 2}}</div>
   </flexbox-item>
   <flexbox-item class="balance" onclick="location.href='wallet.html'">
@@ -17,53 +17,62 @@
     <div class="balance-money">{{wallet|currency "" 2}}</div>
   </flexbox-item>
 </flexbox>
-<group style="margin-top:-15px">
-  <cell class="cell-item">
-    <div class="cell-icon"><img src="icon/repayment.png"></div>
-    <div class="cell-name">我的还款</div>
-    <div class="cell-right">今日待还{{repaymentPerMonth}}元</div>
-  </cell>
-  <cell class="cell-item">
-    <div class="cell-icon"><img src="icon/access.png"></div>
-    <div class="cell-name">我的认证</div>
-  </cell>
-</group>
-<flexbox class="block-3">
-  <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=1'">
-    <img src="icon/zx-order-icon.png">
-    <div class="icon-item-name">装修订单</div>
-  </flexbox-item>
-  <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=2'">
-    <img src="icon/zc-order-icon.png">
-    <div class="icon-item-name">主材订单</div>
-  </flexbox-item>
-  <flexbox-item class="icon-item" onclick="location.href='order-list.html?type=3'">
-    <img src="icon/rz-order-icon.png">
-    <div class="icon-item-name">退款订单</div>
-  </flexbox-item>
+
+<group style="margin-top:-.6em;">
+<flexbox class="block-3-name">
+  我的订单
 </flexbox>
-
-<group style="margin:-15px 0 44px 0;">
-
-
-  <cell is-link class="cell-item">
-    <div class="cell-icon"><img src="icon/favorite-icon.png"></div>
-    <div class="cell-name">我的收藏</div>
-  </cell>
-  <cell class="cell-item">
-    <div class="cell-icon"><img src="icon/service.png"></div>
-    <div class="cell-name">在线客服</div>
-  </cell>
-  <cell onclick='location.href="tel:4000390808"' class="cell-item">
-    <div class="cell-icon"><img src="icon/phone.png"></div>
-    <div class="cell-name">咨询电话</div>
-    <div class="cell-right tel">4000-390-808</div>
-  </cell>
-  <cell link="feed-back.html" is-link class="cell-item">
-    <div class="cell-icon"><img src="icon/feedback.png"></div>
-    <div class="cell-name">用户反馈</div>
-  </cell>
+  <flexbox class="block-3 vux-1px-t">
+    <flexbox-item class="icon-item vux-1px-r" onclick="location.href='order-list.html?type=1'">
+      <img src="icon/zx-order.png">
+      <div class="icon-item-name">装修订单</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-r vux-1px-t" onclick="location.href='order-list.html?type=2'">
+      <img src="icon/zc-order.png">
+      <div class="icon-item-name">主材订单</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-t" onclick="location.href='order-list.html?type=3'">
+      <img src="icon/repay-order.png">
+      <div class="icon-item-name">退款订单</div>
+    </flexbox-item>
+  </flexbox>
 </group>
+
+<group style="margin-top:-.6em;">
+<flexbox class="block-3-name">
+  我的工具
+</flexbox>
+  <flexbox class="block-3 vux-1px-t">
+    <flexbox-item class="icon-item vux-1px-r">
+      <img src="icon/repay.png">
+      <div class="icon-item-name">我的还款</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-r vux-1px-t">
+      <img src="icon/ID.png">
+      <div class="icon-item-name">我的认证</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-t">
+      <img src="icon/favorite.png">
+      <div class="icon-item-name">我的收藏</div>
+    </flexbox-item>
+  </flexbox>
+  <flexbox class="block-3 vux-1px-t">
+    <flexbox-item class="icon-item vux-1px-r">
+      <img src="icon/online.png">
+      <div class="icon-item-name">在线客服</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-r vux-1px-t" v-tap="goto('tel:4000390808')">
+      <img src="icon/tel.png">
+      <div class="icon-item-name">电话咨询</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./feed-back.html')">
+      <img src="icon/feedback.png">
+      <div class="icon-item-name">用户反馈</div>
+    </flexbox-item>
+  </flexbox>
+</group>
+<div class="exit" v-tap="exit">
+退出登录</div>
 <j-footer></j-footer>
 </template>
 
@@ -77,9 +86,9 @@ import {
   FlexboxItem
 } from 'vux-components/flexbox'
 import axios from 'axios'
-try{
+try {
   axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
-}catch(e){
+} catch (e) {
   localStorage.clear()
   window.location.href = `./wxAuth.html?url=index.html`
 }
@@ -120,6 +129,12 @@ export default {
     },
     startLoading() {
       this.showLoading = true
+    },
+    goto(url){
+      location.href = url
+    },
+    exit(){
+      localStorage.clear()
     }
   }
 }
@@ -131,6 +146,7 @@ body {
 }
 </style>
 <style scoped lang="less">
+@import '~vux/src/styles/1px.less';
 .block-1 {
     position: relative;
     height: 110px;
@@ -194,7 +210,6 @@ body {
 .block-3 {
     height: 80px;
     background-color: #fff;
-    margin-top: 6px;
     .icon-item {
         position: relative;
         height: 100%;
@@ -217,13 +232,21 @@ body {
         }
     }
 }
+.block-3-name{
+  background-color: #fff;
+  font-size: 14px;
+  color:#393939;
+  height: 30px;
+  line-height: 30px;
+  padding-left: 15px;
+}
 .balance {
     height: 40px;
     line-height: 20px;
     text-align: center;
     font-size: 12px;
     .balance-money {
-        font-size: 16px;
+        font-size: 18px;
     }
 }
 .apply {
@@ -236,35 +259,17 @@ body {
     font-size: 28px;
     text-align: center;
 }
-.cell-item {
-    height: 24px;
-    position: relative;
-    .cell-icon {
-        position: absolute;
-        top: 12px;
-        left: 15px;
-        height: 20px;
-        width: 20px;
-        img {
-            height: 20px;
-            width: 20px;
-        }
-    }
-    .cell-name {
-        position: absolute;
-        top: 12px;
-        left: 45px;
-        font-size: 16px;
-        color: #393939;
-    }
-    .cell-right {
-        position: absolute;
-        font-size: 12px;
-        top: 15px;
-        right: 15px;
-    }
-    .cell-right.tel {
-        color: #3BA794;
-    }
+
+
+.exit{
+  position: relative;
+  margin-top: 12px;
+  width: 100%;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  color:#ec5835;
+  font-size: 16px;
+  background-color: #fff;
 }
 </style>

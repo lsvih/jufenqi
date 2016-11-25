@@ -41,7 +41,7 @@
               <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
               <div class="worker-name">{{worker.nickname}}</div>
               <div class="worker-address">{{worker.nativePlace}}</div>
-              <div class="worker-rank">评分:5.0</div>
+              <!-- <div class="worker-rank">评分:5.0</div> -->
               <div class="worker-del">删除</div>
               <img v-if="isSelect('Worker',worker.userId)" class="worker-is-favorite" src="selected.png">
               <img v-else class="worker-is-favorite" src="toselect.png">
