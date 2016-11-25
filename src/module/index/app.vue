@@ -43,7 +43,7 @@
   </div>
   <!-- module end -->
   <!-- Operative module -->
-  <div class="module-item operative" :style="{height:.5*getScreenWidth()+'px'}">
+  <!-- <div class="module-item operative" :style="{height:.5*getScreenWidth()+'px'}">
     <div class="operative-left-block" :style="{width:.5*getScreenWidth()-1+'px',height:.5*getScreenWidth()+'px'}">
       <img src="/static/images/首页活动运营/活动1.png" width="100%" height="100%">
     </div>
@@ -56,7 +56,7 @@
     <div class="operative-right-block-3" :style="{width:.5*getScreenWidth()+'px',height:.5/3*getScreenWidth()+'px'}">
       <img src="/static/images/首页活动运营/活动4.png" width="100%" height="100%">
     </div>
-  </div>
+  </div> -->
   <!-- module end -->
 
   <!-- Goods module -->
