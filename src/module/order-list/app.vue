@@ -11,11 +11,9 @@
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:zx>
-          <div>
+          <no-data v-if="zxList.length==0"></no-data>
+          <div v-else>
             <j-zx-order-item :data="order" role="user" v-for="order in zxList"></j-zx-order-item>
-          </div>
-          <div v-if="zxList.length==0">
-            <div class="no-data"><img src="no-data.png"><span>暂无订单</span></div>
           </div>
         </scroller>
       </div>
@@ -23,11 +21,9 @@
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:zc>
-          <div>
+          <no-data v-if="zcList.length==0"></no-data>
+          <div v-else>
             <j-zc-order-item :data="order" v-for="order in zcList" role="user"></j-zc-order-item>
-          </div>
-          <div v-if="zcList.length==0">
-            <div class="no-data"><img src="no-data.png"><span>暂无订单</span></div>
           </div>
         </scroller>
       </div>
@@ -35,11 +31,9 @@
     <swiper-item>
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:tk>
-          <div>
+          <no-data v-if="tkList.length==0"></no-data>
+          <div v-else>
             <j-tk-order-item :data="order" role="user" v-for="order in tkList"></j-tk-order-item>
-          </div>
-          <div v-if="tkList.length==0">
-            <div class="no-data"><img src="no-data.png"><span>暂无订单</span></div>
           </div>
         </scroller>
       </div>
@@ -60,6 +54,7 @@ import Scroller from 'vux-components/scroller'
 import JZcOrderItem from 'common/components/j-zc-order-item'
 import JZxOrderItem from 'common/components/j-zx-order-item'
 import JTkOrderItem from 'common/components/j-tk-order-item'
+import NoData from 'common/no-data'
 import axios from 'axios'
 try{
   axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
@@ -84,7 +79,8 @@ export default {
     Scroller,
     JZcOrderItem,
     JZxOrderItem,
-    JTkOrderItem
+    JTkOrderItem,
+    NoData
   },
   ready() {
     let suc_count = 0
@@ -162,28 +158,5 @@ header {
 .tab-active {
     color: #88C929 !important;
     border-color: #88C929 !important;
-}
-.no-data {
-    position: relative;
-    width: 100%;
-    img {
-        position: absolute;
-        top: 220px;
-        left: calc( ~"50% - 35.5px" );
-        height: 71px;
-        width: 71px;
-    }
-    span {
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: 16px;
-        font-size: 16px;
-        line-height: 16px;
-        left: 0;
-        top: 307px;
-        color: #DADADA;
-        text-align: center;
-    }
 }
 </style>
