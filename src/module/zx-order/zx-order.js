@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './app'
+import App from 'common/views/zx-order-detail/app'
 import vueTap from 'v-tap'
 Vue.use(vueTap)
 

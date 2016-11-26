@@ -7,7 +7,6 @@
       <tab-item active-class="tab-active" :selected="index === 2" v-tap="index = 2">退款订单</tab-item>
     </tab>
   </header>
-
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
