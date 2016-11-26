@@ -57,9 +57,9 @@ import {
 import Swiper from 'vux-components/swiper'
 import SwiperItem from 'vux-components/swiper-item'
 import Scroller from 'vux-components/scroller'
-import JZcOrderItem from 'common/components/j-zc-order-item.vue'
-import JZxOrderItem from 'common/components/j-zx-order-item.vue'
-import JTkOrderItem from 'common/components/j-tk-order-item.vue'
+import JZcOrderItem from 'common/components/j-zc-order-item'
+import JZxOrderItem from 'common/components/j-zx-order-item'
+import JTkOrderItem from 'common/components/j-tk-order-item'
 import axios from 'axios'
 try{
   axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token

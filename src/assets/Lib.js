@@ -1,6 +1,6 @@
 
 import 'assets/css.css'
-import C from 'assets/conf'
+import C from 'common/conf'
 import M from 'assets/common'
 
 var Rxports = {
