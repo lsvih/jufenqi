@@ -12,7 +12,7 @@
 
 <script>
 import Lib from 'assets/Lib.js'
-import Verify from 'components/Verify.vue'
+import Verify from 'common/components/Verify'
 import Loading from 'vux-components/loading'
 import axios from 'axios'
 export default {
