@@ -29,6 +29,7 @@ module.exports = {
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components'),
       'vux-components': 'vux/src/components',
+      'common': path.resolve(__dirname, '../../jufenqi-common')
     }
   },
   resolveLoader: {
@@ -57,7 +58,7 @@ module.exports = {
       {
         test   : /\.css$/,
         loader : 'style-loader!css-loader'
-    }, 
+    },
     	 {test: /\.less$/, loader: 'style!css!less'},
       {
         test: /\.html$/,
@@ -83,7 +84,7 @@ module.exports = {
 	}
     ]
   },
-  
+
   vue: {
     loaders: cssLoaders()
   },
@@ -100,9 +101,9 @@ module.exports = {
   externals: {
     'AMap': 'window.AMap'
   }
-  
-  
-  
+
+
+
 }
 
 function getEntry(globPath) {
@@ -115,6 +116,6 @@ function getEntry(globPath) {
     pathname = tmp.splice(0, 1) + '/' + basename; // 正确输出js和html的路径
     entries[pathname] = entry;
   });
-  
+
   return entries;
 }

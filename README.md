@@ -5,6 +5,10 @@
 
 Powered by vue,vux,vue-muilt,webpack
 
+#Dependence
+
+Depend on [jufenqi-common](http://github.com/lsvih/jufenqi-common)
+
 ## Usage
 
 ```sh

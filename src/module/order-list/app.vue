@@ -13,38 +13,37 @@
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:zx>
           <div>
-            <div class="order" v-for="order in zxList">
-              <div class="zc-line-1">
-                <div class="zc-user-name">{{order.customerName}}</div>
-                <div class="zc-user-address">{{order.orderLocation+order.orderAddress}}</div>
-                <div class="zc-user-more" v-tap="viewDetail('zx',order.orderNo)">查看详情</div>
+              <div v-for="order in zxList" class="order">
+                <div class="zc-line-1">
+                    <div class="zc-user-name">{{order.customerName}}</div>
+                    <div class="zc-user-address">{{order.orderLocation+order.orderAddress}}</div>
+                    <div class="zc-user-more" v-tap="viewDetail('zx',order.orderNo)">查看详情</div>
+                  </div>
+                  <div class="zc-line-2">
+                    <div class="zc-order-date"><img src="./time.png">{{getTime(order.orderTime)}}</div>
+                    <div class="zc-order-status">{{zxStatusList[order.status].name}}</div>
+                  </div>
+                  <div class="zc-line-3" v-if="order.manager.nickname">
+                    <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
+                    <div class="zc-butler-name">{{order.manager.nickname}}</div>
+                    <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="./tel.png"></div>
+                  </div>
+                  <div class="zc-line-3" v-if="order.projectManager.nickname">
+                    <div class="zc-butler-img"><img :src="order.projectManager.profileImage"></div>
+                    <div class="zc-butler-name">{{order.projectManager.nickname}}</div>
+                    <div class="zc-butler-tel" onclick="location.href='tel:{{order.projectManager.mobile}}'"><img src="./tel.png"></div>
+                  </div>
+                  <div class="zc-line-3" v-if="order.planList[0].foreman.nickname">
+                    <div class="zc-butler-img"><img :src="order.planList[0].foreman.profileImage"></div>
+                    <div class="zc-butler-name">{{order.planList[0].foreman.nickname}}</div>
+                    <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[0].foreman.mobile}}'"><img src="./tel.png"></div>
+                  </div>
+                  <div class="zc-line-3" v-if="order.planList.length===2">
+                    <div class="zc-butler-img"><img :src="order.planList[1].foreman.profileImage"></div>
+                    <div class="zc-butler-name">{{order.planList[1].foreman.nickname}}</div>
+                    <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[1].foreman.mobile}}'"><img src="./tel.png"></div>
+                  </div>
               </div>
-              <div class="zc-line-2">
-                <div class="zc-order-date"><img src="./time.png">{{getTime(order.orderTime)}}</div>
-                <div class="zc-order-status">{{zxStatusList[order.status].name}}</div>
-              </div>
-              <div class="zc-line-3" v-if="order.manager.nickname">
-                <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
-                <div class="zc-butler-name">{{order.manager.nickname}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobile}}'"><img src="tel.png"></div>
-              </div>
-              <div class="zc-line-3" v-if="order.projectManager.nickname">
-                <div class="zc-butler-img"><img :src="order.projectManager.profileImage"></div>
-                <div class="zc-butler-name">{{order.projectManager.nickname}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.projectManager.mobile}}'"><img src="tel.png"></div>
-              </div>
-              <div class="zc-line-3" v-if="order.planList[0].foreman.nickname">
-                <div class="zc-butler-img"><img :src="order.planList[0].foreman.profileImage"></div>
-                <div class="zc-butler-name">{{order.planList[0].foreman.nickname}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[0].foreman.mobile}}'"><img src="tel.png"></div>
-              </div>
-              <div class="zc-line-3" v-if="order.planList.length===2">
-                <div class="zc-butler-img"><img :src="order.planList[1].foreman.profileImage"></div>
-                <div class="zc-butler-name">{{order.planList[1].foreman.nickname}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.planList[1].foreman.mobile}}'"><img src="tel.png"></div>
-              </div>
-
-            </div>
           </div>
           <div v-if="zxList.length==0">
             <div class="no-data"><img src="no-data.png"><span>暂无订单</span></div>
@@ -56,25 +55,7 @@
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:zc>
           <div>
-            <div class="order" v-for="order in zcList">
-              <div class="zc-line-1">
-                <div class="zc-user-name">{{order.customerName}}</div>
-                <!-- <div class="zc-user-address">{{order.userAddress}}</div> -->
-                <div class="zc-user-more" v-tap="viewDetail('zc',order.orderNo)">查看详情</div>
-              </div>
-              <div class="zc-line-2">
-                <div class="zc-order-date"><img src="./time.png">{{getTime(order.orderTime)}}</div>
-                <div class="zc-order-status">{{zcStatusList[order.status].name}}</div>
-              </div>
-              <div class="zc-line-3">
-                <div class="zc-butler-img"><img :src="order.manager.profileImage"></div>
-                <div class="zc-butler-name">{{order.manager.nickname}}</div>
-                <div class="zc-butler-tel" onclick="location.href='tel:{{order.manager.mobuil}}'"><img src="tel.png"></div>
-              </div>
-              <div class="zc-line-4" v-if="order.status > 1">
-                <div class="zc-count">总额<span>{{order.normalAmountTotal + order.specialAmountTotal|currency "￥" 2}}</span></div>
-              </div>
-            </div>
+            <j-zc-order-item :data="order" v-for="order in zcList" role="user"></j-zc-order-item>
           </div>
           <div v-if="zcList.length==0">
             <div class="no-data"><img src="no-data.png"><span>暂无订单</span></div>
@@ -86,6 +67,7 @@
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:tk>
           <div>
+
             <div class="order" v-for="order in tkList">
               <div class="zc-line-1">
                 <div class="zc-user-name">{{order.customerName}}</div>
@@ -124,6 +106,7 @@ import {
 import Swiper from 'vux-components/swiper'
 import SwiperItem from 'vux-components/swiper-item'
 import Scroller from 'vux-components/scroller'
+import JZcOrderItem from 'common/components/j-zc-order-item.vue'
 import axios from 'axios'
 try{
   axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
@@ -135,34 +118,6 @@ export default {
   data() {
     return {
       index: 0,
-      zcStatusList: [{
-        status: 0,
-        name: "订单已删除"
-      }, {
-        status: 1,
-        name: "已预约"
-      }, {
-        status: 2,
-        name: "待确认"
-      }, {
-        status: 3,
-        name: "待付款"
-      }, {
-        status: 4,
-        name: "待收货"
-      }, {
-        status: 5,
-        name: "已收货"
-      }, {
-        status: 6,
-        name: "退款中"
-      }, {
-        status: 7,
-        name: "已退款"
-      }, {
-        status: 8,
-        name: "已取消"
-      }],
       zxStatusList: [{
         status: 0,
         name: "订单已删除"
@@ -201,7 +156,8 @@ export default {
     TabItem,
     Swiper,
     SwiperItem,
-    Scroller
+    Scroller,
+    JZcOrderItem
   },
   ready() {
     let suc_count = 0
