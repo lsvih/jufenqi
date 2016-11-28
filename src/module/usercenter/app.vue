@@ -120,7 +120,6 @@ export default {
       this.repaymentPerMonth = Number(walletInfo.repayment.currentMonthRepayment)
     }).catch((res) => {
       alert("网络连接失败，请稍候重试")
-      window.location.reload()
     })
   },
   methods: {
