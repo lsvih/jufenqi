@@ -6,15 +6,21 @@
   </div>
 </div>
 <div class="content">
-    <div class="content-item" v-for="class of classList[select].child" v-tap="gotoClass(class.id)"><img :src="class.url">
-      <div class="class-name">{{class.name}}</div>
-    </div>
+  <div class="content-item" v-for="class of classList[select].child" v-tap="gotoClass(class.id)"><img :src="img + class.showImg">
+    <div class="class-name">{{class.name}}</div>
+  </div>
 </div>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
 import axios from 'axios'
+try {
+  axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
+} catch (e) {
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
@@ -22,38 +28,42 @@ export default {
         name: '建材',
         id: 1,
         img: '/static/images/icon/class-icon/jc.png',
-        child: [{"id":1,"name":"中央空调","url":"/static/images/class/建材/中央空调.jpg"},{"id":2,"name":"入户门","url":"/static/images/class/建材/入户门.jpg"},{"id":3,"name":"净水器","url":"/static/images/class/建材/净水器.jpg"},{"id":4,"name":"卫浴","url":"/static/images/class/建材/卫浴.png"},{"id":5,"name":"吊顶","url":"/static/images/class/建材/吊顶.jpg"},{"id":6,"name":"地暖","url":"/static/images/class/建材/地暖.jpg"},{"id":7,"name":"地板","url":"/static/images/class/建材/地板.jpg"},{"id":8,"name":"壁纸","url":"/static/images/class/建材/壁纸.jpg"},{"id":9,"name":"家用电器","url":"/static/images/class/建材/家用电器.jpg"},{"id":11,"name":"散热器地暖","url":"/static/images/class/建材/散热器地暖.jpg"},{"id":12,"name":"智能家居","url":"/static/images/class/建材/智能家居.jpg"},{"id":13,"name":"木门","url":"/static/images/class/建材/木门.jpg"},{"id":14,"name":"楼梯","url":"/static/images/class/建材/楼梯.jpg"},{"id":15,"name":"榻榻米","url":"/static/images/class/建材/榻榻米.jpg"},{"id":16,"name":"橱柜","url":"/static/images/class/建材/橱柜.jpg"},{"id":17,"name":"沐浴房","url":"/static/images/class/建材/沐浴房.png"},{"id":18,"name":"灯具","url":"/static/images/class/建材/灯具.jpg"},{"id":19,"name":"瓷砖","url":"/static/images/class/建材/瓷砖.jpg"},{"id":20,"name":"电梯","url":"/static/images/class/建材/电梯.jpg"},{"id":21,"name":"空气净化器","url":"/static/images/class/建材/空气净化器.jpg"},{"id":22,"name":"窗帘","url":"/static/images/class/建材/窗帘.jpg"},{"id":23,"name":"门窗","url":"/static/images/class/建材/门窗.jpg"},]
-      }, {
-        name: '家具',
-        id: 1,
-        img: '/static/images/icon/class-icon/jj.png',
-        child: [{"id":1,"name":"国产家具","url":"/static/images/class/家具/国产家具.jpg"},{"id":2,"name":"定制家具","url":"/static/images/class/家具/定制家具.jpg"},{"id":4,"name":"床垫","url":"/static/images/class/家具/床垫.jpg"},{"id":5,"name":"进口家具","url":"/static/images/class/家具/进口家具.jpg"},]
-      }, {
-        name: '家纺',
-        id: 1,
-        img: '/static/images/icon/class-icon/jf.png',
-        child: [{"id":1,"name":"卫浴","url":"/static/images/class/家纺/卫浴.jpg"}]
+        child: []
       }, {
         name: '家电',
-        id: 1,
+        id: 2,
         img: '/static/images/icon/class-icon/jd.png',
-        child: [{"id":1,"name":"家用电器","url":"/static/images/class/家电/家用电器.jpg"}]
-      }],
+        child: []
+      }, {
+        name: '家纺',
+        id: 3,
+        img: '/static/images/icon/class-icon/jf.png',
+        child: []
+      }, {
+        name: '家具',
+        id: 4,
+        img: '/static/images/icon/class-icon/jj.png',
+        child: []
+      }, ],
       select: Lib.M.GetRequest().type || 0,
       img: Lib.C.imgUrl
     }
   },
   components: {},
   ready() {
-    // axios.get(`${Lib.C.merApi}categories`, {
-    //   params: {size:1000}
-    // }).then((res) => {
-    //   this.classList = res.data.data
-    // }).catch((res) => {
-    //   alert("网络连接失败，请刷新重试")
-    // })
+
   },
   methods: {
+    getData(id) {
+      axios.get(`${Lib.C.merApi}categories`, {
+        params: {
+          size: 1000,
+          filter: "parent:" + id
+        }
+      }).then((res) => {
+        this.classList[id-1].child = res.data.data
+      }).catch((res) => {})
+    },
     getScreenWidth() {
       return document.body.clientWidth
     },
@@ -111,7 +121,7 @@ body {
     .active {
         color: #f5a623;
         background-color: #fff;
-        border:1px solid #f5a623
+        border: 1px solid #f5a623;
     }
 }
 .cate {
