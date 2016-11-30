@@ -51,7 +51,9 @@ export default {
   },
   components: {},
   ready() {
-
+    let that = this
+    let array = [1,2,3,4]
+    array.map((id)=>{that.getData(id)})
   },
   methods: {
     getData(id) {
@@ -61,7 +63,7 @@ export default {
           filter: "parent:" + id
         }
       }).then((res) => {
-        this.classList[id-1].child = res.data.data
+        this.classList[id - 1].child = res.data.data
       }).catch((res) => {})
     },
     getScreenWidth() {

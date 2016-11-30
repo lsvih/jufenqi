@@ -1,48 +1,75 @@
 <template>
-<group style="margin-top:-1.17647059em;">
-<cell v-for="brand in brandList" class="cell-item" v-tap="goBandDetail(brand.id)">
-<img :src="img+brand.logoImg" class="brand-logo" width="120px" height="80px">
-<div class="brand-name">{{brand.name}}</div>
-<div class="brand-description">{{brand.intro}}</div>
-<!-- <img v-if="isFavorite(brand.id)" class="brand-is-favorite" src="star-fill.png">
-<img v-else class="brand-is-favorite" src="star.png"> -->
-</cell>
-</group>
+<div class="select" v-tap="showSelect = true">
+  {{$refs.cate.getNameValues()||'品类'}}<img src="./select.png"></div>
+<popup-picker title="地区" :data="categories" :columns="2" :show-cell="false" :show.sync="showSelect" :value.sync="selectedCate" @on-hide="onHide" show-name v-ref:cate></popup-picker>
+<loading :show="showLoading" text="正在加载品牌"></loading>
 
+<div class="content">
+<div class="brand" v-for="brand in brands" :style="{width:(getScreenWidth()-4)/3+'px',height:(getScreenWidth()-4)/3+'px'}"><img :src="img + brand.img"></div>
+</div>
+</div>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
-import Group from 'vux-components/group'
-import Cell from 'vux-components/cell'
+import PopupPicker from 'vux-components/popup-picker'
+import Loading from 'vux-components/loading'
 import axios from 'axios'
-
+try {
+  axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
+} catch (e) {
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
-      brandList:[],
-      img:Lib.C.imgUrl
-      //brandList:[{id,name,img,description}]
+      cateId: Lib.M.GetRequest().id,
+      brandList: [],
+      img: Lib.C.imgUrl,
+      categories: [],
+      selectedCate: [],
+      showSelect: false,
+      showLoading: false
+        //brandList:[{id,name,img,description}]
     }
   },
   components: {
-    Group,
-    Cell,
+    PopupPicker,
+    Loading
   },
-  ready(){
-    axios.get(`${Lib.C.merApi}categories/${Lib.M.GetRequest().id}`).then((res) => {
-    this.brandList = res.data.data.brands
-  }).catch((res) => {
-    console.log(res)//error
-  })
+  ready() {
+    this.getData(this.cateId)
+    let that = this
+    axios.get(`${Lib.C.merApi}categories`).then((res) => {
+      res.data.data.map((e) => {
+        that.categories.push({
+          name: e.name,
+          value: String(e.id),
+          parent: e.parent === null ? 0 : String(e.parent.id)
+        })
+      })
+    }).catch((res) => {
+      console.log(res) //error
+    })
   },
   methods: {
-    isFavorite(brandId){
-      return false
+    getData(id) {
+      this.showLoading = true
+
     },
-    goBandDetail(id){
-      location.href=`brand-detail.html?id=${id}`
-    }
+    onHide() {
+      if (this.selectedCate.length) {
+        this.cateId = this.selectedCate[1]
+        this.getData(this.cateId)
+      }
+    },
+    goBandDetail(id) {
+      location.href = `brand-detail.html?id=${id}`
+    },
+    getScreenWidth() {
+      return document.body.clientWidth
+    },
   }
 }
 </script>
@@ -53,41 +80,36 @@ body {
 }
 </style>
 <style scoped lang="less">
-.cell-item{
-  position: relative;
-  height: 80px;
-  .brand-logo{
-    position: absolute;
-    top:10px;
-    left:15px;
-    width: 120px;
-    height: 80px;
-  }
-  .brand-name{
-    position: absolute;
-    top:10px;
-    left:145px;
+.select {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 40px;
+    width: 100%;
+    background-color: #fff;
+    text-align: center;
     font-size: 12px;
     color: #393939;
-  }
-  .brand-description{
-    position: absolute;
-    top:44px;
-    left:145px;
-    font-size: 12px;
-    color: #999;
-    width: calc( ~"100% - 190px" );
-    height: 50px;
-    text-align: left;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  .brand-is-favorite{
-    position: absolute;
-    top:40px;
-    right: 15px;
-    width: 20px;
-    height: 20px;
+    line-height: 40px;
+    img {
+        width: 6px;
+        height: 4px;
+        margin-left: 8px;
+        vertical-align: middle;
+    }
+}
+.content{
+  padding-top: 70px;
+  margin-left: 1px;
+  height: auto;
+  width: calc(~"100% - 1px");
+  .brand{
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    img{
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>
