@@ -37,7 +37,7 @@ import Loading from 'vux-components/loading'
 import Alert from 'vux-components/alert'
 import axios from 'axios'
 try {
-  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+  axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
 } catch (e) {
   localStorage.clear()
   window.location.href = `./wxAuth.html?url=index.html`

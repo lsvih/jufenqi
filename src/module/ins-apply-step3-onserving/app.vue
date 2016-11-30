@@ -21,7 +21,7 @@ import XButton from 'vux-components/x-button'
 import JTel from 'components/JTel.vue'
 import axios from 'axios'
 try{
-  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+  axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
 }catch(e){
   localStorage.clear()
   window.location.href = `./wxAuth.html?url=index.html`
