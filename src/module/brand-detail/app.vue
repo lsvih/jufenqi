@@ -43,6 +43,12 @@ import XImg from 'vux-components/x-img'
 import Cell from 'vux-components/cell'
 import Previewer from 'vux-components/previewer'
 import axios from 'axios'
+try {
+  axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
+} catch (e) {
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {

@@ -81,6 +81,7 @@ export default {
       appointstamp = appointstamp.getTime()/1000
       axios.post(`${Lib.C.orderApi}decorationOrders`, {
         customerName: this.name,
+        customerId: JSON.parse(localStorage.user).userId,
         customerMobile: this.phone,
         orderTime: appointstamp,
         orderLocation: city,
