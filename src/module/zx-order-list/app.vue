@@ -124,8 +124,8 @@ export default {
       res.data.data.map((order) => {
         this.orderPipe(order)
       })
-    }).catch((res) => {
-      throw res
+    }).catch((err) => {
+      throw err
     })
   },
   methods: {

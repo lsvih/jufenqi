@@ -1,48 +1,33 @@
 <template>
 <header>
-  <div class="brand-logo"><img :src="img+brand.logo"></div>
+  <div class="brand-logo"><img :src="img + brand.logoImg"></div>
   <div class="brand-name">{{brand.name}}</div>
-  <div class="brand-description">{{brand.slogon}}</div>
 </header>
 <div class="content">
-  <group title="品牌介绍">
-    <article>{{brand.description}}</article>
-  </group>
-  <group title="产品图片" v-if="productList.length">
-    <div class="module-item">
-      <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:goods>
-        <div class="brand-product-list" :style="{width:productList.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
-          <div class="brand-product-item" v-for="good in productList" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-            <x-img class="product-img" :scroller="$refs.goods" :src="good.src" v-tap="$refs.previewer.show($index)"></x-img>
-          </div>
-        </div>
-      </scroller>
-    </div>
-  </group>
+
+
 </div>
 <footer>
   <div class="icon-item"><img src="share.png">
     <div>分享</div>
   </div>
-  <!-- <div class="icon-item" v-if="isFavorite()"><img src="favorite.png">
+  <div class="icon-item" v-if="isFavorite()"><img src="favorite.png">
     <div>收藏</div>
   </div>
   <div class="icon-item" v-else><img src="favorite.png">
     <div>收藏</div>
-  </div> -->
-  <div class="shop-list" v-tap="gotoStores(id,brand.name)">查看门店</div>
+  </div>
+  <div class="footer-line"></div>
+  <div class="cart-list" v-tap="goto('./cart.html')"><img :src="cartState?cartAImg:cartImg">备选订单</div>
 </footer>
-<previewer :list="productList" v-ref:previewer :options="options"></previewer>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
-import Group from 'vux-components/group'
 import Scroller from 'vux-components/scroller'
-import XImg from 'vux-components/x-img'
-import Cell from 'vux-components/cell'
-import Previewer from 'vux-components/previewer'
 import axios from 'axios'
+import cartImg from './cart.png'
+import cartAImg from './cart-active.png'
 try {
   axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
 } catch (e) {
@@ -52,36 +37,15 @@ try {
 export default {
   data() {
     return {
-      img:Lib.C.imgUrl,
+      img: Lib.C.imgUrl,
       id: Lib.M.GetRequest().id,
-      brand: {
-        logo: null,
-        name: null,
-        description: null,
-        slogon: null,
-      },
-      productList: [],
-      //productList:[img_src,img_src]
-      options: {
-        getThumbBoundsFn(index) {
-          let thumbnail = document.querySelectorAll('.product-img')[index]
-          let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
-          let rect = thumbnail.getBoundingClientRect()
-          return {
-            x: rect.left,
-            y: rect.top + pageYScroll,
-            w: rect.width
-          }
-        }
-      }
+      brand: {},
+      cartState: !this.isCartEmpty(),
+      cartImg,cartAImg
     }
   },
   components: {
-    Group,
-    Cell,
     Scroller,
-    XImg,
-    Previewer
   },
   methods: {
     isFavorite(brandId) {
@@ -90,19 +54,22 @@ export default {
     getScreenWidth() {
       return document.body.clientWidth
     },
-    gotoStores(id,name) {
-      location.href = `shop-list.html?id=${id}&name=${name}`
+    goto(url) {
+      location.href = url
+    },
+    isCartEmpty(){
+      if(localStorage.cart === undefined){
+        return true
+      }else{
+        return JSON.parse(localStorage.cart).shop.length === 0
+      }
     }
   },
   ready() {
     axios.get(`${Lib.C.merApi}brands/${this.id}`).then((res) => {
-      let brand = res.data.data
-      this.brand.name = brand.name
-      this.brand.logo = brand.logoImg
-      this.brand.description = brand.intro
-      this.slogon = brand.slogon
-    }).catch((res) => {
-      console.log(res) //error
+      this.brand = res.data.data
+    }).catch((err) => {
+      throw err
     })
   }
 }
@@ -133,36 +100,21 @@ footer {
 }
 </style>
 <style scoped lang="less">
-.brand-product-list {
-    height: auto;
-    padding: 10px 15px 20px;
-    position: relative;
-    .brand-product-item {
-        height: auto;
-        margin-right: 10px;
-        display: inline-block;
-        float: left;
-        img {
-            height: 100%;
-            width: 100%;
-        }
-    }
-}
 header {
     position: relative;
-    height: 140px;
+    height: 180px;
     width: 100%;
-    background-color: #fff;
+    background-image: url('./bg.png');
+    background-size: 100% 100%;
     .brand-logo {
         position: absolute;
-        top: 16px;
-        left: 50%;
-        height: 60px;
-        width: 60px;
-        margin-left: -30px;
-        border-radius: 30px;
-        border: 1px solid #ddd;
+        top: 24px;
+        left: calc(~"50% - 50px");
+        height: 100px;
+        width: 100px;
+        border-radius: 5px;
         overflow: hidden;
+        box-shadow: rgba(0, 0, 0, .4) 0 2px 4px 2px;
         img {
             height: 100%;
             width: 100%;
@@ -170,27 +122,17 @@ header {
     }
     .brand-name {
         position: absolute;
-        top: 86px;
+        top: 134px;
         left: 0;
         width: 100%;
         height: 16px;
         font-size: 16px;
-        color: #393939;
-        text-align: center;
-    }
-    .brand-description {
-        position: absolute;
-        bottom: 16px;
-        left: 0;
-        width: 100%;
-        height: 12px;
-        font-size: 12px;
-        color: #727272;
+        color: #fff;
         text-align: center;
     }
 }
 footer {
-    .shop-list {
+    .cart-list {
         position: absolute;
         bottom: 0;
         right: 0;
@@ -201,6 +143,20 @@ footer {
         color: #fff;
         text-align: center;
         font-size: 16px;
+        img{
+          height: 20px;
+          width: 20px;
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+    }
+    .footer-line {
+        position: absolute;
+        height: 24px;
+        width: 1px;
+        left: 16%;
+        top: 10px;
+        background-color: #eee;
     }
     .icon-item {
         position: absolute;

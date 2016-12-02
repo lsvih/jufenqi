@@ -116,8 +116,8 @@ export default {
       this.loan = walletInfo.loanAmount
       this.balance = walletInfo.consumptionAmount
       this.wallet = walletInfo.balance
-    }).catch((res) => {
-      throw res
+    }).catch((err) => {
+      throw err
     })
   },
   methods: {
