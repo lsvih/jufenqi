@@ -9,9 +9,9 @@
 
 <script>
 import Lib from 'assets/Lib.js'
-import ToUploadPhoto from 'components/JToUploadPhoto.vue'
+import ToUploadPhoto from 'components/j-to-upload-photo'
 import XButton from 'vux-components/x-button'
-import JTel from 'components/JTel.vue'
+import JTel from 'components/j-tel'
 import axios from 'axios'
 try{
   axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token

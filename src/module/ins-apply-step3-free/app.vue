@@ -11,12 +11,12 @@
 
 <script>
 import Lib from 'assets/Lib.js'
-import JApplyProcess from 'components/JApplyProcess.vue'
+import JApplyProcess from 'components/j-apply-process'
 import XInput from 'vux-components/x-input/'
 import Group from 'vux-components/group/'
 import Cell from 'vux-components/cell/'
 import XButton from 'vux-components/x-button'
-import JTel from 'components/JTel.vue'
+import JTel from 'components/j-tel'
 import axios from 'axios'
 try {
   axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token

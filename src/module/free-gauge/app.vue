@@ -5,7 +5,7 @@
 
 <script>
 import Lib from 'assets/Lib.js'
-import JForm from 'components/JForm.vue'
+import JForm from 'components/j-form'
 export default {
   components: {
     JForm

@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>跨域测试</title>
+  </head>
+  <body>
+    <h1>你好，世界！</h1>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+      $.ajax({
+          type:'get',
+          url:'http://wx.jufenqi.com:8080/merchant/api/categories?size=1000&filter=parent',
+          headers : {'Authorization':'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0ODA2MTQ4NTAsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiI4NGU3MGJjNi0xMjQ3LTQ0YWItYjRhZS0zZjkzNzlkNzIwY2UiLCJjbGllbnRfaWQiOiJ3ZWJfYXBwIiwic2NvcGUiOlsib3BlbmlkIl19.lRxoes73WCmtxUvGicBtDKdShPH9FtbDYnu1VdPEb2FFEQugUoRRAZ_F68Tp15y2lFYJKukcDYZUz7IXzP0P4cE5WA9irJmJZCaNlI58jnjwwnA5wPSI_YYr52m3XQ3uIFSUQxx5HPUyVjiBtM50MQS6uo_IyjPIPQUGL3f14QVy-XCEpDHsjlvhAjNSVZDtiQBxZr_r1sPAx3D2phhIHbniQ2P7twebOUT887xB31JRRlMKqU8NLOjACSJe-lMvnIbiQV5cKwJO1pi8Od1zXNqZwmEegEL8iRUJY53AGJm6qvubhb7fUnxT8YEDMJAeFoY70hoepGN1b9rMYTy2WQ'},
+          error:function(data){console.log(data);},
+          success:function(data){console.log(data);}
+      });
+
+      // $.ajax({
+      //     type:'post',
+      //     url:'http://dadamj.com/ddmj/api/web/categories',
+      //     data:{name:'aaaa'},
+      //     error:function(data){console.log(data);},
+      //     success:function(data){console.log(data);}
+      // });
+    </script>
+  </body>
+</html>

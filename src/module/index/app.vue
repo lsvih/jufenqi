@@ -102,7 +102,7 @@
 <script>
 import Lib from 'assets/Lib.js'
 import Swiper from 'vux-components/swiper'
-import JFooter from 'components/JFooter.vue'
+import JFooter from 'components/j-footer'
 import XImg from 'vux-components/x-img'
 import {
   Flexbox,

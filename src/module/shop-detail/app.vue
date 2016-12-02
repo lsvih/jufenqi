@@ -50,7 +50,7 @@
 <previewer :list="productList" v-ref:previewer :options="options"></previewer>
 </template>
 <script>
-import Map from 'components/Map.vue'
+import Map from 'components/j-map'
 import Lib from 'assets/Lib.js'
 import Group from 'vux-components/group'
 import Scroller from 'vux-components/scroller'

@@ -37,7 +37,7 @@
 <script>
 import Lib from 'assets/Lib.js'
 import XButton from 'vux-components/x-button'
-import JTel from 'components/JTel.vue'
+import JTel from 'components/j-tel'
 import XInput from 'vux-components/x-input'
 import Group from 'vux-components/group'
 import axios from 'axios'

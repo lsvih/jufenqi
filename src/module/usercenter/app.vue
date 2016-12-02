@@ -23,15 +23,15 @@
   我的订单
 </flexbox>
   <flexbox class="block-3 vux-1px-t">
-    <flexbox-item class="icon-item vux-1px-r" onclick="location.href='order-list.html?type=1'">
+    <flexbox-item class="icon-item vux-1px-r" onclick="location.href='./zx-order-list.html'">
       <img src="icon/zx-order.png">
       <div class="icon-item-name">装修订单</div>
     </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-r vux-1px-t" onclick="location.href='order-list.html?type=2'">
+    <flexbox-item class="icon-item vux-1px-r vux-1px-t" onclick="location.href='./zc-order-list.html'">
       <img src="icon/zc-order.png">
       <div class="icon-item-name">主材订单</div>
     </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-t" onclick="location.href='order-list.html?type=3'">
+    <flexbox-item class="icon-item vux-1px-t" onclick="">
       <img src="icon/repay-order.png">
       <div class="icon-item-name">退款订单</div>
     </flexbox-item>
@@ -78,7 +78,7 @@
 
 <script>
 import Lib from 'assets/Lib.js'
-import JFooter from 'components/JFooter.vue'
+import JFooter from 'components/j-footer'
 import Group from 'vux-components/group/'
 import Cell from 'vux-components/cell/'
 import {
@@ -99,7 +99,6 @@ export default {
       loan: 0,
       balance: 0,
       wallet: 0,
-      repaymentPerMonth: 0,
       userIcon: JSON.parse(localStorage.getItem('user')).profile.profileImage,
       userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
     }
@@ -115,11 +114,10 @@ export default {
     axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
       let walletInfo = res.data.data
       this.loan = walletInfo.loanAmount
-      this.balance = walletInfo.availableAmount
+      this.balance = walletInfo.consumptionAmount
       this.wallet = walletInfo.balance
-      this.repaymentPerMonth = Number(walletInfo.repayment.currentMonthRepayment)
     }).catch((res) => {
-      alert("网络连接失败，请稍候重试")
+      throw res
     })
   },
   methods: {

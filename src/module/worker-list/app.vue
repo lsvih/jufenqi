@@ -29,8 +29,8 @@
 import Lib from 'assets/Lib.js'
 import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
-import JSelect from 'components/JSelect.vue'
-import JSelectItem from 'components/JSelectItem.vue'
+import JSelect from 'components/j-select'
+import JSelectItem from 'components/j-select-item'
 import Loading from 'vux-components/loading'
 import axios from 'axios'
 export default {

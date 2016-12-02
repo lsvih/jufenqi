@@ -30,7 +30,7 @@
 
 <script>
 import Lib from 'assets/Lib.js'
-import JFooter from 'components/JFooter.vue'
+import JFooter from 'components/j-footer'
 import {
   Flexbox,
   FlexboxItem

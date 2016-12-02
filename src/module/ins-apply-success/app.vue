@@ -26,11 +26,11 @@
 
 <script>
 import Lib from 'assets/Lib.js'
-import JCreditProcess from 'components/JCreditProcess.vue'
+import JCreditProcess from 'components/j-credit-process'
 import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
 import XButton from 'vux-components/x-button'
-import JTel from 'components/JTel.vue'
+import JTel from 'components/j-tel'
 export default {
   data() {
     return {

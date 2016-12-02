@@ -7,7 +7,7 @@
 
 </div>
 
-<x-button slot="right" style="background-color:#88C928;color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="goto('./order-list.html?type='+type)">返回订单列表</x-button>
+<x-button slot="right" style="background-color:#88C928;color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="gotoOrderList()">返回订单列表</x-button>
 <x-button slot="right" style="background-color:#fff;color:#88C928;border:1px solid #88C928;margin:20px 20px;width:calc( 100% - 40px )" v-tap="goto('./index.html')">返回首页</x-button>
 
 <j-tel style="margin-top:30px"></j-tel>
@@ -16,7 +16,7 @@
 <script>
 import Lib from 'assets/Lib.js'
 import XButton from 'vux-components/x-button'
-import JTel from 'components/JTel.vue'
+import JTel from 'components/j-tel'
 export default {
   data() {
     return {
@@ -28,8 +28,8 @@ export default {
     JTel
   },
   methods: {
-    goto(url){
-      window.location.href = url
+    gotoOrderList(){
+      window.location.href = this.type == 1?'./zx-order-list.html':'./zc-order-list.html'
     }
   }
 }

@@ -61,7 +61,8 @@ export default {
         params: {
           size: 1000,
           filter: "parent:" + id
-        }
+        },
+        withCredentials: true, 
       }).then((res) => {
         this.classList[id - 1].child = res.data.data
       }).catch((res) => {})
