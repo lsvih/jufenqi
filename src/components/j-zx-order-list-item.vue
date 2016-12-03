@@ -11,57 +11,34 @@
       <div class="user-tel" v-tap="goto('tel:'+order.customerMobile||order.appt.customerMobile)">{{order.customerMobile||order.appt.customerMobile}}</div>
       <div class="more" v-tap="goto('./zc-order.html?orderNo='+order.orderNo+'&apptNo='+order.apptNo)">查看详情</div>
     </div>
-
-    <!-- 店员 -->
-    <div v-if="order.status == 4||order.status == 6 ">
-      <div v-if="order.orders">
-        <div class="clerk" v-for="subOrder in order.orders">
-          <img :src="clerkImg"> {{subOrder.clerkName}}
-        </div>
+    <div class="address">{{order.orderLocation}}{{order.orderAddress}}</div>
+    <!-- 相关人员 -->
+    <div class="people">
+      <img class="type" :src="managerImg"> {{order.manager.nickname}}
+      <img class="tel" :src="telImg" v-tap="goto('tel:'+order.manager.mobile)">
+    </div>
+    <div class="people">
+      <img class="type" :src="projectManagerImg"> {{order.projectManager.nickname}}
+      <img class="tel" :src="telImg" v-tap="goto('tel:'+order.projectManager.mobile)">
+    </div>
+    <div v-if="order.planList">
+      <div class="people" v-for="plan in order.planList">
+        <img class="type" :src="foremanImg"> {{plan.foreman.nickname}}
       </div>
-      <div class="clerk" v-else>
-        <img :src="clerkImg"> {{order.clerkName}}
-      </div>
+    </div>
+    <div class="people" v-else>
+      <img class="type" :src="foremanImg"> {{order.foreman.nickname}}
     </div>
 
-    <!-- 门店 -->
-    <div v-if="order.orders">
-      <div v-for="subOrder in order.orders">
-        <div class="store">
-          <div class="store-name">
-            {{subOrder.storeName}}
-          </div>
-          <div class="value" v-if="order.status != 1">
-            {{subOrder.totalAmount|currency '￥' 2}}
-          </div>
-        </div>
-        <div class="brand" v-if="order.status == 4||order.status == 6">
-          {{subOrder.brandName}}
-        </div>
-      </div>
-    </div>
-    <div v-else>
-      <div class="store">
-        <div class="store-name">
-          {{order.storeName}}
-        </div>
-        <div class="value" v-if="order.status != 1">
-          {{order.totalAmount|currency '￥' 2}}
-        </div>
-      </div>
-      <div class="brand" v-if="order.status == 4||order.status == 6">
-        {{order.brandName}}
-      </div>
-    </div>
 
     <!-- 用户操作的按钮 -->
-    <div v-if="order.status!=5" class="operate">
+    <!-- <div v-if="order.status!=5" class="operate">
       <div class="bottom" v-if="order.status==2">继续支付</div>
       <div class="bottom" v-if="order.status==4||order.status==6">退款</div>
       <div class="bottom" v-if="order.status==6" v-tap="delete(order.apptNo)">删除</div>
       <div class="bottom" v-if="order.status==2||order.status==3" v-tap="cancel(order.apptNo)">取消订单</div>
       <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div>
-    </div>
+    </div> -->
   </div>
 </div>
 </template>
@@ -72,7 +49,10 @@
 <script>
 import Lib from 'assets/Lib.js'
 import statusImg from 'common/assets/images/status.png'
-import clerkImg from 'common/assets/images/role/clerk.png'
+import managerImg from 'common/assets/images/role/manager.png'
+import foremanImg from 'common/assets/images/role/foreman.png'
+import projectManagerImg from 'common/assets/images/role/project-manager.png'
+import telImg from 'common/assets/images/tel.png'
 import Status from 'common/status'
 import axios from 'axios'
 try {
@@ -85,7 +65,10 @@ export default {
   data() {
     return {
       statusImg,
-      clerkImg,
+      managerImg,
+      foremanImg,
+      projectManagerImg,
+      telImg,
       Status
     }
   },
@@ -111,7 +94,7 @@ export default {
     goto(url) {
       location.href = url
     },
-    receive(orderNo){
+    receive(orderNo) {
       axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/receive`).then((res) => {
         alert('确认收货成功！')
         location.reload()
@@ -119,7 +102,7 @@ export default {
         alert('确认收货失败，请重试')
       })
     },
-    cancel(apptNo){
+    cancel(apptNo) {
       axios.post(`${Lib.C.mOrderApi}materialAppts/${apptNo}/cancel`).then((res) => {
         alert('取消订单成功！')
         location.reload()
@@ -127,7 +110,7 @@ export default {
         alert('取消订单失败，请重试')
       })
     },
-    delete(apptNo){
+    delete(apptNo) {
       axios.post(`${Lib.C.mOrderApi}materialAppts/${apptNo}/detele`).then((res) => {
         alert('删除订单成功！')
         location.reload()
@@ -180,6 +163,14 @@ export default {
         width: calc(~"100% - 15px");
         padding-left: 15px;
         height: auto;
+        .address {
+            height: 50px;
+            width: 100%;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            line-height: 50px;
+            font-size: 12px;
+        }
         .user-info {
             height: 50px;
             width: 100%;
@@ -206,20 +197,27 @@ export default {
                 font-size: 12px;
             }
         }
-        .clerk {
+        .people {
             position: relative;
             color: #393939;
             height: 30px;
             line-height: 30px;
-            padding-left: 20px;
-            width: 100%;
+            padding-left: 30px;
+            width: calc(~"100% - 30px");
             border-bottom: 1px solid #eee;
             font-size: 12px;
-            img {
+            .type {
                 position: absolute;
                 height: 20px;
                 width: 20px;
                 left: 0;
+                top: 5px;
+            }
+            .tel {
+                position: absolute;
+                height: 20px;
+                width: 20px;
+                right: 15px;
                 top: 5px;
             }
         }

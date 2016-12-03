@@ -107,7 +107,7 @@ body {
     }
 }
 .content {
-    padding-top: 70px;
+    padding-top: 50px;
     margin-left: 1px;
     height: auto;
     width: calc(~"100% - 1px");

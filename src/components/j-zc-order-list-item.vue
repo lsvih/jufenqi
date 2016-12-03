@@ -11,7 +11,9 @@
       <div class="user-tel" v-tap="goto('tel:'+order.customerMobile||order.appt.customerMobile)">{{order.customerMobile||order.appt.customerMobile}}</div>
       <div class="more" v-tap="goto('./zc-order.html?orderNo='+order.orderNo+'&apptNo='+order.apptNo)">查看详情</div>
     </div>
-
+    <div class="time" v-if="order.status == 1">
+      <img :src="clockImg"> {{getTime(order.orderTime)}}
+    </div>
     <!-- 店员 -->
     <div v-if="order.status == 4||order.status == 6 ">
       <div v-if="order.orders">
@@ -55,10 +57,10 @@
     </div>
 
     <!-- 用户操作的按钮 -->
-    <div v-if="order.status!=5" class="operate">
+    <div v-if="order.status!=5&&order.status!=1" class="operate">
       <div class="bottom" v-if="order.status==2">继续支付</div>
       <div class="bottom" v-if="order.status==4||order.status==6">退款</div>
-      <div class="bottom" v-if="order.status==6" v-tap="delete(order.apptNo)">删除</div>
+      <div class="bottom" v-if="order.status==6" v-tap="delete(order.orderNO)">删除</div>
       <div class="bottom" v-if="order.status==2||order.status==3" v-tap="cancel(order.apptNo)">取消订单</div>
       <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div>
     </div>
@@ -73,6 +75,7 @@
 import Lib from 'assets/Lib.js'
 import statusImg from 'common/assets/images/status.png'
 import clerkImg from 'common/assets/images/role/clerk.png'
+import clockImg from 'common/assets/images/time.png'
 import Status from 'common/status'
 import axios from 'axios'
 try {
@@ -86,6 +89,7 @@ export default {
     return {
       statusImg,
       clerkImg,
+      clockImg,
       Status
     }
   },
@@ -111,7 +115,7 @@ export default {
     goto(url) {
       location.href = url
     },
-    receive(orderNo){
+    receive(orderNo) {
       axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/receive`).then((res) => {
         alert('确认收货成功！')
         location.reload()
@@ -119,7 +123,7 @@ export default {
         alert('确认收货失败，请重试')
       })
     },
-    cancel(apptNo){
+    cancel(apptNo) {
       axios.post(`${Lib.C.mOrderApi}materialAppts/${apptNo}/cancel`).then((res) => {
         alert('取消订单成功！')
         location.reload()
@@ -127,8 +131,8 @@ export default {
         alert('取消订单失败，请重试')
       })
     },
-    delete(apptNo){
-      axios.post(`${Lib.C.mOrderApi}materialAppts/${apptNo}/detele`).then((res) => {
+    delete(orderNo) {
+      axios.post(`${Lib.C.mOrderApi}materialAppts/${orderNo}/detele`).then((res) => {
         alert('删除订单成功！')
         location.reload()
       }).catch((res) => {
@@ -221,6 +225,23 @@ export default {
                 width: 20px;
                 left: 0;
                 top: 5px;
+            }
+        }
+        .time {
+            position: relative;
+            color: #393939;
+            height: 30px;
+            line-height: 30px;
+            padding-left: 16px;
+            width: 100%;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+            img {
+                position: absolute;
+                height: 10px;
+                width: 10px;
+                left: 0;
+                top: 10px;
             }
         }
         .store {

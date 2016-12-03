@@ -13,7 +13,7 @@
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listOne>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:lista>
           <no-data v-if="list0.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list0" :data="order"></j-zc-order-list-item>
@@ -23,7 +23,7 @@
     </swiper-item>
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listTwo>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listb>
           <no-data v-if="list1.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list1" :data="order"></j-zc-order-list-item>
@@ -33,7 +33,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listThree>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listc>
           <no-data v-if="list2.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list2" :data="order"></j-zc-order-list-item>
@@ -43,7 +43,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listFour>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listd>
           <no-data v-if="list3.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list3" :data="order"></j-zc-order-list-item>
@@ -53,7 +53,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listFive>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:liste>
           <no-data v-if="list4.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list4" :data="order"></j-zc-order-list-item>
@@ -63,7 +63,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listSix>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listf>
           <no-data v-if="list5.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list5" :data="order"></j-zc-order-list-item>
@@ -117,8 +117,7 @@ export default {
   ready() {
     axios.get(`${Lib.C.mOrderApi}materialAppts`, {
       params: {
-        status: '1,2,3',
-        filter: 'customerId:' + JSON.parse(localStorage.getItem("user")).userId,
+        filter: 'customerId:' + JSON.parse(localStorage.getItem("user")).userId + '|status:[1,3]',
         sort: 'createdAt,DESC',
         size: 1000
       }
@@ -131,8 +130,7 @@ export default {
     })
     axios.get(`${Lib.C.mOrderApi}materialOrders`, {
       params: {
-        status: '4,5,6',
-        filter: 'customerId:' + JSON.parse(localStorage.getItem("user")).userId,
+        filter: 'customerId:' + JSON.parse(localStorage.getItem("user")).userId + '|status:[4,6]',
         sort: 'createdAt,DESC',
         size: 1000
       }
@@ -171,12 +169,12 @@ export default {
         default:
           break;
       }
-      this.$refs.listOne.reset()
-      this.$refs.listTwo.reset()
-      this.$refs.listThree.reset()
-      this.$refs.listFour.reset()
-      this.$refs.listFive.reset()
-      this.$refs.listSix.reset()
+      this.$refs.lista.reset()
+      this.$refs.listb.reset()
+      this.$refs.listc.reset()
+      this.$refs.listd.reset()
+      this.$refs.liste.reset()
+      this.$refs.listf.reset()
 
     }
   }
