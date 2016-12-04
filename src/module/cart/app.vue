@@ -11,28 +11,36 @@
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-88+'px'" lock-x scroller-y v-if="shopList.length > 0">
-          <group style="margin-top:-1.17647059em;" v-for="shop in shopList">
-            <cell class="shop-item">
-              <div class="shop-name">{{shop.name}}</div>
-              <div class="shop-address">{{shop.address}}</div>
-              <div class="shop-del" v-tap="deleteShop(shop.id)">删除门店</div>
-            </cell>
-            <cell class="shop-brand" v-for="brand in shop.brand">
-              <div class="brand-name">品牌: {{brand.name}}</div>
-            </cell>
+        <scroller :height="getScreenHeight()-88+'px'" lock-x scroller-y v-if="shopList.length > 0" v-ref:zc>
+          <group style="margin-top:-1.17647059em;">
+            <div v-for="shop in shopList">
+              <cell class="cell-item">
+                <div class="click-area-select" v-tap="selectItem('Shop',shop.id)"></div>
+                <div class="click-zc-area-del" v-tap="deleteShop(shop.id)"></div>
+                <div class="shop-name">{{shop.name}}</div>
+                <div class="shop-address">{{shop.address}}</div>
+                <!-- <div class="worker-rank">评分:5.0</div> -->
+                <div class="shop-del">删除门店</div>
+                <img v-if="isSelect('Shop',shop.id)" class="worker-is-favorite" src="selected.png">
+                <img v-else class="worker-is-favorite" src="toselect.png">
+              </cell>
+              <cell class="shop-brand" v-for="brand in shop.brands">
+                <div class="brand-name">品牌: {{brand.name}}</div>
+              </cell>
+            </div>
           </group>
         </scroller>
         <div v-if="shopList.length == 0" class="no-data-container">
           <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>
         </div>
-        <div class="submit-btn" :class="{'select-active':shopList.length>0}" v-tap="shopList.length>0?goto('./select-shop.html'):return">预约</div>
+        <div class="submit-btn left-btn" :class="{'left-btn-active':isSelected('Shop')}" v-tap="isSelected('Shop')?selectShops():return">立即预约</div>
+        <div class="submit-btn right-btn" :class="{'select-active':isSelected('Shop')}" v-tap="isSelected('Shop')?addOrder():return">立即购买</div>
         <!-- <div class="submit-btn" :class="{'select-active':isSelectShop()}" v-tap="isSelectShop()?selectShop():return">预约</div> -->
       </div>
     </swiper-item>
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-88+'px'" lock-x scroller-y v-if="workerList.length > 0">
+        <scroller :height="getScreenHeight()-88+'px'" lock-x scroller-y v-if="workerList.length > 0" v-ref:zx>
           <group style="margin-top:-1.17647059em;">
             <cell v-for="worker in workerList" class="cell-item">
               <div class="click-area-select" v-tap="selectItem('Worker',worker.userId)"></div>
@@ -51,7 +59,7 @@
         <div v-if="workerList.length == 0" class="no-data-container">
           <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>
         </div>
-        <div class="submit-btn" :class="{'select-active':isSelectWorkers()}" v-tap="isSelectWorkers()?selectWorkers():return">预约</div>
+        <div class="submit-btn" :class="{'select-active':isSelected('Worker')}" v-tap="isSelected('Worker')?selectWorkers():return">预约</div>
       </div>
     </swiper-item>
     <!-- <swiper-item>
@@ -92,8 +100,9 @@ export default {
       toastText: "",
       showLoading: false,
       workerList: window.localStorage.getItem("cart") ? JSON.parse(window.localStorage.getItem("cart")).worker : [],
-      shopList: window.localStorage.getItem("cart") ? JSON.parse(window.localStorage.getItem("cart")).shop : [],
+      shopList: window.localStorage.getItem("cart") ? shopInfoPipe(JSON.parse(window.localStorage.getItem("cart")).shop) : [],
       selectWorker: [],
+      selectShop: []
     }
   },
   components: {
@@ -144,61 +153,38 @@ export default {
         shop: this.shopList
       }))
     },
-    isSelectWorkers() {
-      return !!this.selectWorker.length
-    },
-    isSelectShop() {
-      return !!this.selectShop.length
+    isSelected(type) {
+      return !!this['select' + type].length
     },
     deleteShop(id) {
       let tempData = JSON.parse(localStorage.getItem("cart"))
-      for (let i in tempData.shop) {
-        if (tempData.shop[i].id == id) {
+      for (let i = tempData.shop.length - 1; i >= 0; i--) {
+        if (tempData.shop[i][1] == id) {
           tempData.shop.$remove(tempData.shop[i])
         }
       }
-      localStorage.setItem("cart",JSON.stringify(tempData))
+      localStorage.setItem("cart", JSON.stringify(tempData))
       for (let j in this.shopList) {
         if (this.shopList[j].id == id) {
           this.shopList.$remove(this.shopList[j])
         }
       }
     },
-    selectShop() {
-      this.showLoading = true
-      let subList = []
-      let list = JSON.parse(localStorage.cart).shop
-      list.map((shop) => {
-        let brands = []
-        shop.brand.map((brand) => {
-          brands.push(brand.name)
-        })
-        subList.push({
-          guideId: 1,
-          storeId: shop.id,
-          brands: brands,
-          serviceManagers: [1]
-        })
+    selectShops() {
+      let result = []
+      this.selectShop.map((e) => {
+        result.push(this.shopList[findIdIndex(e, this.shopList)])
       })
-      axios.post(`${Lib.C.mOrderApi}materialOrders`, {}, {
-        params: {
-          customerName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-          customerMobile: JSON.parse(localStorage.getItem('user')).profile.mobile,
-          subApptList: subList
-        }
-      }).then((res) => {
-        this.showLoading = false
-        this.toastText = "预约成功！"
-        this.showToast = true
-        let list = JSON.parse(localStorage.cart)
-        list.shop = []
-        localStorage.setItem("cart", JSON.stringify(list))
-        this.shopList = []
-      }).catch((res) => {
-        this.showLoading = false
-        this.toastText = "网络中断，请重试"
-        this.showToast = true
+      localStorage.temp = JSON.stringify(result)
+      this.goto('./select-shop.html')
+    },
+    addOrder(){
+      let result = []
+      this.selectShop.map((e) => {
+        result.push(this.shopList[findIdIndex(e, this.shopList)])
       })
+      localStorage.temp = JSON.stringify(result)
+      this.goto('./add-order.html')
     },
     selectWorkers() {
       this.goto(`select-worker.html?select=${this.selectWorker.join('|')}`)
@@ -207,6 +193,43 @@ export default {
       window.location.href = url
     }
   }
+}
+
+function shopInfoPipe(sbList) {
+  let result = []
+  sbList.map((e) => {
+    if (!isIdIn(e[1], result)) {
+      result.push(infoPipe('store', e[1]))
+      result[result.length - 1].brands = [infoPipe('brand', e[0])]
+    } else {
+      result[findIdIndex(e[1], result)].brands.push(infoPipe('brand', e[0]))
+    }
+  })
+  return result
+
+  function isIdIn(id, array) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id == id) return true
+    }
+    return false
+  }
+
+  function infoPipe(type, id) {
+    let info = JSON.parse(localStorage.info)
+    let a = info[type + "Info"]
+    for (let i of a) {
+      if (i.id == id) return i
+    }
+  }
+
+
+}
+
+function findIdIndex(id, array) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].id == id) return i
+  }
+  return -1
 }
 </script>
 
@@ -261,7 +284,6 @@ body {
 .cell-item {
     position: relative;
     height: 80px;
-
     .worker-logo {
         position: absolute;
         top: 10px;
@@ -309,6 +331,28 @@ body {
         font-size: 12px;
         color: #ddd;
     }
+    .shop-name {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        font-size: 12px;
+        color: #393939;
+    }
+    .shop-address {
+        position: absolute;
+        top: 44px;
+        left: 15px;
+        font-size: 12px;
+        color: #999;
+    }
+    .shop-del {
+        position: absolute;
+        top: 73px;
+        right: 103px;
+        width: 54px;
+        font-size: 12px;
+        color: #ddd;
+    }
 }
 .content {
     padding-top: 44px;
@@ -350,6 +394,14 @@ header {
     width: 40px;
     z-index: 2;
 }
+.click-zc-area-del {
+    position: absolute;
+    right: 95px;
+    bottom: 0;
+    height: 50px;
+    width: 60px;
+    z-index: 2;
+}
 .submit-btn {
     position: absolute;
     left: 0;
@@ -359,10 +411,27 @@ header {
     line-height: 44px;
     text-align: center;
     color: #fff;
-    background-color: #e2e2e2;
+    background-color: rgb(226,226,226);
+    transition: 1s;
+}
+.right-btn {
+    left: 50%;
+    width: 50%;
+}
+.left-btn {
+    width: 50%;
+    border: 1px solid rgb(226,226,226);
+    height: 42px;
+    line-height: 42px;
+}
+.left-btn-active {
+    width: 50%;
+    color: rgb(136,201,40);
+    background-color: rgb(238,238,238);
+    border: 1px solid rgb(136,201,40);
 }
 .select-active {
-    background-color: #88C928!important;
+    background-color: rgb(136,201,40)!important;
 }
 .no-data-container {
     position: absolute;

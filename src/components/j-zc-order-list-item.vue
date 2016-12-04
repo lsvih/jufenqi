@@ -57,11 +57,11 @@
     </div>
 
     <!-- 用户操作的按钮 -->
-    <div v-if="order.status!=5&&order.status!=1" class="operate">
-      <div class="bottom" v-if="order.status==2">继续支付</div>
+    <div class="operate">
+      <div class="bottom" v-if="order.status==2" v-tap="goto('./pay.html?apptNo='+order.apptNo)">继续支付</div>
       <div class="bottom" v-if="order.status==4||order.status==6">退款</div>
-      <div class="bottom" v-if="order.status==6" v-tap="delete(order.orderNO)">删除</div>
-      <div class="bottom" v-if="order.status==2||order.status==3" v-tap="cancel(order.apptNo)">取消订单</div>
+      <div class="bottom" v-if="order.status==6" v-tap="delete(order.orderNo)">删除</div>
+      <div class="bottom" v-if="order.status==2||order.status==1" v-tap="cancel(order.apptNo)">取消订单</div>
       <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div>
     </div>
   </div>
@@ -132,7 +132,7 @@ export default {
       })
     },
     delete(orderNo) {
-      axios.post(`${Lib.C.mOrderApi}materialAppts/${orderNo}/detele`).then((res) => {
+      axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/delete`).then((res) => {
         alert('删除订单成功！')
         location.reload()
       }).catch((res) => {

@@ -11,14 +11,16 @@
   <loading :show="showLoading" text="正在预约，请稍后..."></loading>
 </div>
 <group title="预约列表" stlye="margin-bottom:44px;">
-  <group style="margin-top:-1.17647059em;" v-for="shop in shopList">
-    <cell class="shop-item">
-      <div class="shop-name">{{shop.name}}</div>
-      <div class="shop-address">{{shop.address}}</div>
-    </cell>
-    <cell class="shop-brand" v-for="brand in shop.brand">
-      <div class="brand-name">{{brand.name}}</div>
-    </cell>
+  <group style="margin-top:-1.17647059em;">
+    <div v-for="shop in shopList">
+      <cell class="cell-item">
+        <div class="shop-name">{{shop.name}}</div>
+        <div class="shop-address">{{shop.address}}</div>
+      </cell>
+      <cell class="shop-brand" v-for="brand in shop.brands">
+        <div class="brand-name">品牌: {{brand.name}}</div>
+      </cell>
+    </div>
   </group>
 </group>
 </template>
@@ -58,36 +60,39 @@ export default {
     },
     submit() {
       this.showLoading = true
-      let subList = []
-      let list = JSON.parse(localStorage.cart).shop
-      list.map((shop) => {
-        let brands = []
-        shop.brand.map((brand) => {
-          brands.push(brand.name)
-        })
-        subList.push({
-          guideId: 1,
-          storeId: shop.userId,
-          brands: brands,
-          serviceManagers: [1]
+      let sbList = []
+      this.shopList.map((shop) => {
+        shop.brands.map((brand) => {
+          sbList.push({
+            storeId: Number(shop.id),
+            brandId: Number(brand.id)
+          })
         })
       })
       let appointTime = new Date(this.appoint_at)
-      appointTime = appointTime.getTime()/1000
-      axios.post(`${Lib.C.mOrderApi}materialOrders`,{
-          customerName: this.name,
-          customerMobile: this.phone,
-          orderTime: appointTime,
-          subApptList: subList
-        }).then((res) => {
+      appointTime = appointTime.getTime() / 1000
+      axios.post(`${Lib.C.mOrderApi}materialAppts`, {
+        customerId: JSON.parse(localStorage.user).userId,
+        customerName: this.name,
+        customerMobile: this.phone,
+        orderTime: appointTime,
+        orders: sbList
+      }).then((res) => {
         this.showLoading = false
-        alert("预约成功!")
+        let selectList = []
+        this.shopList.map((e) => {
+          selectList.push(e.id)
+        })
         let list = JSON.parse(localStorage.cart)
-        list.shop = []
-        localStorage.setItem("cart", JSON.stringify(list))
-        this.shopList = []
-        location.href = "./cart.html"
-      }).catch((res) => {
+        for (let i = list.shop.length - 1; i >= 0; i--) {
+          if (~selectList.indexOf(list.shop[i][1])) {
+            list.shop.$remove(list.shop[i])
+          }
+        }
+        localStorage.cart = JSON.stringify(list)
+        location.href = "./appointment-success.html"
+      }).catch((err) => {
+        throw err
         this.showLoading = false
         alert("网络连接中断，请稍候再试")
       })
@@ -99,7 +104,7 @@ export default {
       name: "",
       phone: JSON.parse(window.localStorage.getItem("user")).profile.mobile,
       appoint_at: "",
-      shopList: JSON.parse(localStorage.cart).shop,
+      shopList: JSON.parse(localStorage.temp),
     }
   }
 }
@@ -132,84 +137,28 @@ body {
 }
 .cell-item {
     position: relative;
-    height: 80px;
-    .shop-logo {
-        position: absolute;
-        top: 10px;
-        left: 15px;
-        width: 120px;
-        height: 80px;
-    }
+    height: 60px;
     .shop-name {
         position: absolute;
         top: 10px;
-        left: 145px;
+        left: 15px;
         font-size: 12px;
         color: #393939;
     }
     .shop-address {
         position: absolute;
         top: 44px;
-        left: 145px;
-        font-size: 12px;
-        color: #999;
-    }
-    .shop-rank {
-        position: absolute;
-        bottom: 10px;
-        left: 145px;
-        font-size: 12px;
-        color: #3ba794;
-    }
-    .shop-is-favorite {
-        position: absolute;
-        top: 70px;
-        right: 15px;
-        width: 80px;
-        height: 20px;
-        img {
-            height: 100%;
-            width: 100%;
-        }
-    }
-    .worker-logo {
-        position: absolute;
-        top: 10px;
         left: 15px;
-        width: 80px;
-        height: 80px;
-    }
-    .worker-name {
-        position: absolute;
-        top: 10px;
-        left: 100px;
-        font-size: 12px;
-        color: #393939;
-    }
-    .worker-address {
-        position: absolute;
-        top: 44px;
-        left: 100px;
         font-size: 12px;
         color: #999;
     }
-    .worker-rank {
+    .shop-del {
         position: absolute;
-        bottom: 10px;
-        left: 100px;
+        top: 73px;
+        right: 103px;
+        width: 54px;
         font-size: 12px;
-        color: #3ba794;
-    }
-    .worker-is-favorite {
-        position: absolute;
-        top: 70px;
-        right: 15px;
-        width: 80px;
-        height: 20px;
-        img {
-            height: 100%;
-            width: 100%;
-        }
+        color: #ddd;
     }
 }
 .shop-item {

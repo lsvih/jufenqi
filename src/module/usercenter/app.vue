@@ -57,7 +57,7 @@
     </flexbox-item>
   </flexbox>
   <flexbox class="block-3 vux-1px-t">
-    <flexbox-item class="icon-item vux-1px-r">
+    <flexbox-item class="icon-item vux-1px-r" v-tap="goto('https://jufenqi.kf5.com/kchat/24513?from=wechat#kf5-page-search')">
       <img src="icon/online.png">
       <div class="icon-item-name">在线客服</div>
     </flexbox-item>
