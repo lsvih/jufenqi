@@ -56,6 +56,11 @@ import telImg from 'common/assets/images/tel.png'
 import Status from 'common/status'
 import axios from 'axios'
 try {
+  let now = Number(new Date().getTime())
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now) {
+    localStorage.removeItem('user')
+    location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+  }
   axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
 } catch (e) {
   localStorage.clear()

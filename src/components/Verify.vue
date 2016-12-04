@@ -19,6 +19,11 @@
 import Conf from 'common/conf'
 import axios from 'axios'
 try {
+  let now = Number(new Date().getTime())
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now) {
+    localStorage.removeItem('user')
+    location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+  }
   axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
 } catch (e) {
   localStorage.clear()
@@ -102,7 +107,10 @@ export default {
         withCredentials: true,
         responseType: true
       }).then((res) => {
-        window.localStorage.setItem("user", JSON.stringify(res.data.data))
+        let data = res.data.data
+        data.loginAt = new Date().getTime()
+        data.expiredAt =String(Number(data.loginAt) + Number(data.expiresIn*1000 - 60*1000*100))
+        window.localStorage.setItem("user", JSON.stringify(data))
         location.href = this.$parent.lastUrl
       }).catch((res) => {
         this.alarm = true

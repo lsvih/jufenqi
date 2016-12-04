@@ -26,8 +26,10 @@ export default {
           withCredentials: true,
           responseType: 'json'
         }).then((res) => {
-          let userInfo = JSON.stringify(res.data.data)
-          window.localStorage.setItem("user", userInfo)
+          let data = res.data.data
+          data.loginAt = new Date().getTime()
+          data.expiredAt =String(Number(data.loginAt) + Number(data.expiresIn*1000 - 60*1000*100))
+          window.localStorage.setItem("user", JSON.stringify(data))
           if (JSON.parse(localStorage.getItem('user')).profile.mobile) {
             location.href = decodeURIComponent(this.lastUrl)
           } else {

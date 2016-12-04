@@ -19,9 +19,9 @@
 </flexbox>
 
 <group style="margin-top:-.6em;">
-<flexbox class="block-3-name">
-  我的订单
-</flexbox>
+  <flexbox class="block-3-name">
+    我的订单
+  </flexbox>
   <flexbox class="block-3 vux-1px-t">
     <flexbox-item class="icon-item vux-1px-r" onclick="location.href='./zx-order-list.html'">
       <img src="icon/zx-order.png">
@@ -39,9 +39,9 @@
 </group>
 
 <group style="margin-top:-.6em;">
-<flexbox class="block-3-name">
-  我的工具
-</flexbox>
+  <flexbox class="block-3-name">
+    我的工具
+  </flexbox>
   <flexbox class="block-3 vux-1px-t">
     <flexbox-item class="icon-item vux-1px-r">
       <img src="icon/repay.png">
@@ -73,6 +73,7 @@
 </group>
 <!-- <div class="exit" v-tap="exit">
 退出登录</div> -->
+<div class="block-f"></div>
 <j-footer></j-footer>
 </template>
 
@@ -87,6 +88,11 @@ import {
 } from 'vux-components/flexbox'
 import axios from 'axios'
 try {
+  let now = Number(new Date().getTime())
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now) {
+    localStorage.removeItem('user')
+    location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+  }
   axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
 } catch (e) {
   localStorage.clear()
@@ -127,10 +133,10 @@ export default {
     startLoading() {
       this.showLoading = true
     },
-    goto(url){
+    goto(url) {
       location.href = url
     },
-    exit(){
+    exit() {
       localStorage.clear()
     }
   }
@@ -142,8 +148,7 @@ body {
   background-color: #eee;
 }
 </style>
-<style scoped lang="less">
-@import '~vux/src/styles/1px.less';
+<style scoped lang="less">@import '~vux/src/styles/1px.less';
 .block-1 {
     position: relative;
     height: 110px;
@@ -229,13 +234,13 @@ body {
         }
     }
 }
-.block-3-name{
-  background-color: #fff;
-  font-size: 14px;
-  color:#393939;
-  height: 30px;
-  line-height: 30px;
-  padding-left: 15px;
+.block-3-name {
+    background-color: #fff;
+    font-size: 14px;
+    color: #393939;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 15px;
 }
 .balance {
     height: 40px;
@@ -257,16 +262,21 @@ body {
     text-align: center;
 }
 
-
-.exit{
-  position: relative;
-  margin-top: 12px;
-  width: 100%;
-  height: 44px;
-  line-height: 44px;
-  text-align: center;
-  color:#ec5835;
-  font-size: 16px;
-  background-color: #fff;
+.block-f {
+    position: relative;
+    width: 100%;
+    height: 64px;
+    background-color: #eee;
+}
+.exit {
+    position: relative;
+    margin-top: 12px;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    color: #ec5835;
+    font-size: 16px;
+    background-color: #fff;
 }
 </style>

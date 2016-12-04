@@ -38,9 +38,14 @@ import {
 import Loading from 'vux-components/loading'
 import Scroller from "vux-components/scroller"
 import axios from 'axios'
-try{
+try {
+  let now = Number(new Date().getTime())
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now) {
+    localStorage.removeItem('user')
+    location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+  }
   axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
-}catch(e){
+} catch (e) {
   localStorage.clear()
   window.location.href = `./wxAuth.html?url=index.html`
 }
