@@ -14,9 +14,11 @@
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:lista>
-          <no-data v-if="list0.length==0"></no-data>
-          <div v-else>
-            <j-zc-order-list-item v-for="order in list0" :data="order"></j-zc-order-list-item>
+          <div>
+            <no-data v-if="list0.length==0"></no-data>
+            <div v-else>
+              <j-zc-order-list-item v-for="order in list0" :data="order"></j-zc-order-list-item>
+            </div>
           </div>
         </scroller>
       </div>
@@ -24,9 +26,11 @@
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listb>
-          <no-data v-if="list1.length==0"></no-data>
-          <div v-else>
-            <j-zc-order-list-item v-for="order in list1" :data="order"></j-zc-order-list-item>
+          <div>
+            <no-data v-if="list1.length==0"></no-data>
+            <div v-else>
+              <j-zc-order-list-item v-for="order in list1" :data="order"></j-zc-order-list-item>
+            </div>
           </div>
         </scroller>
       </div>
@@ -34,9 +38,11 @@
     <swiper-item>
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listc>
-          <no-data v-if="list2.length==0"></no-data>
-          <div v-else>
-            <j-zc-order-list-item v-for="order in list2" :data="order"></j-zc-order-list-item>
+          <div>
+            <no-data v-if="list2.length==0"></no-data>
+            <div v-else>
+              <j-zc-order-list-item v-for="order in list2" :data="order"></j-zc-order-list-item>
+            </div>
           </div>
         </scroller>
       </div>
@@ -44,9 +50,11 @@
     <swiper-item>
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listd>
-          <no-data v-if="list3.length==0"></no-data>
-          <div v-else>
-            <j-zc-order-list-item v-for="order in list3" :data="order"></j-zc-order-list-item>
+          <div>
+            <no-data v-if="list3.length==0"></no-data>
+            <div v-else>
+              <j-zc-order-list-item v-for="order in list3" :data="order"></j-zc-order-list-item>
+            </div>
           </div>
         </scroller>
       </div>
@@ -54,9 +62,11 @@
     <swiper-item>
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:liste>
-          <no-data v-if="list4.length==0"></no-data>
-          <div v-else>
-            <j-zc-order-list-item v-for="order in list4" :data="order"></j-zc-order-list-item>
+          <div>
+            <no-data v-if="list4.length==0"></no-data>
+            <div v-else>
+              <j-zc-order-list-item v-for="order in list4" :data="order"></j-zc-order-list-item>
+            </div>
           </div>
         </scroller>
       </div>
@@ -147,7 +157,7 @@ export default {
         this.$refs.listd.reset()
         this.$refs.liste.reset()
         this.$refs.listf.reset()
-      },500)
+      }, 500)
     }).catch((err) => {
       throw err
     })
