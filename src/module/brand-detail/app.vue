@@ -17,10 +17,10 @@
   <div class="icon-item"><img src="share.png">
     <div>分享</div>
   </div>
-  <div class="icon-item" v-if="cart.length == 0"><img src="favorite.png">
+  <div class="icon-item" v-if="thisIsFavorite" v-tap="cancelFavorite()"><img src="favorite-fill.png">
     <div>收藏</div>
   </div>
-  <div class="icon-item" v-else><img src="favorite.png">
+  <div class="icon-item" v-else v-tap="addFavorite()"><img src="favorite.png">
     <div>收藏</div>
   </div>
   <div class="footer-line"></div>
@@ -50,10 +50,11 @@ export default {
       brand: {},
       cartImg,
       cartAImg,
-      favorateList: [],
+      isFavorite: false,
       cart: this.brandCart(Lib.M.GetRequest().id),
       showToast: false,
-      bgImg
+      bgImg,
+      thisIsFavorite: this.isFavorite(Lib.M.GetRequest().id)
     }
   },
   components: {
@@ -124,10 +125,37 @@ export default {
         }
       })
       return result
-    }
+    },
+    isFavorite(brandId){
+      if (!localStorage.getItem('favorite')) {
+        localStorage.setItem('favorite', JSON.stringify({
+          worker: [],
+          shop: []
+        }))
+        return false
+      }
+      return findSameBrand(brandId, JSON.parse(localStorage.getItem('favorite')).shop)
+    },
+    addFavorite() {
+      let list = JSON.parse(window.localStorage.getItem('favorite'))
+      let tBrand = JSON.parse(JSON.stringify(this.brand))
+      delete tBrand.stores
+      list.shop.push(tBrand)
+      window.localStorage.setItem('favorite', JSON.stringify(list))
+      this.thisIsFavorite = true
+    },
+    cancelFavorite() {
+      let list = JSON.parse(window.localStorage.getItem('favorite'))
+      for (let i in list.shop) {
+        if (list.shop[i].id == this.id) {
+          list.shop.$remove(list.shop[i])
+        }
+      }
+      this.thisIsFavorite = false
+      window.localStorage.setItem('favorite', JSON.stringify(list))
+    },
   },
   ready() {
-
     axios.get(`${Lib.C.merApi}brands/${this.id}`, {
       params: {
         expand: 'stores'
@@ -138,6 +166,17 @@ export default {
       throw err
     })
   }
+}
+/**
+ * 在列表中找到id相同的项
+ */
+function findSameBrand(id, brandList) {
+  for (let brand of brandList) {
+    if (brand.id == id) {
+      return true
+    }
+  }
+  return false
 }
 </script>
 

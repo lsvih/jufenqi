@@ -51,9 +51,11 @@ export default {
     goto(url) {
       location.href = url
     },
-    inputting(){
-      if(event.keyCode==13){
-        this.search()
+    inputting() {
+      if (event.keyCode == 13) {
+        if (this.searchText != '') {
+          this.search()
+        }
       }
     }
   },
@@ -97,7 +99,7 @@ header {
         width: calc(~"100% - 80px");
         font-size: 12px;
         border: none;
-        padding: 0 10px 0 10px;
+        padding: 0 10px;
         border-radius: 4px;
         color: #393939;
     }

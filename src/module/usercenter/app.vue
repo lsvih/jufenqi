@@ -51,7 +51,7 @@
       <img src="icon/ID.png">
       <div class="icon-item-name">我的认证</div>
     </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-t">
+    <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./favorite.html')">
       <img src="icon/favorite.png">
       <div class="icon-item-name">我的收藏</div>
     </flexbox-item>
