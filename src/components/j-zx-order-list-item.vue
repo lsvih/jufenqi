@@ -9,7 +9,7 @@
     <div class="user-info">
       <div class="user-name">{{order.customerName||order.appt.customerName}}</div>
       <div class="user-tel" v-tap="goto('tel:'+order.customerMobile||order.appt.customerMobile)">{{order.customerMobile||order.appt.customerMobile}}</div>
-      <div class="more" v-tap="goto('./zc-order.html?orderNo='+order.orderNo+'&apptNo='+order.apptNo)">查看详情</div>
+      <!-- <div class="more" v-tap="goto('./zc-order.html?orderNo='+order.orderNo+'&apptNo='+order.apptNo)">查看详情</div> -->
     </div>
     <div class="address">{{order.orderLocation}}{{order.orderAddress}}</div>
     <!-- 相关人员 -->
