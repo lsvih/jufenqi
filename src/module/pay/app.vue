@@ -13,9 +13,9 @@
   <div class="submit-btn" v-bind:class="{'active':payMethod!=0}" v-tap="payMethod!=0?pay():return">确认</div>
 </div>
 <loading :show="showLoading" text="请稍后.."></loading>
-
 </template>
 <script>
+import pingpp from 'pingpp-js'
 import Lib from 'assets/Lib.js'
 import Group from 'vux-components/group'
 import JRadio from 'common/components/j-radio'
@@ -40,11 +40,15 @@ export default {
   ready() {
     this.showLoading = true
     axios.get(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}`).then((res) => {
-      res.data.data.orders.map((order)=>{
-        if(findStoreIdIndex(order.storeId,this.orders)==-1){
-          this.orders.push({storeId:order.storeId,name:order.storeName,amount:order.totalAmount})
-        }else{
-          this.orders[findStoreIdIndex(order.storeId,this.orders)].amount += Number(order.totalAmount)
+      res.data.data.orders.map((order) => {
+        if (findStoreIdIndex(order.storeId, this.orders) == -1) {
+          this.orders.push({
+            storeId: order.storeId,
+            name: order.storeName,
+            amount: order.totalAmount
+          })
+        } else {
+          this.orders[findStoreIdIndex(order.storeId, this.orders)].amount += Number(order.totalAmount)
         }
       })
       this.showLoading = false
@@ -58,9 +62,37 @@ export default {
     pay() {
       this.showLoading = true
       axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/pay`, {
-        payMethod:this.payMethod
+        payMethod: this.payMethod
       }).then((res) => {
-        this.showLoading = false
+        let paymentId = res.data.data.paymentId
+        axios.get(`${Lib.C.userApi}wechatOpenIds/${JSON.parse(localStorage.user).userId}`).then((res) => {
+          let openId = res.data.data.openId
+          let payData = new FormData()
+          payData.append('notifyUrl',Lib.C.notifyUrl)
+          payData.append('openid',openId)
+          axios.post(`${Lib.C.payApi}pay/${paymentId}`,payData).then((res) => {
+            pingpp.createPayment(res.data.data, (result, err) => {
+              if (result === 'success') {
+                alert('支付成功')
+                location.href = './zc-order-list.html?type=5'
+              } else if (result === 'fail') {
+                alert('支付失败')
+                location.href = './zc-order-list.html?type=5'
+              } else if (result === 'cancel') {
+                  alert('支付失败')
+                  location.href = './zc-order-list.html?type=5'
+              }
+            })
+          }).catch((err) => {
+            this.showLoading = false
+            alert("网络连接中断，请稍候再试")
+            throw err
+          })
+        }).catch((err) => {
+          this.showLoading = false
+          alert("网络连接中断，请稍候再试")
+          throw err
+        })
       }).catch((err) => {
         this.showLoading = false
         alert("网络连接中断，请稍候再试")
@@ -73,7 +105,7 @@ export default {
   },
   data() {
     return {
-      showLoading:false,
+      showLoading: false,
       wxImg,
       qkImg,
       fqImg,
@@ -99,7 +131,7 @@ export default {
         icon: ylImg
       }],
       payMethod: 0,
-      orders:[]
+      orders: []
     }
   }
 }
@@ -133,36 +165,36 @@ body {
 .active {
     background-color: rgb(136,201,40)!important;
 }
-.tip{
-  color:#ec5835;
-  font-size: 12px;
-  font-size: 10px;
-  padding-left: 15px;
-  margin-top: 10px;
+.tip {
+    color: #ec5835;
+    font-size: 12px;
+    font-size: 10px;
+    padding-left: 15px;
+    margin-top: 10px;
 }
-.orders{
-  .order{
-    background-color: #fff;
-    font-size: 16px;
-    color:#393939;
-    position: relative;
-    height: auto;
-    width: 100%;
-    margin-bottom: 10px;
-    .store{
-      width: calc(~"100% - 15px");
-      height: 44px;
-      line-height: 44px;
-      margin-left: 15px;
-      border-bottom: 1px solid #eee;
+.orders {
+    .order {
+        background-color: #fff;
+        font-size: 16px;
+        color: #393939;
+        position: relative;
+        height: auto;
+        width: 100%;
+        margin-bottom: 10px;
+        .store {
+            width: calc(~"100% - 15px");
+            height: 44px;
+            line-height: 44px;
+            margin-left: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .amount {
+            width: calc(~"100% - 15px");
+            height: 44px;
+            line-height: 44px;
+            margin-left: 15px;
+            color: #ec5835;
+        }
     }
-    .amount{
-      width: calc(~"100% - 15px");
-      height: 44px;
-      line-height: 44px;
-      margin-left: 15px;
-      color:#ec5835;
-    }
-  }
 }
 </style>
