@@ -1,5 +1,5 @@
 <template>
-<header>
+<header :style="{backgroundImage:'url('+ bgImg +')'}">
   <div class="brand-logo"><img :src="img + brand.logoImg"></div>
   <div class="brand-name">{{brand.name}}</div>
 </header>
@@ -35,6 +35,7 @@ import Toast from 'vux-components/toast'
 import axios from 'axios'
 import cartImg from './cart.png'
 import cartAImg from './cart-active.png'
+import bgImg from './bg.png'
 try {
   axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
 } catch (e) {
@@ -49,9 +50,10 @@ export default {
       brand: {},
       cartImg,
       cartAImg,
-      favorateList:[],
-      cart:this.brandCart(Lib.M.GetRequest().id),
-      showToast:false
+      favorateList: [],
+      cart: this.brandCart(Lib.M.GetRequest().id),
+      showToast: false,
+      bgImg
     }
   },
   components: {
@@ -67,44 +69,48 @@ export default {
     goto(url) {
       location.href = url
     },
-    addCart(brandId,storeId,storeData){
+    addCart(brandId, storeId, storeData) {
       let cart = JSON.parse(localStorage.cart)
-      cart.shop.push([Number(brandId),storeId])
+      cart.shop.push([Number(brandId), storeId])
       localStorage.cart = JSON.stringify(cart)
       this.cart.push(storeId)
-      if(localStorage.info === undefined){
-        localStorage.info = JSON.stringify({storeInfo:[],brandInfo:[]})
+      if (localStorage.info === undefined) {
+        localStorage.info = JSON.stringify({
+          storeInfo: [],
+          brandInfo: []
+        })
       }
       let info = JSON.parse(localStorage.info)
-      if(!isIdIn(storeId,info.storeInfo)){
+      if (!isIdIn(storeId, info.storeInfo)) {
         info.storeInfo.push(storeData)
       }
-      if(!isIdIn(brandId,info.brandInfo)){
+      if (!isIdIn(brandId, info.brandInfo)) {
         let t = JSON.parse(JSON.stringify(this.brand))
         delete t.stores
         info.brandInfo.push(t)
       }
       localStorage.info = JSON.stringify(info)
       this.showToast = true
-      function isIdIn(id,array){
-        for(let i=0;i<array.length;i++){
-          if(array[i].id == id) return true
+
+      function isIdIn(id, array) {
+        for (let i = 0; i < array.length; i++) {
+          if (array[i].id == id) return true
         }
         return false
       }
     },
-    delCart(brandId,storeId){
+    delCart(brandId, storeId) {
       let cart = JSON.parse(localStorage.cart)
-      cart.shop.forEach((e,v)=>{
-        if(e[0]==Number(brandId)&&e[1]==storeId){
-          cart.shop.splice(v,1)
+      cart.shop.forEach((e, v) => {
+        if (e[0] == Number(brandId) && e[1] == storeId) {
+          cart.shop.splice(v, 1)
         }
       })
       localStorage.cart = JSON.stringify(cart)
       this.cart.$remove(storeId)
     },
-    brandCart(brandId){
-      if(localStorage.cart == undefined){
+    brandCart(brandId) {
+      if (localStorage.cart == undefined) {
         localStorage.cart = JSON.stringify({
           worker: [],
           shop: []
@@ -112,8 +118,8 @@ export default {
       }
       let cart = JSON.parse(localStorage.cart)
       let result = []
-      cart.shop.forEach((e)=>{
-        if(e[0]===Number(brandId)){
+      cart.shop.forEach((e) => {
+        if (e[0] === Number(brandId)) {
           result.push(e[1])
         }
       })
@@ -166,12 +172,13 @@ footer {
 <style scoped lang="less">
 header {
     position: fixed;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     height: 180px;
     width: 100%;
     background-image: url('./bg.png');
     background-size: 100% 100%;
+    z-index: 5;
     .brand-logo {
         position: absolute;
         top: 24px;
@@ -198,6 +205,7 @@ header {
     }
 }
 footer {
+    z-index: 2;
     .cart-list {
         position: absolute;
         bottom: 0;
@@ -264,6 +272,7 @@ footer {
         border-bottom: 1px solid #eee;
         background-color: #fff;
         line-height: 15px;
+        z-index: 1;
         .add {
             position: absolute;
             width: 74px;
@@ -286,22 +295,22 @@ footer {
                 width: 100%;
             }
         }
-        .store-name{
+        .store-name {
             position: absolute;
-            top:14px;
-            left:145px;
+            top: 14px;
+            left: 145px;
             width: calc(~"100% - 165px");
-            color:#393939;
+            color: #393939;
             font-size: 14px;
             font-weight: bold;
         }
-        .store-address{
-          position: absolute;
-          top:45px;
-          left:145px;
-          width: calc(~"100% - 165px");
-          font-size: 12px;
-          color:#999;
+        .store-address {
+            position: absolute;
+            top: 45px;
+            left: 145px;
+            width: calc(~"100% - 165px");
+            font-size: 12px;
+            color: #999;
         }
     }
 }

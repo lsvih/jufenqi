@@ -11,7 +11,7 @@
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-88+'px'" lock-x scroller-y v-if="shopList.length > 0" v-ref:zc>
+        <scroller :height="getScreenHeight()-88+'px'" lock-x scrollbar-y v-if="shopList.length > 0" v-ref:zc>
           <group style="margin-top:-1.17647059em;">
             <div v-for="shop in shopList">
               <cell class="cell-item">
@@ -40,7 +40,7 @@
     </swiper-item>
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-88+'px'" lock-x scroller-y v-if="workerList.length > 0" v-ref:zx>
+        <scroller :height="getScreenHeight()-88+'px'" lock-x scrollbar-y v-if="workerList.length > 0" v-ref:zx>
           <group style="margin-top:-1.17647059em;">
             <cell v-for="worker in workerList" class="cell-item">
               <div class="click-area-select" v-tap="selectItem('Worker',worker.userId)"></div>

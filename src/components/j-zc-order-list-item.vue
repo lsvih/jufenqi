@@ -2,7 +2,7 @@
 <div class="order">
   <div class="status">
     <img :src="statusImg">
-    <div class="status-name">{{Status.zc[order.status].name}}</div>
+    <div class="status-name">{{order.waitPaymentConfirm?'等待支付结果':Status.zc[order.status].name}}</div>
     <div class="order-date">{{getTime(order.createdAt)}}</div>
   </div>
   <div class="content">
@@ -57,11 +57,11 @@
     </div>
 
     <!-- 用户操作的按钮 -->
-    <div class="operate">
-      <div class="bottom" v-if="order.status==2" v-tap="goto('./pay.html?apptNo='+order.apptNo)">继续支付</div>
+    <div class="operate" v-if="!(order.status==2&&order.waitPaymentConfirm)">
+      <div class="bottom" v-if="order.status==2&&!order.waitPaymentConfirm" v-tap="goto('./pay.html?apptNo='+order.apptNo)">继续支付</div>
       <div class="bottom" v-if="order.status==4||order.status==6">退款</div>
-      <div class="bottom" v-if="order.status==6" v-tap="delete(order.orderNo)">删除</div>
-      <div class="bottom" v-if="order.status==2||order.status==1" v-tap="cancel(order.apptNo)">取消订单</div>
+      <div class="bottom" v-if="order.status==6" v-tap="deleteOrder(order.orderNo)">删除</div>
+      <div class="bottom" v-if="(order.status==2||order.status==1)&&!order.waitPaymentConfirm" v-tap="cancel(order.apptNo)">取消订单</div>
       <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div>
     </div>
   </div>
@@ -131,7 +131,7 @@ export default {
         alert('取消订单失败，请重试')
       })
     },
-    delete(orderNo) {
+    deleteOrder(orderNo) {
       axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/delete`).then((res) => {
         alert('删除订单成功！')
         location.reload()

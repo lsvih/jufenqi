@@ -13,7 +13,7 @@
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:lista>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:lista>
           <no-data v-if="list0.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list0" :data="order"></j-zc-order-list-item>
@@ -23,7 +23,7 @@
     </swiper-item>
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listb>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listb>
           <no-data v-if="list1.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list1" :data="order"></j-zc-order-list-item>
@@ -33,7 +33,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listc>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listc>
           <no-data v-if="list2.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list2" :data="order"></j-zc-order-list-item>
@@ -43,7 +43,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listd>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listd>
           <no-data v-if="list3.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list3" :data="order"></j-zc-order-list-item>
@@ -53,7 +53,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:liste>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:liste>
           <no-data v-if="list4.length==0"></no-data>
           <div v-else>
             <j-zc-order-list-item v-for="order in list4" :data="order"></j-zc-order-list-item>
@@ -63,10 +63,12 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scroller-y v-ref:listf>
-          <no-data v-if="list5.length==0"></no-data>
-          <div v-else>
-            <j-zc-order-list-item v-for="order in list5" :data="order"></j-zc-order-list-item>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listf>
+          <div>
+            <no-data v-if="list5.length==0"></no-data>
+            <div v-else>
+              <j-zc-order-list-item v-for="order in list5" :data="order"></j-zc-order-list-item>
+            </div>
           </div>
         </scroller>
       </div>
@@ -96,7 +98,7 @@ try {
 export default {
   data() {
     return {
-      index: Lib.M.GetRequest().type||0,
+      index: Lib.M.GetRequest().type || 0,
       list0: [],
       list1: [],
       list2: [],
@@ -138,6 +140,14 @@ export default {
       res.data.data.map((order) => {
         this.orderPipe(order)
       })
+      setTimeout(() => {
+        this.$refs.lista.reset()
+        this.$refs.listb.reset()
+        this.$refs.listc.reset()
+        this.$refs.listd.reset()
+        this.$refs.liste.reset()
+        this.$refs.listf.reset()
+      },500)
     }).catch((err) => {
       throw err
     })
@@ -169,13 +179,6 @@ export default {
         default:
           break;
       }
-      this.$refs.lista.reset()
-      this.$refs.listb.reset()
-      this.$refs.listc.reset()
-      this.$refs.listd.reset()
-      this.$refs.liste.reset()
-      this.$refs.listf.reset()
-
     }
   }
 }

@@ -150,6 +150,7 @@ export default {
     selectClerk(shopId, brandIndex) {
       this.tempSelectedShop = shopId
       this.tempSelectedBrand = brandIndex
+      document.activeElement.blur()
       this.showLoading = true
       axios.get(`${Lib.C.merApi}stores/${shopId}?expand=storeusers`).then((res) => {
         this.tempClerkList = []
@@ -442,10 +443,10 @@ body {
     }
 }
 .amount {
-  position: relative;
-  width: 100%;
-  height: auto;
-  background-color: #fff;
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
     .title {
         position: relative;
         width: 100%;
@@ -514,10 +515,11 @@ body {
         left: 15px;
     }
     input {
+        -webkit-appearance: none;
         position: absolute;
         right: 15px;
         height: 30px;
-        width: calc(~"100% - 90px");
+        width: calc(~"100% - 100px");
         font-size: 12px;
         border: 1px solid #eee;
         border-radius: 2px;
