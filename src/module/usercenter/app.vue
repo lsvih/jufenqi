@@ -71,8 +71,8 @@
     </flexbox-item>
   </flexbox>
 </group>
-<div class="exit" v-tap="exit">
-退出登录</div>
+<!-- <div class="exit" v-tap="exit">
+退出登录</div> -->
 <j-footer></j-footer>
 </template>
 

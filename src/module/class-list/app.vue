@@ -62,7 +62,7 @@ export default {
           size: 1000,
           filter: "parent:" + id
         },
-        withCredentials: true, 
+        withCredentials: true,
       }).then((res) => {
         this.classList[id - 1].child = res.data.data
       }).catch((res) => {})
@@ -94,7 +94,7 @@ body {
     left: 0;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    overflow-y: scroll;
+    overflow-y: hidden;
     height: 100%;
     width: 81px;
     .menu-item {

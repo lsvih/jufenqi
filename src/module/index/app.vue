@@ -1,6 +1,7 @@
 <template>
-<div class="search">
-  <img src="/static/images/icon/search.png"></div>
+<div class="search-click-area" v-tap="goto('./search.html')">
+</div>
+<div class="search"><img src="/static/images/icon/search.png"></div>
 <div class="click" :class="{open:openMenu}"><img src="/static/images/icon/click.png"></div>
 <div class="menu-click-area" v-tap="openMenu = !openMenu"></div>
 <div class="menu" :class="{'menu-active':openMenu}">
@@ -15,13 +16,13 @@
   <swiper class="module-swiper" loop auto height="200px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000">
   </swiper>
   <flexbox class="module-class">
-    <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5" v-tap="gotoCate(class.url)">
+    <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5" v-tap="goto(class.url)">
       <img class="module-class-icon" :src="`/static/images/icon/${class.name}.png`">
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
   </flexbox>
   <flexbox class="module-class">
-    <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5 5" v-tap="gotoCate(class.url)">
+    <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5 5" v-tap="goto(class.url)">
       <img class="module-class-icon" :src="`/static/images/icon/${class.name}.png`">
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
@@ -31,15 +32,15 @@
     <div class="module-title-block"></div>
     <div class="module-title">服务</div>
     <div class="service">
-      <div class="service-1"><img :src="serviceList[0].img" v-tap="gotoCate(serviceList[0].url)"></div>
-      <div class="service-2"><img :src="serviceList[1].img" v-tap="gotoCate(serviceList[1].url)"></div>
-      <div class="service-3"><img :src="serviceList[2].img" v-tap="gotoCate(serviceList[2].url)"></div>
+      <div class="service-1"><img :src="serviceList[0].img" v-tap="goto(serviceList[0].url)"></div>
+      <div class="service-2"><img :src="serviceList[1].img" v-tap="goto(serviceList[1].url)"></div>
+      <div class="service-3"><img :src="serviceList[2].img" v-tap="goto(serviceList[2].url)"></div>
     </div>
   </div>
   <!-- module end -->
   <!-- Video module -->
   <div class="module-item">
-     <iframe frameborder="0" width="100%" height="200" src="https://v.qq.com/iframe/player.html?vid=t0327rvrkwx&tiny=0&auto=0" allowfullscreen></iframe>
+    <iframe frameborder="0" width="100%" height="200" src="https://v.qq.com/iframe/player.html?vid=t0327rvrkwx&tiny=0&auto=0" allowfullscreen></iframe>
   </div>
   <!-- module end -->
   <!-- Operative module -->
@@ -84,7 +85,7 @@
     <div class="module-title-block"></div>
     <div class="module-title">专题推荐<img src="./arrow.png"></div>
     <div class="special">
-      <div class="special-item" v-for="special of specialList" v-tap="gotoCate(special.url)">
+      <div class="special-item" v-for="special of specialList" v-tap="goto(special.url)">
         <img :src="special.img">
         <div class="special-name">{{special.name}}
         </div>
@@ -149,7 +150,7 @@ export default {
       }, {
         id: 6,
         name: '家具',
-        url: './class-list.html?type=1',
+        url: './class-list.html?type=3',
       }, {
         id: 7,
         name: '家纺',
@@ -157,7 +158,7 @@ export default {
       }, {
         id: 8,
         name: '家电',
-        url: './class-list.html?type=3',
+        url: './class-list.html?type=1',
       }, {
         id: 9,
         name: '全部分类',
@@ -214,7 +215,7 @@ export default {
     gotoBrand(id, name) {
       window.location.href = `brand-list.html?id=${id}&name=${encodeURIComponent(name)}`
     },
-    gotoCate(url) {
+    goto(url) {
       window.location.href = url
     }
   }
@@ -440,9 +441,17 @@ body {
         width: 20px;
     }
 }
-.menu-click-area{
+.search-click-area {
     position: fixed;
-    top:5px;
+    top: 5px;
+    left: 5px;
+    height: 40px;
+    width: 40px;
+    z-index: 6;
+}
+.menu-click-area {
+    position: fixed;
+    top: 5px;
     right: 5px;
     height: 40px;
     width: 40px;
