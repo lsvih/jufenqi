@@ -30,6 +30,9 @@ export default {
   methods: {
     gotoOrderList(){
       window.location.href = this.type == 1?'./zx-order-list.html':'./zc-order-list.html'
+    },
+    goto(url){
+      location.href = url
     }
   }
 }

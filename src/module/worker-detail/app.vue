@@ -1,6 +1,6 @@
 <template>
 <header>
-  <div class="cart" v-tap="goto('./cart.html')"><img src="cart.png"></div>
+  <div class="cart" v-tap="goto('./cart.html?type=2')"><img src="cart.png"></div>
   <div class="worker-logo"><img :src="worker.profileImage"></div>
   <div class="worker-name">{{worker.nickname}}</div>
   <div class="worker-description">

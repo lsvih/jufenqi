@@ -100,7 +100,7 @@ export default {
   data() {
     return {
       index: 0,
-      tab: '门店',
+      tab: Lib.M.GetRequest().type == 2?'工长':'门店',
       showToast: false,
       toastText: "",
       showLoading: false,
