@@ -2,7 +2,7 @@
 <div class="order">
   <div class="status">
     <img :src="statusImg">
-    <div class="status-name">{{Status.zc[order.status].name}}</div>
+    <div class="status-name">{{Status.zx[order.status].name}}</div>
     <div class="order-date">{{getTime(order.createdAt)}}</div>
   </div>
   <div class="content">
