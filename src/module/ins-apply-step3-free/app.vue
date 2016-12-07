@@ -55,7 +55,7 @@ export default {
       data.monthlyIncome = this.monthlyIncome
       axios.post(`${Lib.C.loanApi}user-application`, data).then((res) => {
         localStorage.setItem("apply-info", JSON.stringify(data))
-        if (res.data.data.status == 0) {
+        if (res.data.data.statusEnum == 0) {
           window.location.href = './ins-apply-failed.html'
         } else {
           window.location.href = './ins-apply-success.html?wait=true'

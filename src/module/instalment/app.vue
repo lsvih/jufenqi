@@ -96,7 +96,7 @@ export default {
       }
     }).then((res) => {
       try {
-        this.thisStatus = this.getStatus(res.data.data[0].status)
+        this.thisStatus = this.getStatus(res.data.data[0].statusEnum)
         this.ins = res.data.data[0].totalQuota
         this.limit = res.data.data[0].loanQuota
       } catch (e) {

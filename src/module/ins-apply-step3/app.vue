@@ -31,19 +31,9 @@ export default {
     Cell,
     // XButton,
     JTel
-  },
-  ready() {
-
-
-  },
-  methods: {
-
-
-
   }
 }
 </script>
-
 <style>
 body{
   background-color: #eee;
