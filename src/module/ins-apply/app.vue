@@ -146,7 +146,7 @@ export default {
           /**月收入*/
           monthlyIncome: null,
           /**状态*/
-          "status": "UNSUCCESSFULLY"
+          "status": 0
         }))
         window.location.href = "./ins-apply-step2.html"
       }).catch((res) => {

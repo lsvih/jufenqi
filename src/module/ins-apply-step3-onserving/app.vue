@@ -60,7 +60,7 @@ export default {
       data.position = this.position
       axios.post(`${Lib.C.loanApi}user-application`,data).then((res)=>{
         localStorage.setItem("apply-info",JSON.stringify(data))
-        if (res.data.data.status == "UNSUCCESSFULLY") {
+        if (res.data.data.status == 0) {
           window.location.href = './ins-apply-failed.html'
         } else {
           window.location.href = './ins-apply-success.html?wait=true'

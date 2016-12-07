@@ -56,7 +56,7 @@ export default {
       limit: 0,
       balance: 0,
       ins: 0,
-      status: {
+      status: [
         'UNSUCCESSFULLY': {
           "name": "申请失败"
         },
@@ -71,7 +71,7 @@ export default {
         },
         'DISABLED': {
           "name": "激活失败"
-        },
+        ],
       },
       thisStatus: "正在查询",
     }
@@ -90,11 +90,11 @@ export default {
         sort: "createdAt,desc"
       }
     }).then((res) => {
-      try{
+      try {
         this.thisStatus = this.getStatus(res.data.data[0].status)
         this.ins = res.data.data[0].totalQuota
         this.limit = res.data.data[0].loanQuota
-      }catch(e){
+      } catch (e) {
         this.thisStatus = "未申请"
       }
     }).catch((res) => {
@@ -104,7 +104,7 @@ export default {
   methods: {
     getStatus(status) {
       try {
-        let statusName = eval(`this.status.${status}.name`)
+        let statusName = eval(`this.status[${status}].name`)
         return statusName
       } catch (e) {
         return "未申请"
