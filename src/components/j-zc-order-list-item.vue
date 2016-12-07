@@ -41,6 +41,7 @@
           {{subOrder.brandName}}
         </div>
       </div>
+      <div class="store-amount">合计:{{getStoreAmount(order.orders)|currency '' 2}}</div>
     </div>
     <div v-else>
       <div class="store">
@@ -111,24 +112,31 @@ export default {
   },
   methods: {
     getTime(timeStamp) {
-      var d = new Date(timeStamp * 1000);
-      var Y = d.getFullYear() + '-';
-      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-';
-      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate());
+      var d = new Date(timeStamp * 1000)
+      var Y = d.getFullYear() + '-'
+      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-'
+      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate())
       return Y + M + D
     },
     goto(url) {
       location.href = url
     },
-    cancel(apptNo){
+    getStoreAmount(orders) {
+      let result = 0
+      orders.forEach((order) => {
+        result += order.totalAmount
+      })
+      return result
+    },
+    cancel(apptNo) {
       this.$parent.$parent.$parent.$parent.tempApptNo = apptNo
       this.$parent.$parent.$parent.$parent.showConfirm.cancel = true
     },
-    deleteOrder(orderNo){
+    deleteOrder(orderNo) {
       this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
       this.$parent.$parent.$parent.$parent.showConfirm.delete = true
     },
-    receive(orderNo){
+    receive(orderNo) {
       this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
       this.$parent.$parent.$parent.$parent.showConfirm.receive = true
     }
@@ -255,6 +263,15 @@ export default {
                 top: 0;
                 color: #EC5835;
             }
+        }
+        .store-amount {
+            font-size: 12px;
+            color: #ec5835;
+            height: 12px;
+            width: auto;
+            border-bottom: 1px solid #eee;
+            padding: 9px 15px 9px 0;
+            text-align: right;
         }
         .brand {
             position: relative;
