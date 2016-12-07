@@ -9,7 +9,7 @@
     <div class="user-info">
       <div class="user-name">{{order.customerName||order.appt.customerName}}</div>
       <div class="user-tel" v-tap="goto('tel:'+order.customerMobile||order.appt.customerMobile)">{{order.customerMobile||order.appt.customerMobile}}</div>
-      <div class="more" v-tap="goto('./zx-order.html?orderNo='+order.orderNo+'&apptNo='+order.apptNo)">查看详情</div>
+      <div class="more" v-tap="goto('./zx-order.html?orderNo='+order.orderNo)">查看详情</div>
     </div>
     <div class="address">{{order.orderLocation}}{{order.orderAddress}}</div>
     <!-- 相关人员 -->
@@ -32,15 +32,18 @@
 
 
     <!-- 用户操作的按钮 -->
-    <!-- <div v-if="order.status!=5" class="operate">
-      <div class="bottom" v-if="order.status==2">继续支付</div>
-      <div class="bottom" v-if="order.status==4||order.status==6">退款</div>
-      <div class="bottom" v-if="order.status==6" v-tap="delete(order.apptNo)">删除</div>
-      <div class="bottom" v-if="order.status==2||order.status==3" v-tap="cancel(order.apptNo)">取消订单</div>
-      <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div>
-    </div> -->
+    <div v-if="order.status==1||order.status==7" class="operate">
+      <!-- <div class="bottom" v-if="order.status==2">继续支付</div> -->
+      <!-- <div class="bottom" v-if="order.status==4||order.status==6">退款</div>-->
+      <div class="bottom" v-if="order.status==7" v-tap="deleteOrder(order.orderNo)">删除</div>
+      <div class="bottom" v-if="order.status==1" v-tap="cancel(order.orderNo)">取消预约</div>
+      <!-- <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div> -->
+    </div>
   </div>
 </div>
+
+
+
 </template>
 
 
@@ -74,7 +77,7 @@ export default {
       foremanImg,
       projectManagerImg,
       telImg,
-      Status
+      Status,
     }
   },
   props: {
@@ -99,29 +102,13 @@ export default {
     goto(url) {
       location.href = url
     },
-    receive(orderNo) {
-      axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/receive`).then((res) => {
-        alert('确认收货成功！')
-        location.reload()
-      }).catch((res) => {
-        alert('确认收货失败，请重试')
-      })
+    cancel(orderNo){
+      this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
+      this.$parent.$parent.$parent.$parent.showConfirm.cancel = true
     },
-    cancel(apptNo) {
-      axios.post(`${Lib.C.mOrderApi}materialAppts/${apptNo}/cancel`).then((res) => {
-        alert('取消订单成功！')
-        location.reload()
-      }).catch((res) => {
-        alert('取消订单失败，请重试')
-      })
-    },
-    delete(apptNo) {
-      axios.post(`${Lib.C.mOrderApi}materialAppts/${apptNo}/detele`).then((res) => {
-        alert('删除订单成功！')
-        location.reload()
-      }).catch((res) => {
-        alert('删除订单失败，请重试')
-      })
+    deleteOrder(orderNo){
+      this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
+      this.$parent.$parent.$parent.$parent.showConfirm.delete = true
     }
   },
   ready() {}

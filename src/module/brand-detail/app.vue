@@ -26,12 +26,10 @@
   <div class="footer-line"></div>
   <div class="cart-list" v-tap="goto('./cart.html')"><img :src="cart.length?cartAImg:cartImg">备选订单</div>
 </footer>
-<toast :show.sync="showToast" text="添加成功"></toast>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
-import Toast from 'vux-components/toast'
 import axios from 'axios'
 import cartImg from './cart.png'
 import cartAImg from './cart-active.png'
@@ -61,9 +59,6 @@ export default {
       bgImg,
       thisIsFavorite: this.isFavorite(Lib.M.GetRequest().id)
     }
-  },
-  components: {
-    Toast
   },
   methods: {
     isFavorite(brandId) {

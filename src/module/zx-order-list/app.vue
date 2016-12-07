@@ -83,6 +83,16 @@
     </swiper-item>
   </swiper>
 </div>
+
+
+
+<confirm :show.sync="showConfirm.cancel" title="" confirm-text="是" cancel-text="否" @on-confirm="cancel(tempOrderNo)">
+  <p style="text-align:center;">您确认要取消该预约吗?</p>
+</confirm>
+
+<confirm :show.sync="showConfirm.delete" title="" confirm-text="是" cancel-text="否" @on-confirm="deleteOrder(tempOrderNo)">
+  <p style="text-align:center;">您确认要删除该订单吗?</p>
+</confirm>
 </template>
 
 <script>
@@ -93,6 +103,7 @@ import {
 } from 'vux-components/tab'
 import Swiper from 'vux-components/swiper'
 import SwiperItem from 'vux-components/swiper-item'
+import Confirm from 'vux-components/confirm'
 import JZxOrderListItem from 'components/j-zx-order-list-item'
 import Scroller from 'vux-components/scroller'
 import NoData from 'common/components/no-data'
@@ -118,6 +129,11 @@ export default {
       list3: [],
       list4: [],
       list5: [],
+      showConfirm: {
+        cancel: false,
+        delete: false
+      },
+      tempOrderNo: null
     }
   },
   components: {
@@ -126,6 +142,7 @@ export default {
     Swiper,
     SwiperItem,
     Scroller,
+    Confirm,
     NoData,
     JZxOrderListItem
   },
@@ -137,7 +154,29 @@ export default {
       }
     }).then((res) => {
       res.data.data.map((order) => {
-        this.orderPipe(order)
+        switch (order.status) {
+          case 1:
+          case 2:
+            this.list0.push(order)
+            break;
+          case 3:
+            this.list1.push(order)
+            break;
+          case 4:
+            this.list2.push(order)
+            break;
+          case 5:
+            this.list3.push(order)
+            break;
+          case 6:
+            this.list4.push(order)
+            break;
+          case 7:
+            this.list5.push(order)
+            break;
+          default:
+            break;
+        }
       })
       setTimeout(() => {
         this.$refs.listOne.reset()
@@ -155,30 +194,23 @@ export default {
     getScreenHeight() {
       return document.body.clientHeight
     },
-    orderPipe(order) {
-      switch (order.status) {
-        case 1:
-        case 2:
-          this.list0.push(order)
-          break;
-        case 3:
-          this.list1.push(order)
-          break;
-        case 4:
-          this.list2.push(order)
-          break;
-        case 5:
-          this.list3.push(order)
-          break;
-        case 6:
-          this.list4.push(order)
-          break;
-        case 7:
-          this.list5.push(order)
-          break;
-        default:
-          break;
-      }
+    cancel(orderNo) {
+      axios.post(`${Lib.C.orderApi}decorationOrders/${orderNo}/confirmCancel`).then((res) => {
+        alert('取消预约成功！')
+        location.reload()
+      }).catch((err) => {
+        alert('取消预约失败，请重试')
+        throw err
+      })
+    },
+    deleteOrder(orderNo) {
+      axios.post(`${Lib.C.orderApi}decorationOrders/${orderNo}/confirmDelete`).then((res) => {
+        alert('删除订单成功！')
+        location.reload()
+      }).catch((err) => {
+        alert('删除订单失败，请重试')
+        throw err
+      })
     }
   }
 }

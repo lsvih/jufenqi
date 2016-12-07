@@ -12,8 +12,7 @@
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-88+'px'" lock-x scrollbar-y v-if="shopList.length > 0" v-ref:zc>
-          <group style="margin-top:-1.17647059em;">
-            <div v-for="shop in shopList">
+            <div v-for="shop in shopList" style="background-color:#fff;margin-bottom:10px;">
               <cell class="cell-item">
                 <div class="click-area-select" v-tap="selectItem('Shop',shop.id)"></div>
                 <div class="click-zc-area-del" v-tap="deleteShop(shop.id)"></div>
@@ -28,7 +27,6 @@
                 <div class="brand-name">品牌: {{brand.name}}</div>
               </cell>
             </div>
-          </group>
         </scroller>
         <div v-if="shopList.length == 0" class="no-data-container">
           <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>

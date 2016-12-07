@@ -12,7 +12,7 @@
     <!-- 品牌 -->
     <div v-for="brand in shop.brands" track-by="$index">
       <div class="brand-name">
-        <div class="cell-left">{{brand.name}}<img src='./select.png'></div>
+        <div class="cell-left" v-tap="addBrand(shop.id,$index)">{{brand.name}}<img src='./select.png'></div>
         <div class="cell-right">删除</div>
       </div>
       <div class="clerk">
@@ -29,7 +29,7 @@
     </div>
     <div class="brand-sum">
       <div class="cell-left">总金额</div>
-      <div class="cell-right">{{countShopAmount(shop)|currency '￥' 0}}</div>
+      <div class="cell-right">{{countShopAmount(shop)|currency '￥' 2}}</div>
     </div>
     <div class="brand-add" v-tap="addBrand(shop.id)">添加品牌</div>
   </div>
@@ -39,15 +39,15 @@
     </div>
     <div class="sum">
       <div class="cell-left">总特价金额</div>
-      <div class="cell-right">{{countAllAmount('specialAmount')|currency '￥' 0}}</div>
+      <div class="cell-right">{{countAllAmount('specialAmount')|currency '￥' 2}}</div>
     </div>
     <div class="sum">
       <div class="cell-left">总正价金额</div>
-      <div class="cell-right">{{countAllAmount('normalAmount')|currency '￥' 0}}</div>
+      <div class="cell-right">{{countAllAmount('normalAmount')|currency '￥' 2}}</div>
     </div>
     <div class="sum">
       <div class="cell-left">订单总金额</div>
-      <div class="cell-right">{{countAllAmount()|currency '￥' 0}}</div>
+      <div class="cell-right">{{countAllAmount()|currency '￥' 2}}</div>
     </div>
   </div>
 </div>
@@ -121,7 +121,13 @@ export default {
         alert("网络连接中断，请稍候再试")
       })
     },
-    addBrand(shopId) {
+    addBrand(shopId, brandIndex) {
+      if (brandIndex == undefined) {
+        this.tempBrandOperateType = 0
+      } else {
+        this.tempBrandOperateType = 1
+        this.tempSelectedBrand = brandIndex
+      }
       this.tempSelectedShop = shopId
       this.showLoading = true
       axios.get(`${Lib.C.merApi}stores/${shopId}?expand=brands`).then((res) => {
@@ -142,14 +148,20 @@ export default {
     },
     onSelectedBrand() {
       if (this.tempAddBrand.length) {
-        this.shopList[findIdIndex(this.tempSelectedShop, this.shopList)].brands.push({
-          name: getValue(this.tempAddBrand[0], this.tempBrandList, 'name'),
-          id: getValue(this.tempAddBrand[0], this.tempBrandList, 'value'),
-          clerk: null,
-          normalAmount: null,
-          specialAmount: null
-        })
-        this.tempAddBrand = []
+        if (this.tempBrandOperateType == 0) {
+          this.shopList[findIdIndex(this.tempSelectedShop, this.shopList)].brands.push({
+            name: getValue(this.tempAddBrand[0], this.tempBrandList, 'name'),
+            id: getValue(this.tempAddBrand[0], this.tempBrandList, 'value'),
+            clerk: null,
+            normalAmount: null,
+            specialAmount: null
+          })
+          this.tempAddBrand = []
+        } else {
+          this.shopList[findIdIndex(this.tempSelectedShop, this.shopList)].brands[this.tempSelectedBrand].name = getValue(this.tempAddBrand[0], this.tempBrandList, 'name')
+          this.shopList[findIdIndex(this.tempSelectedShop, this.shopList)].brands[this.tempSelectedBrand].id = getValue(this.tempAddBrand[0], this.tempBrandList, 'value')
+          this.shopList[findIdIndex(this.tempSelectedShop, this.shopList)].brands[this.tempSelectedBrand].clerk = null
+        }
       }
     },
     selectClerk(shopId, brandIndex) {
@@ -244,6 +256,8 @@ export default {
       showSelectClerk: false,
       shopList: shopInfoPipe(JSON.parse(localStorage.temp)),
       tempBrandList: [],
+      tempBrandOperateType: null,
+      // tempBrandOperateType为品牌操作的类型，值为0时为添加品牌，值为1时为修改品牌
       tempSelectedShop: null,
       tempSelectedBrand: null,
       tempAddBrand: [],
