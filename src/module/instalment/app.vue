@@ -57,22 +57,27 @@ export default {
       balance: 0,
       ins: 0,
       status: [
-        'UNSUCCESSFULLY': {
+        // 'UNSUCCESSFULLY':
+        {
           "name": "申请失败"
         },
-        'UNACTIVATED': {
+        // 'UNACTIVATED':
+        {
           "name": "未激活"
         },
-        'ACTIVATING': {
+        // 'ACTIVATING':
+        {
           "name": "激活中"
         },
-        'ACTIVATED': {
+        // 'ACTIVATED':
+        {
           "name": "已激活"
         },
-        'DISABLED': {
+        // 'DISABLED':
+        {
           "name": "激活失败"
-        ],
-      },
+        }
+      ],
       thisStatus: "正在查询",
     }
   },
