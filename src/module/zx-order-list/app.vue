@@ -14,10 +14,12 @@
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:lista>
+          <div>
           <no-data v-if="list0.length==0"></no-data>
           <div v-else>
             <j-zx-order-list-item v-for="order in list0" :data="order"></j-zx-order-list-item>
           </div>
+        </div>
         </scroller>
       </div>
     </swiper-item>
@@ -153,7 +155,7 @@ export default {
         sort: 'createdAt,desc'
       }
     }).then((res) => {
-      res.data.data.forEach((order) => {
+      res.data.data.map((order) => {
         switch (order.status) {
           case 1:
           case 2:
@@ -178,18 +180,14 @@ export default {
             break;
         }
       })
-      console.log('Fecth data......ok')
-      console.time('reset scroller')
       setTimeout(() => {
-        console.log('reset...')
         this.$refs.lista.reset()
         this.$refs.listb.reset()
         this.$refs.listc.reset()
         this.$refs.listd.reset()
         this.$refs.liste.reset()
         this.$refs.listf.reset()
-        console.timeEnd('reset scroller')
-      }, 1000)
+      }, 500)
     }).catch((err) => {
       throw err
     })
