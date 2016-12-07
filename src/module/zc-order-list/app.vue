@@ -182,14 +182,14 @@ export default {
             break;
         }
       })
-      setTimeout(() => {
+      this.$nextTick(()=> {
         this.$refs.lista.reset()
         this.$refs.listb.reset()
         this.$refs.listc.reset()
         this.$refs.listd.reset()
         this.$refs.liste.reset()
         this.$refs.listf.reset()
-      }, 500)
+      })
     }).catch((err) => {
       throw err
     })
