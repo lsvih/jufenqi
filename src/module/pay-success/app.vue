@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     back(type){
-      if(type>2){
+      if(type<=2){
         location.href = './zc-order-list.html?type=2'
       }else{
         location.href = './zc-order-list.html?type=3'
