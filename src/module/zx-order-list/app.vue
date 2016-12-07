@@ -13,7 +13,7 @@
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listOne>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:lista>
           <no-data v-if="list0.length==0"></no-data>
           <div v-else>
             <j-zx-order-list-item v-for="order in list0" :data="order"></j-zx-order-list-item>
@@ -23,7 +23,7 @@
     </swiper-item>
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listTwo>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listb>
           <div>
             <no-data v-if="list1.length==0"></no-data>
             <div v-else>
@@ -35,7 +35,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listThree>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listc>
           <div>
             <no-data v-if="list2.length==0"></no-data>
             <div v-else>
@@ -47,7 +47,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listFour>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listd>
           <div>
             <no-data v-if="list3.length==0"></no-data>
             <div v-else>
@@ -59,7 +59,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listFive>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:liste>
           <div>
             <no-data v-if="list4.length==0"></no-data>
             <div v-else>
@@ -71,7 +71,7 @@
     </swiper-item>
     <swiper-item>
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listSix>
+        <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listf>
           <div>
             <no-data v-if="list5.length==0"></no-data>
             <div v-else>
@@ -153,7 +153,7 @@ export default {
         sort: 'createdAt,desc'
       }
     }).then((res) => {
-      res.data.data.map((order) => {
+      res.data.data.forEach((order) => {
         switch (order.status) {
           case 1:
           case 2:
@@ -178,14 +178,18 @@ export default {
             break;
         }
       })
+      console.log('Fecth data......ok')
+      console.time('reset scroller')
       setTimeout(() => {
-        this.$refs.listOne.reset()
-        this.$refs.listTwo.reset()
-        this.$refs.listThree.reset()
-        this.$refs.listFour.reset()
-        this.$refs.listFive.reset()
-        this.$refs.listSix.reset()
-      }, 500)
+        console.log('reset...')
+        this.$refs.lista.reset()
+        this.$refs.listb.reset()
+        this.$refs.listc.reset()
+        this.$refs.listd.reset()
+        this.$refs.liste.reset()
+        this.$refs.listf.reset()
+        console.timeEnd('reset scroller')
+      }, 1000)
     }).catch((err) => {
       throw err
     })

@@ -20,7 +20,7 @@
     <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
     <div class="worker-name">{{worker.nickname}}</div>
     <div class="worker-address">{{worker.nativePlace}}</div>
-    <div class="worker-rank">评分:5.0</div>
+    <!-- <div class="worker-rank">评分:5.0</div> -->
   </cell>
 </group>
 </template>
@@ -96,6 +96,14 @@ export default {
       }, {
         withCredentials: true,
       }).then((res) => {
+        // 在备选清单中删除已经成功预约的工长
+        let cart = JSON.parse(localStorage.cart)
+        cart.worker.forEach((worker)=>{
+          if(~this.selectWorkers.indexOf(String(worker.id))){
+            cart.worker.$remove(worker)
+          }
+        })
+        localStorage.cart = JSON.stringify(cart)
         window.location.href = "./appointment-success.html?type=1"
       }).catch((res) => {
         alert("预约失败，请稍候再试QAQ")

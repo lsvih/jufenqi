@@ -109,10 +109,25 @@ export default {
           })
         })
       })
+      // 如果订单来自备选清单
       axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${true?'':'apptNo='+'szxxxx'}`, {
         customerId: JSON.parse(localStorage.user).userId,
         orders: orders
       }).then((res) => {
+        // 如果订单来自备选清单，则删除备选清单中与付款订单中重合的门店。
+        if(true){
+          let cart = JSON.parse(localStorage.cart)
+          let selectedStore = []
+          this.shopList.map((shop)=>{
+            selectedStore.push(Number(shop.id))
+          })
+          cart.shop.forEach((sbList)=>{
+            if(~selectedStore.indexOf(sbList[1])){
+              cart.shop.$remove(sbList)
+            }
+          })
+          localStorage.cart = JSON.stringify(cart)
+        }
         this.showLoading = false
         location.href = `./pay.html?apptNo=${res.data.data.apptNo}`
       }).catch((err) => {

@@ -85,6 +85,15 @@
     </swiper-item>
   </swiper>
 </div>
+<confirm :show.sync="showConfirm.cancel" title="" confirm-text="是" cancel-text="否" @on-confirm="cancel(tempApptNo)">
+  <p style="text-align:center;">您确认要取消该订单吗?</p>
+</confirm>
+<confirm :show.sync="showConfirm.delete" title="" confirm-text="是" cancel-text="否" @on-confirm="deleteOrder(tempOrderNo)">
+  <p style="text-align:center;">您确认要删除该订单吗?</p>
+</confirm>
+<confirm :show.sync="showConfirm.receive" title="" confirm-text="是" cancel-text="否" @on-confirm="receive(tempOrderNo)">
+  <p style="text-align:center;">您是否确认收到货物?</p>
+</confirm>
 </template>
 
 <script>
@@ -98,6 +107,7 @@ import SwiperItem from 'vux-components/swiper-item'
 import JZcOrderListItem from 'components/j-zc-order-list-item'
 import Scroller from 'vux-components/scroller'
 import NoData from 'common/components/no-data'
+import Confirm from 'vux-components/confirm'
 import axios from 'axios'
 try {
   let now = Number(new Date().getTime())
@@ -113,13 +123,20 @@ try {
 export default {
   data() {
     return {
-      index: Lib.M.GetRequest().type || 0,
+      index: 0,
       list0: [],
       list1: [],
       list2: [],
       list3: [],
       list4: [],
       list5: [],
+      tempOrderNo: null,
+      tempApptNo: null,
+      showConfirm: {
+        cancel: false,
+        delete: false,
+        receive: false,
+      }
     }
   },
   components: {
@@ -129,9 +146,11 @@ export default {
     SwiperItem,
     Scroller,
     NoData,
+    Confirm,
     JZcOrderListItem
   },
   ready() {
+    this.index = Lib.M.GetRequest().type - 1 || 0
     axios.get(`${Lib.C.mOrderApi}materialAppts`, {
       params: {
         filter: 'customerId:' + JSON.parse(localStorage.getItem("user")).userId + '|status:[1,3]',
@@ -140,8 +159,37 @@ export default {
       }
     }).then((res) => {
       res.data.data.map((order) => {
-        this.orderPipe(order)
+        switch (order.status) {
+          case 1:
+            this.list0.push(order)
+            break;
+          case 2:
+            this.list5.push(order)
+            break;
+          case 3:
+            this.list1.push(order)
+            break;
+          case 4:
+            this.list2.push(order)
+            break;
+          case 5:
+            this.list3.push(order)
+            break;
+          case 6:
+            this.list4.push(order)
+            break;
+          default:
+            break;
+        }
       })
+      setTimeout(() => {
+        this.$refs.lista.reset()
+        this.$refs.listb.reset()
+        this.$refs.listc.reset()
+        this.$refs.listd.reset()
+        this.$refs.liste.reset()
+        this.$refs.listf.reset()
+      }, 500)
     }).catch((err) => {
       throw err
     })
@@ -153,7 +201,28 @@ export default {
       }
     }).then((res) => {
       res.data.data.map((order) => {
-        this.orderPipe(order)
+        switch (order.status) {
+          case 1:
+            this.list0.push(order)
+            break;
+          case 2:
+            this.list5.push(order)
+            break;
+          case 3:
+            this.list1.push(order)
+            break;
+          case 4:
+            this.list2.push(order)
+            break;
+          case 5:
+            this.list3.push(order)
+            break;
+          case 6:
+            this.list4.push(order)
+            break;
+          default:
+            break;
+        }
       })
       setTimeout(() => {
         this.$refs.lista.reset()
@@ -171,29 +240,29 @@ export default {
     getScreenHeight() {
       return document.body.clientHeight
     },
-    orderPipe(order) {
-      switch (order.status) {
-        case 1:
-          this.list0.push(order)
-          break;
-        case 2:
-          this.list5.push(order)
-          break;
-        case 3:
-          this.list3.push(order)
-          break;
-        case 4:
-          this.list2.push(order)
-          break;
-        case 5:
-          this.list3.push(order)
-          break;
-        case 6:
-          this.list4.push(order)
-          break;
-        default:
-          break;
-      }
+    receive(orderNo) {
+      axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/receive`).then((res) => {
+        alert('确认收货成功！')
+        location.reload()
+      }).catch((res) => {
+        alert('确认收货失败，请重试')
+      })
+    },
+    cancel(apptNo) {
+      axios.post(`${Lib.C.mOrderApi}materialAppts/${apptNo}/cancel`).then((res) => {
+        alert('取消订单成功！')
+        location.reload()
+      }).catch((res) => {
+        alert('取消订单失败，请重试')
+      })
+    },
+    deleteOrder(orderNo) {
+      axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/delete`).then((res) => {
+        alert('删除订单成功！')
+        location.reload()
+      }).catch((res) => {
+        alert('删除订单失败，请重试')
+      })
     }
   }
 }

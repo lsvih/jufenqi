@@ -9,7 +9,7 @@
     <div class="user-info">
       <div class="user-name">{{order.customerName||order.appt.customerName}}</div>
       <div class="user-tel" v-tap="goto('tel:'+order.customerMobile||order.appt.customerMobile)">{{order.customerMobile||order.appt.customerMobile}}</div>
-      <!-- <div class="more" v-tap="goto('./zc-order.html?orderNo='+order.orderNo+'&apptNo='+order.apptNo)">查看详情</div> -->
+      <div class="more" v-tap="goto('./zc-order.html?orderNo='+ (order.orderNo||0) +'&apptNo='+ (order.apptNo||0))">查看详情</div>
     </div>
     <div class="time" v-if="order.status == 1">
       <img :src="clockImg"> {{getTime(order.orderTime)}}
@@ -61,7 +61,7 @@
       <div class="bottom" v-if="order.status==2&&!order.waitPaymentConfirm" v-tap="goto('./pay.html?apptNo='+order.apptNo)">继续支付</div>
       <div class="bottom" v-if="order.status==4||order.status==6">退款</div>
       <div class="bottom" v-if="order.status==6" v-tap="deleteOrder(order.orderNo)">删除</div>
-      <div class="bottom" v-if="(order.status==2||order.status==1)&&!order.waitPaymentConfirm" v-tap="cancel(order.apptNo)">取消订单</div>
+      <div class="bottom" v-if="(order.status==2||order.status==1||order.status==3)&&!order.waitPaymentConfirm" v-tap="cancel(order.apptNo)">取消订单</div>
       <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div>
     </div>
   </div>
@@ -120,32 +120,19 @@ export default {
     goto(url) {
       location.href = url
     },
-    receive(orderNo) {
-      axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/receive`).then((res) => {
-        alert('确认收货成功！')
-        location.reload()
-      }).catch((res) => {
-        alert('确认收货失败，请重试')
-      })
+    cancel(apptNo){
+      this.$parent.$parent.$parent.$parent.tempApptNo = apptNo
+      this.$parent.$parent.$parent.$parent.showConfirm.cancel = true
     },
-    cancel(apptNo) {
-      axios.post(`${Lib.C.mOrderApi}materialAppts/${apptNo}/cancel`).then((res) => {
-        alert('取消订单成功！')
-        location.reload()
-      }).catch((res) => {
-        alert('取消订单失败，请重试')
-      })
+    deleteOrder(orderNo){
+      this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
+      this.$parent.$parent.$parent.$parent.showConfirm.delete = true
     },
-    deleteOrder(orderNo) {
-      axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/delete`).then((res) => {
-        alert('删除订单成功！')
-        location.reload()
-      }).catch((res) => {
-        alert('删除订单失败，请重试')
-      })
+    receive(orderNo){
+      this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
+      this.$parent.$parent.$parent.$parent.showConfirm.receive = true
     }
   },
-  ready() {}
 }
 </script>
 <style scoped lang="less">

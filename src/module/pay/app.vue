@@ -66,43 +66,80 @@ export default {
   methods: {
     pay() {
       this.showLoading = true
-      axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/pay`, {
-        payMethod: this.payMethod
-      }).then((res) => {
-        let paymentId = res.data.data.paymentId
-        axios.get(`${Lib.C.userApi}wechatOpenIds/${JSON.parse(localStorage.user).userId}`).then((res) => {
-          let openId = res.data.data.openId
+      if (this.payMethod == 3 || this.payMethod == 4) {
+        axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/pay`, {
+          payMethod: this.payMethod
+        }).then((res) => {
+          let paymentId = res.data.data.paymentId
           let payData = new FormData()
-          payData.append('notifyUrl',Lib.C.notifyUrl)
-          payData.append('openid',openId)
-          axios.post(`${Lib.C.payApi}pay/${paymentId}`,payData).then((res) => {
-            pingpp.createPayment(res.data.data, (result, err) => {
-              if (result === 'success') {
-                alert('支付成功')
-                location.href = './zc-order-list.html?type=5'
-              } else if (result === 'fail') {
-                alert('支付失败')
-                location.href = './zc-order-list.html?type=5'
-              } else if (result === 'cancel') {
+          payData.append('notifyUrl', Lib.C.notifyUrl)
+          if (this.payMethod == 3) {
+            axios.get(`${Lib.C.userApi}wechatOpenIds/${JSON.parse(localStorage.user).userId}`).then((res) => {
+              let openId = res.data.data.openId
+              payData.append('openid', openId)
+              axios.post(`${Lib.C.payApi}pay/${paymentId}`, payData).then((res) => {
+                pingpp.createPayment(res.data.data, (result, err) => {
+                  if (result === 'success') {
+                    axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/waitPayment`).then((res) => {
+                      location.href = './pay-success.html?type=3'
+                    }).catch((err) => {
+                      throw err
+                    })
+                  } else if (result === 'fail') {
+                    alert('支付失败')
+                    location.href = './zc-order-list.html?type=5'
+                  } else if (result === 'cancel') {
+                    alert('支付失败')
+                    location.href = './zc-order-list.html?type=5'
+                  }
+                })
+              }).catch((err) => {
+                this.showLoading = false
+                alert("网络连接中断，请稍候再试")
+                throw err
+              })
+            }).catch((err) => {
+              this.showLoading = false
+              alert("网络连接中断，请稍候再试")
+              throw err
+            })
+          } else {
+            axios.post(`${Lib.C.payApi}pay/${paymentId}`, payData).then((res) => {
+              pingpp.createPayment(res.data.data, (result, err) => {
+                if (result === 'success') {
+                  axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/waitPayment`).then((res) => {
+                    location.href = './pay-success.html?type=4'
+                  }).catch((err) => {
+                    throw err
+                  })
+                } else if (result === 'fail') {
                   alert('支付失败')
                   location.href = './zc-order-list.html?type=5'
-              }
+                } else if (result === 'cancel') {
+                  alert('支付失败')
+                  location.href = './zc-order-list.html?type=5'
+                }
+              })
+            }).catch((err) => {
+              this.showLoading = false
+              alert("网络连接中断，请稍候再试")
+              throw err
             })
-          }).catch((err) => {
-            this.showLoading = false
-            alert("网络连接中断，请稍候再试")
-            throw err
-          })
+          }
         }).catch((err) => {
           this.showLoading = false
           alert("网络连接中断，请稍候再试")
           throw err
         })
-      }).catch((err) => {
-        this.showLoading = false
-        alert("网络连接中断，请稍候再试")
-        throw err
-      })
+      } else {
+        axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/pay`, {
+          payMethod: this.payMethod
+        }).then((res)=>{
+          location.href = './pay-success.html?type='+this.payMethod
+        }).catch((err)=>{
+          throw err
+        })
+      }
     },
     selectPay(e) {
       this.payMethod = Number(e)
@@ -120,12 +157,12 @@ export default {
         key: '1',
         value: '全款购买',
         icon: qkImg,
-        description: '24期内分期免息'
+        description: '支付方式:现金或刷卡'
       }, {
         key: '2',
         value: '分期购买',
         icon: fqImg,
-        description: '支付方式:现金或刷卡'
+        description: '24期内分期免息'
       }, {
         key: '3',
         value: '微信支付',

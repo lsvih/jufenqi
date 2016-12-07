@@ -72,7 +72,7 @@ export default {
       return (this.name !== null && creditReg.test(this.creditNum) && this.verify !== null)
     },
     sendSms() {
-      let phoneReg = /^[1][358][0-9]{9}$/
+      let phoneReg = /^[1][3578][0-9]{9}$/
       if (!phoneReg.test(this.phone)) {
         alert("请输入正确的手机号码!")
       } else {
