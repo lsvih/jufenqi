@@ -11,7 +11,7 @@
 </group>
 <group title="期望贷款信息">
   <x-input title="期望额度(元)" :value.sync="wantIns" keyboard="number"  type="number" placeholder="请输入您期望的贷款额度"></x-input>
-  <cell title="期望分期数" :value="insNumberSelect" v-tap="showInsNumberPicker = true" style="height:30px" is-link></cell>
+  <cell title="期望分期数" :value="insNumberSelect" v-tap="openIns()" style="height:30px" is-link></cell>
 </group>
 <popup-picker title="分期数" :data="insNumberList" :show.sync="showInsNumberPicker" :value.sync="insNumberSelect" v-ref:insNumber :show-cell="false"></popup-picker>
 <popup-picker title="地址" :data="areaList" :columns="3" :show.sync="showAreaPicker" :value.sync="areaSelect" v-ref:areapicker :show-cell="false"></popup-picker>
@@ -148,6 +148,10 @@ export default {
       data.expectInstalment = this.insNumberSelect[0]
       window.localStorage.setItem("apply-info",JSON.stringify(data))
       window.location.href = "./ins-apply-step3.html"
+    },
+    openIns(){
+      document.activeElement.blur()
+      this.showInsNumberPicker = true
     }
   }
 }
