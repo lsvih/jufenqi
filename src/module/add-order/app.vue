@@ -99,30 +99,30 @@ export default {
       let orders = []
       this.showLoading = true
       this.shopList.map((shop) => {
-        shop.brands.map((brand) => {
-          orders.push({
-            storeId: shop.id,
-            brandId: brand.id,
-            clerkId: brand.clerk.id,
-            normalAmount: brand.normalAmount,
-            specialAmount: brand.specialAmount
+          shop.brands.map((brand) => {
+            orders.push({
+              storeId: shop.id,
+              brandId: brand.id,
+              clerkId: brand.clerk.id,
+              normalAmount: brand.normalAmount,
+              specialAmount: brand.specialAmount
+            })
           })
         })
-      })
-      // 如果订单来自备选清单
+        // 如果订单来自备选清单
       axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${true?'':'apptNo='+'szxxxx'}`, {
         customerId: JSON.parse(localStorage.user).userId,
         orders: orders
       }).then((res) => {
         // 如果订单来自备选清单，则删除备选清单中与付款订单中重合的门店。
-        if(true){
+        if (true) {
           let cart = JSON.parse(localStorage.cart)
           let selectedStore = []
-          this.shopList.map((shop)=>{
+          this.shopList.map((shop) => {
             selectedStore.push(Number(shop.id))
           })
-          cart.shop.forEach((sbList)=>{
-            if(~selectedStore.indexOf(sbList[1])){
+          cart.shop.forEach((sbList) => {
+            if (~selectedStore.indexOf(sbList[1])) {
               cart.shop.$remove(sbList)
             }
           })
@@ -184,13 +184,11 @@ export default {
       this.tempSelectedBrand = brandIndex
       document.activeElement.blur()
       this.showLoading = true
-      axios.get(`${Lib.C.merApi}stores/${shopId}?expand=storeusers`).then((res) => {
+      axios.get(`${Lib.C.merApi}store-users?filter=store:${shopId}`).then((res) => {
         this.tempClerkList = []
         let clerks = []
-        res.data.data.storeusers.map((e) => {
-          if (e && (e.userTypeEnum == 0 || e.userTypeEnum == 1)) {
-            clerks.push(e.userId)
-          }
+        res.data.data.map((e) => {
+          clerks.push(e.userId)
         })
         axios.get(`${Lib.C.userApi}storeuserProfiles?filter=userId:${clerks.join(',')}`).then((res) => {
           if (res.data.data.length === 0) {
