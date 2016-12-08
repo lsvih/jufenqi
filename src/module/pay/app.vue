@@ -13,12 +13,17 @@
   <div class="submit-btn" v-bind:class="{'active':payMethod!=0}" v-tap="payMethod!=0?pay():return">确认</div>
 </div>
 <loading :show="showLoading" text="请稍后.."></loading>
+
+<confirm :show.sync="showLoan" title="" confirm-text="办理分期" cancel-text="其他支付方式" @on-confirm="goto('./instalment.html')">
+  <p style="text-align:center;">您尚未办理分期，是否办理分期？</p>
+</confirm>
 </template>
 <script>
 import pingpp from 'pingpp-js'
 import Lib from 'assets/Lib.js'
 import Group from 'vux-components/group'
 import JRadio from 'common/components/j-radio'
+import Confirm from 'vux-components/confirm'
 import Loading from 'vux-components/loading'
 import wxImg from './wx.png'
 import qkImg from './qk.png'
@@ -40,7 +45,8 @@ export default {
   components: {
     JRadio,
     Group,
-    Loading
+    Loading,
+    Confirm
   },
   ready() {
     this.showLoading = true
@@ -137,12 +143,24 @@ export default {
         }).then((res)=>{
           location.href = './pay-success.html?type='+this.payMethod
         }).catch((err)=>{
-          throw err
+          if(err.response){
+            if(err.response.data.code == 40303){
+              this.showLoading = false
+              this.showLoan = true
+            }else{
+              throw err
+            }
+          }else{
+            throw err
+          }
         })
       }
     },
     selectPay(e) {
       this.payMethod = Number(e)
+    },
+    goto(url){
+      location.href = url
     }
   },
   data() {
@@ -172,6 +190,7 @@ export default {
         value: '银联支付',
         icon: ylImg
       }],
+      showLoan:false,
       payMethod: 0,
       orders: []
     }

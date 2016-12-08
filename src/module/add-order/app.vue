@@ -110,7 +110,7 @@ export default {
           })
         })
         // 如果订单来自备选清单
-      axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${true?'':'apptNo='+'szxxxx'}`, {
+      axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${!this.from?'':'?apptNo='+this.from}`, {
         customerId: JSON.parse(localStorage.user).userId,
         orders: orders
       }).then((res) => {
@@ -277,7 +277,8 @@ export default {
       tempClerkList: [],
       tempAddClerk: [],
       tempSelectedClerk: [],
-      telImg
+      telImg,
+      from:Lib.M.GetRequest().from||false
     }
   }
 }
