@@ -1,7 +1,7 @@
 <template>
 <header>
   <div class="cart" v-tap="goto('./cart.html?type=2')"><img src="cart.png"></div>
-  <div class="worker-logo"><img :src="worker.profileImage"></div>
+  <div class="worker-logo"><img :src="imgUrl+worker.profileImage"></div>
   <div class="worker-name">{{worker.nickname}}</div>
   <div class="worker-description">
     <span class="worker-rank">口碑:<span class="detail-num">{{worker.foremanRate}}</span>
@@ -17,7 +17,7 @@
           籍&nbsp;&nbsp;&nbsp;&nbsp;贯:{{worker.nativePlace}}
         </flexbox-item>
         <flexbox-item>
-          施工团队:{{worker.teamPeopleNum}}
+          施工团队:{{worker.teamScale}}人团队
         </flexbox-item>
       </flexbox>
       <flexbox class="line">
@@ -30,7 +30,7 @@
       </flexbox>
       <flexbox class="line">
         <flexbox-item>
-          从业年龄:{{getTime(worker.startTime)}}年
+          从业年龄:{{getTime(worker.startedAt*1000)}}年
         </flexbox-item>
       </flexbox>
     </article>
@@ -45,12 +45,12 @@
       <span v-for="area in worker.neighbourhood.split('|')">{{area}}&nbsp;&nbsp;</span>
     </article>
   </group>
-  <group title="施工图片" v-show="worker.projectImageList.split('|').length">
+  <group title="施工图片" v-show="worker.projectImgs.split('|').length">
     <div class="module-item">
       <scroller lock-y scrollbar-x :height=".8*getScreenWidth()*.63+20+'px'" v-ref:goods>
-        <div class="worker-product-list" :style="{width:worker.projectImageList.split('|').length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
-          <div class="worker-product-item" v-for="good in worker.projectImageList.split('|')" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-            <x-img class="product-img" :scroller="$refs.goods" :src="good" v-tap="$refs.previewer.show($index)"></x-img>
+        <div class="worker-product-list" :style="{width:worker.projectImgs.split('|').length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
+          <div class="worker-product-item" v-for="good in worker.projectImgs.split('|')" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
+            <x-img class="product-img" :scroller="$refs.goods" :src="imgUrl + good" v-tap="$refs.previewer.show($index)"></x-img>
           </div>
         </div>
       </scroller>
@@ -105,6 +105,7 @@ export default {
       toastText: "",
       isFavorite: false,
       worker: {},
+      imgUrl:Lib.C.imgUrl,
       options: {
         getThumbBoundsFn(index) {
           let thumbnail = document.querySelectorAll('.product-img')[index]
