@@ -41,7 +41,7 @@
           {{subOrder.brandName}}
         </div>
       </div>
-      <div class="store-amount">合计:{{getStoreAmount(order.orders)|currency '' 2}}</div>
+      <div class="store-amount" v-if="order.status != 1">合计:{{getStoreAmount(order.orders)|currency '' 2}}</div>
     </div>
     <div v-else>
       <div class="store">
