@@ -2,7 +2,7 @@
 <group style="margin-top:-1.17647059em;">
   <cell class="cell" v-for="bank in bankList">
     <div class="select" v-tap="select($index)" style="width:calc( 100% - 40px )"></div>
-    <img class="bank-logo" :src="bank.bank.logoImg">
+    <img class="bank-logo" :src="imgUrl + bank.bank.logoImg">
     <div class="bank-name">{{bank.bankName}}</div>
     <div class="text">
       <!-- 持卡类型:<span class="card-type">{{bank.cardType}}</span>&nbsp;&nbsp; -->
@@ -37,7 +37,8 @@ export default {
     return {
       bankList: [],
       showInfo: false,
-      showInfoNum: 0
+      showInfoNum: 0,
+      imgUrl: Lib.C.imgUrl
     }
   },
   components: {
