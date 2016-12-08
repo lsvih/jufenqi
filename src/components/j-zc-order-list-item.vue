@@ -215,7 +215,7 @@ export default {
             color: #393939;
             height: 30px;
             line-height: 30px;
-            padding-left: 20px;
+            padding-left: 25px;
             width: 100%;
             border-bottom: 1px solid #eee;
             font-size: 12px;
