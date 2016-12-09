@@ -11,26 +11,31 @@
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-88+'px'" lock-x scrollbar-y v-if="shopList.length > 0" v-ref:zc>
-            <div v-for="shop in shopList" style="background-color:#fff;margin-bottom:10px;">
-              <cell class="cell-item">
-                <div class="click-area-select" v-tap="selectItem('Shop',shop.id)"></div>
-                <div class="click-zc-area-del" v-tap="deleteShop(shop.id)"></div>
-                <div class="shop-name">{{shop.name}}</div>
-                <div class="shop-address">{{shop.address}}</div>
-                <!-- <div class="worker-rank">评分:5.0</div> -->
-                <div class="shop-del">删除门店</div>
-                <img v-if="isSelect('Shop',shop.id)" class="worker-is-favorite" src="selected.png">
-                <img v-else class="worker-is-favorite" src="toselect.png">
-              </cell>
-              <cell class="shop-brand" v-for="brand in shop.brands">
-                <div class="brand-name">品牌: {{brand.name}}</div>
-              </cell>
+        <scroller :height="getScreenHeight()-88+'px'" lock-x scrollbar-y v-ref:zc>
+          <div>
+            <div v-if="shopList.length > 0">
+              <div style="background-color:#fff;margin-bottom:10px;" v-for="shop in shopList">
+                <cell class="cell-item">
+                  <div class="click-area-select" v-tap="selectItem('Shop',shop.id)"></div>
+                  <div class="click-zc-area-del" v-tap="deleteShop(shop.id)"></div>
+                  <div class="shop-name">{{shop.name}}</div>
+                  <div class="shop-address">{{shop.address}}</div>
+                  <!-- <div class="worker-rank">评分:5.0</div> -->
+                  <div class="shop-del">删除门店</div>
+                  <img v-if="isSelect('Shop',shop.id)" class="worker-is-favorite" src="selected.png">
+                  <img v-else class="worker-is-favorite" src="toselect.png">
+                </cell>
+                <cell class="shop-brand" v-for="brand in shop.brands">
+                  <div class="brand-name">品牌: {{brand.name}}</div>
+                </cell>
+              </div>
             </div>
+            <div v-else class="no-data-container">
+              <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>
+            </div>
+          </div>
         </scroller>
-        <div v-if="shopList.length == 0" class="no-data-container">
-          <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>
-        </div>
+
         <div class="submit-btn left-btn" :class="{'left-btn-active':isSelected('Shop')}" v-tap="isSelected('Shop')?selectShops():return">立即预约</div>
         <div class="submit-btn right-btn" :class="{'select-active':isSelected('Shop')}" v-tap="isSelected('Shop')?addOrder():return">立即购买</div>
         <!-- <div class="submit-btn" :class="{'select-active':isSelectShop()}" v-tap="isSelectShop()?selectShop():return">预约</div> -->
@@ -38,25 +43,27 @@
     </swiper-item>
     <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
-        <scroller :height="getScreenHeight()-88+'px'" lock-x scrollbar-y v-if="workerList.length > 0" v-ref:zx>
-          <group style="margin-top:-1.17647059em;">
-            <cell v-for="worker in workerList" class="cell-item">
-              <div class="click-area-select" v-tap="selectItem('Worker',worker.userId)"></div>
-              <div class="click-area-detail" v-tap="goto('worker-detail.html?id='+worker.userId)"></div>
-              <div class="click-area-del" v-tap="del('Worker',worker.userId)"></div>
-              <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
-              <div class="worker-name">{{worker.nickname}}</div>
-              <div class="worker-address">{{worker.nativePlace}}</div>
-              <!-- <div class="worker-rank">评分:5.0</div> -->
-              <div class="worker-del">删除</div>
-              <img v-if="isSelect('Worker',worker.userId)" class="worker-is-favorite" src="selected.png">
-              <img v-else class="worker-is-favorite" src="toselect.png">
-            </cell>
-          </group>
+        <scroller :height="getScreenHeight()-88+'px'" lock-x scrollbar-y v-ref:zx>
+          <div>
+            <group style="margin-top:-1.17647059em;" v-if="workerList.length > 0">
+              <cell v-for="worker in workerList" class="cell-item">
+                <div class="click-area-select" v-tap="selectItem('Worker',worker.userId)"></div>
+                <div class="click-area-detail" v-tap="goto('worker-detail.html?id='+worker.userId)"></div>
+                <div class="click-area-del" v-tap="del('Worker',worker.userId)"></div>
+                <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
+                <div class="worker-name">{{worker.nickname}}</div>
+                <div class="worker-address">{{worker.nativePlace}}</div>
+                <!-- <div class="worker-rank">评分:5.0</div> -->
+                <div class="worker-del">删除</div>
+                <img v-if="isSelect('Worker',worker.userId)" class="worker-is-favorite" src="selected.png">
+                <img v-else class="worker-is-favorite" src="toselect.png">
+              </cell>
+            </group>
+            <div v-else class="no-data-container">
+              <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>
+            </div>
+          </div>
         </scroller>
-        <div v-if="workerList.length == 0" class="no-data-container">
-          <div class="no-data"><img src="no-data.png"><span>暂无备选</span></div>
-        </div>
         <div class="submit-btn" :class="{'select-active':isSelected('Worker')}" v-tap="isSelected('Worker')?selectWorkers():return">预约</div>
       </div>
     </swiper-item>
@@ -85,7 +92,7 @@ import Loading from 'vux-components/loading'
 import axios from 'axios'
 try {
   let now = Number(new Date().getTime())
-  if (Number(JSON.parse(localStorage.user).expiredAt) < now) {
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
     localStorage.removeItem('user')
     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
   }
@@ -98,12 +105,12 @@ export default {
   data() {
     return {
       index: 0,
-      tab: Lib.M.GetRequest().type == 2?'工长':'门店',
+      tab: Lib.M.GetRequest().type == 2 ? '工长' : '门店',
       showToast: false,
       toastText: "",
       showLoading: false,
-      workerList: window.localStorage.getItem("cart") ? JSON.parse(window.localStorage.getItem("cart")).worker : [],
-      shopList: window.localStorage.getItem("cart") ? shopInfoPipe(JSON.parse(window.localStorage.getItem("cart")).shop) : [],
+      workerList: [],
+      shopList: [],
       selectWorker: [],
       selectShop: []
     }
@@ -118,6 +125,22 @@ export default {
     Scroller,
     Toast,
     Loading
+  },
+  ready() {
+    let cart = localStorage.getItem('cart') ? JSON.parse(localStorage.cart) : {
+      worker: [],
+      shop: []
+    }
+    cart.worker.forEach((e) => {
+      this.workerList.push(e)
+    })
+    shopInfoPipe(cart.shop).forEach((e) => {
+      this.shopList.push(e)
+    })
+    this.$nextTick(() => {
+      if (this.shopList.length) this.$refs.zc.reset()
+      if (this.workerList.length) this.$refs.zx.reset()
+    })
   },
   methods: {
     isSelect(type, id) {
@@ -155,6 +178,9 @@ export default {
         worker: this.workerList,
         shop: this.shopList
       }))
+      this.$nextTick(()=>{
+        this.$refs.zx.reset()
+      })
     },
     isSelected(type) {
       return !!this['select' + type].length
@@ -172,6 +198,9 @@ export default {
           this.shopList.$remove(this.shopList[j])
         }
       }
+      this.$nextTick(()=>{
+        this.$refs.zc.reset()
+      })
     },
     selectShops() {
       let result = []
@@ -181,7 +210,7 @@ export default {
       localStorage.temp = JSON.stringify(result)
       this.goto('./select-shop.html')
     },
-    addOrder(){
+    addOrder() {
       let result = []
       this.selectShop.map((e) => {
         result.push(this.shopList[findIdIndex(e, this.shopList)])

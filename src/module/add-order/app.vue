@@ -13,7 +13,7 @@
     <div v-for="brand in shop.brands" track-by="$index">
       <div class="brand-name">
         <div class="cell-left" v-tap="addBrand(shop.id,$index)">{{brand.name}}<img src='./select.png'></div>
-        <div class="cell-right">删除</div>
+        <div class="cell-right" v-tap="delBrand(shop.id,brand.id)">删除</div>
       </div>
       <div class="clerk">
         <div class="cell-left" v-tap="selectClerk(shop.id,$index)">店员选择<img src='./select.png'></div>
@@ -64,7 +64,7 @@ import telImg from 'common/assets/images/tel.png'
 import axios from 'axios'
 try {
   let now = Number(new Date().getTime())
-  if (Number(JSON.parse(localStorage.user).expiredAt) < now) {
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
     localStorage.removeItem('user')
     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
   }
@@ -89,6 +89,7 @@ export default {
     isFinished() {
       if (!this.shopList.length) return false
       for (let shop of this.shopList) {
+        if(shop.brands.length === 0) return false
         for (let brand of shop.brands) {
           if (brand.clerk == null || brand.specialAmount == null || brand.normalAmount == null) return false
         }
@@ -160,6 +161,9 @@ export default {
         alert("获取品牌失败，请稍后再试")
         throw err //error
       })
+    },
+    delBrand(shopId, brandId) {
+      this.shopList[findIdIndex(shopId, this.shopList)].brands.$remove(this.shopList[findIdIndex(shopId, this.shopList)].brands[findIdIndex(brandId, this.shopList[findIdIndex(shopId, this.shopList)].brands)])
     },
     onSelectedBrand() {
       if (this.tempAddBrand.length) {
@@ -278,7 +282,7 @@ export default {
       tempAddClerk: [],
       tempSelectedClerk: [],
       telImg,
-      from:Lib.M.GetRequest().from||false
+      from: Lib.M.GetRequest().from || false
     }
   }
 }

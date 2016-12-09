@@ -111,7 +111,7 @@ import Confirm from 'vux-components/confirm'
 import axios from 'axios'
 try {
   let now = Number(new Date().getTime())
-  if (Number(JSON.parse(localStorage.user).expiredAt) < now) {
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
     localStorage.removeItem('user')
     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
   }

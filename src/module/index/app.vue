@@ -109,6 +109,18 @@ import {
   Flexbox,
   FlexboxItem
 } from 'vux-components/flexbox'
+import axios from 'axios'
+try {
+  let now = Number(new Date().getTime())
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
+    localStorage.removeItem('user')
+    location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+  }
+  axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
+} catch (e) {
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
