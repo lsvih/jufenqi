@@ -78,8 +78,8 @@ export default {
     },
     nextStep(){
       let data = JSON.parse(localStorage.getItem("apply-info"))
-      data.premisesPermitImgsInsert = ["http://" + this.houseInfo.server]
-      data.salaryImgsInsert = ["http://"+this.moneyInfo.server]
+      data.premisesPermitImgsInsert = [this.houseInfo.server]
+      data.salaryImgsInsert = [this.moneyInfo.server]
       localStorage.setItem("apply-info",JSON.stringify(data))
       location.href = "./activation-step3.html"
     }
