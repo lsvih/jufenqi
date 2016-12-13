@@ -7,7 +7,7 @@
 </div>
 <div class="content">
   <div class="content-item" v-for="class of classList[select].child" v-tap="gotoClass(class.id)"><img :src="img + class.showImg">
-    <div class="class-name">{{class.name}}</div>
+   <!-- <div class="class-name">{{class.name}}</div> -->
   </div>
 </div>
 </template>
@@ -151,6 +151,7 @@ body {
         height: auto;
         width: calc(~"50% - 5px");
         float: left;
+        margin-top: 10px;
         img {
             height: auto;
             width: 100%;
