@@ -151,7 +151,7 @@ body {
         height: auto;
         width: calc(~"50% - 5px");
         float: left;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         img {
             height: auto;
             width: 100%;
