@@ -40,7 +40,7 @@
   <!-- module end -->
   <!-- Video module -->
   <div class="module-item">
-    <iframe frameborder="0" width="100%" height="200" src="https://v.qq.com/iframe/player.html?vid=t0327rvrkwx&tiny=0&auto=0" allowfullscreen></iframe>
+    <iframe frameborder="0" width="100%" height="200" src="http://ohej1hvbm.bkt.clouddn.com/movie.mp4" allowfullscreen></iframe>
   </div>
   <!-- module end -->
   <!-- Operative module -->
