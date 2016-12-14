@@ -279,11 +279,11 @@ body {
     background: #fff;
     margin-top: 10px;
     .videoWrapper {
-      width: 100%;
-      height: 200px;
-      background-image: url('/static/images/mask.jpg');
-      background-size: contain;
-      opacity: 0.5;
+        width: 100%;
+        height: 200px;
+        background: url('/static/images/mask.jpg') no-repeat;
+        background-size: 100% auto;
+        opacity: 0.5;
     }
     .module-title-block {
         position: absolute;
