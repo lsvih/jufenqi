@@ -40,7 +40,9 @@
   <!-- module end -->
   <!-- Video module -->
   <div class="module-item">
-    <video controls preload="none" width="100%" height="200" src="http://ohej1hvbm.bkt.clouddn.com/movie.mp4" allowfullscreen></video>
+    <div class="videoWrapper">
+      <video controls preload="none" width="100%" height="200" src="http://ohej1hvbm.bkt.clouddn.com/movie.mp4" allowfullscreen></video>
+    </div>
   </div>
   <!-- module end -->
   <!-- Operative module -->
@@ -276,9 +278,12 @@ body {
     position: relative;
     background: #fff;
     margin-top: 10px;
-    video {
+    .videoWrapper {
+      width: 100%;
+      height: 200px;
       background-image: url('/static/images/mask.jpg');
       background-size: contain;
+      opacity: 0.5;
     }
     .module-title-block {
         position: absolute;
