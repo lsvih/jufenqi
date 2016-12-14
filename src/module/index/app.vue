@@ -40,7 +40,7 @@
   <!-- module end -->
   <!-- Video module -->
   <div class="module-item">
-    <iframe frameborder="0" width="100%" height="200" src="http://ohej1hvbm.bkt.clouddn.com/movie.mp4" allowfullscreen></iframe>
+    <video controls="controls" width="100%" height="200" src="http://ohej1hvbm.bkt.clouddn.com/movie.mp4" allowfullscreen></video>
   </div>
   <!-- module end -->
   <!-- Operative module -->
