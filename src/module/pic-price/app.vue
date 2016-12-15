@@ -9,10 +9,23 @@
         <span>风格名称</span>
         <div></div>
       </div>
-      <div class="swiper"></div>
-      <ul>
-        <li v-for="pic in picList"></li>
-      </ul>
+      <div v-for="(space, type) in spaces">
+        <div class="group-title">{{ spaceEnum[type] }}<span class="group-title-en">{{ spaceEnumEn[type] }}</span></div>
+        <slider style="border-bottom: 5px solid #fbfbfb" :scale="0.84">
+          <div v-if="sp.design_img_url" v-for="sp in space" class="group-slide-item md-whiteframe-3dp" layout="column">
+            <div v-tap="navigate(sp)" class="item-container">
+              <v-img :src="sp.design_img_url"></v-img>
+              <div class="text-block">
+                <div class="description">{{ sp.description }}</div>
+                <div class="title-group" layout="row">
+                  <div class="title" flex>{{ sp.name }}</div>
+                  <div class="price">¥{{ total(sp) }}整体软装</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </slider>
+      </div>
     </div>
   </div>
 </template>
@@ -22,6 +35,7 @@ import Lib from 'assets/Lib.js'
 import JFooter from 'components/j-footer'
 import Swiper from 'vux-components/swiper'
 import axios from 'axios'
+import Slider from 'components/slider'
 import {
   Flexbox,
   FlexboxItem
@@ -41,17 +55,33 @@ export default {
   name: 'app',
   components: {
     Swiper,
-    JFooter
+    JFooter,
+    Slider,
+    Flexbox
   },
   data () {
     return {
       bannerIndex: 0,
-      bannerList: []
+      bannerList: [],
+      spaces: [],
+      spaceEnum: ['客厅', '餐厅', '主卧', '次卧'],
+      spaceEnumEn: ['Living Room', 'Dining Room', 'Bedroom', 'Subaltern Room']
     }
+  },
+  created() {
   },
   methods: {
     bannerOnChange(index) {
       this.bannerIndex = index;
+    },
+    getScreenWidth() {
+      return document.body.clientWidth
+    },
+    gotoPriceCon(id, name) {
+      window.location.href = `pic-price-con.html?id=${id}&name=${encodeURIComponent(name)}`
+    },
+    goto(url) {
+      window.location.href = url
     }
   }
 }
@@ -104,9 +134,6 @@ html {
       padding: 0 7px;
     }
   }
-  .swiper {
-    height: 350px;
-  }
   ul {
     position: absolute;
     bottom: 30px;
@@ -122,5 +149,36 @@ html {
       }
     }
   }
+}
+.group-title {
+  padding: 14px 12px;
+  /*text-align: center;*/
+  font-size: 1.2em;
+  color: #424242;
+  font-weight: bold;
+}
+
+.group-title-en {
+  font-weight: normal;
+  font-size: 13px;
+  margin-left: 4px;
+  color: #9e9e9e;
+}
+
+.image-group {
+  white-space: nowrap;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+
+}
+
+.image-group div {
+  display: inline-block;
+  width: 72%;
+  margin: 0 16px;
+}
+
+.image-group div + div {
+  margin-left: 0;
 }
 </style>

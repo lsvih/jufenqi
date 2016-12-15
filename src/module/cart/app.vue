@@ -50,7 +50,7 @@
                 <div class="click-area-select" v-tap="selectItem('Worker',worker.userId)"></div>
                 <div class="click-area-detail" v-tap="goto('worker-detail.html?id='+worker.userId)"></div>
                 <div class="click-area-del" v-tap="del('Worker',worker.userId)"></div>
-                <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
+                <img :src="imgUrl + worker.profileImage" class="worker-logo" width="120px" height="80px">
                 <div class="worker-name">{{worker.nickname}}</div>
                 <div class="worker-address">{{worker.nativePlace}}</div>
                 <!-- <div class="worker-rank">评分:5.0</div> -->
@@ -112,7 +112,8 @@ export default {
       workerList: [],
       shopList: [],
       selectWorker: [],
-      selectShop: []
+      selectShop: [],
+      imgUrl: Lib.C.imgUrl
     }
   },
   components: {
