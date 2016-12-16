@@ -40,7 +40,7 @@
     
  --><div class="longpic" v-tap="goto('./bannerfirst.html')">
       <img src="./long.png">
-    </div>
+    </div> 
  </div>
   <!-- module end -->
   <!-- Video module -->
