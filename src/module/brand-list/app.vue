@@ -1,5 +1,4 @@
 <template>
-<template>
 <div class="select" v-tap="showSelect = true">
   {{$refs.cate.getNameValues()||'品类'}}<img src="./select.png"></div>
 <popup-picker title="地区" :data="categories" :columns="2" :show-cell="false" :show.sync="showSelect" :value.sync="selectedCate" @on-hide="onHide" show-name v-ref:cate></popup-picker>
