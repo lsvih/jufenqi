@@ -269,7 +269,6 @@ body {
 }
 .content .longpic {
   width: 100%;
-  height: 44px;
 }
 .content .longpic img {
   width: 100%;
