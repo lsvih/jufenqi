@@ -41,7 +41,7 @@
   <!-- Video module -->
   <div class="module-item">
     <div class="videoWrapper">
-      <video controls preload="none" width="100%" height="200" src="http://ohej1hvbm.bkt.clouddn.com/movie.mp4" allowfullscreen></video>
+      <video controls="controls" preload="none" width="100%" height="200" src="http://ohej1hvbm.bkt.clouddn.com/movie.mp4" allowfullscreen></video>
     </div>
   </div>
   <!-- module end -->
@@ -65,19 +65,19 @@
   <!-- Goods module -->
   <div class="module-item">
     <div class="module-title-block"></div>
-    <div class="module-title">有图有价<img src="./arrow.png"></div>
+    <div class="module-title" v-tap="goto('./pic-price.html')">有图有价<img src="./arrow.png"></div>
     <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+'px'}">
       <div :style="{width:'100%',height:.8*getScreenWidth()*.63+40+'px'}" class="scroll-box">
         <div class="pic_and_goods-list" :style="{width:pic_and_goods.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
           <div class="pic_and_goods-item" v-for="good in pic_and_goods" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-            <img :src="good.img">
+            <img :src="good.img" v-tap="goto(good.url)">
           </div>
         </div>
       </div>
     </div>
     <div class="module-more">
       <div class="module-description">看的到的都能买</div>
-      <div class="module-detail">了解详情</div>
+      <div class="module-detail" v-tap="goto('./pic-price.html')">了解详情</div>
     </div>
   </div>
   <!-- module end -->
@@ -128,14 +128,14 @@ export default {
     return {
       bannerIndex: 0,
       bannerList: [{
-        url: 'javascript:',
-        img: '/static/images/banner/banner1.png'
+        url: './bannerfirst.html',
+        img: '/static/images/banner/banner-1.png'
       }, {
-        url: 'javascript:',
-        img: '/static/images/banner/banner2.png'
+        url: './bannersec.html',
+        img: '/static/images/banner/banner-2.png'
       }, {
-        url: 'javascript:',
-        img: '/static/images/banner/banner3.png'
+        url: './class-list.html',
+        img: '/static/images/banner/banner-3.jpg'
       }],
       classList: [{
         id: 0,
@@ -148,7 +148,7 @@ export default {
       }, {
         id: 2,
         name: '有图有价',
-        url: 'javascript:',
+        url: 'pic-price.html',
       }, {
         id: 3,
         name: '品牌',
@@ -179,14 +179,20 @@ export default {
         url: './all-class.html',
       }],
       pic_and_goods: [{
-        url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价1.png'
+        url: './pic-price-con.html?id=12',
+        img: '/static/temp/pic_and_price/罗马假日.jpg'
       }, {
-        url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价2.png'
+        url: './pic-price-con.html?id=21',
+        img: '/static/temp/pic_and_price/桃花源.jpg'
       }, {
-        url: 'javascript:',
-        img: '/static/temp/pic_and_price/有图有价3.png'
+        url: './pic-price-con.html?id=14',
+        img: '/static/temp/pic_and_price/天使爱美丽.jpg'
+      },{
+        url: './pic-price-con.html?id=6',
+        img: '/static/temp/pic_and_price/现代北欧之柯达.jpg'
+      },{
+        url: './pic-price-con.html?id=20',
+        img: '/static/temp/pic_and_price/永恒.jpg'
       }],
       specialList: [{
         url: 'javascript:',

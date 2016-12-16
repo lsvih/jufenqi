@@ -1,31 +1,32 @@
 <template>
   <div id="app">
     <div class="banner">
-      <swiper class="module-swiper" loop auto height="200px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000">
+      <swiper class="module-swiper" loop auto height="250px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000" :show-dots="false">
+      </swiper>
     </div>
     <div class="listWrapper">
+      
+      <div v-for="style in styles">
       <div class="houseStyle">
         <div></div>
-        <span>风格名称</span>
+        <span>{{ style.name }}</span>
         <div></div>
       </div>
-      <div v-for="(space, type) in spaces">
-        <div class="group-title">{{ spaceEnum[type] }}<span class="group-title-en">{{ spaceEnumEn[type] }}</span></div>
+        <!-- <div class="group-title"></div> -->
         <slider style="border-bottom: 5px solid #fbfbfb" :scale="0.84">
-          <div v-if="sp.design_img_url" v-for="sp in space" class="group-slide-item md-whiteframe-3dp" layout="column">
-            <div v-tap="navigate(sp)" class="item-container">
-              <v-img :src="sp.design_img_url"></v-img>
+          <div v-for="sp in style.schemes" class="group-slide-item md-whiteframe-3dp" layout="column">
+            <div v-tap="goto('./pic-price-con.html?id='+sp.id)" class="item-container">
+              <img :src="imgUrl + sp.coverImg"></img>
               <div class="text-block">
-                <div class="description">{{ sp.description }}</div>
                 <div class="title-group" layout="row">
-                  <div class="title" flex>{{ sp.name }}</div>
-                  <div class="price">¥{{ total(sp) }}整体软装</div>
+                  <div class="title" flex>{{ sp.coverTitle }}</div>
                 </div>
               </div>
             </div>
           </div>
         </slider>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -61,14 +62,28 @@ export default {
   },
   data () {
     return {
+      imgUrl: Lib.C.imgUrl,
       bannerIndex: 0,
       bannerList: [],
-      spaces: [],
-      spaceEnum: ['客厅', '餐厅', '主卧', '次卧'],
-      spaceEnumEn: ['Living Room', 'Dining Room', 'Bedroom', 'Subaltern Room']
+      styles: [],
     }
   },
-  created() {
+  ready() {
+    axios.get(`${Lib.C.picpApi}carousels?filter=enabled%3Atrue`).then((res)=>{
+      res.data.data.forEach((e)=>{
+        this.bannerList.push({
+          url: 'javascript:',
+          img: this.imgUrl + e.coverImg
+        })
+      })
+    }).catch((err)=>{
+      throw err
+    })
+    axios.get(`${Lib.C.picpApi}styles?expand=schemes`).then((res)=>{
+      this.styles = res.data.data
+    }).catch((err)=>{
+      throw err
+    })
   },
   methods: {
     bannerOnChange(index) {
@@ -88,7 +103,7 @@ export default {
 </script>
 <style>
 html {
-  background-color: #666;
+  background-color: #ccc;
 }
 </style>
 <style lang="less">
@@ -109,7 +124,6 @@ html {
 .banner {
   width: 100%;
   height: 250px;
-  background-color: #ccc;
 }  
 .listWrapper {
   width: 100%;
@@ -122,6 +136,7 @@ html {
     font-size: 15px;
     display: flex;
     justify-content: center;
+    margin-bottom: 10px;
     div {
       width: 75px;
       height: 0.5px;
@@ -150,35 +165,84 @@ html {
     }
   }
 }
-.group-title {
-  padding: 14px 12px;
-  /*text-align: center;*/
-  font-size: 1.2em;
-  color: #424242;
-  font-weight: bold;
-}
+// slider's style
+    .group-slide-item {
+      padding: 0.6em;
+      background-color: white;
+      box-sizing: border-box;
+      display: inline-block;
+      transition: all cubic-bezier(0.785, 0.135, 0.15, 0.86) .6s;
+      transform: scale(0.9);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 
-.group-title-en {
-  font-weight: normal;
-  font-size: 13px;
-  margin-left: 4px;
-  color: #9e9e9e;
-}
+      &.current {
+        transform: scale(1);
+        box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.12);
+      }
 
-.image-group {
-  white-space: nowrap;
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch;
+      .text-block {
+        white-space: normal;
 
-}
+        .description {
+          color: #bababa;
+          font-size: 0.9em;
+          margin: 0.5em 0;
+          height: 6em;
+        }
 
-.image-group div {
-  display: inline-block;
-  width: 72%;
-  margin: 0 16px;
-}
+        .title-group {
+          padding: 0.5em 0;
+          margin-top: 0.8em;
 
-.image-group div + div {
-  margin-left: 0;
-}
+          .title {
+            color: #4c4455;
+            font-weight: bold;
+          }
+
+          .price {
+            color: #625b6a;
+          }
+        }
+      }
+    }
+
+    .slide-title {
+      align-items: center;
+      white-space: normal;
+      position: absolute;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.81);
+      width: 100%;
+      padding: 0.8em;
+      box-sizing: border-box;
+
+      .deco {
+        margin-left: 1em;
+        margin-right: 0.8em;
+        border-radius: 40%;
+        display: inline-block;
+        background-color: #424242;
+        width: 0.2em;
+        height: 0.5em;
+      }
+
+      .text {
+        color: #424242;
+        font-size: 0.9em;
+        font-weight: bolder;
+
+        > * {
+          display: inline-block;
+          margin: 0;
+        }
+      }
+    }
+    .item-container{
+      display: inline-block;
+    background-color: #f3f3f3;
+    img {
+      width: 100%;
+    }
+    }
+
 </style>

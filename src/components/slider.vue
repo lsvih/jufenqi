@@ -97,7 +97,7 @@
         }
       }
     },
-    mounted() {
+    ready() {
       const element = this.element = this.$el.querySelector('.track');
       const firstChild = element.firstChild;
       const lastChild = element.lastChild;
