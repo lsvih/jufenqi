@@ -5,8 +5,9 @@
 <loading :show="showLoading" text="正在加载品牌"></loading>
 
 <div class="content">
-  <div class="brand" v-for="brand in brandList" :style="{width:(getScreenWidth()-4)/3+'px',height:(getScreenWidth()-4)/3+'px'}" v-tap="goBandDetail(brand.id)">
+  <div class="brand" v-for="brand in brandList" :style="{width:getScreenWidth()/3+'px',height:getScreenWidth()/3+27+'px'}" v-tap="goBandDetail(brand.id)">
     <img :src="img + brand.logoImg">
+    <div class="brand-name">{{brand.name}}</div>
   </div>
 </div>
 </div>
@@ -70,7 +71,7 @@ export default {
       }).catch((err) => {
         this.showLoading = false
         throw err
-      })   
+      })
       }else{
         axios.get(`${Lib.C.merApi}brands?size=10000`).then((res) => {
         this.brandList = res.data.data
@@ -78,9 +79,9 @@ export default {
       }).catch((err) => {
         this.showLoading = false
         throw err
-      })  
+      })
       }
-     
+
     },
     onHide() {
       if (this.selectedCate.length) {
@@ -123,17 +124,27 @@ body {
     }
 }
 .content {
-    padding-top: 50px;
-    margin-left: 1px;
+    margin-top: 50px;
     height: auto;
-    width: calc(~"100% - 1px");
+    background-color: #fff;
+    width: 100%;
     .brand {
+        position: relative;
         display:inline-block;
-        border-right: 1px solid #eee;
-        border-bottom: 1px solid #eee;
         img {
+            position: absolute;
+            top:20px;
+            left:12.5px;
+            width: calc(~"100% - 25px");
+        }
+        .brand-name{
+            position: absolute;
+            bottom: 10px;
+            left:0;
             width: 100%;
-            height: 100%;
+            text-align: center;
+            font-size: 12px;
+            color:#393939;
         }
     }
 }
