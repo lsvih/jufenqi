@@ -28,7 +28,8 @@
     </flexbox-item>
   </flexbox>
   <!-- Service module -->
-  <div class="module-item">
+  <!-- 服务 -->
+<!--   <div class="module-item">
     <div class="module-title-block"></div>
     <div class="module-title">服务</div>
     <div class="service">
@@ -36,7 +37,7 @@
       <div class="service-2"><img :src="serviceList[1].img" v-tap="goto(serviceList[1].url)"></div>
       <div class="service-3"><img :src="serviceList[2].img" v-tap="goto(serviceList[2].url)"></div>
     </div>
-  </div>
+ -->  </div>
   <!-- module end -->
   <!-- Video module -->
   <div class="module-item">
@@ -139,24 +140,24 @@ export default {
       }],
       classList: [{
         id: 0,
-        name: '装修',
-        url: 'worker-list.html',
-      }, {
-        id: 1,
-        name: '分期',
+        name: '办分期',
         url: 'instalment.html',
       }, {
-        id: 2,
+        id: 1,
         name: '有图有价',
         url: 'pic-price.html',
+      }, {
+        id: 2,
+        name: '装修必读',
+        url: 'javascript:',
       }, {
         id: 3,
         name: '品牌',
         url: 'class-list.html',
       }, {
         id: 4,
-        name: '门店',
-        url: 'javascript:',
+        name: '找装修',
+        url: 'worker-list.html',
       }, {
         id: 5,
         name: '建材',
