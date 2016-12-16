@@ -153,7 +153,7 @@ export default {
       }, {
         id: 2,
         name: '装修必读',
-        url: 'javascript:',
+        url: 'readme.html',
       }, {
         id: 3,
         name: '品牌',

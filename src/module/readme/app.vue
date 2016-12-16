@@ -1,12 +1,13 @@
 <template>
   <div class="content">
-    <img :src="">
+    <img src="readme.png">
   </div>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
 import axios from 'axios'
+import Readme from './readme.png'
 try {
   let now = Number(new Date().getTime())
   if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
@@ -28,6 +29,7 @@ export default {
       selectedCate: [],
       showSelect: false,
       showLoading: false,
+      Readme
         //brandList:[{id,name,img,description}]
     }
   },
