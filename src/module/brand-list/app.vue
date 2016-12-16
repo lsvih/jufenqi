@@ -73,7 +73,7 @@ export default {
         throw err
       })   
       }else{
-        axios.get(`${Lib.C.merApi}brands?size=100000`).then((res) => {
+        axios.get(`${Lib.C.merApi}brands?size=10000`).then((res) => {
         this.brandList = res.data.data
         this.showLoading = false
       }).catch((err) => {
