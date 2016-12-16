@@ -66,15 +66,15 @@ footer {
         height: 100%;
         img {
           position: absolute;
-          top:7px;
-          left:50%;
+          top: 5px;
+          left: 50%;
           margin-left: -10px;
             width: 20px;
             height: 20px;
         }
         .nav-class-name{
           position: absolute;
-          bottom: 7px;
+          bottom: 5px;
           left:0;
           width: 100%;
           text-align: center;
