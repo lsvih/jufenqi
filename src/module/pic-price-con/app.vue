@@ -183,12 +183,6 @@ function findIdIndex(id,array){
       width: 100%;
     }
     overflow: hidden;
-
-
-
-
-
-
     .image-item {
       width: 100%;
       padding-bottom: 25px;
@@ -217,7 +211,7 @@ function findIdIndex(id,array){
   }
 }
 .itemList {
-  height: 168px;
+  height: 128px;
   padding: 0 15px;
   position: relative;
   p {
@@ -244,7 +238,7 @@ function findIdIndex(id,array){
     font-size: 0;
     .item{
       display: inline-block;
-      margin:0 12.5px 2px 12.5px;
+      margin:5px 12.5px 2px 12.5px;
     }
     .item-icon {
       
