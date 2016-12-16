@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <img :src="picTwo">
-    <div class="btn" v-tap="goto('http://wx.jufenqi.com/module/index.html')">
+    <div class="btn" v-tap="goto('instalment.html')">
       <img src="./btn-1.png">
       <div class="btn-text">去分期</div>
     </div>
@@ -93,10 +93,12 @@ export default {
     }
     .btn-text {
       position: absolute;
+      text-align: center;
       width: 100%;
-      height: 100%;
+      height: 44px;
+      line-height: 44px;
       left: 0;
-      top: 30%;
+      top: 0;
       z-index: 1;
       font-size: 18px;
       color: #fff;
