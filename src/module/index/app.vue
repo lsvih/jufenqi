@@ -153,7 +153,7 @@ export default {
       }, {
         id: 3,
         name: '品牌',
-        url: 'class-list.html',
+        url: 'brand-list.html',
       }, {
         id: 4,
         name: '找装修',
