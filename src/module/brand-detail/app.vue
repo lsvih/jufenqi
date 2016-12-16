@@ -224,7 +224,7 @@ header {
         left: calc(~"50% - 50px");
         height: 100px;
         width: 100px;
-        border-radius: 5px;
+        border-radius: 50%;
         overflow: hidden;
         box-shadow: rgba(0, 0, 0, .4) 0 2px 4px 2px;
         img {
