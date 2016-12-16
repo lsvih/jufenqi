@@ -217,7 +217,7 @@ function findIdIndex(id,array){
   }
 }
 .itemList {
-  height: 138px;
+  height: 168px;
   padding: 0 15px;
   position: relative;
   p {
@@ -234,8 +234,8 @@ function findIdIndex(id,array){
           height: 25px;
           width: 25px;
           border-radius: 25px;
-          background-image: ;
-
+          background-image: url('./goodsicon.png');
+          background-size: contain;
         }
   .item-wrapper {
     position: absolute;
@@ -244,7 +244,7 @@ function findIdIndex(id,array){
     font-size: 0;
     .item{
       display: inline-block;
-      margin:0 12.5px 50px 12.5px;
+      margin:0 12.5px 2px 12.5px;
     }
     .item-icon {
       
@@ -284,8 +284,8 @@ function findIdIndex(id,array){
           height: 25px;
           width: 25px;
           border-radius: 25px;
-          background-color: #000;
-
+          background-image: url('./icon2.png');
+          background-size: contain;
         }
   input {
     display: block;
