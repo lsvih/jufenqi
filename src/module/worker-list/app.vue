@@ -6,16 +6,19 @@
 </header>
 <div class="content">
   <group style="margin-top:-1.17647059em;">
-    <cell v-for="worker in workerList" class="cell-item">
-      <img :src="imgUrl + worker.profileImage" class="worker-logo" width="120px" height="80px">
+    <!-- <cell v-for="worker in workerList" class="cell-item"> -->
+      <!-- <img :src="imgUrl + worker.profileImage" class="worker-logo" width="120px" height="80px">
       <div class="worker-name">{{worker.nickname}}</div>
-      <div class="worker-address">{{worker.nativePlace}}</div>
+      <div class="worker-address">{{worker.nativePlace}}</div> -->
       <!-- <div class="worker-rank">评分:5.0</div> -->
-      <div class="detail-click-area" v-tap="gotoDetail(worker.userId)"></div>
+      <!-- <div class="detail-click-area" v-tap="gotoDetail(worker.userId)"></div>
       <div class="favorite-click-area" v-tap="worker.favorite?cancelFavorite(worker.userId,$index):addFavorite($index)"></div>
       <img v-if="worker.favorite" class="worker-is-favorite" src="star-fill.png">
       <img v-else class="worker-is-favorite" src="star.png">
-    </cell>
+    </cell> -->
+    <div class="newWorker" v-for="worker in newWorkerList">
+      <img :src="worker.url" v-tap="gotoDetail(worker.id)">
+    </div>
   </group>
 </div>
 <j-select :show="isShow" :num="selectType==0?address.length:sortTypeList.length">
@@ -49,6 +52,13 @@ export default {
     return {
       workerList: [],
       //Loading
+      newWorkerList: [
+        {url : '/static/images/工长demo/彭学勇.jpg' , id: 26},
+        {url : '/static/images/工长demo/仰宗龙.jpg' , id: 27},
+        {url : '/static/images/工长demo/杨爱军.jpg' , id: 23},
+        {url : '/static/images/工长demo/雍自民.jpg' , id: 25},
+        {url : '/static/images/工长demo/张林.jpg' ,id:24}
+      ],
       loading: true,
       //Select
       selectedAddress: "北京市",
@@ -205,6 +215,15 @@ body {
 }
 .content {
     padding-top: 44px;
+    .newWorker {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
 }
 header {
     position: fixed;
@@ -267,4 +286,5 @@ header {
     height: 100%;
     z-index: 1;
 }
+
 </style>

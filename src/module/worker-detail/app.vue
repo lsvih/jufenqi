@@ -1,5 +1,5 @@
 <template>
-<header>
+<!-- <header>
   <div class="cart" v-tap="goto('./cart.html?type=2')"><img src="cart.png"></div>
   <div class="worker-logo"><img :src="imgUrl+worker.profileImage"></div>
   <div class="worker-name">{{worker.nickname}}</div>
@@ -57,6 +57,9 @@
     </div>
   </group>
 
+</div> -->
+<div class="worker-demo">
+  <img :src="getImage()">
 </div>
 <footer>
   <div class="icon-item"><img src="share.png">
@@ -70,7 +73,7 @@
   </div>
   <div class="shop-list" v-tap="addWorkerTo('cart')">添加到备选清单</div>
 </footer>
-<previewer :list="mapSrc(worker.projectImageList.split('|'))" v-ref:previewer :options="options"></previewer>
+<!-- <previewer :list="mapSrc(worker.projectImageList.split('|'))" v-ref:previewer :options="options"></previewer> -->
 <toast :show.sync="showToast" :text="toastText"></toast>
 </template>
 
@@ -106,18 +109,26 @@ export default {
       isFavorite: false,
       worker: {},
       imgUrl:Lib.C.imgUrl,
-      options: {
-        getThumbBoundsFn(index) {
-          let thumbnail = document.querySelectorAll('.product-img')[index]
-          let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
-          let rect = thumbnail.getBoundingClientRect()
-          return {
-            x: rect.left,
-            y: rect.top + pageYScroll,
-            w: rect.width
-          }
-        }
-      }
+      id:Lib.M.GetRequest().id,
+      newWorkerList: [
+        {url : '/static/images/工长demo/彭学勇详情页.jpg' , id: 26},
+        {url : '/static/images/工长demo/仰宗龙详情页.jpg' , id: 27},
+        {url : '/static/images/工长demo/杨爱军详情页.jpg' , id: 23},
+        {url : '/static/images/工长demo/雍自民详情页.jpg' , id: 25},
+        {url : '/static/images/工长demo/张林详情页.jpg' ,id:24}
+      ]
+      // options: {
+      //   getThumbBoundsFn(index) {
+      //     let thumbnail = document.querySelectorAll('.product-img')[index]
+      //     let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
+      //     let rect = thumbnail.getBoundingClientRect()
+      //     return {
+      //       x: rect.left,
+      //       y: rect.top + pageYScroll,
+      //       w: rect.width
+      //     }
+      //   }
+      // }
     }
   },
   components: {
@@ -125,7 +136,7 @@ export default {
     Cell,
     Scroller,
     XImg,
-    Previewer,
+    // Previewer,
     Flexbox,
     FlexboxItem,
     Toast
@@ -146,6 +157,9 @@ export default {
     })
   },
   methods: {
+    getImage(){
+      return findIdObj(this.id,this.newWorkerList).url
+    },
     getScreenWidth() {
       return document.body.clientWidth
     },
@@ -230,6 +244,16 @@ function findSameWorker(userId, workerList) {
     }
   }
   return false
+}
+
+
+
+function findIdObj(id,array){
+  for(let obj of array){
+    if(id == obj.id){
+      return obj
+    }
+  } 
 }
 </script>
 
@@ -378,5 +402,12 @@ footer {
 }
 .line {
     margin-top: 10px;
+}
+.worker-demo {
+  width: 100%;
+  margin-bottom: 44px;
+  img{
+    width: 100%;
+  }
 }
 </style>

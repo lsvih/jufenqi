@@ -7,7 +7,7 @@
 </div>
 <div class="content">
   <div class="content-item" v-for="class of classList[select].child" v-tap="gotoClass(class.id)"><img :src="img + class.showImg">
-    <div class="class-name">{{class.name}}</div>
+   <!-- <div class="class-name">{{class.name}}</div> -->
   </div>
 </div>
 </template>
@@ -145,25 +145,28 @@ body {
     top: 0;
     right: 0;
     overflow-x: hidden;
-    width: calc(~"100% - 81px - 18px");
-    padding: 16px 9px;
+    width: calc(~"100% - 81px - 20px");
+    padding: 10px;
     .content-item {
-        height: 100px;
-        width: 78px;
+        height: auto;
+        width: calc(~"50% - 5px");
         float: left;
-        margin: 0 7px 20px;
+        margin-bottom: 5px;
         img {
-            height: 78px;
-            width: 78px;
+            height: auto;
+            width: 100%;
         }
         .class-name {
             height: 12px;
             margin-top: 8px;
-            width: 78px;
+            width: 100%;
             text-align: center;
             color: #999;
             font-size: 12px;
         }
+    }
+    .content-item:nth-child(odd){
+      margin-right: 10px;
     }
 }
 </style>

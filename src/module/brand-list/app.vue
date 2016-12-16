@@ -1,4 +1,5 @@
 <template>
+<template>
 <div class="select" v-tap="showSelect = true">
   {{$refs.cate.getNameValues()||'品类'}}<img src="./select.png"></div>
 <popup-picker title="地区" :data="categories" :columns="2" :show-cell="false" :show.sync="showSelect" :value.sync="selectedCate" @on-hide="onHide" show-name v-ref:cate></popup-picker>
@@ -62,14 +63,25 @@ export default {
   },
   methods: {
     getData(id) {
-      this.showLoading = true
-      axios.get(`${Lib.C.merApi}categories/${this.cateId}?expand=brands`).then((res) => {
+      if(id != undefined){
+         this.showLoading = true
+      axios.get(`${Lib.C.merApi}categories/${id}?expand=brands`).then((res) => {
         this.brandList = res.data.data.brands
         this.showLoading = false
       }).catch((err) => {
-        throw err
         this.showLoading = false
-      })
+        throw err
+      })   
+      }else{
+        axios.get(`${Lib.C.merApi}brands?size=10000`).then((res) => {
+        this.brandList = res.data.data
+        this.showLoading = false
+      }).catch((err) => {
+        this.showLoading = false
+        throw err
+      })  
+      }
+     
     },
     onHide() {
       if (this.selectedCate.length) {
