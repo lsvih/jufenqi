@@ -37,10 +37,10 @@
       <div class="service-2"><img :src="serviceList[1].img" v-tap="goto(serviceList[1].url)"></div>
       <div class="service-3"><img :src="serviceList[2].img" v-tap="goto(serviceList[2].url)"></div>
     </div>
-    
+
  --><div class="longpic" v-tap="goto('./bannerfirst.html')">
       <img src="./long.png">
-    </div> 
+    </div>
  </div>
   <!-- module end -->
   <!-- Video module -->
@@ -252,6 +252,7 @@ export default {
 <style>
 body {
   background-color: #eee;
+  overflow-x: hidden;
 }
 
 .dot-custom .vux-icon-dot {
