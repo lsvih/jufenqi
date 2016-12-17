@@ -24,7 +24,7 @@
         </div>
       </div> -->
     </div>
-    <div class="itemList">
+    <div class="itemList" :style="{height:schemes.spaces[tabIndex].products.length > 4?'188px':'128px'}">
       <div class="item-name-before"></div><div class="item-name">空间包含物品</div>
       <div class="item-wrapper">
         <div class="item" v-for="product in schemes.spaces[tabIndex].products">
@@ -32,7 +32,7 @@
           <div class="item-con">{{product.name}}</div>
         </div>
       </div>
-      
+
     </div>
     <div class="form">
     <div class="item-name-before"></div><div class="item-name">预约咨询</div>
@@ -202,7 +202,7 @@ function findIdIndex(id,array){
         position: relative;
         font-size: 12px;
       }
-      
+
       img {
         width: 100%;
       }
@@ -241,7 +241,7 @@ function findIdIndex(id,array){
       margin:5px 12.5px 2px 12.5px;
     }
     .item-icon {
-      
+
       width: 50px;
       height: 50px;
       background-color: #666;
