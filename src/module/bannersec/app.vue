@@ -1,7 +1,12 @@
 <template>
   <div class="content">
     <img :src="picTwo">
+    <div class="btn" v-tap="goto('instalment.html')">
+      <img src="./btn-1.png">
+      <div class="btn-text">去分期</div>
+    </div>
   </div>
+  
 </template>
 
 <script>
@@ -53,6 +58,11 @@ export default {
     // }).catch((err) => {
     //   throw err //error
     // })
+  },
+  methods: {
+    goto(url) {
+      window.location.href = url
+    }
   }
 }
 </script>
@@ -60,8 +70,66 @@ export default {
 <style lang="less">
 .content {
   width: 100%;
+  position: relative;
   img {
     width: 100%;
   }
+  .btn {
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    left: 75px;
+    margin: auto;
+    width: calc(~"100% - 150px");
+    height: 44px;
+    margin: 10px auto;
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      z-index: 0;
+    }
+    .btn-text {
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      height: 44px;
+      line-height: 44px;
+      left: 0;
+      top: 0;
+      z-index: 1;
+      font-size: 18px;
+      color: #fff;
+    }
+  }
 }
+// .btn {
+//   text-align: center;
+//   position: absolute;
+//   bottom: 10px;
+//   margin: auto;
+//   width: calc(~"100% - 150px");
+//   height: 44px;
+//   margin: 10px auto;
+//   img {
+//     position: absolute;
+//     width: 100%;
+//     height: 100%;
+//     left: 0;
+//     top: 0;
+//     z-index: 0;
+//   }
+//   .btn-text {
+//     position: absolute;
+//     width: 100%;
+//     height: 100%;
+//     left: 0;
+//     top: 30%;
+//     z-index: 1;
+//     font-size: 18px;
+//     color: #fff;
+//   }
+// }
 </style>

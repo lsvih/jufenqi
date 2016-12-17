@@ -53,28 +53,28 @@ export default {
 footer {
     position: fixed;
     width: 100%;
-    height: 44px;
+    height: 50px;
     left: 0;
     bottom:0;
     border-top:1px solid #d8d8d8;
     z-index: 2;
     background-color: #fff;
     div {
-      position: relative;
+        position: relative;
         display: inline-block;
         width: 33%;
         height: 100%;
         img {
           position: absolute;
-          top:4px;
-          left:50%;
+          top: 5px;
+          left: 50%;
           margin-left: -10px;
             width: 20px;
             height: 20px;
         }
         .nav-class-name{
           position: absolute;
-          bottom: 4px;
+          bottom: 5px;
           left:0;
           width: 100%;
           text-align: center;

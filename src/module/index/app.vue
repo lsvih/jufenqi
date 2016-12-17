@@ -37,7 +37,11 @@
       <div class="service-2"><img :src="serviceList[1].img" v-tap="goto(serviceList[1].url)"></div>
       <div class="service-3"><img :src="serviceList[2].img" v-tap="goto(serviceList[2].url)"></div>
     </div>
- -->  </div>
+    
+ --><div class="longpic" v-tap="goto('./bannerfirst.html')">
+      <img src="./long.png">
+    </div> 
+ </div>
   <!-- module end -->
   <!-- Video module -->
   <div class="module-item">
@@ -149,11 +153,11 @@ export default {
       }, {
         id: 2,
         name: '装修必读',
-        url: 'javascript:',
+        url: 'readme.html',
       }, {
         id: 3,
         name: '品牌',
-        url: 'class-list.html',
+        url: 'brand-list.html',
       }, {
         id: 4,
         name: '找装修',
@@ -260,8 +264,16 @@ body {
 }
 
 .content {
-  padding: 0 0 44px 0;
+  /* padding: 0 0 44px 0; */
   overflow: hidden;
+}
+.content .longpic {
+  width: 100%;
+  margin-top: 1px;
+}
+.content .longpic img {
+  width: 100%;
+  height: auto;
 }
 </style>
 <style lang="less" scoped>

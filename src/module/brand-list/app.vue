@@ -101,7 +101,7 @@ export default {
 
 <style>
 body {
-  background-color: #eee;
+  background-color: #fff;
 }
 </style>
 <style scoped lang="less">
