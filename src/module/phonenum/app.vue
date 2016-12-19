@@ -1,9 +1,9 @@
 <template>
 	<div class="top-pic">
-		<img src="" alt="">
+		<img src="bg.png">
 	</div>
 	<div class="content">
-		<img src="" alt="">
+		<img src="title.png" alt="">
 		<div class="input-wrapper">
 			<input type="text" name="" placeholder="请输入您的用户名">		
 			<input type="text" name="" placeholder="请输入您的手机号">
@@ -22,7 +22,12 @@ export default {
 	}
 }
 </script>
-
+<style>
+body {
+	margin: 0;
+	background-color: #f7f7f7;
+}
+</style>
 <style lang="less">
 .top-pic {
 	width: 100%;
