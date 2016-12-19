@@ -98,7 +98,7 @@
         <div class="special-name">
           {{special.name}}
         </div>
-        <div class="special-description" v-tap="goto('./phonenum.html')">
+        <div class="special-description">
           {{special.description}}
         </div>
       </div>
