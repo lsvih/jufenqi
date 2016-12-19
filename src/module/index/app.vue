@@ -266,7 +266,7 @@ body {
 
 .content {
   /* padding: 0 0 44px 0; */
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .content .longpic {
   width: 100%;
