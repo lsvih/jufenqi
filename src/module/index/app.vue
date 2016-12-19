@@ -17,13 +17,14 @@
   </swiper>
   <flexbox class="module-class">
     <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5" v-tap="goto(class.url)">
-      <img class="module-class-icon" :src="`/static/images/icon/${class.name}.png`">
+      <img class="module-class-icon" :src="class.img">
+      <!-- `/static/images/icon/${class.name}.png` -->
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
   </flexbox>
   <flexbox class="module-class">
     <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5 5" v-tap="goto(class.url)">
-      <img class="module-class-icon" :src="`/static/images/icon/${class.name}.png`">
+      <img class="module-class-icon" :src="class.img">
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
   </flexbox>
@@ -146,42 +147,52 @@ export default {
         id: 0,
         name: '办分期',
         url: 'instalment.html',
+        img: '/static/images/icon/办分期.png'
       }, {
         id: 1,
         name: '有图有价',
         url: 'pic-price.html',
+        img: '/static/images/icon/有图有价.png'
       }, {
         id: 2,
         name: '装修必读',
         url: 'readme.html',
+        img: '/static/images/icon/装修必读.png'
       }, {
         id: 3,
         name: '品牌',
         url: 'brand-list.html',
+        img: '/static/images/icon/品牌.png'
       }, {
         id: 4,
         name: '找装修',
         url: 'worker-list.html',
+        img: '/static/images/icon/找装修.png'
       }, {
         id: 5,
         name: '建材',
         url: './class-list.html?type=0',
+        img: '/static/images/icon/建材.png'
       }, {
         id: 6,
         name: '家具',
         url: './class-list.html?type=3',
+        img: '/static/images/icon/家具.png'
       }, {
         id: 7,
         name: '家纺',
         url: './class-list.html?type=2',
+        img: '/static/images/icon/家纺.png'
       }, {
         id: 8,
         name: '家电',
         url: './class-list.html?type=1',
+        img: '/static/images/icon/家电.png'
       }, {
         id: 9,
         name: '全部分类',
         url: './all-class.html',
+        img: '/static/images/icon/全部分类.png'
       }],
       pic_and_goods: [{
         url: './pic-price-con.html?id=12',
