@@ -320,7 +320,7 @@ body {
     }
     .module-title-block {
         position: absolute;
-        left: 0;
+        left: 15px;
         top: 14px;
         height: 20px;
         width: 3px;
@@ -331,7 +331,8 @@ body {
         font-size: 16px;
         height: 30px;
         width: 95%;
-        text-align: left;
+        text-align: 15px;
+        text-indent: 15px;
         line-height: 1;
         margin-left: 15px;
         padding-top: 15px;
