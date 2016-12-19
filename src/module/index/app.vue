@@ -281,7 +281,6 @@ body {
 }
 .content .longpic {
   width: 100%;
-  margin-top: 1px;
 }
 .content .longpic img {
   width: 100%;
