@@ -88,7 +88,7 @@
   <!-- module end -->
 
   <!-- Special module -->
-  <div class="module-item">
+  <div class="module-item" style="margin-bottom: 51px">
     <div class="module-title-block"></div>
     <div class="module-title">专题推荐<img src="./arrow.png"></div>
     <div class="special">
@@ -440,6 +440,7 @@ body {
         .special-description {
             font-size: 12px;
             color: #999;
+            font-weight: 100;
         }
     }
     .special-item:nth-child(odd) {
