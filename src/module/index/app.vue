@@ -320,7 +320,7 @@ body {
         color: #393939;
         font-size: 16px;
         height: 30px;
-        width: 100%;
+        width: 95%;
         text-align: left;
         line-height: 1;
         margin-left: 15px;
