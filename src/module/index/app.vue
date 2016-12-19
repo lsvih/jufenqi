@@ -95,9 +95,10 @@
     <div class="special">
       <div class="special-item" v-for="special of specialList" v-tap="goto(special.url)">
         <img :src="special.img">
-        <div class="special-name">{{special.name}}
+        <div class="special-name">
+          {{special.name}}
         </div>
-        <div class="special-description">
+        <div class="special-description" v-tap="goto('./phonenum.html')">
           {{special.description}}
         </div>
       </div>
