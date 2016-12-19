@@ -380,7 +380,7 @@ body {
 }
 .pic_and_goods-list {
     height: auto;
-    padding: 0 15px 20px;
+    padding: 0 0px 20px 15px;
     position: relative;
     .pic_and_goods-item {
         height: auto;
