@@ -17,13 +17,14 @@
   </swiper>
   <flexbox class="module-class">
     <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5" v-tap="goto(class.url)">
-      <img class="module-class-icon" :src="`/static/images/icon/${class.name}.png`">
+      <img class="module-class-icon" :src="class.img">
+      <!-- `/static/images/icon/${class.name}.png` -->
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
   </flexbox>
   <flexbox class="module-class">
     <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5 5" v-tap="goto(class.url)">
-      <img class="module-class-icon" :src="`/static/images/icon/${class.name}.png`">
+      <img class="module-class-icon" :src="class.img">
       <div class="module-class-name">{{class.name}}</div>
     </flexbox-item>
   </flexbox>
@@ -37,10 +38,10 @@
       <div class="service-2"><img :src="serviceList[1].img" v-tap="goto(serviceList[1].url)"></div>
       <div class="service-3"><img :src="serviceList[2].img" v-tap="goto(serviceList[2].url)"></div>
     </div>
-    
+
  --><div class="longpic" v-tap="goto('./bannerfirst.html')">
       <img src="./long.png">
-    </div> 
+    </div>
  </div>
   <!-- module end -->
   <!-- Video module -->
@@ -88,7 +89,7 @@
   <!-- module end -->
 
   <!-- Special module -->
-  <div class="module-item">
+  <div class="module-item" style="margin-bottom: 51px">
     <div class="module-title-block"></div>
     <div class="module-title">专题推荐<img src="./arrow.png"></div>
     <div class="special">
@@ -146,42 +147,52 @@ export default {
         id: 0,
         name: '办分期',
         url: 'instalment.html',
+        img: '/static/images/icon/办分期.png'
       }, {
         id: 1,
         name: '有图有价',
         url: 'pic-price.html',
+        img: '/static/images/icon/有图有价.png'
       }, {
         id: 2,
         name: '装修必读',
         url: 'readme.html',
+        img: '/static/images/icon/装修必读.png'
       }, {
         id: 3,
         name: '品牌',
         url: 'brand-list.html',
+        img: '/static/images/icon/品牌.png'
       }, {
         id: 4,
         name: '找装修',
         url: 'worker-list.html',
+        img: '/static/images/icon/找装修.png'
       }, {
         id: 5,
         name: '建材',
         url: './class-list.html?type=0',
+        img: '/static/images/icon/建材.png'
       }, {
         id: 6,
         name: '家具',
         url: './class-list.html?type=3',
+        img: '/static/images/icon/家具.png'
       }, {
         id: 7,
         name: '家纺',
         url: './class-list.html?type=2',
+        img: '/static/images/icon/家纺.png'
       }, {
         id: 8,
         name: '家电',
         url: './class-list.html?type=1',
+        img: '/static/images/icon/家电.png'
       }, {
         id: 9,
         name: '全部分类',
         url: './all-class.html',
+        img: '/static/images/icon/全部分类.png'
       }],
       pic_and_goods: [{
         url: './pic-price-con.html?id=12',
@@ -252,6 +263,7 @@ export default {
 <style>
 body {
   background-color: #eee;
+  overflow-x: hidden;
 }
 
 .dot-custom .vux-icon-dot {
@@ -265,11 +277,10 @@ body {
 
 .content {
   /* padding: 0 0 44px 0; */
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .content .longpic {
   width: 100%;
-  margin-top: 1px;
 }
 .content .longpic img {
   width: 100%;
@@ -309,7 +320,7 @@ body {
     }
     .module-title-block {
         position: absolute;
-        left: 0;
+        left: 15px;
         top: 14px;
         height: 20px;
         width: 3px;
@@ -319,8 +330,9 @@ body {
         color: #393939;
         font-size: 16px;
         height: 30px;
-        width: 100%;
-        text-align: left;
+        width: 95%;
+        text-align: 15px;
+        text-indent: 15px;
         line-height: 1;
         margin-left: 15px;
         padding-top: 15px;
@@ -379,7 +391,7 @@ body {
 }
 .pic_and_goods-list {
     height: auto;
-    padding: 0 15px 20px;
+    padding: 0 0px 20px 15px;
     position: relative;
     .pic_and_goods-item {
         height: auto;
@@ -439,6 +451,7 @@ body {
         .special-description {
             font-size: 12px;
             color: #999;
+            font-weight: 100;
         }
     }
     .special-item:nth-child(odd) {
