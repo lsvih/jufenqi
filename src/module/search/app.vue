@@ -1,6 +1,6 @@
 <template>
 <header>
-  <form action="#">
+  <form action="javascript:;">
     <input type="search" placeholder="请输入搜索内容" v-model="searchText" v-on:keypress="inputting()">
   </form>
   <div class="search" v-tap="search()">搜索</div>
@@ -11,6 +11,9 @@
     <div class="brand" v-for="brand in brands" v-tap="goto('./brand-detail.html?id='+brand.id)">{{brand.name}}</div>
   </div>
 </div>
+<div class="no-data" v-if="emptyData">
+  没有搜索到相关数据
+</div>
 <loading :show="showLoading" text="正在搜索"></loading>
 </template>
 
@@ -20,7 +23,7 @@ import Loading from 'vux-components/loading'
 import axios from 'axios'
 try {
   let now = Number(new Date().getTime())
-  if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now || !JSON.parse(localStorage.user).profile.mobile) {
     localStorage.removeItem('user')
     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
   }
@@ -35,7 +38,8 @@ export default {
       searchText: '',
       showLoading: false,
       brands: [],
-      stores: []
+      stores: [],
+      emptyData:false
     }
   },
   components: {
@@ -43,11 +47,12 @@ export default {
   },
   methods: {
     search() {
+      if (this.searchText == '') return
       this.showLoading = true
       axios.get(`${Lib.C.merApi}brands?filter=name~${this.searchText}`).then((res) => {
         this.brands = res.data.data
         this.showLoading = false
-        return false
+        this.emptyData = this.brands.length === 0
       }).catch((res) => {
         alert("网络连接失败，请稍候重试")
         this.showLoading = false
@@ -145,5 +150,10 @@ header {
             color: #999;
         }
     }
+}
+.no-data {
+    font-size: 12px;
+    color: #999;
+    margin: 15px;
 }
 </style>
