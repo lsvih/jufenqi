@@ -43,13 +43,12 @@ var Rxports = {
   /**
    * 鉴权
    * @param {Module}   axios 将jwt鉴权相关注入axios common header中
+   * @param {Boolean}  requirePhone 是否需要验证手机
    */
-  auth: (axios) => {
+  auth: (axios, requirePhone) => {
     try {
       let now = Number(new Date().getTime())
-      if (Number(JSON.parse(localStorage.user).expiredAt) < now
-        // ||!JSON.parse(localStorage.user).profile.mobile
-      ) {
+      if (Number(JSON.parse(localStorage.user).expiredAt) < now||(!!requirePhone&&!JSON.parse(localStorage.user).profile.mobile)) {
         localStorage.removeItem('user')
         location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
       }
