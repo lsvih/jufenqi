@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Lib from 'assets/Lib'
 import App from './app'
 import vueTap from 'v-tap'
 Vue.use(vueTap)

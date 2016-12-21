@@ -40,11 +40,23 @@ var Rxports = {
     window.localStorage.setItem(item, JSON.stringify(tempdata))
     cb()
   },
-  isAuth: () => {
-    if (window.localStorage.getItem('user')) {
-      return true
-    } else {
-      return false
+  /**
+   * 鉴权
+   * @param {Module}   axios 将jwt鉴权相关注入axios common header中
+   */
+  auth: (axios) => {
+    try {
+      let now = Number(new Date().getTime())
+      if (Number(JSON.parse(localStorage.user).expiredAt) < now
+        // ||!JSON.parse(localStorage.user).profile.mobile
+      ) {
+        localStorage.removeItem('user')
+        location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+      }
+      axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem('user')).tokenType + ' ' + JSON.parse(localStorage.getItem('user')).token
+    } catch (e) {
+      localStorage.clear()
+      location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
     }
   }
 }
