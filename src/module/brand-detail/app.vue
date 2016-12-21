@@ -34,19 +34,7 @@ import axios from 'axios'
 import cartImg from './cart.png'
 import cartAImg from './cart-active.png'
 import bgImg from './bg.png'
-try {
-  let now = Number(new Date().getTime())
-  if (Number(JSON.parse(localStorage.user).expiredAt) < now
-    // ||!JSON.parse(localStorage.user).profile.mobile
-    ) {
-    localStorage.removeItem('user')
-    location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
-  }
-  axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
-} catch (e) {
-  localStorage.clear()
-  window.location.href = `./wxAuth.html?url=index.html`
-}
+Lib.M.auth(axios)
 export default {
   data() {
     return {
@@ -141,10 +129,6 @@ export default {
     addFavorite() {
       let list = JSON.parse(window.localStorage.getItem('favorite'))
       let tBrand = JSON.parse(JSON.stringify(this.brand))
-      if (!JSON.parse(localStorage.user).profile.mobile) {
-        localStorage.removeItem('user')
-        location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
-      }
       delete tBrand.stores
       list.shop.push(tBrand)
       window.localStorage.setItem('favorite', JSON.stringify(list))

@@ -5,7 +5,7 @@
       </swiper>
     </div>
     <div class="listWrapper">
-      
+
       <div v-for="style in styles">
       <div class="houseStyle">
         <div></div>
@@ -41,19 +41,7 @@ import {
   Flexbox,
   FlexboxItem
 } from 'vux-components/flexbox'
-try {
-  let now = Number(new Date().getTime())
-  if (Number(JSON.parse(localStorage.user).expiredAt) < now
-    // ||!JSON.parse(localStorage.user).profile.mobile
-    ) {
-    localStorage.removeItem('user')
-    location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
-  }
-  axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
-} catch (e) {
-  localStorage.clear()
-  window.location.href = `./wxAuth.html?url=index.html`
-}
+Lib.M.auth(axios)
 export default {
   name: 'app',
   components: {
@@ -126,7 +114,7 @@ html {
 .banner {
   width: 100%;
   height: 250px;
-}  
+}
 .listWrapper {
   width: 100%;
   height: 400px;

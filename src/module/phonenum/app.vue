@@ -5,7 +5,7 @@
 	</div>
 	<div class="content" id="myContent">
 		<div class="title">
-			<img src="title.png">	
+			<img src="title.png">
 		</div>
 		<div class="input-wrapper">
 			<div class="phone-wrapper">
@@ -36,17 +36,6 @@
 import axios from 'axios'
 import Lib from 'assets/Lib.js'
 import Loading from 'vux-components/loading'
-// try {
-// 	let now = Number(new Date().getTime())
-// 	if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
-// 		localStorage.removeItem('user')
-// 		location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
-// 	}
-// 	axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
-// } catch (e) {
-// 	localStorage.clear()
-// 	window.location.href = `./wxAuth.html?url=index.html`
-// }
 export default {
 	components: {
 		Loading
@@ -153,7 +142,7 @@ export default {
 			    }).catch((res) => {
 			    	this.loading = false
 			    	this.active()
-			    	let code = JSON.stringify(res.response.data.code)
+			    	let code = res.response.data.code
 			    	// console.log(code)
 			    	if (code == 40004) {
 			    		alert('手机已经绑定了')

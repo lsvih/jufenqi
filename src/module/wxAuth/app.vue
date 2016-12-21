@@ -15,37 +15,33 @@ export default {
     }
   },
   ready() {
-    if (Lib.M.isAuth()) {
-      location.href = decodeURIComponent(this.lastUrl)
-    } else {
-      if (this.code) {
-        axios.post(`${Lib.C.userApi}auth/loginUsingWechat`, {}, {
-          params: {
-            code: this.code
-          },
-          withCredentials: true,
-          responseType: 'json'
-        }).then((res) => {
-          let data = res.data.data
-          data.loginAt = new Date().getTime()
-          data.expiredAt =String(Number(data.loginAt) + Number(data.expiresIn*1000 - 60*1000*100))
-          window.localStorage.setItem("user", JSON.stringify(data))
-          if(type===1){
-            if (JSON.parse(localStorage.getItem('user')).profile.mobile) {
-              location.href = decodeURIComponent(this.lastUrl)
-            } else {
-              location.href = `./phonenum.html?url=${encodeURIComponent(this.lastUrl)}`
-            } 
+    if (this.code) {
+      axios.post(`${Lib.C.userApi}auth/loginUsingWechat`, {}, {
+        params: {
+          code: this.code
+        },
+        withCredentials: true,
+        responseType: 'json'
+      }).then((res) => {
+        let data = res.data.data
+        data.loginAt = new Date().getTime()
+        data.expiredAt = String(Number(data.loginAt) + Number(data.expiresIn * 1000 - 60 * 1000 * 100))
+        window.localStorage.setItem("user", JSON.stringify(data))
+        if (type === 1) {
+          if (JSON.parse(localStorage.getItem('user')).profile.mobile) {
+            location.href = decodeURIComponent(this.lastUrl)
+          } else {
+            location.href = `./phonenum.html?url=${encodeURIComponent(this.lastUrl)}`
           }
-                       
-        }).catch((res) => {
-          alert("微信登录失败，请稍后重试")
-          console.log(res)
-          return false;
-        })
-      } else {
-          location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${encodeURIComponent(location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirec`
-      }
+        }
+
+      }).catch((res) => {
+        alert("微信登录失败，请稍后重试")
+        console.log(res)
+        return false;
+      })
+    } else {
+      location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${encodeURIComponent(location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirec`
     }
   }
 }
