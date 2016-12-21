@@ -47,7 +47,8 @@ export default {
 <style>
 body{
   background-color: #eee
-  }</style>
+}
+</style>
 <style lang="less" scoped>
 .block-1{
   width: 100%;

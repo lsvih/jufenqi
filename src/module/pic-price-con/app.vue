@@ -1,6 +1,7 @@
 <template>
     <div class="topPic">
       <img :src="imgUrl+schemes.showImg">
+      <div class="houseprice">{{schemes.showTitle}}</div>
     </div>
   <!--  <div class="methodShow">
       <p>方案展示</p>
@@ -108,7 +109,7 @@ export default {
   },
   methods:{
     isFinished(){
-       let reg = /^1[3|4|5|7|8]\d{9}$/
+      let reg = /^1[3|4|5|7|8]\d{9}$/
       return this.name&&reg.test(this.phone)
     },
     submit(){
@@ -145,8 +146,18 @@ function findIdIndex(id,array){
 <style lang="less">
 .topPic {
   width: 100%;
+  position: relative;
   img{
     width: 100%;
+  }
+  .houseprice {
+    padding: 10px ;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    border-radius: 0 5px 5px 0;
+    left: 0;
+    bottom: 30px;
+    color: #fff;
   }
 }
 .methodShow {

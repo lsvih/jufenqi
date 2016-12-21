@@ -1,65 +1,167 @@
 <template>
 	<div class="top-pic">
 		<img src="bg.png" class="bg">
-		<img src="logo.png" class="logo">
+		<img src="logo.png" class="logo" id="myLogo">
 	</div>
-	<div class="content">
+	<div class="content" id="myContent">
 		<div class="title">
 			<img src="title.png">	
 		</div>
 		<div class="input-wrapper">
 			<div class="phone-wrapper">
-				<input type="number" name="" placeholder="请输入手机号码">
+				<input type="number" name="" placeholder="请输入手机号码" @focus="moveUpDown(1)" @blur="moveUpDown(0)" v-model="myPhoneNum">
 				<img src="phone.png" class="icon-phone">
 			</div>
 			<div class="identify-wrapper">
-				<input type="number" placeholder="请输入验证码">
+				<input type="number" placeholder="请输入验证码" @focus="moveUpDown(1)" @blur="moveUpDown(0)" v-model="myVerti" id="verti">
 				<img src="identify.png" class="icon-test">
-				<div class="sendid">发送验证码</div>
+				<div v-if="!isSendId" class="sendid" v-tap="send()">发送验证码</div>
+				<div v-if="isSendId" class="sendid" v-tap="moveUpDown(1)" style="color: #b5b5b8">{{time}}秒后可重试</div>
 			</div>
 			<div class="error">
-				<img src="error.png" v-if="isSendIdError()" v-model="myPhoneNum">
-				<div v-if="isSendIdError()" v-model="mySendId">验证码错误</div>
+				<img src="error.png" v-if="codeError" v-model="myPhoneNum">
+				<div v-if="codeError">验证码错误</div>
 			</div>
-			<div class="btn">
-				<img src="btn-normal.png">
+			<div class="btn" v-tap="isFinished?submit():return">
+				<img v-if="isFinished()" src="btn-active.png">
+				<img v-else src="btn-normal.png">
 				<div class="btn-text">绑&ensp;&ensp;定</div>
 			</div>
 		</div>
 	</div>
+	<loading :show="loading" text="请稍后..."></loading>
 </template>
 
 <script>
 import axios from 'axios'
-try {
-  let now = Number(new Date().getTime())
-  if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
-    localStorage.removeItem('user')
-    location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
-  }
-  axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
-} catch (e) {
-  localStorage.clear()
-  window.location.href = `./wxAuth.html?url=index.html`
-}
+import Lib from 'assets/Lib.js'
+import Loading from 'vux-components/loading'
+// try {
+// 	let now = Number(new Date().getTime())
+// 	if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
+// 		localStorage.removeItem('user')
+// 		location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+// 	}
+// 	axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
+// } catch (e) {
+// 	localStorage.clear()
+// 	window.location.href = `./wxAuth.html?url=index.html`
+// }
 export default {
+	components: {
+		Loading
+	},
 	data() {
 		return {
-			myPhoneNum: 0,
-			mySendId: 0,
-			isSendId: false
+			user: JSON.parse(localStorage.getItem("user")),
+			myPhoneNum: '',
+			myVerti: '',
+			isSendId: false,
+			loading: false,
+			lastUrl: Lib.M.GetRequest().url ? unescape(Lib.M.GetRequest().url) : './index.html',
+			time: 60,
+			timekeeper: null,
+			codeError: false
 		}
 	},
 	methods: {
-		isSendIdError() {
-			if (this.mySendId === 889333) {
-				return true
-			} else {
-				return false
-			}
+		active() {
+			document.getElementById("verti").focus()
+		},
+		setTime() {
+			this.time = 60
+			let that = this
+			this.timekeeper = setInterval(() => {
+				that.time --
+				if (that.time === 0) {
+					clearInterval(that.timekeeper)
+					this.isSendId = false
+				}
+			}, 1000)
+		},
+		isTruePhoneNum() {
+			let reg = /^1[3|4|5|7|8]\d{9}$/
+			return reg.test(this.myPhoneNum)
 		},
 		isFinished() {
-
+			let reg = /^1[3|4|5|7|8]\d{9}$/
+			let regVerti = /^\d{6}$/
+			return reg.test(this.myPhoneNum)&&regVerti.test(this.myVerti)
+		},
+		moveUpDown(e) {
+			if (e === 1) {
+				document.getElementById("myLogo").style.top = 11 + 'px'
+				document.getElementById("myContent").style.top = 108 + 'px'
+			} else {
+				document.getElementById("myLogo").style.top = 56 + 'px'
+				document.getElementById("myContent").style.top = 197 + 'px'
+			}
+		},
+		send() {
+			this.moveUpDown(1)
+			this.loading = true
+			let that = this
+			if (!this.isTruePhoneNum()) {
+				this.loading = false
+				alert('请输入正确的手机号码')
+			} else {
+				axios.post(`${Lib.C.userApi}sms/sendCode`, {}, {
+					params: {
+						mobile: this.myPhoneNum
+					},
+					withCredentials: true,
+					responseType: true
+				}).then(
+					(res)=>{
+						this.loading = false
+						this.isSendId = true
+						this.time = 60
+						this.timekeeper = setInterval(() => {
+							that.time --
+							if (that.time === 0) {
+								clearInterval(that.timekeeper)
+								this.isSendId = false
+							}
+						}, 1000)
+				}).catch((res) => {
+						this.loading = false
+						alert('服务器繁忙，请稍后重试')
+						this.isSendId = false
+				})
+			}
+		},
+	    submit() {
+	    	if (!this.isTruePhoneNum()) {
+	    		alert('请输入正确的手机号码')
+	    	} else if (!this.isFinished()) {
+	    		alert('请输入6位的验证码')
+	    	} else {
+	    		axios.post(`${Lib.C.userApi}auth/registerUsingMobile`, {}, {
+	    			params: {
+	    				mobile: this.myPhoneNum,
+	    				userId: JSON.parse(localStorage.getItem("user")).userId,
+	    				code: this.myVerti
+		      		},
+		      		withCredentials: true,
+		      		responseType: true
+		      	}).then((res) => {
+		    		let data = res.data.data
+			    	data.loginAt = new Date().getTime()
+			    	data.expiredAt =String(Number(data.loginAt) + Number(data.expiresIn*1000 - 60*1000*100))
+			    	window.localStorage.setItem("user", JSON.stringify(data))
+			    	location.href = this.lastUrl
+			    }).catch((res) => {
+			    	this.loading = false
+			    	this.active()
+			    	let code = JSON.stringify(res.response.data.code)
+			    	// console.log(code)
+			    	if (code == 40004) {
+			    		alert('手机已经绑定了')
+			    	} else if (code == 90204) {
+			    		this.codeError = true
+			    	}
+			    })
+			}
 		}
 	}
 }
@@ -81,6 +183,7 @@ body {
 		width: 100%;
 	}
 	.logo {
+		transition: all 0.5s ease;
 		position: absolute;
 		width: calc(~"100% - 200px");
 		top: 56px;
@@ -107,7 +210,7 @@ body {
 		input {
 		    display: block;
 		    width: calc(~"100% - 76px");
-		    height: 28px;
+		    // height: 28px;
 		    border-style: solid;
 		    border-color: #eceff1;
 		    border-width: 0 0 1px 0;
@@ -119,8 +222,9 @@ body {
 		}
 		.sendid {
 			position: absolute;
-			right: 43px;
-			top: 22px;
+			right: 0;
+			top: 0;
+			padding: 17px 43px;
 			color: #546e7a;
 			font-size: 15px;
 		}
@@ -133,7 +237,7 @@ body {
 	    }
 	    .icon-phone {
 	    	position: absolute;
-	    	top: 22px;
+	    	top: 15px;
 	    	left: 22px;
 	    }
 	    .identify-wrapper {
@@ -141,7 +245,7 @@ body {
 	    }
 	    .icon-test {
 	    	position: absolute;
-	    	top: 22px;
+	    	top: 15px;
 	    	left: 22px;
 	    }
 		input::placeholder{

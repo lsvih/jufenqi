@@ -51,9 +51,9 @@ export default {
       let that = this
       this.timekeeper = setInterval(() => {
         that.time--
-          if (that.time === 0) {
-            clearInterval(that.timekeeper)
-          }
+        if (that.time === 0) {
+          clearInterval(that.timekeeper)
+        }
       }, 1000)
     },
     send() {
@@ -70,9 +70,9 @@ export default {
         this.time = 60
         this.timekeeper = setInterval(() => {
           that.time--
-            if (that.time === 0) {
-              clearInterval(that.timekeeper)
-            }
+          if (that.time === 0) {
+            clearInterval(that.timekeeper)
+          }
         }, 1000)
       }).catch((res) => {
         this.$parent.loading = false
@@ -121,7 +121,6 @@ export default {
     },
     activeInput() {
       document.getElementById("verify").focus()
-      active()
     }
   }
 }
