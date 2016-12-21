@@ -113,11 +113,11 @@ export default {
       imgUrl:Lib.C.imgUrl,
       id:Lib.M.GetRequest().id,
       newWorkerList: [
-        {url : '/static/images/工长demo/彭学勇详情页.jpg' , id: 26},
-        {url : '/static/images/工长demo/仰宗龙详情页.jpg' , id: 27},
-        {url : '/static/images/工长demo/杨爱军详情页.jpg' , id: 23},
-        {url : '/static/images/工长demo/雍自民详情页.jpg' , id: 25},
-        {url : '/static/images/工长demo/张林详情页.jpg' ,id:24}
+        {url : '/static/images/工长demo/彭学勇详情页.jpg' , id: 5},
+        {url : '/static/images/工长demo/仰宗龙详情页.jpg' , id: 6},
+        {url : '/static/images/工长demo/杨爱军详情页.jpg' , id: 2},
+        {url : '/static/images/工长demo/雍自民详情页.jpg' , id: 4},
+        {url : '/static/images/工长demo/张林详情页.jpg' ,id: 3}
       ]
       // options: {
       //   getThumbBoundsFn(index) {
@@ -150,6 +150,7 @@ export default {
         alert("您查看的信息不存在,请重新选择")
         window.history.go(-1)
       }
+      console.log(res.data.data)
       this.worker = res.data.data
       this.isFavorite = this._isFavorite()
     }).catch((res) => {

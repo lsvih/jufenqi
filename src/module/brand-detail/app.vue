@@ -141,6 +141,10 @@ export default {
     addFavorite() {
       let list = JSON.parse(window.localStorage.getItem('favorite'))
       let tBrand = JSON.parse(JSON.stringify(this.brand))
+      if (!JSON.parse(localStorage.user).profile.mobile) {
+        localStorage.removeItem('user')
+        location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+      }
       delete tBrand.stores
       list.shop.push(tBrand)
       window.localStorage.setItem('favorite', JSON.stringify(list))
@@ -155,7 +159,7 @@ export default {
       }
       this.thisIsFavorite = false
       window.localStorage.setItem('favorite', JSON.stringify(list))
-    },
+    }
   },
   ready() {
     axios.get(`${Lib.C.merApi}brands/${this.id}`, {
