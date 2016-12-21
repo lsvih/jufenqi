@@ -73,12 +73,11 @@ export default {
 			return reg.test(this.myPhoneNum)
 		},
 		isFinished() {
-			let reg = /^1[3|4|5|7|8]\d{9}$/
 			let regVerti = /^\d{6}$/
-			return reg.test(this.myPhoneNum)&&regVerti.test(this.myVerti)
+			return this.isTruePhoneNum()&&regVerti.test(this.myVerti)
 		},
 		moveUpDown(e) {
-			if (e === 1) {
+			if (e) {
 				document.getElementById("myLogo").style.top = 11 + 'px'
 				document.getElementById("myContent").style.top = 108 + 'px'
 			} else {
