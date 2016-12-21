@@ -37,7 +37,7 @@ import bgImg from './bg.png'
 try {
   let now = Number(new Date().getTime())
   if (Number(JSON.parse(localStorage.user).expiredAt) < now
-    ||!JSON.parse(localStorage.user).profile.mobile
+    // ||!JSON.parse(localStorage.user).profile.mobile
     ) {
     localStorage.removeItem('user')
     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
