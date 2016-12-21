@@ -32,7 +32,9 @@ import ylImg from './yl.png'
 import axios from 'axios'
 try {
   let now = Number(new Date().getTime())
-  if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now
+    // ||!JSON.parse(localStorage.user).profile.mobile
+    ) {
     localStorage.removeItem('user')
     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
   }

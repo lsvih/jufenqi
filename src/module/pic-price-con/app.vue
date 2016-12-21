@@ -1,6 +1,7 @@
 <template>
     <div class="topPic">
       <img :src="imgUrl+schemes.showImg">
+      <div class="houseprice">{{schemes.showTitle}}</div>
     </div>
   <!--  <div class="methodShow">
       <p>方案展示</p>
@@ -40,7 +41,7 @@
     <img src="./phone.jpg" class="phone">
       <input type="text" v-model="name" placeholder="请输入您的姓名">
       <input type="number" v-model="phone" placeholder="请输入您的手机号码">
-      <div class="btn" v-tap="isFinished?submit():return "><div class="btn-text">提交</div><img v-if='isFinished()' :src="btnImgA"><img v-else :src="btnImg"></div>
+      <div class="btn" v-tap="isFinished()?submit():return"><div class="btn-text">提交</div><img v-if='isFinished()' :src="btnImgA"><img v-else :src="btnImg"></div>
     </div>
 </template>
 
@@ -108,7 +109,7 @@ export default {
   },
   methods:{
     isFinished(){
-       let reg = /^1[3|4|5|7|8]\d{9}$/
+      let reg = /^1[3|4|5|7|8]\d{9}$/
       return this.name&&reg.test(this.phone)
     },
     submit(){
@@ -145,8 +146,18 @@ function findIdIndex(id,array){
 <style lang="less">
 .topPic {
   width: 100%;
+  position: relative;
   img{
     width: 100%;
+  }
+  .houseprice {
+    padding: 10px ;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    border-radius: 0 5px 5px 0;
+    left: 0;
+    bottom: 30px;
+    color: #fff;
   }
 }
 .methodShow {
@@ -211,7 +222,7 @@ function findIdIndex(id,array){
   }
 }
 .itemList {
-  height: 128px;
+  // height: 128px;
   padding: 0 15px;
   position: relative;
   p {
@@ -280,7 +291,7 @@ function findIdIndex(id,array){
           border-radius: 25px;
           background-image: url('./icon2.png');
           background-size: contain;
-        }
+      }
   input {
     display: block;
     width: calc(~"100% - 34px");

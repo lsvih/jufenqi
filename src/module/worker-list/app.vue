@@ -38,7 +38,9 @@ import Loading from 'vux-components/loading'
 import axios from 'axios'
 try {
   let now = Number(new Date().getTime())
-  if (Number(JSON.parse(localStorage.user).expiredAt) < now||!JSON.parse(localStorage.user).profile.mobile) {
+  if (Number(JSON.parse(localStorage.user).expiredAt) < now
+    // ||!JSON.parse(localStorage.user).profile.mobile
+    ) {
     localStorage.removeItem('user')
     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
   }
@@ -53,11 +55,11 @@ export default {
       workerList: [],
       //Loading
       newWorkerList: [
-        {url : '/static/images/工长demo/彭学勇.jpg' , id: 26},
-        {url : '/static/images/工长demo/仰宗龙.jpg' , id: 27},
-        {url : '/static/images/工长demo/杨爱军.jpg' , id: 23},
-        {url : '/static/images/工长demo/雍自民.jpg' , id: 25},
-        {url : '/static/images/工长demo/张林.jpg' ,id:24}
+      {url : '/static/images/工长demo/彭学勇.jpg', id: 26},
+      {url : '/static/images/工长demo/仰宗龙.jpg', id: 27},
+      {url : '/static/images/工长demo/杨爱军.jpg', id: 23},
+      {url : '/static/images/工长demo/雍自民.jpg', id: 25},
+      {url : '/static/images/工长demo/张林.jpg', id: 24}
       ],
       loading: true,
       //Select
