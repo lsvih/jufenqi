@@ -91,6 +91,7 @@ export default {
       }
     },
     delCart(brandId, storeId) {
+      Lib.M.authOnlyPhone()
       let cart = JSON.parse(localStorage.cart)
       cart.shop.forEach((e, v) => {
         if (e[0] == Number(brandId) && e[1] == storeId) {
@@ -127,6 +128,7 @@ export default {
       return findSameBrand(brandId, JSON.parse(localStorage.getItem('favorite')).shop)
     },
     addFavorite() {
+      Lib.M.authOnlyPhone()
       let list = JSON.parse(window.localStorage.getItem('favorite'))
       let tBrand = JSON.parse(JSON.stringify(this.brand))
       delete tBrand.stores

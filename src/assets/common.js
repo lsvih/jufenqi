@@ -57,6 +57,12 @@ var Rxports = {
       localStorage.clear()
       location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
     }
+  },
+  authOnlyPhone: (axios) => {
+    if (!JSON.parse(localStorage.user).profile.mobile) {
+      localStorage.removeItem('user')
+      location.href = './wxAuth.html?url' + encodeURIComponent(location.href)
+    }
   }
 }
 

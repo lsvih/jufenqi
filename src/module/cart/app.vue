@@ -90,7 +90,7 @@ import Scroller from 'vux-components/scroller'
 import Toast from 'vux-components/toast'
 import Loading from 'vux-components/loading'
 import axios from 'axios'
-Lib.M.auth(axios)
+Lib.M.auth(axios, true)
 export default {
   data() {
     return {
