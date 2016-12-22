@@ -38,7 +38,7 @@ import {
 import Loading from 'vux-components/loading'
 import Scroller from "vux-components/scroller"
 import axios from 'axios'
-Lib.M.auth(axios)
+Lib.M.auth(axios, true)
 export default {
   data() {
     return {

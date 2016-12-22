@@ -31,7 +31,8 @@ export default {
     return {
       name: window.localStorage.getItem("apply-info") ? JSON.parse(window.localStorage.getItem("apply-info")).fullname : null,
       creditNum: window.localStorage.getItem("apply-info") ? JSON.parse(window.localStorage.getItem("apply-info")).idCardNo : null,
-      phone: window.localStorage.getItem("apply-info") ? JSON.parse(window.localStorage.getItem("apply-info")).mobile : null,
+      phone: JSON.parse(window.localStorage.getItem("user")).profile.mobile,
+      // window.localStorage.getItem("apply-info") ? JSON.parse(window.localStorage.getItem("apply-info")).mobile : null,
       verify: null,
       time: 0,
       timekeeper: null,
