@@ -73,7 +73,7 @@ export default {
       location.href = `brand-list.html?id=${id}`
     },
     gotoType(anchor) {
-      this.select = type
+      this.select = anchor
       location.replace(`class-list.html#type${anchor}`)
     },
     activeImg(img) {
