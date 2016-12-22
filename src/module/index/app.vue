@@ -163,22 +163,22 @@ export default {
       }, {
         id: 5,
         name: '建材',
-        url: './class-list.html?type=0',
+        url: './class-list.html#type0',
         img: '/static/images/icon/建材.png'
       }, {
         id: 6,
         name: '家具',
-        url: './class-list.html?type=3',
+        url: './class-list.html#type3',
         img: '/static/images/icon/家具.png'
       }, {
         id: 7,
         name: '家纺',
-        url: './class-list.html?type=2',
+        url: './class-list.html#type2',
         img: '/static/images/icon/家纺.png'
       }, {
         id: 8,
         name: '家电',
-        url: './class-list.html?type=1',
+        url: './class-list.html#type1',
         img: '/static/images/icon/家电.png'
       }, {
         id: 9,

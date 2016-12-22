@@ -1,6 +1,6 @@
 <template>
 <div class="menu">
-  <div class="menu-item" v-for="parent of classList" :class="{'active':select == $index}" v-tap="gotoType(parent.type, $index)">
+  <div class="menu-item" v-for="parent of classList" :class="{'active':select == $index}" v-tap="gotoType(parent.type)" id="type{{parent.type}}">
     <img :src="select == $index?activeImg(parent.img):parent.img">
     <div class="parent-name">{{parent.name}}</div>
   </div>
@@ -44,7 +44,7 @@ export default {
         child: [],
         type: 3
       }, ],
-      select: Lib.M.GetRequest().type || 0,
+      select: Number(location.hash.split('')[location.hash.split('').length - 1]) || 0,
       img: Lib.C.imgUrl
     }
   },
@@ -72,9 +72,9 @@ export default {
     gotoClass(id) {
       location.href = `brand-list.html?id=${id}`
     },
-    gotoType(type, id) {
-      this.select = id
-      location.replace(`class-list.html?type=${type}`)
+    gotoType(anchor) {
+      this.select = type
+      location.replace(`class-list.html#type${anchor}`)
     },
     activeImg(img) {
       let img_arr = img.split('.png')
