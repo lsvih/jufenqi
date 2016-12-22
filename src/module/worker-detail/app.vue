@@ -101,11 +101,11 @@ export default {
       imgUrl:Lib.C.imgUrl,
       id:Lib.M.GetRequest().id,
       newWorkerList: [
-        {url : '/static/images/工长demo/彭学勇详情页.jpg' , id: 26},
+        {url : '/static/images/工长demo/彭学勇详情页.jpg' , id: 22},
         {url : '/static/images/工长demo/仰宗龙详情页.jpg' , id: 27},
         {url : '/static/images/工长demo/杨爱军详情页.jpg' , id: 23},
         {url : '/static/images/工长demo/雍自民详情页.jpg' , id: 25},
-        {url : '/static/images/工长demo/张林详情页.jpg' ,id: 24}
+        {url : '/static/images/工长demo/张林详情页.jpg' , id: 24}
       ]
       // options: {
       //   getThumbBoundsFn(index) {
@@ -191,6 +191,7 @@ export default {
       return findSameWorker(this.worker.userId, JSON.parse(localStorage.getItem('favorite')).worker)
     },
     addWorkerTo(type) {
+      Lib.M.authOnlyPhone()
       if (window.localStorage.getItem(type)) {
         let list = JSON.parse(window.localStorage.getItem(type))
         if (findSameWorker(this.worker.userId, list.worker)) {

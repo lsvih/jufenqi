@@ -119,7 +119,7 @@ import {
   FlexboxItem
 } from 'vux-components/flexbox'
 import axios from 'axios'
-Lib.M.auth(axios)
+Lib.M.auth(axios, false)
 
 export default {
   data() {
