@@ -1,6 +1,6 @@
 <template>
 <div class="menu">
-  <div class="menu-item" v-for="parent of classList" :class="{'active':select == $index}" v-tap="select = $index">
+  <div class="menu-item" v-for="parent of classList" :class="{'active':select == $index}" v-tap="gotoType(parent.type, $index)">
     <img :src="select == $index?activeImg(parent.img):parent.img">
     <div class="parent-name">{{parent.name}}</div>
   </div>
@@ -23,22 +23,26 @@ export default {
         name: '建材',
         id: 1,
         img: '/static/images/icon/class-icon/jc.png',
-        child: []
+        child: [],
+        type: 0
       }, {
         name: '家电',
         id: 2,
         img: '/static/images/icon/class-icon/jd.png',
-        child: []
+        child: [],
+        type: 1
       }, {
         name: '家纺',
         id: 3,
         img: '/static/images/icon/class-icon/jf.png',
-        child: []
+        child: [],
+        type: 2
       }, {
         name: '家具',
         id: 4,
         img: '/static/images/icon/class-icon/jj.png',
-        child: []
+        child: [],
+        type: 3
       }, ],
       select: Lib.M.GetRequest().type || 0,
       img: Lib.C.imgUrl
@@ -67,6 +71,10 @@ export default {
     },
     gotoClass(id) {
       location.href = `brand-list.html?id=${id}`
+    },
+    gotoType(type, id) {
+      this.select = id
+      location.href = `class-list.html?type=${type}`
     },
     activeImg(img) {
       let img_arr = img.split('.png')
