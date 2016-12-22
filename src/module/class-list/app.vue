@@ -74,7 +74,7 @@ export default {
     },
     gotoType(type, id) {
       this.select = id
-      location.href = `class-list.html?type=${type}`
+      location.replace(`class-list.html?type=${type}`)
     },
     activeImg(img) {
       let img_arr = img.split('.png')
