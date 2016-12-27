@@ -81,7 +81,7 @@ export default {
       for (let shop of this.shopList) {
         if(shop.brands.length === 0) return false
         for (let brand of shop.brands) {
-          if (brand.clerk == null || brand.specialAmount == null || brand.normalAmount == null) return false
+          if (brand.specialAmount == null || brand.normalAmount == null) return false
         }
       }
       return true
