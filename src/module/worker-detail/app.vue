@@ -60,7 +60,7 @@
 </div> -->
 <div class="worker-demo">
   <!-- <img :src="getImage()"> -->
-  <img :src="imgSrc+worker.nickname+imgSuf">
+  <img :src="workerUrl">
 </div>
 <footer>
   <div class="icon-item"><img src="share.png">
@@ -101,15 +101,8 @@ export default {
       worker: {},
       imgUrl:Lib.C.imgUrl,
       id:Lib.M.GetRequest().id,
-      newWorkerList: [
-        {url : '/static/images/工长demo/彭学勇详情页.jpg' , id: 22},
-        {url : '/static/images/工长demo/仰宗龙详情页.jpg' , id: 27},
-        {url : '/static/images/工长demo/杨爱军详情页.jpg' , id: 60},
-        {url : '/static/images/工长demo/雍自民详情页.jpg' , id: 25},
-        {url : '/static/images/工长demo/张林详情页.jpg' , id: 24}
-      ]
       imgSrc: '/static/images/工长demo/',
-      imgSuf: '详情页.jpg'
+      workerUrl: ''
       // options: {
       //   getThumbBoundsFn(index) {
       //     let thumbnail = document.querySelectorAll('.product-img')[index]
@@ -143,6 +136,7 @@ export default {
       }
       console.log(res.data.data)
       this.worker = res.data.data
+      this.workerUrl = imgSrc + res.data.data.nickname + '详情页.jpg'
       this.isFavorite = this._isFavorite()
     }).catch((res) => {
       window.document.body.style.display = "hidden"
