@@ -306,10 +306,10 @@ export default {
                 padding: 20px 0;
                 position: fixed;
                 background-color: #f5f5f5;
-                height: calc(~"100% - 200px");
+                height: auto;
                 width: calc(~"100% - 150px");
                 left: 75px;
-                top: 150px;
+                top: 180px;
                 z-index: 99;
                 border-radius: 5px;
                 .refund-num {
