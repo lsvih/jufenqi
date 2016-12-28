@@ -60,8 +60,11 @@
     <!-- 用户操作的按钮 -->
     <div class="operate" v-if="!(order.status==2&&order.waitPaymentConfirm)">
       <div class="bottom" v-if="order.status==2&&!order.waitPaymentConfirm" v-tap="goto('./pay.html?apptNo='+order.apptNo)">继续支付</div>
-      <div class="bottom" v-if="order.status==4||order.status==6" v-tap="refund()">退款</div>
-      <div class="refund" href="tel:40000390808" v-if="refundShow">拨打退款电话</div>
+      <div class="bottom" v-if="order.status==4||order.status==6" v-tap="refund(1)">退款</div>
+      <div class="refund" href="tel:40000390808" v-if="refundShow">
+        <div class="refund-num"><a href="tel:40000390808">400-0039-0808</a></div>
+        <div class="refund-cancel" v-tap="refund(0)">取消</div>
+      </div>
       <div class="bottom" v-if="order.status==6" v-tap="deleteOrder(order.orderNo)">删除</div>
       <div class="bottom" v-if="(order.status==2||order.status==1||order.status==3)&&!order.waitPaymentConfirm" v-tap="cancel(order.apptNo)">取消订单</div>
       <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div>
@@ -132,8 +135,12 @@ export default {
       this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
       this.$parent.$parent.$parent.$parent.showConfirm.receive = true
     },
-    refund() {
-      this.refundShow = true;
+    refund(num) {
+      if (num === 1) {
+        this.refundShow = true;
+      } else {
+        this.refundShow = false;
+      }
     }
   },
 }
@@ -295,14 +302,28 @@ export default {
                 margin-left: 20px;
             }
             .refund {
-                padding: 30px;
+                text-align: center;
+                padding: 40px 0;
                 position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                margin: auto;
+                background-color: #f5f5f5;
+                height: calc(~"100% - 300px");
+                width: calc(~"100% - 150px");
+                left: 75px;
+                top: 150px;
                 z-index: 99;
+                .refund-num {
+                  color: #88c928;
+                  font-size: 15px;
+                  a {
+                    text-decoration: none;
+                    color: #88c928;
+                    font-size: 15px;
+                  }
+                }
+                .refund-cancel {
+                  color: #999;
+                  font-size: 15px;
+                }
             }            
         }
     }
