@@ -60,11 +60,11 @@
     <!-- 用户操作的按钮 -->
     <div class="operate" v-if="!(order.status==2&&order.waitPaymentConfirm)">
       <div class="bottom" v-if="order.status==2&&!order.waitPaymentConfirm" v-tap="goto('./pay.html?apptNo='+order.apptNo)">继续支付</div>
-      <div class="bottom" v-if="order.status==4||order.status==6" v-tap="refund(1)">退款</div>
-      <div class="refund" href="tel:40000390808" v-if="refundShow">
+      <div class="bottom" v-if="order.status==4||order.status==6" v-tap="refund(orderNo)">退款</div>
+<!--       <div class="refund" href="tel:40000390808" v-if="refundShow">
         <div class="refund-num">请拨打：<a href="tel:40000390808">400-0039-0808</a></div>
         <div class="refund-cancel" v-tap="refund(0)">取消</div>
-      </div>
+      </div> -->
       <div class="bottom" v-if="order.status==6" v-tap="deleteOrder(order.orderNo)">删除</div>
       <div class="bottom" v-if="(order.status==2||order.status==1||order.status==3)&&!order.waitPaymentConfirm" v-tap="cancel(order.apptNo)">取消订单</div>
       <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div>
@@ -135,12 +135,9 @@ export default {
       this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
       this.$parent.$parent.$parent.$parent.showConfirm.receive = true
     },
-    refund(num) {
-      if (num === 1) {
-        this.refundShow = true;
-      } else {
-        this.refundShow = false;
-      }
+    refund(orderNo) {
+      this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
+      this.$parent.$parent.$parent.$parent.showConfirm.refund = true      
     }
   },
 }
@@ -301,7 +298,7 @@ export default {
                 font-size: 12px;
                 margin-left: 20px;
             }
-            .refund {
+/*            .refund {
                 text-align: center;
                 padding: 20px 0;
                 position: fixed;
@@ -329,7 +326,7 @@ export default {
                   color: #999;
                   font-size: 17px;
                 }
-            }            
+            }            */
         }
     }
 }
