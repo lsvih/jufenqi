@@ -62,7 +62,7 @@
       <div class="bottom" v-if="order.status==2&&!order.waitPaymentConfirm" v-tap="goto('./pay.html?apptNo='+order.apptNo)">继续支付</div>
       <div class="bottom" v-if="order.status==4||order.status==6" v-tap="refund(1)">退款</div>
       <div class="refund" href="tel:40000390808" v-if="refundShow">
-        <div class="refund-num"><a href="tel:40000390808">400-0039-0808</a></div>
+        <div class="refund-num">请拨打：<a href="tel:40000390808">400-0039-0808</a></div>
         <div class="refund-cancel" v-tap="refund(0)">取消</div>
       </div>
       <div class="bottom" v-if="order.status==6" v-tap="deleteOrder(order.orderNo)">删除</div>
@@ -303,17 +303,19 @@ export default {
             }
             .refund {
                 text-align: center;
-                padding: 40px 0;
+                padding: 30px 0;
                 position: fixed;
-                background-color: #f5f5f5;
-                height: calc(~"100% - 300px");
+                background-color: #fff;
+                height: calc(~"100% - 200px");
                 width: calc(~"100% - 150px");
                 left: 75px;
                 top: 150px;
                 z-index: 99;
+                border-radius: 5px;
                 .refund-num {
                   color: #88c928;
                   font-size: 15px;
+                  margin-bottom: 30px;
                   a {
                     text-decoration: none;
                     color: #88c928;
@@ -321,8 +323,11 @@ export default {
                   }
                 }
                 .refund-cancel {
+                  width: 100%;
+                  height: auto;
+                  text-align: center;
                   color: #999;
-                  font-size: 15px;
+                  font-size: 17px;
                 }
             }            
         }
