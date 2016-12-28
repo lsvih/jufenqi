@@ -94,7 +94,7 @@ export default {
             orders.push({
               storeId: shop.id,
               brandId: brand.id,
-              clerkId: brand.clerk.id,
+              // clerkId: brand.clerk.id?brand.clerk.id:,
               normalAmount: brand.normalAmount,
               specialAmount: brand.specialAmount
             })
