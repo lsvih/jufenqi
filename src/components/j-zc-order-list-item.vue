@@ -88,7 +88,7 @@ export default {
       clerkImg,
       clockImg,
       Status,
-      refundShow: false;
+      refundShow: false
     }
   },
   props: {
