@@ -303,9 +303,9 @@ export default {
             }
             .refund {
                 text-align: center;
-                padding: 30px 0;
+                padding: 20px 0;
                 position: fixed;
-                background-color: #fff;
+                background-color: #f5f5f5;
                 height: calc(~"100% - 200px");
                 width: calc(~"100% - 150px");
                 left: 75px;
@@ -315,7 +315,7 @@ export default {
                 .refund-num {
                   color: #88c928;
                   font-size: 15px;
-                  margin-bottom: 30px;
+                  margin-bottom: 20px;
                   a {
                     text-decoration: none;
                     color: #88c928;
