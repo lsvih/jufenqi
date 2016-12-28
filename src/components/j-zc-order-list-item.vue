@@ -60,7 +60,8 @@
     <!-- 用户操作的按钮 -->
     <div class="operate" v-if="!(order.status==2&&order.waitPaymentConfirm)">
       <div class="bottom" v-if="order.status==2&&!order.waitPaymentConfirm" v-tap="goto('./pay.html?apptNo='+order.apptNo)">继续支付</div>
-      <div class="bottom" v-if="order.status==4||order.status==6">退款</div>
+      <div class="bottom" v-if="order.status==4||order.status==6" v-tap="refund()">退款</div>
+      <div class="refund" href="tel:40000390808" v-if="refundShow">拨打退款电话</div>
       <div class="bottom" v-if="order.status==6" v-tap="deleteOrder(order.orderNo)">删除</div>
       <div class="bottom" v-if="(order.status==2||order.status==1||order.status==3)&&!order.waitPaymentConfirm" v-tap="cancel(order.apptNo)">取消订单</div>
       <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div>
@@ -86,7 +87,8 @@ export default {
       statusImg,
       clerkImg,
       clockImg,
-      Status
+      Status,
+      refundShow: false;
     }
   },
   props: {
@@ -129,6 +131,9 @@ export default {
     receive(orderNo) {
       this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
       this.$parent.$parent.$parent.$parent.showConfirm.receive = true
+    },
+    refund() {
+      this.refundShow = true;
     }
   },
 }
@@ -289,6 +294,16 @@ export default {
                 font-size: 12px;
                 margin-left: 20px;
             }
+            .refund {
+                padding: 30px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: auto;
+                z-index: 99;
+            }            
         }
     }
 }
