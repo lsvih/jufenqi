@@ -60,7 +60,7 @@
 </div> -->
 <div class="worker-demo">
   <!-- <img :src="getImage()"> -->
-  <img :src=`/static/images/工长demo/${worker.nickname}详情页.jpg`>
+  <img :src="imgSrc+worker.nickname+imgSuf">
 </div>
 <footer>
   <div class="icon-item"><img src="share.png">
@@ -108,6 +108,8 @@ export default {
         {url : '/static/images/工长demo/雍自民详情页.jpg' , id: 25},
         {url : '/static/images/工长demo/张林详情页.jpg' , id: 24}
       ]
+      imgSrc: '/static/images/工长demo/',
+      imgSuf: '详情页.jpg'
       // options: {
       //   getThumbBoundsFn(index) {
       //     let thumbnail = document.querySelectorAll('.product-img')[index]
