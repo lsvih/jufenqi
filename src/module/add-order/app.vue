@@ -201,7 +201,8 @@ export default {
               this.showSelectClerk = true
             // }
             this.showLoading = false
-        }
+            }
+          }
         }).catch((err) => {
           this.showLoading = false
           alert("获取店员信息失败，请稍后再试")
