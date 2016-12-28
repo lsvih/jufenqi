@@ -95,7 +95,7 @@
   <p style="text-align:center;">您是否确认收到货物?</p>
 </confirm>
 <confirm :show.sync="showConfirm.refund" title=""  cancel-text="取消" @on-confirm="refund(tempOrderNo)">
-  <p style="text-align:center;">点我拨打<a href="tel:40000390808">400-0039-0808</a></p>
+  <p style="text-align:center;">点我拨打<a href="tel:40000390808" style="text-decoration: none; color: transparent;">400-0039-0808</a></p>
 </confirm>
 </template>
 
