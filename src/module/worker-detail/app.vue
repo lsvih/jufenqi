@@ -136,7 +136,7 @@ export default {
       }
       console.log(res.data.data)
       this.worker = res.data.data
-      this.workerUrl = imgSrc + res.data.data.nickname + '详情页.jpg'
+      this.workerUrl = this.imgSrc + res.data.data.nickname + '详情页.jpg'
       this.isFavorite = this._isFavorite()
     }).catch((res) => {
       window.document.body.style.display = "hidden"
