@@ -184,19 +184,24 @@ export default {
         res.data.data.map((e) => {
           clerks.push(e.userId)
         })
-        axios.get(`${Lib.C.userApi}storeuserProfiles?filter=userId:${clerks.join(',')}`).then((res) => {
-          if (res.data.data.length === 0) {
-            alert("此门店中暂无店员")
-          } else {
-            res.data.data.map((e) => {
-              this.tempClerkList.push({
-                name: String(e.nickname),
-                value: String(e.userId)
-              })
-            })
-            this.showSelectClerk = true
-          }
+        if (clerks.length === 0) {
+          alert("此门店中暂无店员")
           this.showLoading = false
+        } else {
+          axios.get(`${Lib.C.userApi}storeuserProfiles?filter=userId:${clerks.join(',')}`).then((res) => {
+            // if (res.data.data.length === 0) {
+            //   alert("此门店中暂无店员")
+            // } else {
+              res.data.data.map((e) => {
+                this.tempClerkList.push({
+                  name: String(e.nickname),
+                  value: String(e.userId)
+                })
+              })
+              this.showSelectClerk = true
+            // }
+            this.showLoading = false
+        }
         }).catch((err) => {
           this.showLoading = false
           alert("获取店员信息失败，请稍后再试")
