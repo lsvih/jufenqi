@@ -86,9 +86,11 @@ export default {
       res.data.data.spaces.forEach((space)=>{
         spaceIdArr.push(space.id)
       })
-      axios.get(`${Lib.C.picpApi}/spaces?expand=products&filter=id:${spaceIdArr.join(',')}`).then((res) => {
+      axios.get(`${Lib.C.picpApi}/spaces?expand=spaceProducts&filter=id:${spaceIdArr.join(',')}`).then((res) => {
           res.data.data.map((a)=>{
-              this.schemes.spaces[findIdIndex(a.id,this.schemes.spaces)].products = a.products
+              this.schemes.spaces[findIdIndex(a.id,this.schemes.spaces)].products = a.spaceProducts.map((e) => {
+                return e.product
+              })
           })
     }).catch((err) => {
       throw err //error

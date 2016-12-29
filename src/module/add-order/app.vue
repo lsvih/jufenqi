@@ -136,12 +136,12 @@ export default {
       }
       this.tempSelectedShop = shopId
       this.showLoading = true
-      axios.get(`${Lib.C.merApi}stores/${shopId}?expand=brands`).then((res) => {
+      axios.get(`${Lib.C.merApi}stores/${shopId}?expand=storeBrands`).then((res) => {
         this.tempBrandList = []
-        res.data.data.brands.map((e) => {
+        res.data.data.storeBrands.map((e) => {
           this.tempBrandList.push({
-            name: e.name,
-            value: String(e.id),
+            name: e.brand.name,
+            value: String(e.brand.id),
           })
         })
         this.showSelectBrand = true

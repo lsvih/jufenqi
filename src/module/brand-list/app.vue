@@ -55,8 +55,10 @@ export default {
     getData(id) {
       if(id != undefined){
          this.showLoading = true
-      axios.get(`${Lib.C.merApi}categories/${id}?expand=brands`).then((res) => {
-        this.brandList = res.data.data.brands
+      axios.get(`${Lib.C.merApi}categories/${id}?expand=categoryBrands`).then((res) => {
+        this.brandList = res.data.data.categoryBrands.map((i) => {
+          return i.brand
+        })
         this.showLoading = false
       }).catch((err) => {
         this.showLoading = false

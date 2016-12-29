@@ -150,10 +150,13 @@ export default {
   ready() {
     axios.get(`${Lib.C.merApi}brands/${this.id}`, {
       params: {
-        expand: 'stores'
+        expand: 'storeBrands'
       }
     }).then((res) => {
       this.brand = res.data.data
+      this.brand.stores = this.brand.storeBrands.map((e) => {
+        return e.store
+      })
     }).catch((err) => {
       throw err
     })

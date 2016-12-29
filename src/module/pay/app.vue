@@ -175,11 +175,12 @@ export default {
         key: '3',
         value: '微信支付',
         icon: wxImg
-      }, {
-        key: '4',
-        value: '银联支付',
-        icon: ylImg
       }],
+      // , {
+      //   key: '4',
+      //   value: '银联支付',
+      //   icon: ylImg
+      // }],
       showLoan:false,
       payMethod: 0,
       orders: []
