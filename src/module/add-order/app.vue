@@ -17,7 +17,7 @@
       </div>
       <div class="clerk">
         <div class="cell-left" v-tap="selectClerk(shop.id,$index)">店员选择<img src='./select.png'></div>
-        <div class="cell-right">{{brand.clerk?brand.clerk.name:'请选择'}}</div>
+        <div class="cell-right">{{brand.clerk?brand.clerk.name:'请选择（非必填）'}}</div>
       </div>
       <!-- 输入品牌价格 -->
       <div class="input-cell">
@@ -185,7 +185,7 @@ export default {
           clerks.push(e.userId)
         })
         if (clerks.length === 0) {
-          alert("此门店中暂无店员")
+          alert("此门店中暂无店员,店员信息正在更新中")
           this.showLoading = false
         } else {
           axios.get(`${Lib.C.userApi}storeuserProfiles?filter=userId:${clerks.join(',')}`).then((res) => {
