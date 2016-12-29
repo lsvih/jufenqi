@@ -42,13 +42,7 @@ export default {
     return {
       workerList: [],
       //Loading
-      newWorkerList: [
-      {url : '/static/images/工长demo/彭学勇.jpg', id: 26},
-      {url : '/static/images/工长demo/仰宗龙.jpg', id: 27},
-      {url : '/static/images/工长demo/杨爱军.jpg', id: 23},
-      {url : '/static/images/工长demo/雍自民.jpg', id: 25},
-      {url : '/static/images/工长demo/张林.jpg', id: 24}
-      ],
+      newWorkerList: [],
       loading: true,
       //Select
       selectedAddress: "北京市",
@@ -79,6 +73,12 @@ export default {
           e.favorite = this.isFavorite(e.userId)
         })
         this.workerList = data
+        data.forEach((obj) => {
+          this.newWorkerList.push({
+            url: `/static/images/工长demo/${obj.nickname}.jpg`,
+            id: obj.userId
+          })
+        })
         this.loading = false
       }).catch((err) => {
         this.loading = false

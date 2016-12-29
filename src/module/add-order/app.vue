@@ -17,7 +17,7 @@
       </div>
       <div class="clerk">
         <div class="cell-left" v-tap="selectClerk(shop.id,$index)">店员选择<img src='./select.png'></div>
-        <div class="cell-right">{{brand.clerk?brand.clerk.name:'请选择'}}</div>
+        <div class="cell-right">{{brand.clerk?brand.clerk.name:'请选择（非必填）'}}</div>
       </div>
       <!-- 输入品牌价格 -->
       <div class="input-cell">
@@ -81,7 +81,7 @@ export default {
       for (let shop of this.shopList) {
         if(shop.brands.length === 0) return false
         for (let brand of shop.brands) {
-          if (brand.clerk == null || brand.specialAmount == null || brand.normalAmount == null) return false
+          if (brand.specialAmount == null || brand.normalAmount == null) return false
         }
       }
       return true
@@ -94,7 +94,7 @@ export default {
             orders.push({
               storeId: shop.id,
               brandId: brand.id,
-              clerkId: brand.clerk.id,
+              // clerkId: brand.clerk.id?brand.clerk.id:,
               normalAmount: brand.normalAmount,
               specialAmount: brand.specialAmount
             })
@@ -136,12 +136,12 @@ export default {
       }
       this.tempSelectedShop = shopId
       this.showLoading = true
-      axios.get(`${Lib.C.merApi}stores/${shopId}?expand=brands`).then((res) => {
+      axios.get(`${Lib.C.merApi}stores/${shopId}?expand=storeBrands`).then((res) => {
         this.tempBrandList = []
-        res.data.data.brands.map((e) => {
+        res.data.data.storeBrands.map((e) => {
           this.tempBrandList.push({
-            name: e.name,
-            value: String(e.id),
+            name: e.brand.name,
+            value: String(e.brand.id),
           })
         })
         this.showSelectBrand = true
@@ -184,24 +184,29 @@ export default {
         res.data.data.map((e) => {
           clerks.push(e.userId)
         })
-        axios.get(`${Lib.C.userApi}storeuserProfiles?filter=userId:${clerks.join(',')}`).then((res) => {
-          if (res.data.data.length === 0) {
-            alert("此门店中暂无店员")
-          } else {
-            res.data.data.map((e) => {
-              this.tempClerkList.push({
-                name: String(e.nickname),
-                value: String(e.userId)
+        if (clerks.length === 0) {
+          alert("此门店中暂无店员,店员信息正在更新中")
+          this.showLoading = false
+        } else {
+          axios.get(`${Lib.C.userApi}storeuserProfiles?filter=userId:${clerks.join(',')}`).then((res) => {
+            // if (res.data.data.length === 0) {
+            //   alert("此门店中暂无店员")
+            // } else {
+              res.data.data.map((e) => {
+                this.tempClerkList.push({
+                  name: String(e.nickname),
+                  value: String(e.userId)
+                })
               })
-            })
-            this.showSelectClerk = true
-          }
-          this.showLoading = false
-        }).catch((err) => {
-          this.showLoading = false
-          alert("获取店员信息失败，请稍后再试")
-          throw err //error
-        })
+              this.showSelectClerk = true
+            // }
+            this.showLoading = false
+          }).catch((err) => {
+            this.showLoading = false
+            alert("获取店员信息失败，请稍后再试")
+            throw err //error
+          })
+        }
       }).catch((err) => {
         this.showLoading = false
         alert("获取店员信息失败，请稍后再试")

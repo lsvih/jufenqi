@@ -309,6 +309,7 @@ body {
         background: url('/static/images/mask.jpg') no-repeat;
         background-size: 100% auto;
         opacity: 0.5;
+        margin-bottom: 13px;
     }
     .module-title-block {
         position: absolute;

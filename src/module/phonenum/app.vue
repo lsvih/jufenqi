@@ -36,6 +36,7 @@
 import axios from 'axios'
 import Lib from 'assets/Lib.js'
 import Loading from 'vux-components/loading'
+Lib.M.auth(axios)
 export default {
 	components: {
 		Loading
