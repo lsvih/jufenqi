@@ -10,22 +10,8 @@
       <div class="contentTab">
         <li v-tap="tabIndex = $index" v-for="space in schemes.spaces" :class="{select:tabIndex==$index}">{{space.type.name}}</li>
       </div>
-      <div class="content" v-html="schemes.spaces[tabIndex].descriptionRich">
-        <!-- <div class="image-item">
-          <img src="http://placehold.it/550x340" alt="">
-            <p><span></span>问问嫩问问你问问嫩我呢问你呢我你嫩我嫩我嫩我嫩我嫩我嫩嫩我嫩我</p>
-        </div>
-        <div class="image-item">
-          <img src="http://placehold.it/550x340" alt="">
-            <p><span></span>问问嫩问问你问问嫩我呢问你呢我你嫩我嫩我嫩我嫩我嫩我嫩嫩我嫩我</p>
-        </div>
-        <div class="image-item">
-          <img src="http://placehold.it/550x340" alt="">
-            <p><span></span>问问嫩问问你问问嫩我呢问你呢我你嫩我嫩我嫩我嫩我嫩我嫩嫩我嫩我</p>
-        </div>
-      </div> -->
-    </div>
-    <div class="itemList" :style="{height:schemes.spaces[tabIndex].products.length > 4?'188px':'128px'}">
+      <div class="content" v-html="schemes.spaces[tabIndex].descriptionRich"></div>
+    <div class="itemList" v-if="render" :style="{height:schemes.spaces[tabIndex].products.length > 4?'188px':'128px'}">
       <div class="item-name-before"></div><div class="item-name">空间包含物品</div>
       <div class="item-wrapper">
         <div class="item" v-for="product in schemes.spaces[tabIndex].products">
@@ -76,7 +62,8 @@ export default {
       name:'',
       phone:'',
       btnImg,
-      btnImgA
+      btnImgA,
+      render:false
 		}
 	},
   ready(){
@@ -92,6 +79,7 @@ export default {
                 return e.product
               })
           })
+          this.render = true
     }).catch((err) => {
       throw err //error
     })
