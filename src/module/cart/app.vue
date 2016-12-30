@@ -19,7 +19,7 @@
                   <div class="click-area-select" v-tap="selectItem('Shop',shop.id)"></div>
                   <div class="click-zc-area-del" v-tap="deleteShop(shop.id)"></div>
                   <div class="shop-name">{{shop.name}}</div>
-                  <div class="shop-address">{{shop.address}}</div>
+                  <div class="shop-address" style="overflow: auto; padding-right: 40px;">{{shop.address}}</div>
                   <!-- <div class="worker-rank">评分:5.0</div> -->
                   <div class="shop-del">删除门店</div>
                   <img v-if="isSelect('Shop',shop.id)" class="worker-is-favorite" src="selected.png">
@@ -281,7 +281,7 @@ body {
         position: absolute;
         font-size: 12px;
         left: 15px;
-        bottom: 9px;
+        bottom: 9px;        
     }
     .shop-del {
         position: absolute;
@@ -367,6 +367,7 @@ body {
         left: 15px;
         font-size: 12px;
         color: #999;
+        text-align: left;
     }
     .shop-del {
         position: absolute;
