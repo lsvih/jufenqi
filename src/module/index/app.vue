@@ -13,7 +13,7 @@
   </div>
 </div>
 <div class="content">
- <swiper class="module-swiper" loop auto height="200px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex"  @on-index-change="bannerOnChange" v-tap="clickBanner" :show-desc-mask="true" dots-position="center" :interval="5000">
+ <swiper class="module-swiper" loop auto height="200px" dots-class="dot-custom" :list="newBannerList" :index="bannerIndex"  @on-index-change="bannerOnChange" v-tap="clickBanner" :show-desc-mask="true" dots-position="center" :interval="5000">
   </swiper>
   <flexbox class="module-class">
     <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5" v-tap="goto(class.url)">
@@ -125,6 +125,7 @@ export default {
   data() {
     return {
       bannerIndex: 0,
+      newBannerList: [],
       bannerList: [{
         url: './bannerfirst.html',
         img: '/static/images/banner/banner-1.png'
@@ -233,12 +234,40 @@ export default {
     FlexboxItem,
     XImg,
   },
+  ready() {
+    axios.get(`${Lib.C.homeApi}operations?filter=operationName:banner`).then((res) => {
+      res.data.data.map((e) => {
+        if (e.linkUrl) {
+          this.newBannerList.push({
+            id: e.id,
+            url: e.linkUrl,
+            img: Lib.C.imgUrl + e.coverImg
+          })
+        } else if (!e.linkUrl&&e.descriptionRich) {
+          this.newBannerList.push({
+            id: e.id,
+            url: `./banner-con.html?id=${e.id}`,
+            img: Lib.C.imgUrl + e.coverImg
+          }) 
+        } else {
+            this.newBannerList.push({
+              id: e.id,
+              url: 'javascript:',
+              img: Lib.C.imgUrl + e.coverImg
+            })
+        }
+      })
+      console.log(this.newBannerList)
+    }).catch((err) => {
+      throw err
+    })
+  },
   methods: {
     bannerOnChange(index) {
       this.bannerIndex = index
     },
     clickBanner(item){
-      location.href = this.bannerList[this.bannerIndex].url
+      location.href = this.newBannerList[this.bannerIndex].url
     },
     getScreenWidth() {
       return document.body.clientWidth
