@@ -153,7 +153,7 @@ export default {
       }, {
         id: 3,
         name: '博洛尼家装',
-        url: 'brand-detail.html?id=12',
+        url: 'brand-detail.html?id=186',
         img: '/static/images/icon/博洛尼.png'
       }, {
         id: 4,
