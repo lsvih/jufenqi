@@ -4,7 +4,7 @@
   <group style="margin-top:-1.17647059em;">
     <x-input title="姓名" :value.sync="name" name="username" placeholder="请输入您的真实姓名" :show-clear="false"> </x-input>
     <x-input title="电话" :value.sync="phone" name="mobile" placeholder="请输入正确的电话号码" keyboard="number" is-type="china-mobile"></x-input>
-    <datetime style="height:24px;" :value.sync="appoint_at" placeholder="请选择预约时间" :min-year=2016 :max-year=2017 format="YYYY-MM-DD HH:mm" title="时间" year-row="{value}年" month-row="{value}月" day-row="{value}日" hour-row="{value}点" minute-row="{value}分" confirm-text="完成"
+    <datetime style="height:24px;" :value.sync="appoint_at" placeholder="请选择预约时间" :min-year=2017 :max-year=2018 format="YYYY-MM-DD HH:mm" title="时间" year-row="{value}年" month-row="{value}月" day-row="{value}日" hour-row="{value}点" minute-row="{value}分" confirm-text="完成"
         cancel-text="取消"></datetime>
     <cell title="地区" style="height:24px;" :value="$refs.area.getNameValues()||'请选择所在城市及地区'" v-tap="_show()" is-link></cell>
     <x-textarea :value.sync="address" :height="50" :max="100" name="address" placeholder="请填写房产证上的详细地址"></x-textarea>
@@ -17,7 +17,7 @@
 <group title="预约列表" style="margin-bottom:44px;">
   <cell v-for="worker in workerList" class="cell-item">
     <div class="click-area-detail" v-tap="goto('worker-detail.html?id='+worker.userId)"></div>
-    <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
+    <img :src="imgUrl + worker.profileImage" class="worker-logo" width="120px" height="80px">
     <div class="worker-name">{{worker.nickname}}</div>
     <div class="worker-address">{{worker.nativePlace}}</div>
     <!-- <div class="worker-rank">评分:5.0</div> -->
@@ -189,6 +189,7 @@ export default {
       phone: JSON.parse(window.localStorage.getItem("user")).profile.mobile,
       address: "",
       appoint_at: "",
+      imgUrl: Lib.C.imgUrl,
       workerList: [],
       selectWorkers: []
     }
