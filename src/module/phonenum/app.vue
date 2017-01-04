@@ -146,6 +146,7 @@ export default {
 			    	// console.log(code)
 			    	if (code == 40004) {
 			    		alert('手机已经绑定了')
+			    		location.href = this.lastUrl
 			    	} else if (code == 90204) {
 			    		this.codeError = true
 			    	}
