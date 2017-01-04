@@ -41,9 +41,13 @@ export default {
     },
     nextStep() {
       let data = JSON.parse(window.localStorage.getItem("apply-info"))
+      if (data.id) {
+        delete data.id
+      }
       data.isIncumbent = false
       data.monthlyIncome = this.monthlyIncome
       axios.post(`${Lib.C.loanApi}user-application`, data).then((res) => {
+        data.id = res.data.data.id
         localStorage.setItem("apply-info", JSON.stringify(data))
         if (res.data.data.statusEnum == 0) {
           window.location.href = './ins-apply-failed.html'
