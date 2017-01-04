@@ -119,7 +119,7 @@ export default {
           /**城市*/
           city: null,
           /**区县*/
-          county: null,
+          country: null,
           /**详细地址*/
           address: null,
           /**房屋面积*/
