@@ -81,7 +81,7 @@ export default {
       for (let shop of this.shopList) {
         if(shop.brands.length === 0) return false
         for (let brand of shop.brands) {
-          if (brand.specialAmount == null || brand.normalAmount == null) return false
+          if (brand.specialAmount == null && brand.normalAmount == null) return false
         }
       }
       return true
@@ -95,8 +95,8 @@ export default {
               storeId: shop.id,
               brandId: brand.id,
               // clerkId: brand.clerk.id?brand.clerk.id:,
-              normalAmount: brand.normalAmount,
-              specialAmount: brand.specialAmount
+              normalAmount: brand.normalAmount?brand.normalAmount:0,
+              specialAmount: brand.specialAmount?brand.specialAmount:0
             })
           })
         })

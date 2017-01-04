@@ -170,7 +170,7 @@ export default {
         key: '2',
         value: '分期购买',
         icon: fqImg,
-        description: '24期内分期免息'
+        description: '最高24期内分期免息'
       }, {
         key: '3',
         value: '微信支付',
