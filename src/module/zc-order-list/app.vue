@@ -94,9 +94,9 @@
 <confirm :show.sync="showConfirm.receive" title="" confirm-text="是" cancel-text="否" @on-confirm="receive(tempOrderNo)">
   <p style="text-align:center;">您是否确认收到货物?</p>
 </confirm>
-<confirm :show.sync="showConfirm.refund" title=""  cancel-text="取消">
+<confirm :show.sync="showConfirm.refund" title=""  cancel-text="取消" confirm-text="是" @on-confirm="goto('tel:40000390808')">
   <!-- @on-confirm="refund(tempOrderNo)" -->
-  <p style="text-align:center;">点我拨打<a href="tel:40000390808" style="text-decoration: none; color: transparent;">400-0039-0808</a></p>
+  <p style="text-align:center;">点我拨打<a href="tel:40000390808" style="text-decoration: none; color: #88c928;">400-0039-0808</a></p>
 </confirm>
 </template>
 
@@ -258,6 +258,9 @@ export default {
       }).catch((res) => {
         alert('删除订单失败，请重试')
       })
+    },
+    goto(url) {
+      location.href = url
     }
   }
 }
