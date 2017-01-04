@@ -7,6 +7,7 @@
 <img style="height:225px;width:calc(100% - 30px);margin-left:15px;" :src="cardP.local" v-if="cardP.local != null">
 
 <x-button slot="right" :class="{'btn-active':isFilled()}" style="background-color:#e2e2e2;color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="isFilled()?nextStep():return">提交</x-button>
+<loading :show="showLoading" text="正努力加载.."></loading>
 <j-tel style="padding-bottom:40px;"></j-tel>
 </template>
 
@@ -14,6 +15,7 @@
 import Lib from 'assets/Lib.js'
 import ToUploadPhoto from 'components/j-to-upload-photo'
 import XButton from 'vux-components/x-button'
+import Loading from 'vux-components/loading'
 import JTel from 'components/j-tel'
 import axios from 'axios'
 Lib.M.auth(axios)
@@ -22,13 +24,15 @@ export default {
     return {
       cardF:{local:null,server:null},
       cardB:{local:null,server:null},
-      cardP:{local:null,server:null}
+      cardP:{local:null,server:null},
+      showLoading: false
     }
   },
   components: {
     ToUploadPhoto,
     XButton,
-    JTel
+    JTel,
+    Loading
   },
   ready() {
     axios.post(`${Lib.C.wxApi}mp/jsapiTicket`, {url:location.href}).then((res) => {
@@ -79,16 +83,18 @@ export default {
         return this.cardF.server!==null&&this.cardB.server!==null&&this.cardP.server!==null
       },
       nextStep(){
+        this.showLoading = true
         let data = JSON.parse(localStorage.getItem("apply-info"))
         data.idCardFrontImgInsert = [this.cardF.server]
         data.idCardBackImgInsert = [this.cardB.server]
         data.idCardHandImgInsert = [this.cardP.server]
         axios.put(`${Lib.C.loanApi}user-activate`,data).then((res)=>{
           alert("激活信息填写成功，请等待工作人员联系!")
-          console.log(res)
           location.href = './instalment.html'
+          this.showLoading = false
         }).catch((res)=>{
           alert("网络连接失败，请重试")
+          this.showLoading = false
         })
       }
   }
