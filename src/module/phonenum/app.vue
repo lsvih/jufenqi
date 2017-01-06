@@ -128,7 +128,7 @@ export default {
 	    		axios.post(`${Lib.C.userApi}auth/registerUsingMobile`, {}, {
 	    			params: {
 	    				mobile: this.myPhoneNum,
-	    				userId: JSON.parse(localStorage.getItem("user")).userId,
+	    				// userId: JSON.parse(localStorage.getItem("user")).userId,
 	    				code: this.myVerti
 		      		},
 		      		withCredentials: true,
