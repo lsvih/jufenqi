@@ -118,7 +118,7 @@ export default {
       showAreaPicker: false,
       showInsNumberPicker: false,
       insNumberList: [
-        [3, 6, 9, 12, 24]
+        [12, 24, 36, 48, 60]
       ]
     }
   },

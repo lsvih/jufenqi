@@ -42,7 +42,7 @@ export default {
       if(type>2){
         return ['您的订单支付已完成','商家将在3个工作日内发货']
       }else{
-        return ['您的订单已提交','收款人将在3个工作日内与您联系，并线下刷卡']
+        return ['您的订单已提交','收款人将最迟1个工作日内与您联系，并线下刷卡']
       }
     }
   }
@@ -51,7 +51,7 @@ export default {
 
 
 
-<style lang="less" scoped>
+<style lang="less">
 .apply-success {
     position: relative;
     width: 100%;
