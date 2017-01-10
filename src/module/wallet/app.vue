@@ -19,7 +19,7 @@
     <x-input title="卡号" type="Number" keyboard="number" :value.sync="po1.cardNumber" placeholder="请输入正确的银行卡号"></x-input>
   </group>
   <x-button class="postal-1" :class="{active:isFilledPo1()}" slot="right" style="background-color:#e2e2e2;color:#fff;margin:0 20px;width:calc( 100% - 40px )" v-tap="isFilledPo1()?submitPo1():return">提交</x-button>
-  <div class="tip">提现将于5-10个工作日内到账</div>
+  <div class="tip">提现将于3个工作日内到账</div>
   <j-tel></j-tel>
 </div>
 

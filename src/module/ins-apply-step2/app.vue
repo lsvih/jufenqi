@@ -118,7 +118,7 @@ export default {
       showAreaPicker: false,
       showInsNumberPicker: false,
       insNumberList: [
-        [3, 6, 9, 12, 24]
+        [12, 24, 36, 48, 60]
       ]
     }
   },
@@ -141,7 +141,7 @@ export default {
       let data = JSON.parse(window.localStorage.getItem("apply-info"))
       data.province = city[0]
       data.city = city[1]
-      data.county = city[2]
+      data.country = city[2]
       data.address = this.address
       data.houseArea = this.areaSize
       data.expectQuota = this.wantIns

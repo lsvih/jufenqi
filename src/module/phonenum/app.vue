@@ -128,7 +128,7 @@ export default {
 	    		axios.post(`${Lib.C.userApi}auth/registerUsingMobile`, {}, {
 	    			params: {
 	    				mobile: this.myPhoneNum,
-	    				userId: JSON.parse(localStorage.getItem("user")).userId,
+	    				// userId: JSON.parse(localStorage.getItem("user")).userId,
 	    				code: this.myVerti
 		      		},
 		      		withCredentials: true,
@@ -146,6 +146,10 @@ export default {
 			    	// console.log(code)
 			    	if (code == 40004) {
 			    		alert('手机已经绑定了')
+			    		let data = localStorage.getItem("user")
+					    data.profile.mobile = this.myPhoneNum
+					    window.localStorage.setItem("user", JSON.stringify(data))
+			    		location.href = this.lastUrl
 			    	} else if (code == 90204) {
 			    		this.codeError = true
 			    	}
