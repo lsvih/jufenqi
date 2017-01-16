@@ -7,7 +7,7 @@
 <div class="pal-1" v-if="status === 0">
   <x-button class="postal-1" slot="right" style="color:#fff;background-color:#88C928;margin:0 20px;width:calc( 100% - 40px )" v-tap="status = 1">银行卡提现</x-button>
   <x-button class="postal-2" slot="right" style="color:#fff;background-color:#88C928;margin:0 20px;width:calc( 100% - 40px )" v-tap="status = 2">微信提现</x-button>
-  <div class="tip">提现将于5-10个工作日内到账</div>
+  <div class="tip">提现将于3个工作日内到账</div>
   <j-tel></j-tel>
 </div>
 
