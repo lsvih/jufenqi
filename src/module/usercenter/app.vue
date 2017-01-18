@@ -31,7 +31,7 @@
       <img src="icon/zc-order.png">
       <div class="icon-item-name">主材订单</div>
     </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-t" onclick="">
+    <flexbox-item class="icon-item vux-1px-t" onclick="location.href='./tk-order-list.html'">
       <img src="icon/repay-order.png">
       <div class="icon-item-name">退款订单</div>
     </flexbox-item>
