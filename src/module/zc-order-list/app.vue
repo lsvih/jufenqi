@@ -301,12 +301,12 @@ export default {
       axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/refund`,
         {
           reason: this.refundApply.reason,
-          normalAmount: this.refundApply.normalAmount,
-          specialAmount: this.refundApply.specialAmount
+          normalAmount: this.refundApply.normalAmount?this.refundApply.normalAmount:null,
+          specialAmount: this.refundApply.specialAmount?this.refundApply.specialAmount:null
         }
       ).then((res) => {
         alert('您的退款已申请！')
-        // location.href = './tk-order-list.html'
+        location.href = './tk-order-list.html'
       }).catch((res) => {
         alert('连接服务器失败，退款未能申请，请稍后再试！')
       })
