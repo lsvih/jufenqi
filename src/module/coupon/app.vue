@@ -1,7 +1,7 @@
 <template>
   <div class="content">
-    <div class="coupon-wrapper" v-for="coupon in coupons">
-      <div class="coupon">
+    <div class="coupon-wrapper" >
+      <div class="coupon" v-for="coupon in coupons">
         <img src="bg.png" alt="">
         <div class="coupon-text" v-tap="coupon.status = 1">
           <p style="font-size: 35px;top: 25%;">{{coupon.amount}}<span>&nbsp;元</span></p>
