@@ -113,9 +113,10 @@ export default {
       axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${!this.from?'':'?apptNo='+this.from}`, {
         customerId: JSON.parse(localStorage.user).userId,
         orders: orders,
-        couponUsed: {
-          id: this.myCoupon.id?this.myCoupon.id:null
-        }
+        couponUsed: this.myCoupon.id?{id:this.myCoupon.id}:null
+        // {
+        //   id: this.myCoupon.id?this.myCoupon.id:null
+        // }
       }).then((res) => {
         // 如果订单来自备选清单，则删除备选清单中与付款订单中重合的门店。
         if (true) {
