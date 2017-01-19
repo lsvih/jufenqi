@@ -47,9 +47,9 @@
       <img src="icon/repay.png">
       <div class="icon-item-name">我的还款</div>
     </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-r vux-1px-t">
+    <flexbox-item class="icon-item vux-1px-r vux-1px-t" v-tap="goto('./coupon.html')">
       <img src="icon/ID.png">
-      <div class="icon-item-name">我的认证</div>
+      <div class="icon-item-name">优惠券</div>
     </flexbox-item>
     <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./favorite.html')">
       <img src="icon/favorite.png">
