@@ -16,7 +16,7 @@
             <cell v-for="brand in shopList" class="cell-item">
               <img :src="img + brand.logoImg" class="worker-logo" width="80px" height="80px">
               <div class="worker-name">{{brand.name}}</div>
-              <div class="worker-address">{{brand.intro}}</div>
+              <div class="shop-address">{{brand.intro}}</div>
               <div class="detail-click-area" v-tap="goto('./brand-detail.html?id='+brand.id)"></div>
               <div class="favorite-click-area" v-tap="cancelBrandFavorite(brand)"></div>
               <img class="worker-is-favorite" src="favorite-fill.png">
@@ -32,7 +32,7 @@
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-88+'px'" lock-x scrollbar-y v-if="workerList.length > 0" v-ref:zx>
           <group style="margin-top:-1.17647059em;">
-            <cell v-for="worker in workerList" class="cell-item">
+            <cell v-for="worker in workerList" class="cell-item" style="height: 80px;">
               <img :src="worker.profileImage" class="worker-logo" width="120px" height="80px">
               <div class="worker-name">{{worker.nickname}}</div>
               <div class="worker-address">{{worker.nativePlace}}</div>
@@ -173,7 +173,7 @@ body {
 }
 .cell-item {
     position: relative;
-    height: 80px;
+    height: 100px;
     .worker-logo {
         position: absolute;
         top: 10px;
@@ -183,7 +183,7 @@ body {
     }
     .worker-name {
         position: absolute;
-        top: 10px;
+        top: 7px;
         left: 100px;
         font-size: 12px;
         color: #393939;
@@ -226,10 +226,12 @@ body {
     }
     .shop-address {
         position: absolute;
-        top: 44px;
-        left: 15px;
+        top: 25px;
+        left: 100px;
         font-size: 12px;
         color: #999;
+        width: calc(~"100% - 150px");
+        text-align: left;
     }
     .shop-del {
         position: absolute;
