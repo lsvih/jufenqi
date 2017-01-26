@@ -16,10 +16,10 @@
  <swiper class="module-swiper" loop auto height="200px" dots-class="dot-custom" :list="newBannerList" :index="bannerIndex"  @on-index-change="bannerOnChange" v-tap="clickBanner" :show-desc-mask="true" dots-position="center" :interval="5000">
   </swiper>
   <flexbox class="module-class">
-    <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5" v-tap="goto(class.url)">
+    <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5" v-tap="goto(class.url)" style="margin-left: 6px;">
       <img class="module-class-icon" :src="class.img">
       <!-- `/static/images/icon/${class.name}.png` -->
-      <div class="module-class-name">{{class.name}}</div>
+      <div class="module-class-name" :style="{width: class.name.length >4?'105%':'100%'}">{{class.name}}</div>
     </flexbox-item>
   </flexbox>
   <flexbox class="module-class">
