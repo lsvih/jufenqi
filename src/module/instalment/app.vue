@@ -2,7 +2,7 @@
 <flexbox class="vux-1px-d">
   <flexbox-item class="block-1">
     <!-- <img class="help" src="help.png"><img class="alert" src="alert.png"> -->
-    <div class="ins-title">已贷款额度（元）</div>
+    <div class="ins-title" v-if="thisStatus == '已激活'">已贷款额度（元）</div>
     <div class="ins-limit" v-if="thisStatus == '已激活'">{{limit|currency "" 2}}</div>
     <!-- <div class="ins-limit" v-else>敬请期待</div> -->
     <div class="ins-limit-apply" v-if="thisStatus == '未申请'||thisStatus == '激活失败'||thisStatus == '申请失败'" v-tap="goto('./ins-apply.html')">去申请</div>
@@ -11,12 +11,21 @@
     <img class="bg" src="fq_bg.png" width="100%" height="auto">
   </flexbox-item>
 </flexbox>
-<flexbox class="vux-1px-t block-2">
-  <flexbox-item class="balance">
-    <div>可贷款总额度</div>
-    <div class="balance-money">{{ins|currency "" 2}}</div>
+<flexbox class="vux-1px-t block-2" v-if="thisStatus == '已激活'">
+  <flexbox-item class="balance" >
+    <div >可贷款总额度</div>
+    <div class="balance-money" >{{ins|currency "" 2}}</div>
   </flexbox-item>
 </flexbox>
+<flexbox class="vux-1px-t block-2" v-if="thisStatus == '未申请'||thisStatus == '激活失败'||thisStatus == '申请失败'">
+  <flexbox-item class="balance">
+    <div>购买主材最高24期免息</div>
+  </flexbox-item>
+</flexbox>
+<div class="process-wrapper" style="width:100%; overflow: hidden;">
+    <j-installment-process :step="3" v-if="thisStatus == '未激活'"></j-installment-process>
+    <j-installment-process :step="5" v-if="thisStatus == '激活中'"></j-installment-process>
+  </div>
 <scroller class="block-3" height="calc( 100% - 190px - 44px )" :lock-x="true" :scrollbar-y="true">
   <div>
     <div style="width:100%" :style="{'height':getScreenWidth() * 1.872 + 'px'}"><img src="/static/temp/分期.jpg" width="100%">
@@ -38,6 +47,8 @@ import {
 import Loading from 'vux-components/loading'
 import Scroller from "vux-components/scroller"
 import axios from 'axios'
+import JInstallmentProcess from 'components/j-installment-process'
+
 Lib.M.auth(axios, true)
 export default {
   data() {
@@ -69,6 +80,7 @@ export default {
         }
       ],
       thisStatus: "正在查询",
+      stepNum: 0
     }
   },
   components: {
@@ -76,7 +88,8 @@ export default {
     Flexbox,
     FlexboxItem,
     Scroller,
-    Loading
+    Loading,
+    JInstallmentProcess
   },
   ready() {
     axios.get(`${Lib.C.loanApi}loan-applications`, {
@@ -152,7 +165,7 @@ export default {
         color: #393939;
     }
     .ins-limit-apply {
-        top: 66px;
+        top: 44px;
         text-align: center;
         width: 150px;
         height: 44px;
@@ -219,5 +232,8 @@ export default {
     height: 1px;
     width: 100%;
     background-color: #eee;
+}
+.ins-process {
+  padding: 20px 0;
 }
 </style>

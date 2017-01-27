@@ -20,9 +20,12 @@
         <div class="cell-right">{{brand.clerk?brand.clerk.name:'请选择（非必填）'}}</div>
       </div>
       <!-- 输入品牌价格 -->
-      <div class="input-cell">
+      <div class="input-cell" :style="{height: brand.specialAmount?'115px':'88px'}">
         <div class="special-amount">特价金额</div>
         <input type="number" class="special-input" v-model="brand.specialAmount" placeholder="请输入特价金额" />
+        <div class="specialTip" style="top: 44px; color: #3BA794;"  v-if="brand.specialAmount">将为您返现：{{brand.specialAmount * 0.04 | currency '￥' 2}} 元</div>
+        <div class="specialTip" style="bottom: 44px;" v-if="brand.specialAmount">购买特价商品会返还特价金额4%的优惠券</div>
+        <!--给您   面值-->
         <div class="normal-amount">正价金额</div>
         <input type="number" class="normal-input" v-model="brand.normalAmount" placeholder="请输入正价金额" />
       </div>
@@ -45,6 +48,10 @@
       <div class="cell-left">总正价金额</div>
       <div class="cell-right">{{countAllAmount('normalAmount')|currency '￥' 2}}</div>
     </div>
+    <div class="coupon" v-tap="selectCoupon()">
+      <div class="cell-left">优惠券<img src="./select.png"></div>
+      <div class="cell-right">{{-myCoupon.couponAmount|currency '￥' 2}}</div>
+    </div>
     <div class="sum">
       <div class="cell-left">订单总金额</div>
       <div class="cell-right">{{countAllAmount()|currency '￥' 2}}</div>
@@ -55,6 +62,7 @@
 <loading :show="showLoading" text="请稍后.."></loading>
 <popup-picker title="品牌" :data="tempBrandList" :columns="1" :show-cell="false" :show.sync="showSelectBrand" :value.sync="tempAddBrand" @on-hide="onSelectedBrand" show-name v-ref:brand></popup-picker>
 <popup-picker title="店员" :data="tempClerkList" :columns="1" :show-cell="false" :show.sync="showSelectClerk" :value.sync="tempAddClerk" @on-hide="onSelectedClerk" show-name v-ref:brand></popup-picker>
+<popup-picker title="优惠券" :data="tempCouponList" :columns="1" :show-cell="false" :show.sync="showSelectCoupon" :value.sync="tempAddCoupon" :placeholder="你还没有优惠券" @on-hide="onSelectedCoupon" show-name></popup-picker>
 </template>
 <script>
 import Lib from 'assets/Lib.js'
@@ -62,11 +70,12 @@ import PopupPicker from 'vux-components/popup-picker'
 import Loading from 'vux-components/loading'
 import telImg from 'common/assets/images/tel.png'
 import axios from 'axios'
+
 Lib.M.auth(axios)
 export default {
   components: {
     PopupPicker,
-    Loading,
+    Loading
   },
   ready() {},
   methods: {
@@ -103,7 +112,11 @@ export default {
         // 如果订单来自备选清单
       axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${!this.from?'':'?apptNo='+this.from}`, {
         customerId: JSON.parse(localStorage.user).userId,
-        orders: orders
+        orders: orders,
+        couponUsed: this.myCoupon.id?{id:this.myCoupon.id}:null
+        // {
+        //   id: this.myCoupon.id?this.myCoupon.id:null
+        // }
       }).then((res) => {
         // 如果订单来自备选清单，则删除备选清单中与付款订单中重合的门店。
         if (true) {
@@ -213,6 +226,28 @@ export default {
         throw err //error
       })
     },
+    selectCoupon() {
+      axios.get(`${Lib.C.mOrderApi}coupons`,{
+        params: {
+          filter: `userId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:2`,
+          size: 10000
+        }
+      }).then((res) => {
+        if (res.data.data.length === 0) {
+          alert('您暂时还没有优惠券。。')
+        } else {
+          res.data.data.map((coupon) => {
+            this.tempCouponList.push({
+              name: coupon.amount + ' 元',
+              value: String(coupon.id)
+            })
+          })
+          this.showSelectCoupon = true
+        }
+      }).catch((res) => {
+        alert('获取优惠券信息失败，请稍后重试..')
+      })
+    },
     onSelectedClerk() {
       if (this.tempAddClerk.length) {
         this.shopList[findIdIndex(this.tempSelectedShop, this.shopList)].brands[this.tempSelectedBrand].clerk = {
@@ -221,6 +256,20 @@ export default {
         }
         this.tempAddClerk = []
       }
+    },
+    onSelectedCoupon() {
+      if (this.tempAddCoupon.length) {
+        this.myCoupon = {
+          couponAmount:  Number(getValue(this.tempAddCoupon[0],this.tempCouponList, 'name').split(' ')[0]),
+          id: getValue(this.tempAddClerk[0], this.tempCouponList, 'value')
+        }
+        // this.myCoupon = {
+        //   couponAmount:  Number(getValue(this.tempAddCoupon[0],this.testList, 'name').split(' ')[0]),
+        //   id: getValue(this.tempAddClerk[0], this.testList, 'value')
+        // }
+      }
+      this.tempAddCoupon = [] 
+      this.tempCouponList = []
     },
     countShopAmount(shop) {
       let result = 0
@@ -235,7 +284,7 @@ export default {
           let special_result = 0
           this.shopList.map((shop) => {
             shop.brands.map((brand) => {
-              special_result += Number(brand.specialAmount)
+              special_result += Number(brand.specialAmount) 
             })
           })
           return special_result
@@ -247,7 +296,7 @@ export default {
               normal_result += Number(brand.normalAmount)
             })
           })
-          return normal_result
+          return normal_result 
           break;
         default:
           let all_result = 0
@@ -256,9 +305,15 @@ export default {
               all_result += (Number(brand.specialAmount) + Number(brand.normalAmount))
             })
           })
-          return all_result
+          return (all_result - this.myCoupon.couponAmount)
           break;
       }
+    }
+  },
+  computed: {
+    TotalAmount() {
+      let total = this.countAllAmount('specialAmount') + this.countAllAmount('specialAmount') - this.myCoupon.couponAmount
+      return total
     }
   },
   data() {
@@ -266,18 +321,30 @@ export default {
       showLoading: false,
       showSelectBrand: false,
       showSelectClerk: false,
+      showSelectCoupon: false,
       shopList: shopInfoPipe(JSON.parse(localStorage.temp)),
       tempBrandList: [],
       tempBrandOperateType: null,
       // tempBrandOperateType为品牌操作的类型，值为0时为添加品牌，值为1时为修改品牌
       tempSelectedShop: null,
       tempSelectedBrand: null,
+      tempCouponList: [],
+      tempAddCoupon: [],
       tempAddBrand: [],
       tempClerkList: [],
       tempAddClerk: [],
       tempSelectedClerk: [],
+      myCoupon: {
+        couponAmount: 0,
+        id: ''
+      },
       telImg,
-      from: Lib.M.GetRequest().from || false
+      from: Lib.M.GetRequest().from || false,
+      testList: [
+        {name: '80 元', value: '1'},
+        {name: '90 元', value: '2'},
+        {name: '100 元', value: '3'},
+      ]
     }
   }
 }
@@ -493,6 +560,35 @@ body {
             font-size: 12px;
         }
     }
+    .coupon {
+        position: relative;
+        width: calc(~"100% - 15px");
+        height: 44px;
+        margin-left: 15px;
+        border-bottom: 1px solid #eee;
+        .cell-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 44px;
+            line-height: 44px;
+            font-size: 12px;
+            img {
+              vertical-align: middle;
+              height: 10px;
+              width: 17px;
+              margin-left: 10px;
+            }
+        }
+        .cell-right {
+            position: absolute;
+            top: 0;
+            right: 15px;
+            height: 44px;
+            line-height: 44px;
+            font-size: 12px;
+        }
+    }
     .sum {
         position: relative;
         margin-left: 15px;
@@ -566,6 +662,13 @@ body {
     }
     .normal-input {
         bottom: 7px;
+    }
+    .specialTip {
+        position: absolute;
+        right: 15px;
+        width: calc(~"100% - 100px");
+        font-size: 11px;
+        color: #ccc;
     }
 }
 
