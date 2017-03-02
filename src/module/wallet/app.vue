@@ -190,16 +190,15 @@ body {
     </div>
   </div>
   <Dialog :show.sync="withdrawShow" >
-  <p style="font-size: 18px;">提现申请</p>
-  <group>
-    <x-input title="提现金额" :value.sync="withdrawAmount" type="number" placeholder="请输入微信提现金额"></x-input>
-    
-  <div class="weui_dialog_ft">
-    <span @click="withdrawShow = false" style="border-right: 1px solid #D5D5D6;">取消</span>
-    <span :class="{'primary': isFilled()}" @click="isFilled()?withdrawPost(tempOrderNo):return">确认申请</span>
-  </div>
-  </group>
-</Dialog>
+    <p style="font-size: 18px;">提现申请</p>
+    <group>
+      <x-input title="提现金额" :value.sync="withdrawAmount" type="number" placeholder="请输入微信提现金额"></x-input>
+      <div class="weui_dialog_ft">
+        <span @click="withdrawShow = false" style="border-right: 1px solid #D5D5D6;">取消</span>
+        <span :class="{'primary': isFilled()}" @click="isFilled()?withdrawPost(tempOrderNo):return">确认申请</span>
+      </div>
+    </group>
+  </Dialog>
 </template>
 
 <script>
@@ -308,6 +307,7 @@ export default {
         alert("提现申请已提交")
         this.wallet = res.data.data.balance
         this.withdrawShow = false
+        location.reload()
       }).catch((res) => {
         alert("提现失败，请稍后再试")
       })
