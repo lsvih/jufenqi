@@ -1,119 +1,346 @@
+<style lang="less">
+body {
+  margin: 0;
+  background-color: #eee;
+  color: #393939;
+  padding: 0;
+}
+input,button,select,textarea {
+  outline:none;
+}
+.add-order {
+  position: relative;
+}
+.order-con {
+  margin-bottom: 3px;
+}
+.shop-name {
+  width: 100%;
+  background-color: #fff;
+  padding: 11px 0;
+  margin-bottom: 1px;
+  p {
+    margin: 0;
+    padding: 0 16px;
+  }
+  .name {
+    color: #254ab0;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .address {
+    font-size: 12px;
+    margin-top: 6px;
+    color: #999;
+  }
+}
+.cell {
+  height: 44px;
+  line-height: 44px;
+  background-color: #fff;  
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  color: #393939;
+  margin-bottom: 1px;
+  img {
+    transform: rotate(-90deg);
+    width: 18px;
+  }
+  .label {
+    font-size: 12px;
+    img {
+      width: 10px;
+      margin-right: 5px;
+    }
+  }
+  .brand-name {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 44px;
+  }
+  .money-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    .brand-amount {
+      font-size: 18px;
+      color: #fc9736;
+      line-height: 47px;
+    }
+  }
+}
+.price-calc{
+  padding: 10px 16px;
+  background-color: #fff;
+  margin-bottom: 1px;
+  .price {
+    font-size: 12px;
+    .label {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    input {
+      display: inline-block;
+      width: 189px;
+      height: 30px;
+      border: 1px solid #393939;
+      border-radius: 5px;
+      padding-left: 11px;
+    }
+    input::placeholder {
+      color: #999;
+    }
+    p {
+      margin: 5px 0;
+      padding: 0 0 0 36px;
+      span {
+        color: #fc9736;
+      }
+    }
+  }
+}
+.btn-wrapper {
+  width: 100%;
+  height: 44px;
+  background-color: #fff;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  .money-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    .brand-amount {
+      font-size: 18px;
+      color: #fc9736;
+      line-height: 47px;
+    }
+  }
+  .btn {
+    width: 100px;
+    line-height: 44px;
+    text-align: center;
+    background: #ccc;
+    color: #fff;
+    margin-left: 10px;
+  }
+}
+.active {
+  background: -webkit-radial-gradient(ellipse at center, rgb(151, 197, 93),rgb(153, 197, 102)) !important; 
+  background: radial-gradient(ellipse at center, rgb(151, 197, 93),rgb(153, 197, 102)) !important; 
+}
+.little-cell {
+  height: 12px;
+  line-height: 0px;
+  color: #f97c36;
+}
+</style>
+
 <template>
-<div class="content">
-  <div class="store" v-for="shop in shopList">
-    <div class="store-name">
-      <div class="cell-left">{{shop.name}}</div>
-      <div class="cell-right" v-tap="del(shop)">删除</div>
-    </div>
-    <div class="store-address">
-      <div class="cell-left">地址 <span>{{shop.address}}</span></div>
-      <div class="cell-right" v-tap="goto('tel:'+shop.phone)"><img :src='telImg'></div>
-    </div>
-    <!-- 品牌 -->
-    <div v-for="brand in shop.brands" track-by="$index">
-      <div class="brand-name">
-        <div class="cell-left" v-tap="addBrand(shop.id,$index)">{{brand.name}}<img src='./select.png'></div>
-        <div class="cell-right" v-tap="delBrand(shop.id,brand.id)">删除</div>
+  <div class="add-order">
+    <div class="order-con" v-for="shop in shopList">
+      <div class="shop-name">
+        <p class="name">{{shop.name}}</p>
+        <p class="address">{{shop.address}}</p>
       </div>
-      <div class="clerk">
-        <div class="cell-left" v-tap="selectClerk(shop.id,$index)">店员选择<img src='./select.png'></div>
-        <div class="cell-right">{{brand.clerk?brand.clerk.name:'请选择（非必填）'}}</div>
-      </div>
-      <!-- 输入品牌价格 -->
-      <div class="input-cell" :style="{height: brand.specialAmount?'115px':'88px'}">
-        <div class="special-amount">特价金额</div>
-        <input type="number" class="special-input" v-model="brand.specialAmount" placeholder="请输入特价金额" />
-        <div class="specialTip" style="top: 44px; color: #3BA794;"  v-if="brand.specialAmount">将为您返现：{{brand.specialAmount * 0.04 | currency '￥' 2}} 元</div>
-        <div class="specialTip" style="bottom: 44px;" v-if="brand.specialAmount">购买特价商品会返还特价金额4%的优惠券</div>
-        <!--给您   面值-->
-        <div class="normal-amount">正价金额</div>
-        <input type="number" class="normal-input" v-model="brand.normalAmount" placeholder="请输入正价金额" />
+      <div class="brand-wrapper" v-for="brand in shop.brands" track-by="$index">
+        <div class="cell">
+          <span class="label">
+            品牌名称
+            <img src="./delete.png" style="margin-left: 5px;" v-tap="delBrand(shop.id,$index)" v-if="$index > 0">
+          </span>
+          <span class="brand-name" v-tap="addBrand(shop.id,$index)">
+            {{brand.name}}
+            <img src="./select.png">
+          </span>
+        </div>
+        <div class="cell">
+          <span class="label">店员名称</span>
+          <span class="brand-name" v-tap="selectClerk(shop.id,$index)">
+            {{brand.clerk?brand.clerk.name:'请选择（非必填）'}}
+            <img src="./select.png">
+          </span>
+        </div>
+        <div class="price-calc">
+          <div class="price">
+            <span class="label">正价</span>
+            <input type="number" v-model="brand.normalAmount" placeholder="请输入正价金额">
+            <p>将为您贴息<span>{{brand.normalAmount?(brand.normalAmount*interestRate): 0 | currency '￥'}}</span>元</p>
+          </div>
+          <div class="price">
+            <span class="label">特价</span>
+            <input type="number" v-model="brand.specialAmount" placeholder="请输入特价金额">
+            <p>将为您贴息<span>{{brand.specialAmount?(brand.specialAmount*0.04):0 | currency '￥'}}</span>元，返点券<span>{{brand.specialAmount?(brand.specialAmount*4):0}}</span>点</p>
+            <p style="color: #fc9736; margin-top: 11px;">注：所有贴息、返券按照实际支付金额计算</p>
+          </div> 
+        </div>
+        <div class="cell">
+          <span class="label" v-tap="addBrand(shop.id)">
+            <img src="./add-brand.png">
+            新增品牌
+          </span>
+          <div class="money-wrapper">
+            <div class="brand-name">
+              小计：
+            </div>
+            <div class="brand-amount">{{countBrandAmount(shop, $index)|currency '￥' 2}}</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="brand-sum">
-      <div class="cell-left">总金额</div>
-      <div class="cell-right">{{countShopAmount(shop)|currency '￥' 2}}</div>
+    <div class="totalprice">
+      <div class="cell" style="margin-bottom: 0">
+        <div class="label" >使用{{tempCoupon()}}点券抵{{tempCoupon()/100 | currency '￥' 2}}元</div>
+        <div class="brand-name">
+          <input type="checkbox" v-model="isCouponUsed" v-tap="checkBox()">
+        </div>
+      </div>
+      <div class="cell little-cell">
+        <div class="label">注：点券返还金额无法超过购买总价</div>
+      </div>
+      <div class="cell">
+        <div class="label">正价金额小计</div>
+        <div class="brand-amount">
+          {{countAllAmount('normalAmount')|currency '￥' 2}}
+        </div>
+      </div>
+      <div class="cell" style="margin-bottom: 80px;">
+        <div class="label">特价金额小计</div>
+        <div class="brand-amount">
+          {{countAllAmount('specialAmount')|currency '￥' 2}}
+        </div>
+      </div>
     </div>
-    <div class="brand-add" v-tap="addBrand(shop.id)">添加品牌</div>
+    <div class="triangle">
+      
+    </div>
+    
   </div>
-  <div class="amount">
-    <div class="title">
-      <div class="cell-left">订单总价</div>
+  <div class="btn-wrapper">
+    <div class="money-wrapper">
+      <div style="line-height: 44px;">小计：</div>
+      <div class="brand-amount">{{isCouponUsed?(countAllAmount() - tempCoupon()/100):countAllAmount() | currency '￥' 2}}</div>
     </div>
-    <div class="sum">
-      <div class="cell-left">总特价金额</div>
-      <div class="cell-right">{{countAllAmount('specialAmount')|currency '￥' 2}}</div>
-    </div>
-    <div class="sum">
-      <div class="cell-left">总正价金额</div>
-      <div class="cell-right">{{countAllAmount('normalAmount')|currency '￥' 2}}</div>
-    </div>
-    <div class="coupon" v-tap="selectCoupon()">
-      <div class="cell-left">优惠券<img src="./select.png"></div>
-      <div class="cell-right">{{-myCoupon.couponAmount|currency '￥' 2}}</div>
-    </div>
-    <div class="sum">
-      <div class="cell-left">订单总金额</div>
-      <div class="cell-right">{{countAllAmount()|currency '￥' 2}}</div>
-    </div>
+    <div class="btn" v-bind:class="{'active':isFinished()}" v-tap="isFinished()?submit():return">提交订单</div>
   </div>
-</div>
-<div class="submit-btn" v-bind:class="{'active':isFinished()}" v-tap="isFinished()?submit():return">确认订单</div>
+
 <loading :show="showLoading" text="请稍后.."></loading>
+
 <popup-picker title="品牌" :data="tempBrandList" :columns="1" :show-cell="false" :show.sync="showSelectBrand" :value.sync="tempAddBrand" @on-hide="onSelectedBrand" show-name v-ref:brand></popup-picker>
+
 <popup-picker title="店员" :data="tempClerkList" :columns="1" :show-cell="false" :show.sync="showSelectClerk" :value.sync="tempAddClerk" @on-hide="onSelectedClerk" show-name v-ref:brand></popup-picker>
-<popup-picker title="优惠券" :data="tempCouponList" :columns="1" :show-cell="false" :show.sync="showSelectCoupon" :value.sync="tempAddCoupon" :placeholder="你还没有优惠券" @on-hide="onSelectedCoupon" show-name></popup-picker>
+
+
 </template>
+
 <script>
 import Lib from 'assets/Lib.js'
 import PopupPicker from 'vux-components/popup-picker'
 import Loading from 'vux-components/loading'
 import telImg from 'common/assets/images/tel.png'
 import axios from 'axios'
+import Group from 'vux-components/group'
+import Cell from 'vux-components/cell'
 
 Lib.M.auth(axios)
 export default {
   components: {
     PopupPicker,
-    Loading
+    Loading,
+    Group,
+    Cell
   },
-  ready() {},
+  ready() {
+    //若用户办理过分期，则取相应银行利率，否则默认为8%
+    axios.get(`http://wx.jufenqi.com:8080/loanapplicant/api/loan-applications?filter=userId:${this.userId}&expand=bankBranchPeriod`)
+    .then((res) => {
+      this.interestRate = res.data.data.bankBranchPeriod?res.data.data.bankBranchPeriod.interestRate:0.08
+    }).catch((err) => {
+      console.log(err)
+    })
+    //获取用户点券信息
+    this.getCoupon()
+  },
+  data() {
+    return {
+      userId: JSON.parse(localStorage.getItem("user")).userId,
+      showLoading: false,
+      showSelectBrand: false,
+      showSelectClerk: false,
+      showSelectCoupon: false,
+      shopList: shopInfoPipe(JSON.parse(localStorage.temp)),
+      tempBrandList: [],
+      tempBrandOperateType: null,
+      // tempBrandOperateType为品牌操作的类型，值为0时为添加品牌，值为1时为修改品牌
+      tempSelectedShop: null,
+      tempSelectedBrand: null,
+      tempAddBrand: [],
+      tempClerkList: [],
+      tempAddClerk: [],
+      tempSelectedClerk: [],
+      // 点券
+      myCoupon: [],
+      couponAmount: null,
+      isCouponUsed: false,
+
+      telImg,
+      from: Lib.M.GetRequest().from || false,
+      //银行利率
+      interestRate: 0.08,
+    }
+  },
   methods: {
-    goto(url) {
-      location.href = url
-    },
-    del(shop) {
-      this.shopList.$remove(shop)
-    },
-    isFinished() {
-      if (!this.shopList.length) return false
-      for (let shop of this.shopList) {
-        if(shop.brands.length === 0) return false
-        for (let brand of shop.brands) {
-          if (brand.specialAmount == null && brand.normalAmount == null) return false
-        }
-      }
-      return true
-    },
-    submit() {
-      let orders = []
-      this.showLoading = true
-      this.shopList.map((shop) => {
-          shop.brands.map((brand) => {
-            orders.push({
-              storeId: shop.id,
-              brandId: brand.id,
-              // clerkId: brand.clerk.id?brand.clerk.id:,
-              normalAmount: brand.normalAmount?brand.normalAmount:0,
-              specialAmount: brand.specialAmount?brand.specialAmount:0
+      goto(url) {
+        location.href = url
+      },
+      del(shop) {
+        this.shopList.$remove(shop)
+      },
+      isFinished() {
+        if (!this.shopList.length) return false
+          for (let shop of this.shopList) {
+            if(shop.brands.length === 0) return false
+              for (let brand of shop.brands) {
+                if (brand.specialAmount == null && brand.normalAmount == null) return false
+                if (brand.specialAmount == '' && brand.normalAmount == '') return false
+              }
+          }
+          return true
+      },
+      submit() {
+        let groups = []
+        this.showLoading = true
+        this.shopList.map((shop) => {
+          groups.push({
+            storeId: shop.id,
+            orders: []
+          })
+          groups.map((e) => {
+            shop.brands.map((brand) => {
+              if (brand.clerk != null) {
+                e.orders.push({
+                  brandId: Number(brand.id),
+                  clerkId: Number(brand.clerk.id),
+                  normalAmount: brand.normalAmount?Number(brand.normalAmount):0,
+                  specialAmount: brand.specialAmount?Number(brand.specialAmount):0
+                })
+              } else {
+                e.orders.push({
+                  brandId: Number(brand.id),
+                  normalAmount: brand.normalAmount?Number(brand.normalAmount):0,
+                  specialAmount: brand.specialAmount?Number(brand.specialAmount):0
+                })
+              }
             })
           })
         })
         // 如果订单来自备选清单
-      axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${!this.from?'':'?apptNo='+this.from}`, {
-        customerId: JSON.parse(localStorage.user).userId,
-        orders: orders,
-        couponUsed: this.myCoupon.id?{id:this.myCoupon.id}:null
+        axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${!this.from?'':'?apptNo='+this.from}`, {
+          customerId: JSON.parse(localStorage.user).userId,
+          groups: groups,
+          useCoupon: this.isCouponUsed
         // {
         //   id: this.myCoupon.id?this.myCoupon.id:null
         // }
@@ -166,7 +393,8 @@ export default {
       })
     },
     delBrand(shopId, brandId) {
-      this.shopList[findIdIndex(shopId, this.shopList)].brands.$remove(this.shopList[findIdIndex(shopId, this.shopList)].brands[findIdIndex(brandId, this.shopList[findIdIndex(shopId, this.shopList)].brands)])
+      let shopIndex = findIdIndex(shopId, this.shopList)
+      this.shopList[shopIndex].brands.$remove(this.shopList[shopIndex].brands[brandId])
     },
     onSelectedBrand() {
       if (this.tempAddBrand.length) {
@@ -226,26 +454,21 @@ export default {
         throw err //error
       })
     },
-    selectCoupon() {
+    getCoupon() {
       axios.get(`${Lib.C.mOrderApi}coupons`,{
         params: {
-          filter: `userId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:2`,
+          filter: `userId:${JSON.parse(window.localStorage.getItem('user')).userId}`,
           size: 10000
         }
       }).then((res) => {
-        if (res.data.data.length === 0) {
-          alert('您暂时还没有优惠券。。')
-        } else {
-          res.data.data.map((coupon) => {
-            this.tempCouponList.push({
-              name: coupon.amount + ' 元',
-              value: String(coupon.id)
-            })
-          })
-          this.showSelectCoupon = true
-        }
-      }).catch((res) => {
-        alert('获取优惠券信息失败，请稍后重试..')
+          if (res.data.data.length === 0) {
+            this.couponAmount = 0
+          } else {
+            this.couponAmount = res.data.data[0].amount
+          }
+         }).catch((err) => {
+              alert('获取点券信息失败，请稍后重试..')
+              console.log(err)
       })
     },
     onSelectedClerk() {
@@ -257,96 +480,73 @@ export default {
         this.tempAddClerk = []
       }
     },
-    onSelectedCoupon() {
-      if (this.tempAddCoupon.length) {
-        this.myCoupon = {
-          couponAmount:  Number(getValue(this.tempAddCoupon[0],this.tempCouponList, 'name').split(' ')[0]),
-          id: getValue(this.tempAddClerk[0], this.tempCouponList, 'value')
-        }
-        // this.myCoupon = {
-        //   couponAmount:  Number(getValue(this.tempAddCoupon[0],this.testList, 'name').split(' ')[0]),
-        //   id: getValue(this.tempAddClerk[0], this.testList, 'value')
-        // }
-      }
-      this.tempAddCoupon = [] 
-      this.tempCouponList = []
-    },
-    countShopAmount(shop) {
+    // onSelectedCoupon() {
+    //   if (this.tempAddCoupon.length) {
+    //     this.myCoupon = {
+    //       couponAmount:  Number(getValue(this.tempAddCoupon[0],this.tempCouponList, 'name').split(' ')[0]),
+    //       id: getValue(this.tempAddClerk[0], this.tempCouponList, 'value')
+    //     }
+    //     this.myCoupon = {
+    //       couponAmount:  Number(getValue(this.tempAddCoupon[0],this.testList, 'name').split(' ')[0]),
+    //       id: getValue(this.tempAddClerk[0], this.testList, 'value')
+    //     }
+    //   }
+    //   this.tempAddCoupon = [] 
+    //   this.tempCouponList = []
+    // },
+    countBrandAmount(shop, brandId) {
       let result = 0
-      shop.brands.map((brand) => {
-        result += (Number(brand.specialAmount) + Number(brand.normalAmount))
-      })
+      result = Number(shop.brands[brandId].normalAmount) + Number(shop.brands[brandId].specialAmount)
       return result
     },
     countAllAmount(type) {
       switch (type) {
         case 'specialAmount':
-          let special_result = 0
-          this.shopList.map((shop) => {
-            shop.brands.map((brand) => {
-              special_result += Number(brand.specialAmount) 
-            })
+        let special_result = 0
+        this.shopList.map((shop) => {
+          shop.brands.map((brand) => {
+            special_result += Number(brand.specialAmount) 
           })
-          return special_result
-          break;
+        })
+        return special_result
+        break;
         case 'normalAmount':
-          let normal_result = 0
-          this.shopList.map((shop) => {
-            shop.brands.map((brand) => {
-              normal_result += Number(brand.normalAmount)
-            })
+        let normal_result = 0
+        this.shopList.map((shop) => {
+          shop.brands.map((brand) => {
+            normal_result += Number(brand.normalAmount)
           })
-          return normal_result 
-          break;
+        })
+        return normal_result 
+        break;
         default:
-          let all_result = 0
-          this.shopList.map((shop) => {
-            shop.brands.map((brand) => {
-              all_result += (Number(brand.specialAmount) + Number(brand.normalAmount))
-            })
+        let all_result = 0
+        this.shopList.map((shop) => {
+          shop.brands.map((brand) => {
+            all_result += (Number(brand.specialAmount) + Number(brand.normalAmount))
           })
-          return (all_result - this.myCoupon.couponAmount)
-          break;
+        })
+        return (all_result)
+        break;
       }
-    }
-  },
-  computed: {
-    TotalAmount() {
-      let total = this.countAllAmount('specialAmount') + this.countAllAmount('specialAmount') - this.myCoupon.couponAmount
-      return total
-    }
-  },
-  data() {
-    return {
-      showLoading: false,
-      showSelectBrand: false,
-      showSelectClerk: false,
-      showSelectCoupon: false,
-      shopList: shopInfoPipe(JSON.parse(localStorage.temp)),
-      tempBrandList: [],
-      tempBrandOperateType: null,
-      // tempBrandOperateType为品牌操作的类型，值为0时为添加品牌，值为1时为修改品牌
-      tempSelectedShop: null,
-      tempSelectedBrand: null,
-      tempCouponList: [],
-      tempAddCoupon: [],
-      tempAddBrand: [],
-      tempClerkList: [],
-      tempAddClerk: [],
-      tempSelectedClerk: [],
-      myCoupon: {
-        couponAmount: 0,
-        id: ''
-      },
-      telImg,
-      from: Lib.M.GetRequest().from || false,
-      testList: [
-        {name: '80 元', value: '1'},
-        {name: '90 元', value: '2'},
-        {name: '100 元', value: '3'},
-      ]
+    },
+    getScreenWidth() {
+      return document.body.clientWidth
+    },
+    tempCoupon() {
+      let result
+      if (Number(this.couponAmount) > Number(this.countAllAmount()*100)) {
+        result = Number(this.countAllAmount()*100)
+      } else {
+        result = Number(this.couponAmount)
+      }
+      return result
+    },
+    checkBox() {
+      this.isCouponUsed = !this.isCouponUsed
     }
   }
+
 }
 
 function getValue(value, array, type) {
@@ -376,314 +576,3 @@ function shopInfoPipe(shops) {
   return shops
 }
 </script>
-<style lang="less">
-body {
-    margin: 0;
-    background-color: #eee;
-    color: #393939;
-}
-.content {
-    padding-bottom: 44px;
-}
-.store {
-    position: relative;
-    width: 100%;
-    height: auto;
-    background-color: #fff;
-    margin-bottom: 10px;
-    .store-name {
-        position: relative;
-        width: 100%;
-        height: 44px;
-        border-bottom: 1px solid #eee;
-        .cell-left {
-            position: absolute;
-            top: 0;
-            left: 15px;
-            height: 44px;
-            width: auto;
-            line-height: 44px;
-            font-size: 16px;
-        }
-        .cell-right {
-            position: absolute;
-            top: 0;
-            height: 44px;
-            line-height: 44px;
-            width: auto;
-            right: 15px;
-            font-size: 12px;
-        }
-    }
-    .store-address {
-        position: relative;
-        width: calc(~"100% - 15px");
-        height: 44px;
-        margin-left: 15px;
-        border-bottom: 1px solid #eee;
-        .cell-left {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 44px;
-            line-height: 44px;
-            font-size: 16px;
-            span {
-                font-size: 12px;
-            }
-        }
-        .cell-right {
-            position: absolute;
-            top: 12px;
-            right: 15px;
-            height: 20px;
-            width: 20px;
-            img {
-                height: 100%;
-                width: 100%;
-            }
-        }
-    }
-    .brand-name {
-        position: relative;
-        width: calc(~"100% - 15px");
-        height: 44px;
-        margin-left: 15px;
-        border-bottom: 1px solid #eee;
-        .cell-left {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-            img {
-                margin-left: 10px;
-                vertical-align: middle;
-                height: 10px;
-                width: 17px;
-            }
-        }
-        .cell-right {
-            position: absolute;
-            top: 0;
-            right: 15px;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-
-        }
-    }
-    .clerk {
-        position: relative;
-        width: calc(~"100% - 15px");
-        height: 44px;
-        margin-left: 15px;
-        border-bottom: 1px solid #eee;
-        .cell-left {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-            img {
-                margin-left: 10px;
-                vertical-align: middle;
-                height: 10px;
-                width: 17px;
-            }
-        }
-        .cell-right {
-            position: absolute;
-            top: 0;
-            right: 15px;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-        }
-    }
-    .brand-sum {
-        position: relative;
-        width: 100%;
-        height: 44px;
-        border-bottom: 1px solid #eee;
-        .cell-left {
-            position: absolute;
-            top: 0;
-            left: 15px;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-            img {
-                margin-left: 10px;
-                vertical-align: middle;
-                height: 10px;
-                width: 17px;
-            }
-        }
-        .cell-right {
-            position: absolute;
-            top: 0;
-            right: 15px;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-            color: #ec5835;
-        }
-    }
-
-    .brand-add {
-        width: 100%;
-        height: 44px;
-        line-height: 44px;
-        text-align: center;
-        font-size: 12px;
-    }
-}
-.amount {
-    position: relative;
-    width: 100%;
-    height: auto;
-    background-color: #fff;
-    .title {
-        position: relative;
-        width: 100%;
-        height: 44px;
-        border-bottom: 1px solid #eee;
-        .cell-left {
-            position: absolute;
-            top: 0;
-            left: 15px;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-        }
-    }
-    .coupon {
-        position: relative;
-        width: calc(~"100% - 15px");
-        height: 44px;
-        margin-left: 15px;
-        border-bottom: 1px solid #eee;
-        .cell-left {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-            img {
-              vertical-align: middle;
-              height: 10px;
-              width: 17px;
-              margin-left: 10px;
-            }
-        }
-        .cell-right {
-            position: absolute;
-            top: 0;
-            right: 15px;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-        }
-    }
-    .sum {
-        position: relative;
-        margin-left: 15px;
-        width: calc(~"100% - 15px");
-        height: 44px;
-        border-bottom: 1px solid #eee;
-        .cell-left {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-            img {
-                margin-left: 10px;
-                vertical-align: middle;
-                height: 10px;
-                width: 17px;
-            }
-        }
-        .cell-right {
-            position: absolute;
-            top: 0;
-            right: 15px;
-            height: 44px;
-            line-height: 44px;
-            font-size: 12px;
-            color: #ec5835;
-        }
-    }
-}
-
-.input-cell {
-    position: relative;
-    height: 88px;
-    width: 100%;
-    border-bottom: 1px solid #eee;
-    .special-amount {
-        position: absolute;
-        height: 44px;
-        font-size: 12px;
-        line-height: 44px;
-        top: 0;
-        left: 15px;
-    }
-    .normal-amount {
-        position: absolute;
-        height: 44px;
-        font-size: 12px;
-        line-height: 44px;
-        bottom: 0;
-        left: 15px;
-    }
-    input {
-        -webkit-appearance: none;
-        position: absolute;
-        right: 15px;
-        height: 30px;
-        width: calc(~"100% - 100px");
-        font-size: 12px;
-        border: 1px solid #eee;
-        border-radius: 2px;
-        color: #393939;
-    }
-    input::placeholder {
-        font-size: 12px;
-        color: #eee;
-    }
-    .special-input {
-        top: 7px;
-    }
-    .normal-input {
-        bottom: 7px;
-    }
-    .specialTip {
-        position: absolute;
-        right: 15px;
-        width: calc(~"100% - 100px");
-        font-size: 11px;
-        color: #ccc;
-    }
-}
-
-.submit-btn {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 44px;
-    line-height: 44px;
-    text-align: center;
-    color: #fff;
-    background-color: rgb(226,226,226);
-}
-.active {
-    background-color: rgb(136,201,40)!important;
-}
-</style>

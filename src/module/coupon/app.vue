@@ -1,14 +1,105 @@
+<style>
+html {
+  padding: 0;
+  margin: 0;
+}
+body {
+  background-color: #eee;
+  padding: 0;
+  margin: 0;
+}
+</style>
+<style lang="less">
+.content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  .amount-wrapper {
+    text-align: center;
+    background-image: url('http://ohej1hvbm.bkt.clouddn.com/wallet-back.png');
+    background-size: cover;
+    padding: 49px 0 0 0;
+    height: 101px;
+    margin: 0 0 1px 0;
+    p {
+      color: #fff;
+      margin: 0;
+    }
+    .amount-title {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .amount {
+      font-size: 33px;
+      font-weight: 500;
+    }
+  }
+  .coupon-detail {
+
+    .cell {
+      height: 41px;
+      background-color: #fff;
+      font-size: 12px;
+      color: #393939;
+      padding-left: 16px;
+      margin-bottom: 1px;
+      .cell-title {
+        line-height: 41px;
+      }
+    }
+
+    .label {
+      height: 41px;
+      background-color: #fff;
+      padding: 0 16px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1px;
+      .amount-label {
+        line-height: 25px;
+      }
+      .amount-time {
+        color: #393939;
+        line-height: 10px;
+      }
+      .amout-change {
+        line-height: 41px;
+        .orange {
+          color: #ff9736;
+          display: inline-block;
+          margin-right: 3px;
+        }
+        img {
+          transform: rotate(-90deg);
+          width: 16px;
+        }
+      }
+    }
+  }
+}
+</style>
+
 <template>
   <div class="content">
-    <div class="coupon-wrapper" >
-      <div class="coupon" v-for="coupon in coupons">
-        <img src="bg.png" alt="">
-        <div class="coupon-text" v-tap="coupon.status = 1">
-          <p style="font-size: 35px;top: 25%;">{{coupon.amount}}<span>&nbsp;元</span></p>
-          <p style="font-size: 12px;bottom: 15%;">全品类通用代金券</p>
+    <div class="amount-wrapper">
+      <p class="amount-title">我的点券</p>
+      <p class="amount">{{coupons[0].amount}}<span>点</span></p>
+    </div>
+    <div class="coupon-detail">
+      <div class="cell">
+        <div class="cell-title">收支明细</div>
+      </div>
+      <div class="label" v-for="coupon in couponChanges">
+        <div class="amount-label">
+          <div class="amount-type">{{returnType(coupon.type, typeList)}}</div>
+          <div class="amount-time">{{getTime(coupon.createdAt)}}</div>
         </div>
-        <div class="coverImg" v-if="coupon.status === 1">
-          <img src="nonactived.png">
+        <div class="amout-change">
+          <span v-if="showType(coupon.type)" class="orange">+{{coupon.amount}}点</span>
+          <span v-if="!showType(coupon.type)">{{coupon.amount}}点</span>
+          <img src="./select.png">
+         
         </div>
       </div>
     </div>
@@ -19,10 +110,23 @@
 import Lib from 'assets/Lib.js'
 import axios from 'axios'
 Lib.M.auth(axios)
+
 export default {
   data() {
     return {
-      coupons: []
+      coupons: [],
+      couponChanges: [],
+      typeList: [{
+        id: 1, value: '购物返还'
+      },{
+        id: 2, value: '订单取消返还'
+      },{
+        id: 3, value: '退款返还'
+      },{
+        id: 4, value: '购物使用'
+      },{
+        id: 5, value: '退款扣取'
+      }]
     }
   },
   components: {
@@ -30,83 +134,58 @@ export default {
   ready() {
     axios.get(`${Lib.C.mOrderApi}coupons`,{
       params: {
-        filter: `userId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:1,2,3`,
+        filter: `userId:${JSON.parse(window.localStorage.getItem('user')).userId}`,
         size: 10000
       }
     }).then((res) => {
-      if (res.data.data.length === 0) {
-        alert("您还没有优惠券..")
-        location.href="./usercenter.html"
-      }
       this.coupons = res.data.data
-    }).catch((res) => {
-      alert('获取优惠券信息失败，请稍后重试..')
+      this.couponChanges = res.data.data[0].couponChanges
+      console.log(this.couponChanges)
+    }).catch((err) => {
+      console.log(err)
     })
+  },
+  methods: {
+    /**
+     * 通过点券的type获取typeList中的点券类型
+     */
+    returnType(type, array) {
+      for (let i = 0; i < array.length; i++ ) {
+        if (array[i].id == type ) return array[i].value
+      }
+    },
+    /**
+     * 将时间戳格式化
+     */
+    getTime(timeStamp) {
+      var d = new Date(timeStamp * 1000)
+      var Y = d.getFullYear() + '-'
+      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-'
+      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate())
+      return Y + M + D
+    },
+    /**
+     * v-if判断点券的amount
+     */
+    showType(type) {
+      let result 
+      switch (type) {
+        case 1:
+        case 2:
+        case 3:
+          result = true
+          break
+        case 4:
+        case 5: 
+          result = false
+          break
+        default:
+          result = true
+      }
+      return result
+    }
   }
 }
+
 </script>
-<style>
-body {
-  background-color: #eee;
-}
-</style>
-<style lang="less">
-.content {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  .coupon-wrapper {
-    width: calc(~"100% - 16px");
-    height: auto;
-    position: absolute;
-    top: 20px;
-    left: 8px;
-    .coupon {
-      width: calc(~"50% - 5px");
-      margin-bottom: 9px;
-      float: left;
-      position: relative;
-      >img {
-        width: 100%;
-      }
-      .coverImg {
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.3);
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 10;
-        img {
-          position: absolute;
-          top: 27px;
-          width: calc(~"100% - 16px");
-          left: 8px;
-        }
-      }
-      .coupon-text {
-        width: 100%;
-        height: 100%;
-        line-height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        text-align: center;
-        color: #fff;
-        span {
-          font-size: 18px;
-        }
-        p {
-          margin: 0;
-          position: absolute;
-          width: 100%;
-          left: 0;
-        }
-      }
-    }
-    .coupon:nth-child(odd){
-      margin-right: 9px;
-    }
-  }
-}
-</style>
+
