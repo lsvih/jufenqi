@@ -1,286 +1,3 @@
-<template>
-<div class="search-click-area" v-tap="goto('./search.html')">
-</div>
-<div class="search"><img src="/static/images/icon/search.png"></div>
-<div class="click" :class="{open:openMenu}"><img src="/static/images/icon/click.png"></div>
-<div class="menu-click-area" v-tap="openMenu = !openMenu"></div>
-<div class="menu" :class="{'menu-active':openMenu}">
-  <div class="menu-tri"></div>
-  <div class="menu-content">
-    <div class="menu-item"><img src="/static/images/icon/写评论.png">去点评</div>
-    <div class="menu-item"><img src="/static/images/icon/添加门店.png">添加门店</div>
-    <div class="menu-item"><img src="/static/images/icon/扫一扫.png">扫一扫</div>
-  </div>
-</div>
-<div class="content">
- <swiper class="module-swiper" loop auto height="200px" dots-class="dot-custom" :list="newBannerList" :index="bannerIndex"  @on-index-change="bannerOnChange" v-tap="clickBanner" :show-desc-mask="true" dots-position="center" :interval="5000">
-  </swiper>
-  <flexbox class="module-class">
-    <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5" v-tap="goto(class.url)" style="margin-left: 6px;">
-      <img class="module-class-icon" :src="class.img">
-      <!-- `/static/images/icon/${class.name}.png` -->
-      <div class="module-class-name" :style="{width: class.name.length >4?'105%':'100%'}">{{class.name}}</div>
-    </flexbox-item>
-  </flexbox>
-  <flexbox class="module-class">
-    <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5 5" v-tap="goto(class.url)">
-      <img class="module-class-icon" :src="class.img">
-      <div class="module-class-name">{{class.name}}</div>
-    </flexbox-item>
-  </flexbox>
-  <!-- Service module -->
-  <!-- 服务 -->
-<!--   <div class="module-item">
-    <div class="module-title-block"></div>
-    <div class="module-title">服务</div>
-    <div class="service">
-      <div class="service-1"><img :src="serviceList[0].img" v-tap="goto(serviceList[0].url)"></div>
-      <div class="service-2"><img :src="serviceList[1].img" v-tap="goto(serviceList[1].url)"></div>
-      <div class="service-3"><img :src="serviceList[2].img" v-tap="goto(serviceList[2].url)"></div>
-    </div>
-
- --><div class="longpic" v-tap="goto('./bannerfirst.html')">
-      <img src="./long.png">
-    </div>
- </div>
-  <!-- module end -->
-  <!-- Video module -->
-  <div class="module-item">
-    <div class="videoWrapper">
-      <video controls="controls" preload="none" width="100%" height="200" src="http://ohej1hvbm.bkt.clouddn.com/movie.mp4" allowfullscreen></video>
-    </div>
-  </div>
-  <!-- module end -->
-  <!-- Operative module -->
-  <!-- <div class="module-item operative" :style="{height:.5*getScreenWidth()+'px'}">
-    <div class="operative-left-block" :style="{width:.5*getScreenWidth()-1+'px',height:.5*getScreenWidth()+'px'}">
-      <img src="/static/images/首页活动运营/活动1.png" width="100%" height="100%">
-    </div>
-    <div class="operative-right-block-1" :style="{width:.5*getScreenWidth()+'px',height:.5/3*getScreenWidth()-1+'px'}">
-      <img src="/static/images/首页活动运营/活动2.png" width="100%" height="100%">
-    </div>
-    <div class="operative-right-block-2" :style="{width:.5*getScreenWidth()+'px',height:.5/3*getScreenWidth()-1+'px',top:.5/3*getScreenWidth()+'px'}">
-      <img src="/static/images/首页活动运营/活动3.png" width="100%" height="100%">
-    </div>
-    <div class="operative-right-block-3" :style="{width:.5*getScreenWidth()+'px',height:.5/3*getScreenWidth()+'px'}">
-      <img src="/static/images/首页活动运营/活动4.png" width="100%" height="100%">
-    </div>
-  </div> -->
-  <!-- module end -->
-
-  <!-- Goods module -->
-  <div class="module-item">
-    <div class="module-title-block"></div>
-    <div class="module-title" v-tap="goto('./pic-price.html')">有图有价<img src="./arrow.png"></div>
-    <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+'px'}">
-      <div :style="{width:'100%',height:.8*getScreenWidth()*.63+40+'px'}" class="scroll-box">
-        <div class="pic_and_goods-list" :style="{width:pic_and_goods.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
-          <div class="pic_and_goods-item" v-for="good in pic_and_goods" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
-            <img :src="good.img" v-tap="goto(good.url)">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="module-more">
-      <div class="module-description">看的到的都能买</div>
-      <div class="module-detail" v-tap="goto('./pic-price.html')">了解详情</div>
-    </div>
-  </div>
-  <!-- module end -->
-
-  <!-- Special module -->
-  <div class="module-item" style="margin-bottom: 51px">
-    <div class="module-title-block"></div>
-    <div class="module-title">专题推荐<img src="./arrow.png"></div>
-    <div class="special">
-      <div class="special-item" v-for="special of specialList" v-tap="goto(special.url)">
-        <img :src="special.img">
-        <div class="special-name">
-          {{special.name}}
-        </div>
-        <div class="special-description">
-          {{special.description}}
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- module end -->
-</div>
-<j-footer></j-footer>
-</template>
-
-<script>
-import Lib from 'assets/Lib.js'
-import Swiper from 'vux-components/swiper'
-import JFooter from 'components/j-footer'
-import XImg from 'vux-components/x-img'
-import {
-  Flexbox,
-  FlexboxItem
-} from 'vux-components/flexbox'
-import axios from 'axios'
-Lib.M.auth(axios, false)
-
-export default {
-  data() {
-    return {
-      bannerIndex: 0,
-      newBannerList: [],
-      bannerList: [{
-        url: './bannerfirst.html',
-        img: '/static/images/banner/banner-1.png'
-      }, {
-        url: './bannersec.html',
-        img: '/static/images/banner/banner-2.png'
-      }, {
-        url: './class-list.html',
-        img: '/static/images/banner/banner-3.jpg'
-      }],
-      classList: [{
-        id: 0,
-        name: '办分期',
-        url: 'instalment.html',
-        img: '/static/images/icon/办分期.png'
-      }, {
-        id: 1,
-        name: '有图有价',
-        url: 'pic-price.html',
-        img: '/static/images/icon/有图有价.png'
-      }, {
-        id: 2,
-        name: '装修必读',
-        url: 'readme.html',
-        img: '/static/images/icon/装修必读.png'
-      }, {
-        id: 3,
-        name: '博洛尼家装',
-        url: 'brand-detail.html?id=186',
-        img: '/static/images/icon/博洛尼.png'
-      }, {
-        id: 4,
-        name: '找装修',
-        url: 'worker-list.html',
-        img: '/static/images/icon/找装修.png'
-      }, {
-        id: 5,
-        name: '建材',
-        url: './class-list.html#type0',
-        img: '/static/images/icon/建材.png'
-      }, {
-        id: 6,
-        name: '家具',
-        url: './class-list.html#type3',
-        img: '/static/images/icon/家具.png'
-      }, {
-        id: 7,
-        name: '家纺',
-        url: './class-list.html#type2',
-        img: '/static/images/icon/家纺.png'
-      }, {
-        id: 8,
-        name: '家电',
-        url: './class-list.html#type1',
-        img: '/static/images/icon/家电.png'
-      }, {
-        id: 9,
-        name: '全部分类',
-        url: './all-class.html',
-        img: '/static/images/icon/全部分类.png'
-      }],
-      pic_and_goods: [{
-        url: './pic-price-con.html?id=12',
-        img: '/static/temp/pic_and_price/罗马假日.jpg'
-      }, {
-        url: './pic-price-con.html?id=21',
-        img: '/static/temp/pic_and_price/桃花源.jpg'
-      }, {
-        url: './pic-price-con.html?id=14',
-        img: '/static/temp/pic_and_price/天使爱美丽.jpg'
-      },{
-        url: './pic-price-con.html?id=6',
-        img: '/static/temp/pic_and_price/现代北欧之柯达.jpg'
-      },{
-        url: './pic-price-con.html?id=20',
-        img: '/static/temp/pic_and_price/永恒.jpg'
-      }],
-      specialList: [{
-        url: 'javascript:',
-        img: '/static/images/specials/专题一.png',
-        name: '极简风家具专题',
-        description: '精选极简风家具'
-      }, {
-        url: 'javascript:',
-        img: '/static/images/specials/专题二.png',
-        name: '新中式生活',
-        description: '传统风格全新演绎'
-      }],
-      serviceList: [{
-        url: './free-design.html',
-        img: '/static/images/services/免费设计.png'
-      }, {
-        url: './free-gauge.html',
-        img: '/static/images/services/免费量房.png'
-      }, {
-        url: './free-verify.html',
-        img: '/static/images/services/免费验房.png'
-      }],
-      openMenu: false
-    }
-  },
-  components: {
-    JFooter,
-    Swiper,
-    Flexbox,
-    FlexboxItem,
-    XImg,
-  },
-  ready() {
-    axios.get(`${Lib.C.homeApi}operations?filter=operationName:banner`).then((res) => {
-      res.data.data.map((e) => {
-        if (e.linkUrl) {
-          this.newBannerList.push({
-            id: e.id,
-            url: e.linkUrl,
-            img: Lib.C.imgUrl + e.coverImg
-          })
-        } else if (!e.linkUrl&&e.descriptionRich) {
-          this.newBannerList.push({
-            id: e.id,
-            url: `./banner-con.html?id=${e.id}`,
-            img: Lib.C.imgUrl + e.coverImg
-          }) 
-        } else {
-            this.newBannerList.push({
-              id: e.id,
-              url: 'javascript:',
-              img: Lib.C.imgUrl + e.coverImg
-            })
-        }
-      })
-      console.log(this.newBannerList)
-    }).catch((err) => {
-      throw err
-    })
-  },
-  methods: {
-    bannerOnChange(index) {
-      this.bannerIndex = index
-    },
-    clickBanner(item){
-      location.href = this.newBannerList[this.bannerIndex].url
-    },
-    getScreenWidth() {
-      return document.body.clientWidth
-    },
-    gotoBrand(id, name) {
-      window.location.href = `brand-list.html?id=${id}&name=${encodeURIComponent(name)}`
-    },
-    goto(url) {
-      window.location.href = url
-    }
-  }
-}
-</script>
 <style>
 body {
   background-color: #eee;
@@ -298,17 +15,10 @@ body {
 
 .content {
   /* padding: 0 0 44px 0; */
-  overflow-x: hidden;
-}
-.content .longpic {
-  width: 100%;
-}
-.content .longpic img {
-  width: 100%;
-  height: auto;
+  overflow: hidden;
 }
 </style>
-<style lang="less" scoped>
+<style lang="less">
 .module-class {
     background-color: #fff;
     padding: 8px 0;
@@ -335,10 +45,51 @@ body {
     .videoWrapper {
         width: 100%;
         height: 200px;
-        background: url('/static/images/mask.jpg') no-repeat;
-        background-size: 100% auto;
-        opacity: 0.5;
         margin-bottom: 13px;
+        position: relative;
+        .video-true {
+          width: 1px;
+          height: 0px;
+          position: absolute;
+          top: 50%;
+          left: 0;
+          z-index: 10;
+        }
+        .video-bg {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 65;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .mask {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-color: #000;
+          opacity: 0.3;
+          z-index: 100;
+        }
+        .video-fake-btn {
+          width: 55px;
+          height: 55px;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 200;
+          img {
+            width: 100%
+          }
+        }
+
     }
     .module-title-block {
         position: absolute;
@@ -378,6 +129,7 @@ body {
             color: #999;
             float: left;
             margin-left: 15px;
+            font-weight: 200;
         }
         .module-detail {
             color: #3BA794;
@@ -605,4 +357,355 @@ body {
 .menu-active {
     height: 130px;
 }
+.headline {
+  display: flex;
+  width: 100%;
+  height: 55px;
+  .headline-logo {
+    flex: 1;
+    height: 55px;
+    img {
+      height: 100%;
+    }
+  }
+  .carousel-wrapper {
+    flex: 12;
+    height: 55px;
+    background-color: #fff;
+    .headline-swipper {
+      p {
+        font-size: 12px !important;
+        padding: 20px 50px 20px 13px !important;
+        background-image: none !important;
+        color: #999 !important;
+        text-shadow: none !important;
+
+      }
+    }
+  }
+}
+.longpic {
+  width: 100%;
+  img {
+    width: 100%;
+  }
+}
 </style>
+
+<template>
+<div class="search-click-area" v-tap="goto('./search.html')">
+</div>
+<div class="search"><img src="/static/images/icon/search.png"></div>
+<div class="click" :class="{open:openMenu}"><img src="/static/images/icon/click.png"></div>
+<div class="menu-click-area" v-tap="openMenu = !openMenu"></div>
+<div class="menu" :class="{'menu-active':openMenu}">
+  <div class="menu-tri"></div>
+  <div class="menu-content">
+    <div class="menu-item"><img src="/static/images/icon/写评论.png">去点评</div>
+    <div class="menu-item"><img src="/static/images/icon/添加门店.png">添加门店</div>
+    <div class="menu-item"><img src="/static/images/icon/扫一扫.png">扫一扫</div>
+  </div>
+</div>
+<div class="content">
+ <swiper class="module-swiper" loop auto height="200px" dots-class="dot-custom" :list="newBannerList" :index="bannerIndex"  @on-index-change="bannerOnChange" v-tap="clickBanner" :show-desc-mask="true" dots-position="center" :interval="5000">
+  </swiper>
+  <flexbox class="module-class">
+    <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5" v-tap="goto(class.url)" style="margin-left: 6px;">
+      <img class="module-class-icon" :src="class.img">
+      <!-- `/static/images/icon/${class.name}.png` -->
+      <div class="module-class-name" :style="{width: class.name.length >4?'105%':'100%'}">{{class.name}}</div>
+    </flexbox-item>
+  </flexbox>
+  <flexbox class="module-class">
+    <flexbox-item class="module-class-item" v-for="class in classList|limitBy 5 5" v-tap="goto(class.url)">
+      <img class="module-class-icon" :src="class.img">
+      <div class="module-class-name">{{class.name}}</div>
+    </flexbox-item>
+  </flexbox>
+  <!-- Service module -->
+  <!-- 服务 -->
+<!--   <div class="module-item">
+    <div class="module-title-block"></div>
+    <div class="module-title">服务</div>
+    <div class="service">
+      <div class="service-1"><img :src="serviceList[0].img" v-tap="goto(serviceList[0].url)"></div>
+      <div class="service-2"><img :src="serviceList[1].img" v-tap="goto(serviceList[1].url)"></div>
+      <div class="service-3"><img :src="serviceList[2].img" v-tap="goto(serviceList[2].url)"></div>
+    </div>-->
+
+<!-- 居头条 -->
+    <!-- <div class="headline">
+      <div class="headline-logo"><img src="./headline.jpg"></div>
+      <div class="carousel-wrapper">
+        <swiper class="headline-swipper" loop auto show-dots="false" :list="headlineList" :interval="1500" direction="vertical" height="55px" :index="headlineIndex" @on-index-change="headlineOnChange" >
+        </swiper>
+      </div>
+    </div> -->
+    <div class="longpic" v-tap="goto('./bannerfirst.html')">
+      <img src="./long.png">
+    </div>
+
+ </div>
+  <!-- module end -->
+  <!-- Video module -->
+  <div class="module-item">
+    <div class="videoWrapper">
+      <video class="video-true" id="adVideo" controls="controls" preload="none" width="100%" height="200" src="http://ohej1hvbm.bkt.clouddn.com/movie.mp4" allowfullscreen></video>
+      <div class="video-bg"><img src="/static/images/cover.jpg"></div>
+      <div class="video-fake-btn" v-tap="playVideo()"><img src="/static/images/player.png"></div>
+      <div class="mask"></div>
+    </div>
+  </div>
+  <!-- module end -->
+  <!-- Operative module -->
+  <!-- <div class="module-item operative" :style="{height:.5*getScreenWidth()+'px'}">
+    <div class="operative-left-block" :style="{width:.5*getScreenWidth()-1+'px',height:.5*getScreenWidth()+'px'}">
+      <img src="/static/images/首页活动运营/活动1.png" width="100%" height="100%">
+    </div>
+    <div class="operative-right-block-1" :style="{width:.5*getScreenWidth()+'px',height:.5/3*getScreenWidth()-1+'px'}">
+      <img src="/static/images/首页活动运营/活动2.png" width="100%" height="100%">
+    </div>
+    <div class="operative-right-block-2" :style="{width:.5*getScreenWidth()+'px',height:.5/3*getScreenWidth()-1+'px',top:.5/3*getScreenWidth()+'px'}">
+      <img src="/static/images/首页活动运营/活动3.png" width="100%" height="100%">
+    </div>
+    <div class="operative-right-block-3" :style="{width:.5*getScreenWidth()+'px',height:.5/3*getScreenWidth()+'px'}">
+      <img src="/static/images/首页活动运营/活动4.png" width="100%" height="100%">
+    </div>
+  </div> -->
+  <!-- module end -->
+
+  <!-- Goods module -->
+  <div class="module-item">
+    <div class="module-title-block"></div>
+    <div class="module-title" v-tap="goto('./pic-price.html')">有图有价<img src="./arrow.png"></div>
+    <div class="scroll-box-container" :style="{width:'100%',height:.8*getScreenWidth()*.63+'px'}">
+      <div :style="{width:'100%',height:.8*getScreenWidth()*.63+40+'px'}" class="scroll-box">
+        <div class="pic_and_goods-list" :style="{width:pic_and_goods.length*(.8*getScreenWidth()+10)+'px',height:.8*getScreenWidth()*.63+'px'}">
+          <div class="pic_and_goods-item" v-for="good in pic_and_goods" :style="{width: getScreenWidth()*.8 + 'px',height:.8*getScreenWidth()*.63+'px'}">
+            <img :src="good.img" v-tap="goto(good.url)">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="module-more">
+      <div class="module-description">看的到的都能买</div>
+      <div class="module-detail" v-tap="goto('./pic-price.html')">了解详情</div>
+    </div>
+  </div>
+  <!-- module end -->
+
+  <!-- Special module -->
+  <div class="module-item" style="margin-bottom: 51px">
+    <div class="module-title-block"></div>
+    <div class="module-title">专题推荐<img src="./arrow.png"></div>
+    <div class="special">
+      <div class="special-item" v-for="special of specialList" v-tap="goto(special.url)">
+        <img :src="special.img">
+        <div class="special-name">
+          {{special.name}}
+        </div>
+        <div class="special-description">
+          {{special.description}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- module end -->
+</div>
+<j-footer style="z-index: 500;"></j-footer>
+</template>
+
+<script>
+import Lib from 'assets/Lib.js'
+import Swiper from 'vux-components/swiper'
+import JFooter from 'components/j-footer'
+import XImg from 'vux-components/x-img'
+import {
+  Flexbox,
+  FlexboxItem
+} from 'vux-components/flexbox'
+import axios from 'axios'
+Lib.M.auth(axios, false)
+
+export default {
+  data() {
+    return {
+      bannerIndex: 0,
+      newBannerList: [],
+      bannerList: [{
+        url: './bannerfirst.html',
+        img: 'http://7xqzw4.com2.z0.glb.qiniucdn.com/1.jpg'
+      }, {
+        url: './bannersec.html',
+        img: '/static/images/banner/banner-2.png'
+      }, {
+        url: './class-list.html',
+        img: '/static/images/banner/banner-3.jpg'
+      }],
+      headlineIndex: 0,
+      headlineList: [
+        {
+          url: 'javascript:',
+          img: '',
+          title: "家装分期·限时免息·快来抢购"
+        },{
+          url: 'javascript:',
+          img: '',
+          title: '家装好礼接二连三不停送！'
+        },{
+          url: 'javascript:',
+          img: '',
+          title: '家装与理财，二者可兼得也'
+        }
+      ],
+      classList: [{
+        id: 0,
+        name: '办分期',
+        url: 'instalment.html',
+        img: '/static/images/icon/办分期.png'
+      }, {
+        id: 1,
+        name: '有图有价',
+        url: 'pic-price.html',
+        img: '/static/images/icon/有图有价.png'
+      }, {
+        id: 2,
+        name: '装修必读',
+        url: 'readme.html',
+        img: '/static/images/icon/装修必读.png'
+      }, {
+        id: 3,
+        name: '博洛尼家装',
+        url: 'brand-detail.html?id=186',
+        img: '/static/images/icon/博洛尼.png'
+      }, {
+        id: 4,
+        name: '找装修',
+        url: 'worker-list.html',
+        img: '/static/images/icon/找装修.png'
+      }, {
+        id: 5,
+        name: '建材',
+        url: './class-list.html#type0',
+        img: '/static/images/icon/建材.png'
+      }, {
+        id: 6,
+        name: '家具',
+        url: './class-list.html#type3',
+        img: '/static/images/icon/家具.png'
+      }, {
+        id: 7,
+        name: '家纺',
+        url: './class-list.html#type2',
+        img: '/static/images/icon/家纺.png'
+      }, {
+        id: 8,
+        name: '家电',
+        url: './class-list.html#type1',
+        img: '/static/images/icon/家电.png'
+      }, {
+        id: 9,
+        name: '全部分类',
+        url: './all-class.html',
+        img: '/static/images/icon/全部分类.png'
+      }],
+      pic_and_goods: [{
+        url: './pic-price-con.html?id=12',
+        img: '/static/temp/pic_and_price/罗马假日.jpg'
+      }, {
+        url: './pic-price-con.html?id=21',
+        img: '/static/temp/pic_and_price/桃花源.jpg'
+      }, {
+        url: './pic-price-con.html?id=14',
+        img: '/static/temp/pic_and_price/天使爱美丽.jpg'
+      },{
+        url: './pic-price-con.html?id=6',
+        img: '/static/temp/pic_and_price/现代北欧之柯达.jpg'
+      },{
+        url: './pic-price-con.html?id=20',
+        img: '/static/temp/pic_and_price/永恒.jpg'
+      }],
+      specialList: [{
+        url: 'javascript:',
+        img: '/static/images/specials/专题一.png',
+        name: '极简风家具专题',
+        description: '精选极简风家具'
+      }, {
+        url: 'javascript:',
+        img: '/static/images/specials/专题二.png',
+        name: '新中式生活',
+        description: '传统风格全新演绎'
+      }],
+      serviceList: [{
+        url: './free-design.html',
+        img: '/static/images/services/免费设计.png'
+      }, {
+        url: './free-gauge.html',
+        img: '/static/images/services/免费量房.png'
+      }, {
+        url: './free-verify.html',
+        img: '/static/images/services/免费验房.png'
+      }],
+      openMenu: false
+    }
+  },
+  components: {
+    JFooter,
+    Swiper,
+    Flexbox,
+    FlexboxItem,
+    XImg,
+
+  },
+  ready() {
+    axios.get(`${Lib.C.homeApi}operations?filter=operationName:banner`).then((res) => {
+      res.data.data.map((e) => {
+        if (e.linkUrl) {
+          this.newBannerList.push({
+            id: e.id,
+            url: e.linkUrl,
+            img: Lib.C.imgUrl + e.coverImg
+          })
+        } else if (!e.linkUrl&&e.descriptionRich) {
+          this.newBannerList.push({
+            id: e.id,
+            url: `./banner-con.html?id=${e.id}`,
+            img: Lib.C.imgUrl + e.coverImg
+          }) 
+        } else {
+            this.newBannerList.push({
+              id: e.id,
+              url: 'javascript:',
+              img: Lib.C.imgUrl + e.coverImg
+            })
+        }
+      })
+    }).catch((err) => {
+      throw err
+    })
+  },
+  methods: {
+    bannerOnChange(index) {
+      this.bannerIndex = index
+    },
+    headlineOnChange(index) {
+      this.headlineIndex = index
+    },
+    clickBanner(item){
+      location.href = this.newBannerList[this.bannerIndex].url
+    },
+    getScreenWidth() {
+      return document.body.clientWidth
+    },
+    gotoBrand(id, name) {
+      window.location.href = `brand-list.html?id=${id}&name=${encodeURIComponent(name)}`
+    },
+    goto(url) {
+      window.location.href = url
+    },
+    playVideo() {
+      document.getElementById('adVideo').play()
+    }
+  }
+}
+</script>

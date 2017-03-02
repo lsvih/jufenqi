@@ -1,158 +1,45 @@
-<template>
-<flexbox>
-  <flexbox-item class="block-1">
-    <div class="user-icon"><img :src="userIcon"></div>
-    <div class="user-name">{{userName}}</div>
-    <div class="user-balance">贷款金额: {{loan|currency "" 2}}(元)</div>
-  </flexbox-item>
-</flexbox>
-<flexbox class="block-2">
-  <flexbox-item class="balance">
-    <!-- <flexbox-item class="balance" onclick="location.href='balance.html'"> -->
-    <div>已消费金额 (元)</div>
-    <div class="balance-money">{{balance|currency "" 2}}</div>
-  </flexbox-item>
-  <flexbox-item class="balance" onclick="location.href='wallet.html'">
-    <div>我的钱包 (元)</div>
-    <div class="balance-money">{{wallet|currency "" 2}}</div>
-  </flexbox-item>
-</flexbox>
-
-<group style="margin-top:-.6em;">
-  <flexbox class="block-3-name">
-    我的订单
-  </flexbox>
-  <flexbox class="block-3 vux-1px-t">
-    <flexbox-item class="icon-item vux-1px-r" onclick="location.href='./zx-order-list.html'">
-      <img src="icon/zx-order.png">
-      <div class="icon-item-name">装修订单</div>
-    </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-r vux-1px-t" onclick="location.href='./zc-order-list.html'">
-      <img src="icon/zc-order.png">
-      <div class="icon-item-name">主材订单</div>
-    </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-t" onclick="location.href='./tk-order-list.html'">
-      <img src="icon/repay-order.png">
-      <div class="icon-item-name">退款订单</div>
-    </flexbox-item>
-  </flexbox>
-</group>
-
-<group style="margin-top:-.6em;">
-  <flexbox class="block-3-name">
-    我的工具
-  </flexbox>
-  <flexbox class="block-3 vux-1px-t">
-    <flexbox-item class="icon-item vux-1px-r">
-      <img src="icon/repay.png">
-      <div class="icon-item-name">我的还款</div>
-    </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-r vux-1px-t" v-tap="goto('./coupon.html')">
-      <img src="icon/ID.png">
-      <div class="icon-item-name">优惠券</div>
-    </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./favorite.html')">
-      <img src="icon/favorite.png">
-      <div class="icon-item-name">我的收藏</div>
-    </flexbox-item>
-  </flexbox>
-  <flexbox class="block-3 vux-1px-t">
-    <flexbox-item class="icon-item vux-1px-r" v-tap="goto('http://kefu.easemob.com/webim/im.html?tenantId=33093')">
-      <img src="icon/online.png">
-      <div class="icon-item-name">在线客服</div>
-    </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-r vux-1px-t" v-tap="goto('tel:4000390808')">
-      <img src="icon/tel.png">
-      <div class="icon-item-name">电话咨询</div>
-    </flexbox-item>
-    <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./feed-back.html')">
-      <img src="icon/feedback.png">
-      <div class="icon-item-name">用户反馈</div>
-    </flexbox-item>
-  </flexbox>
-</group>
-<!-- <div class="exit" v-tap="exit">
-退出登录</div> -->
-<div class="block-f"></div>
-<j-footer></j-footer>
-</template>
-
-<script>
-import Lib from 'assets/Lib.js'
-import JFooter from 'components/j-footer'
-import Group from 'vux-components/group/'
-import Cell from 'vux-components/cell/'
-import {
-  Flexbox,
-  FlexboxItem
-} from 'vux-components/flexbox'
-import axios from 'axios'
-Lib.M.auth(axios, true)
-export default {
-  data() {
-    return {
-      showLoading: false,
-      loan: 0,
-      balance: 0,
-      wallet: 0,
-      userIcon: JSON.parse(localStorage.getItem('user')).profile.profileImage,
-      userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-    }
-  },
-  components: {
-    JFooter,
-    Flexbox,
-    FlexboxItem,
-    Group,
-    Cell
-  },
-  ready() {
-    axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
-      let walletInfo = res.data.data
-      this.loan = walletInfo.loanAmount
-      this.balance = walletInfo.consumptionAmount
-      this.wallet = walletInfo.balance
-    }).catch((err) => {
-      throw err
-    })
-  },
-  methods: {
-    stopLoading() {
-      this.showLoading = false
-    },
-    startLoading() {
-      this.showLoading = true
-    },
-    goto(url) {
-      location.href = url
-    },
-    exit() {
-      localStorage.clear()
-    }
-  }
-}
-</script>
-
 <style>
 body {
-  background-color: #eee;
+  background-color: #fff;
 }
 </style>
-<style scoped lang="less">@import '~vux/src/styles/1px.less';
+<style scoped lang="less">
+@import '~vux/src/styles/1px.less';
+@font: #F1E2BE;
+@bac: #EF913B;
 .block-1 {
     position: relative;
-    height: 110px;
-    background-color: #62676C;
-    border-bottom: 1px solid #fff;
+    height: 215px;
+    background-image: url('/static/images/usercenter/user-bg.png');
+    background-size: 100% auto;
     color: #fff;
+    box-shadow: inset 0px -9px 40px -4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    .hello {
+      position: absolute;
+      top: 90px;
+      left: 128px;
+      font-size: 20px;
+      font-weight: lighter;
+      color: @font;
+    }
+    .setting {
+      position: absolute;
+      top: 13px;
+      right: 16px;
+      width: 18px;
+      height: 18px;
+      img {
+        width: 100%;
+      }
+    }
     .user-icon {
         position: absolute;
-        top: 20px;
-        left: 24px;
+        top: 48px;
+        left: 49px;
         height: 70px;
         width: 70px;
         border-radius: 35px;
-        border: 1px solid #fff;
         img {
             position: absolute;
             top: 2px;
@@ -162,40 +49,38 @@ body {
             border-radius: 33px;
         }
     }
+    .manager {
+      width: 12px;
+      height: 22px;
+      position: absolute;
+      top: 96px;
+      left: 177px;
+      img {
+        width: 100%;
+      }
+    }
     .user-name {
-        position: absolute;
-        top: 36px;
-        left: 110px;
-        font-size: 16px;
-        height: 16px;
-        width: auto;
-        .user-rank {
-            margin-left: 10px;
-            font-size: 12px;
-            img {
-                position: absolute;
-                width: 24px;
-                height: 24px;
-                top: 0;
-                right: -5px;
-            }
-        }
+      position: absolute;
+      top: 113px;
+      left: 49px;
+      font-size: 35px;
+      height: 16px;
+      width: auto;
+      font-weight: lighter;
     }
     .user-balance {
-        position: absolute;
-        top: 66px;
-        left: 110px;
-        font-size: 12px;
-    }
+      position: absolute;
+      top: 160px;
+      left: 49px;
+      font-size: 15px;
+    } 
 }
 .block-2 {
-    background-color: #fff;
-    color: #393939;
-    .balance:first-child {
-        border-right: 1px solid #d8d8d8;
-    }
+    background-color: @bac;
+    color: @font;
+    font-weight: 300;
     .balance {
-        padding: 10px 0;
+      padding: 10px 0;
     }
 }
 
@@ -256,7 +141,7 @@ body {
     position: relative;
     width: 100%;
     height: 64px;
-    background-color: #eee;
+    background-color: #fff;
 }
 .exit {
     position: relative;
@@ -269,4 +154,216 @@ body {
     font-size: 16px;
     background-color: #fff;
 }
+.mask-wrapper {
+    position: relative;
+    margin-top: -12px;
+    .mask-up {
+      width: 100%;
+      height: 2px;
+      background-color: #fff;
+      position: absolute;
+      top: 0px;
+      left: 0;
+    }
+    .mask-down {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: #fff;
+      bottom: -1px;
+      left: 0;
+      z-index: 100;
+    }
+    .mask-left {
+      position: absolute;
+      width: 16px;
+      height: 82px;
+      top: 79px;
+      left: 0;
+      background-color: #fff;
+    }
+    .mask-right {
+      position: absolute;
+      width: 16px;
+      height: 82px;
+      top: 79px;
+      right: 0;
+      background-color: #fff;
+    }
+}
 </style>
+
+<template>
+<flexbox>
+  <flexbox-item class="block-1">
+    <div class="user-icon"><img :src="userIcon"></div>
+    <span class="hello">你好</span>
+    <div class="user-name">{{userName}}</div>
+    <div class="manager" v-if="managerService"><img src="/static/images/usercenter/manager-final.png"></div>
+    <div class="user-balance">贷款金额: {{loan|currency "" 2}}(元)</div>
+    <!-- 设置页 -->
+    <!-- <div class="setting"><img src="/static/images/usercenter/setting.png"></div> -->
+  </flexbox-item>
+</flexbox>
+<flexbox class="block-2">
+  <flexbox-item class="balance">
+    <!-- <flexbox-item class="balance" onclick="location.href='balance.html'"> -->
+    <div>已消费金额 (元)</div>
+    <div class="balance-money">{{balance|currency "" 2}}</div>
+  </flexbox-item>
+  <flexbox-item class="balance" onclick="location.href='wallet.html'">
+    <div>我的钱包 (元)</div>
+    <div class="balance-money">{{wallet|currency "" 2}}</div>
+  </flexbox-item>
+</flexbox>
+
+<group class="mask-wrapper">
+  <flexbox class="block-3 vux-1px-t">
+    <flexbox-item class="icon-item vux-1px-r" onclick="location.href='./zx-order-list.html'">
+      <img src="/static/images/usercenter/zx-order.png">
+      <div class="icon-item-name">装修订单</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-r vux-1px-t" onclick="location.href='./zc-order-list.html'">
+      <img src="/static/images/usercenter/zc-order.png">
+      <div class="icon-item-name">主材订单</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-t" onclick="location.href='./tk-order-list.html'">
+      <img src="/static/images/usercenter/refund.png">
+      <div class="icon-item-name">退款订单</div>
+    </flexbox-item>
+  </flexbox>
+  <flexbox class="block-3 vux-1px-t">
+    <flexbox-item class="icon-item vux-1px-r">
+      <img src="/static/images/usercenter/repayment.png">
+      <div class="icon-item-name">我的还款</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-r vux-1px-t" v-tap="goto('./coupon.html')">
+      <img src="/static/images/usercenter/coupon.png">
+      <div class="icon-item-name">我的点券</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./favorite.html')">
+      <img src="/static/images/usercenter/collection.png">
+      <div class="icon-item-name">我的收藏</div>
+    </flexbox-item>
+  </flexbox>
+  <flexbox class="block-3 vux-1px-t">
+    <flexbox-item class="icon-item vux-1px-r" v-tap="goto('http://kefu.easemob.com/webim/im.html?tenantId=33093')">
+      <img src="/static/images/usercenter/service.png">
+      <div class="icon-item-name">在线客服</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-r vux-1px-t" v-tap="goto('tel:4000390808')">
+      <img src="/static/images/usercenter/phonecall.png">
+      <div class="icon-item-name">电话咨询</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./feed-back.html')">
+      <img src="/static/images/usercenter/feedback.png">
+      <div class="icon-item-name">用户反馈</div>
+    </flexbox-item>
+  </flexbox>
+  <div class="mask-up"></div>
+  <div class="mask-down"></div>
+  <div class="mask-left"></div>
+  <div class="mask-right"></div>
+</group>
+
+<!-- <group style="margin-top:-.6em;">
+  <flexbox class="block-3 vux-1px-t">
+    <flexbox-item class="icon-item vux-1px-r">
+      <img src="icon/repay.png">
+      <div class="icon-item-name">我的还款</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-r vux-1px-t" v-tap="goto('./coupon.html')">
+      <img src="icon/ID.png">
+      <div class="icon-item-name">我的点券</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./favorite.html')">
+      <img src="icon/favorite.png">
+      <div class="icon-item-name">我的收藏</div>
+    </flexbox-item>
+  </flexbox>
+  <flexbox class="block-3 vux-1px-t">
+    <flexbox-item class="icon-item vux-1px-r" v-tap="goto('http://kefu.easemob.com/webim/im.html?tenantId=33093')">
+      <img src="icon/online.png">
+      <div class="icon-item-name">在线客服</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-r vux-1px-t" v-tap="goto('tel:4000390808')">
+      <img src="icon/tel.png">
+      <div class="icon-item-name">电话咨询</div>
+    </flexbox-item>
+    <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./feed-back.html')">
+      <img src="icon/feedback.png">
+      <div class="icon-item-name">用户反馈</div>
+    </flexbox-item>
+  </flexbox>
+</group> -->
+<!-- <div class="exit" v-tap="exit">
+退出登录</div> -->
+<div class="block-f"></div>
+<j-footer></j-footer>
+</template>
+
+<script>
+import Lib from 'assets/Lib.js'
+import JFooter from 'components/j-footer'
+import Group from 'vux-components/group/'
+import Cell from 'vux-components/cell/'
+import {
+  Flexbox,
+  FlexboxItem
+} from 'vux-components/flexbox'
+import axios from 'axios'
+Lib.M.auth(axios, true)
+export default {
+  data() {
+    return {
+      showLoading: false,
+      loan: 0,
+      balance: 0,
+      wallet: 0,
+      userIcon: JSON.parse(localStorage.getItem('user')).profile.profileImage,
+      userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
+      managerService: false
+    }
+  },
+  components: {
+    JFooter,
+    Flexbox,
+    FlexboxItem,
+    Group,
+    Cell
+  },
+  ready() {
+    axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+      let walletInfo = res.data.data
+      this.loan = walletInfo.loanAmount
+      this.balance = walletInfo.consumptionAmount
+      this.wallet = walletInfo.balance
+    }).catch((err) => {
+      throw err
+    })
+    axios.get(`${Lib.C.userApi}customerProfiles/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+      if (res.data.data.managerService === true) {
+        this.managerService = true
+      } else {
+        this.managerService = false
+      }
+    }).catch((err) => {
+      alert('获取信息失败，请稍后重试。。')
+    }) 
+  },
+  methods: {
+    stopLoading() {
+      this.showLoading = false
+    },
+    startLoading() {
+      this.showLoading = true
+    },
+    goto(url) {
+      location.href = url
+    },
+    exit() {
+      localStorage.clear()
+    }
+  }
+}
+</script>

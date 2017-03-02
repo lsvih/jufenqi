@@ -1,180 +1,3 @@
-<template>
-<header :style="{backgroundImage:'url('+ bgImg +')'}">
-  <div class="brand-logo"><img :src="img + brand.logoImg"></div>
-  <div class="brand-name">{{brand.name}}</div>
-</header>
-<div class="content">
-  <div class="store" v-for="store in brand.stores">
-    <div class="store-logo"><img src="./placeholder.png"></div>
-    <div class="store-name">{{store.name}}</div>
-    <div class="store-address">{{store.address}}</div>
-    <div class="add" v-if="~cart.indexOf(store.id)" v-tap="delCart(id,store.id)"><img src="./added.png"></div>
-    <div class="add" v-else v-tap="addCart(id,store.id,store)"><img src="./add.png"></div>
-  </div>
-
-</div>
-<footer>
-  <div class="icon-item"><img src="share.png">
-    <div>分享</div>
-  </div>
-  <div class="icon-item" v-if="thisIsFavorite" v-tap="cancelFavorite()"><img src="favorite-fill.png">
-    <div>收藏</div>
-  </div>
-  <div class="icon-item" v-else v-tap="addFavorite()"><img src="favorite.png">
-    <div>收藏</div>
-  </div>
-  <div class="footer-line"></div>
-  <div class="cart-list" v-tap="goto('./cart.html')"><img :src="cart.length?cartAImg:cartImg">备选订单</div>
-</footer>
-</template>
-
-<script>
-import Lib from 'assets/Lib.js'
-import axios from 'axios'
-import cartImg from './cart.png'
-import cartAImg from './cart-active.png'
-import bgImg from './bg.png'
-Lib.M.auth(axios)
-export default {
-  data() {
-    return {
-      img: Lib.C.imgUrl,
-      id: Lib.M.GetRequest().id,
-      brand: {},
-      cartImg,
-      cartAImg,
-      isFavorite: false,
-      cart: this.brandCart(Lib.M.GetRequest().id),
-      showToast: false,
-      bgImg,
-      thisIsFavorite: this.isFavorite(Lib.M.GetRequest().id)
-    }
-  },
-  methods: {
-    isFavorite(brandId) {
-      return true
-    },
-    getScreenWidth() {
-      return document.body.clientWidth
-    },
-    goto(url) {
-      location.href = url
-    },
-    addCart(brandId, storeId, storeData) {
-      let cart = JSON.parse(localStorage.cart)
-      cart.shop.push([Number(brandId), storeId])
-      localStorage.cart = JSON.stringify(cart)
-      this.cart.push(storeId)
-      if (localStorage.info === undefined) {
-        localStorage.info = JSON.stringify({
-          storeInfo: [],
-          brandInfo: []
-        })
-      }
-      let info = JSON.parse(localStorage.info)
-      if (!isIdIn(storeId, info.storeInfo)) {
-        info.storeInfo.push(storeData)
-      }
-      if (!isIdIn(brandId, info.brandInfo)) {
-        let t = JSON.parse(JSON.stringify(this.brand))
-        delete t.stores
-        info.brandInfo.push(t)
-      }
-      localStorage.info = JSON.stringify(info)
-      this.showToast = true
-
-      function isIdIn(id, array) {
-        for (let i = 0; i < array.length; i++) {
-          if (array[i].id == id) return true
-        }
-        return false
-      }
-    },
-    delCart(brandId, storeId) {
-      Lib.M.authOnlyPhone()
-      let cart = JSON.parse(localStorage.cart)
-      cart.shop.forEach((e, v) => {
-        if (e[0] == Number(brandId) && e[1] == storeId) {
-          cart.shop.splice(v, 1)
-        }
-      })
-      localStorage.cart = JSON.stringify(cart)
-      this.cart.$remove(storeId)
-    },
-    brandCart(brandId) {
-      if (localStorage.cart == undefined) {
-        localStorage.cart = JSON.stringify({
-          worker: [],
-          shop: []
-        })
-      }
-      let cart = JSON.parse(localStorage.cart)
-      let result = []
-      cart.shop.forEach((e) => {
-        if (e[0] === Number(brandId)) {
-          result.push(e[1])
-        }
-      })
-      return result
-    },
-    isFavorite(brandId){
-      if (!localStorage.getItem('favorite')) {
-        localStorage.setItem('favorite', JSON.stringify({
-          worker: [],
-          shop: []
-        }))
-        return false
-      }
-      return findSameBrand(brandId, JSON.parse(localStorage.getItem('favorite')).shop)
-    },
-    addFavorite() {
-      Lib.M.authOnlyPhone()
-      let list = JSON.parse(window.localStorage.getItem('favorite'))
-      let tBrand = JSON.parse(JSON.stringify(this.brand))
-      delete tBrand.stores
-      list.shop.push(tBrand)
-      window.localStorage.setItem('favorite', JSON.stringify(list))
-      this.thisIsFavorite = true
-    },
-    cancelFavorite() {
-      let list = JSON.parse(window.localStorage.getItem('favorite'))
-      for (let i in list.shop) {
-        if (list.shop[i].id == this.id) {
-          list.shop.$remove(list.shop[i])
-        }
-      }
-      this.thisIsFavorite = false
-      window.localStorage.setItem('favorite', JSON.stringify(list))
-    }
-  },
-  ready() {
-    axios.get(`${Lib.C.merApi}brands/${this.id}`, {
-      params: {
-        expand: 'storeBrands'
-      }
-    }).then((res) => {
-      this.brand = res.data.data
-      this.brand.stores = this.brand.storeBrands.map((e) => {
-        return e.store
-      })
-    }).catch((err) => {
-      throw err
-    })
-  }
-}
-/**
- * 在列表中找到id相同的项
- */
-function findSameBrand(id, brandList) {
-  for (let brand of brandList) {
-    if (brand.id == id) {
-      return true
-    }
-  }
-  return false
-}
-</script>
-
 <style>
 body {
   background-color: #eee;
@@ -308,15 +131,44 @@ footer {
         line-height: 15px;
         z-index: 1;
         .add {
-            position: absolute;
-            width: 74px;
-            height: 30px;
-            right: 15px;
-            bottom: 5px;
-            img {
-                height: 100%;
-                width: 100%;
-            }
+          position: absolute;
+          width: 72px;
+          height: 28px;
+          right: 15px;
+          bottom: 5px;
+          border: 1px solid #EBA844;
+          border-radius: 5px;
+          line-height: 28px;
+          font-size: 12px;
+          color: #EBA844;
+          text-align: center;
+        }
+        .added {
+          position: absolute;
+          width: 72px;
+          height: 28px;
+          right: 15px;
+          bottom: 5px;
+          border: 1px solid #EBA844;
+          border-radius: 5px;
+          line-height: 28px;
+          font-size: 12px;
+          background-color: #EBA844;
+          color: #fff;
+          text-align: center;
+        }
+        .buy {
+          position: absolute;
+          width: 72px;
+          height: 28px;
+          right: 97px;
+          bottom: 5px;
+          border: 1px solid #EBA844;
+          border-radius: 5px;
+          line-height: 28px;
+          font-size: 12px;
+          color: #EBA844;
+          text-align: center;
         }
         .store-logo {
             position: absolute;
@@ -349,3 +201,197 @@ footer {
     }
 }
 </style>
+
+<template>
+<header :style="{backgroundImage:'url('+ bgImg +')'}">
+  <div class="brand-logo"><img :src="img + brand.logoImg"></div>
+  <div class="brand-name">{{brand.name}}</div>
+</header>
+<div class="content">
+  <div class="store" v-for="store in brand.stores" track-by="$index">
+    <div class="store-logo"><img src="./placeholder.png"></div>
+    <div class="store-name">{{store.name}}</div>
+    <div class="store-address">{{store.address}}</div>
+    <div class="buy" v-tap="addOrder(id,store.id,store)">立即购买</div>
+    <div class="added" v-if="~cart.indexOf(store.id)" v-tap="delCart(id,store.id)">已加入</div>
+    <div class="add" v-else v-tap="addCart(id,store.id,store)">加入备选</div>
+  </div>
+
+</div>
+<footer>
+  <div class="icon-item"><img src="share.png">
+    <div>分享</div>
+  </div>
+  <div class="icon-item" v-if="thisIsFavorite" v-tap="cancelFavorite()"><img src="favorite-fill.png">
+    <div>收藏</div>
+  </div>
+  <div class="icon-item" v-else v-tap="addFavorite()"><img src="favorite.png">
+    <div>收藏</div>
+  </div>
+  <div class="footer-line"></div>
+  <div class="cart-list" v-tap="goto('./cart.html')"><img :src="cart.length?cartAImg:cartImg">备选订单</div>
+</footer>
+</template>
+
+<script>
+import Lib from 'assets/Lib.js'
+import axios from 'axios'
+import cartImg from './cart.png'
+import cartAImg from './cart-active.png'
+import bgImg from './bg.png'
+Lib.M.auth(axios)
+export default {
+  data() {
+    return {
+      img: Lib.C.imgUrl,
+      id: Lib.M.GetRequest().id,
+      brand: {},
+      cartImg,
+      cartAImg,
+      isFavorite: false,
+      cart: this.brandCart(Lib.M.GetRequest().id),
+      showToast: false,
+      bgImg,
+      thisIsFavorite: this.isFavorite(Lib.M.GetRequest().id),
+      //立即购买
+      shopList: []
+    }
+  },
+  methods: {
+    isFavorite(brandId) {
+      return true
+    },
+    getScreenWidth() {
+      return document.body.clientWidth
+    },
+    goto(url) {
+      location.href = url
+    },
+    addCart(brandId, storeId, storeData) {
+      let cart = JSON.parse(localStorage.cart)
+      cart.shop.push([Number(brandId), storeId])
+      localStorage.cart = JSON.stringify(cart)
+      this.cart.push(storeId)
+      if (localStorage.info === undefined) {
+        localStorage.info = JSON.stringify({
+          storeInfo: [],
+          brandInfo: []
+        })
+      }
+      let info = JSON.parse(localStorage.info)
+      if (!isIdIn(storeId, info.storeInfo)) {
+        info.storeInfo.push(storeData)
+      }
+      if (!isIdIn(brandId, info.brandInfo)) {
+        let t = JSON.parse(JSON.stringify(this.brand))
+        delete t.stores
+        info.brandInfo.push(t)
+      }
+      localStorage.info = JSON.stringify(info)
+      this.showToast = true
+
+      function isIdIn(id, array) {
+        for (let i = 0; i < array.length; i++) {
+          if (array[i].id == id) return true
+        }
+        return false
+      }
+    },
+    delCart(brandId, storeId) {
+      Lib.M.authOnlyPhone()
+      let cart = JSON.parse(localStorage.cart)
+      cart.shop.forEach((e, v) => {
+        if (e[0] == Number(brandId) && e[1] == storeId) {
+          cart.shop.splice(v, 1)
+        }
+      })
+      localStorage.cart = JSON.stringify(cart)
+      this.cart.$remove(storeId)
+    },
+    brandCart(brandId) {
+      if (localStorage.cart == undefined) {
+        localStorage.cart = JSON.stringify({
+          worker: [],
+          shop: []
+        })
+      }
+      let cart = JSON.parse(localStorage.cart)
+      let result = []
+      cart.shop.forEach((e) => {
+        if (e[0] === Number(brandId)) {
+          result.push(e[1])
+        }
+      })
+      return result
+    },
+    isFavorite(brandId){
+      if (!localStorage.getItem('favorite')) {
+        localStorage.setItem('favorite', JSON.stringify({
+          worker: [],
+          shop: []
+        }))
+        return false
+      }
+      return findSameBrand(brandId, JSON.parse(localStorage.getItem('favorite')).shop)
+    },
+    addFavorite() {
+      Lib.M.authOnlyPhone()
+      let list = JSON.parse(window.localStorage.getItem('favorite'))
+      let tBrand = JSON.parse(JSON.stringify(this.brand))
+      delete tBrand.stores
+      list.shop.push(tBrand)
+      window.localStorage.setItem('favorite', JSON.stringify(list))
+      this.thisIsFavorite = true
+    },
+    cancelFavorite() {
+      let list = JSON.parse(window.localStorage.getItem('favorite'))
+      for (let i in list.shop) {
+        if (list.shop[i].id == this.id) {
+          list.shop.$remove(list.shop[i])
+        }
+      }
+      this.thisIsFavorite = false
+      window.localStorage.setItem('favorite', JSON.stringify(list))
+    },
+    addOrder(brandId, shopId, storeData) {
+      storeData.brands = []
+      storeData.brands.push({
+        id: brandId,
+        name: this.brand.name
+      })
+      let result = []
+      result.push(storeData)
+
+      window.localStorage.setItem('temp', JSON.stringify(result))
+      location.href = './add-order.html'
+    }
+  },
+  ready() {
+    axios.get(`${Lib.C.merApi}brands/${this.id}`, {
+      params: {
+        expand: 'storeBrands'
+      }
+    }).then((res) => {
+      this.brand = res.data.data
+      this.brand.stores = this.brand.storeBrands.map((e) => {
+        return e.store
+      })
+    }).catch((err) => {
+      throw err
+    })
+  }
+}
+/**
+ * 在列表中找到id相同的项
+ */
+function findSameBrand(id, brandList) {
+  for (let brand of brandList) {
+    if (brand.id == id) {
+      return true
+    }
+  }
+  return false
+}
+
+</script>
+

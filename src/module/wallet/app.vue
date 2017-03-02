@@ -1,186 +1,323 @@
+<style>
+html {
+  padding: 0;
+  margin: 0;
+}
+body {
+  background-color: #eee;
+  padding: 0;
+  margin: 0;
+}
+</style>
+<style lang="less">
+/* dialog var */
+@weuiDialogBackgroundColor: #FAFAFC;
+@weuiDialogLineColor: #D5D5D6;
+@weuiDialogLinkColor: #3CC51F;
+@weuiDialogLinkActiveBc: #EEEEEE;
+
+.content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  .amount-wrapper {
+    text-align: center;
+    background-image: url('http://ohej1hvbm.bkt.clouddn.com/wallet-back.png');
+    background-size: cover;
+    padding: 32px 0 0 0;
+    height: 150px;
+    margin: 0 0 1px 0;
+    position: relative;
+    p {
+      color: #fff;
+      margin: 0;
+    }
+    .amount-title {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .amount {
+      font-size: 33px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .get-money {
+      width: 80px;
+      height: 30px;
+      line-height: 30px;
+      color: #fff;
+      border: 1px solid #fff;
+      border-radius: 5px;
+      margin: 0 auto 10px auto;
+    }
+    .tel {
+      position: absolute;
+      font-size: 12px;
+      color: #fff;
+      right: 16px;
+      bottom: 10px;
+      width: 60px;
+      height: 25px;
+      line-height: 25px;
+      border: 1px solid #fff;
+      border-radius: 5px;
+    }
+  }
+  .coupon-detail {
+
+    .cell {
+      height: 41px;
+      background-color: #fff;
+      font-size: 12px;
+      color: #393939;
+      padding-left: 16px;
+      margin-bottom: 1px;
+      .cell-title {
+        line-height: 41px;
+      }
+    }
+
+    .label {
+      height: 41px;
+      background-color: #fff;
+      padding: 0 16px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1px;
+      .amount-label {
+        line-height: 25px;
+      }
+      .amount-time {
+        color: #393939;
+        line-height: 10px;
+      }
+      .amout-change {
+        line-height: 41px;
+        .orange {
+          color: #ff9736;
+          display: inline-block;
+          margin-right: 3px;
+        }
+        img {
+          transform: rotate(-90deg);
+          width: 16px;
+        }
+      }
+    }
+  }
+}
+/*
+ * dialog css
+ */
+.setTapColor(@c:rgba(0,0,0,0)) {
+    -webkit-tap-highlight-color: @c;
+}
+.setTopLine(@c: #C7C7C7) {
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 1px;
+    border-top: 1px solid @c;
+    color: @c;
+    transform-origin: 0 0;
+    transform: scaleY(0.5);
+}
+.setLeftLine(@c: #C7C7C7) {
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    border-left: 1px solid @c;
+    color: @c;
+    transform-origin: 0 0;
+    transform: scaleX(0.5);
+}
+
+.weui_dialog_ft {
+    position: relative;
+    line-height: 42px;
+    margin-top: 20px;
+    font-size: 17px;
+    display: flex;
+    span {
+        display: block;
+        flex: 1;
+        color: #888;
+        text-decoration: none;
+        &:active {
+            background-color: @weuiDialogLinkActiveBc;
+        }
+    }
+    &:after {
+        content: " ";
+        .setTopLine(@weuiDialogLineColor);
+    }
+    .primary {
+        color: #f99736 !important;
+    }
+}
+</style>
+
 <template>
-<div class="block-1">
-  <div class="balance-title">我的钱包(元)</div>
-  <div class="balance-money">{{wallet|currency '' 2}}</div>
-</div>
-
-<div class="pal-1" v-if="status === 0">
-  <x-button class="postal-1" slot="right" style="color:#fff;background-color:#88C928;margin:0 20px;width:calc( 100% - 40px )" v-tap="status = 1">银行卡提现</x-button>
-  <x-button class="postal-2" slot="right" style="color:#fff;background-color:#88C928;margin:0 20px;width:calc( 100% - 40px )" v-tap="status = 2">微信提现</x-button>
-  <div class="tip">提现将于3个工作日内到账</div>
-  <j-tel></j-tel>
-</div>
-
-<div class="pal-2" v-if="status === 1">
-  <group style="margin-top:-1.17647059em;">
-    <x-input title="金额" type="Number" keyboard="number" :value.sync="po1.money" placeholder="请输入提现金额"></x-input>
-    <x-input title="收款人" type="Text" :value.sync="po1.people" placeholder="与账号开户姓名一致"></x-input>
-    <x-input title="开户行" type="Text" :value.sync="po1.depositBank" placeholder="请输入正确的开户行"></x-input>
-    <x-input title="卡号" type="Number" keyboard="number" :value.sync="po1.cardNumber" placeholder="请输入正确的银行卡号"></x-input>
-  </group>
-  <x-button class="postal-1" :class="{active:isFilledPo1()}" slot="right" style="background-color:#e2e2e2;color:#fff;margin:0 20px;width:calc( 100% - 40px )" v-tap="isFilledPo1()?submitPo1():return">提交</x-button>
-  <div class="tip">提现将于3个工作日内到账</div>
-  <j-tel></j-tel>
-</div>
-
-
-<div class="pal-3" v-if="status === 2">
-  <group style="margin-top:-1.17647059em;">
-    <x-input title="金额" type="Number" :value.sync="po2.money" placeholder="请输入提现金额"></x-input>
-    <x-input title="微信号" type="Text" :value.sync="po2.account" placeholder="请输入正确的微信号"></x-input>
-  </group>
-  <x-button class="postal-1" :class="{active:isFilledPo2()}" slot="right" style="background-color:#e2e2e2;color:#fff;margin:0 20px;width:calc( 100% - 40px )" v-tap="isFilledPo2()?submitPo2():return">提交</x-button>
-  <j-tel></j-tel>
-</div>
+  <div class="content">
+    <div class="amount-wrapper">
+      <p class="amount-title">我的钱包</p>
+      <p class="amount">{{balance}}<span>元</span></p>
+      <div class="get-money" v-tap="withdrawShow = true">提现</div>
+      <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
+    </div>
+    <div class="coupon-detail">
+      <div class="cell">
+        <div class="cell-title">收支明细</div>
+      </div>
+      <div class="label" v-for="balance in balanceChanges">
+        <div class="amount-label">
+          <div class="amount-type">{{returnType(balance.type, typeList)}}</div>
+          <div class="amount-time">{{getTime(balance.createdAt)}}</div>
+        </div>
+        <div class="amout-change">
+          <span v-if="showType(balance.type)" class="orange">+{{balance.amount}}元</span>
+          <span v-if="!showType(balance.type)">{{balance.amount}}元</span>
+          <img src="./select.png">
+         
+        </div>
+      </div>
+    </div>
+  </div>
+  <Dialog :show.sync="withdrawShow" >
+    <p style="font-size: 18px;">提现申请</p>
+    <group>
+      <x-input title="提现金额" :value.sync="withdrawAmount" type="number" placeholder="请输入微信提现金额"></x-input>
+      <div class="weui_dialog_ft">
+        <span @click="withdrawShow = false" style="border-right: 1px solid #D5D5D6;">取消</span>
+        <span :class="{'primary': isFilled()}" @click="isFilled()?withdrawPost(tempOrderNo):return">确认申请</span>
+      </div>
+    </group>
+  </Dialog>
 </template>
 
 <script>
 import Lib from 'assets/Lib.js'
-import XButton from 'vux-components/x-button'
-import JTel from 'components/j-tel'
-import XInput from 'vux-components/x-input'
-import Group from 'vux-components/group'
 import axios from 'axios'
+import Dialog from 'vux-components/dialog'
+import Group from 'vux-components/group'
+import XInput from 'vux-components/x-input'
+
 Lib.M.auth(axios)
+
 export default {
   data() {
     return {
-      wallet: 0,
-      status: 0, //0=待选择提现，1=银行卡提现，2=微信提现
-      po1: {
-        money: "",
-        people: "",
-        depositBank: "",
-        cardNumber: ""
-      },
-      po2: {
-        money: "",
-        account: ""
-      }
+      balance: 0,
+      balanceChanges: [],
+      withdrawShow: false,
+      withdrawAmount: 0,
+      typeList: [{
+        id: 1, value: '贴息'
+      },{
+        id: 2, value: '返现'
+      },{
+        id: 3, value: '银行卡提现'
+      },{
+        id: 4, value: '微信提现'
+      },{
+        id: 5, value: '退款'
+      },{
+        id: 6, value: '退款扣返现'
+      },{
+        id: 7, value: '提现返还'
+      }]
     }
   },
   components: {
-    XButton,
-    JTel,
-    XInput,
-    Group
-  },
-  methods: {
-    //银行提现
-    isFilledPo1() {
-      let info = this.po1
-      return (/^[1-9]\d*$|^[1-9]\d*\.\d*$|^0\.\d*[1-9]\d*$/g.test(info.money) && info.money <= this.wallet && info.people !== "" && this.depositBank !== "" && /^(\d{16}|\d{19})$/.test(info.cardNumber))
-    },
-    submitPo1() {
-      axios.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToBankcard`, {}, {
-        params: {
-          amount: this.po1.money,
-          accountName: this.po1.people,
-          bankcardNo: this.po1.cardNumber,
-          depositBank: this.po1.depositBank
-        },
-        withCredentials: true,
-        responseType: true
-      }).then((res) => {
-        alert("提现申请已提交")
-        this.wallet = res.data.data.balance
-        this.status = 0
-      }).catch((res) => {
-        alert("提现失败，请稍后再试")
-      })
-    },
-    //微信提现
-    isFilledPo2() {
-      let info = this.po2
-      return (/^[1-9]\d*$|^[1-9]\d*\.\d*$|^0\.\d*[1-9]\d*$/g.test(info.money) && info.money <= this.wallet && info.account !== "")
-    },
-    submitPo2() {
-      axios.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToWechat`, {}, {
-        params: {
-          amount: this.po2.money,
-          wechatId: this.po2.account,
-        },
-        withCredentials: true,
-        responseType: true
-      }).then((res) => {
-        alert("提现申请已提交")
-        this.wallet = res.data.data.balance
-        this.status = 0
-      }).catch((res) => {
-        alert("提现失败，请稍后再试")
-      })
-    }
+    Dialog,
+    Group,
+    XInput
   },
   ready() {
     axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
-      this.wallet = res.data.data.balance
+      this.balance = res.data.data.balance
+      this.balanceChanges = res.data.data.balanceChanges
     }).catch((res) => {
       alert("网络连接失败，请稍候重试")
       window.location.reload()
     })
+  },
+  methods: {
+    goto(url) {
+      location.href = url
+    },
+
+    /**
+     * 通过点券的type获取typeList中的点券类型
+     */
+    returnType(type, array) {
+      for (let i = 0; i < array.length; i++ ) {
+        if (array[i].id == type ) return array[i].value
+      }
+    },
+    /**
+     * 将时间戳格式化
+     */
+    getTime(timeStamp) {
+      var d = new Date(timeStamp * 1000)
+      var Y = d.getFullYear() + '-'
+      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-'
+      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate())
+      return Y + M + D
+    },
+    /**
+     * v-if判断点券的amount
+     */
+    showType(type) {
+      let result 
+      switch (type) {
+        case 1:
+        case 2:
+        case 5:
+        case 7:
+          result = true
+          break
+        case 3:
+        case 4:
+        case 6: 
+          result = false
+          break
+        default:
+          result = true
+      }
+      return result
+    },
+    /**
+     * 提交提现申请
+     */
+    withdrawPost() {
+      axios.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToWechat`, {}, {
+        params: {
+          amount: this.withdrawAmount
+        },
+        withCredentials: true,
+        responseType: true
+      }).then((res) => {
+        alert("提现申请已提交")
+        this.wallet = res.data.data.balance
+        this.withdrawShow = false
+        location.reload()
+      }).catch((res) => {
+        alert("提现失败，请稍后再试")
+      })
+    },
+    isFilled() {
+      return this.withdrawAmount !== null
+    }
+    
   }
 }
+
 </script>
 
-<style>
-body {
-  background-color: #eee;
-}
-</style>
-<style lang="less" scoped>
-.block-1 {
-    width: 100%;
-    height: 130px;
-    background-color: #62676c;
-    position: relative;
-    .balance-title {
-        height: 16px;
-        width: 100%;
-        text-align: center;
-        position: absolute;
-        top: 29px;
-        left: 0;
-        font-size: 16px;
-        color: #fff;
-    }
-    .balance-money {
-        height: 36px;
-        width: 100%;
-        text-align: center;
-        position: absolute;
-        bottom: 29px;
-        font-size: 36px;
-        color: #fff;
-    }
-}
-.pal-1 {
-    .postal-1 {
-        margin-top: 186px !important;
-    }
-    .postal-2 {
-        margin-top: 20px !important;
-    }
-}
-.pal-2 {
-    .postal-1 {
-        margin-top: 50px !important;
-    }
-}
-.pal-3 {
-    .postal-1 {
-        margin-top: 94px !important;
-        margin-bottom: 20px !important;
-    }
-}
-.active {
-    background-color: #88C928!important;
-}
-.tip {
-    font-size: 12px;
-    height: 12px;
-    line-height: 12px;
-    width: 100%;
-    text-align: center;
-    margin: 20px 0 10px;
-}
-</style>

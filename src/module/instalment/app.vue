@@ -26,7 +26,7 @@
     <j-installment-process :step="3" v-if="thisStatus == '未激活'"></j-installment-process>
     <j-installment-process :step="5" v-if="thisStatus == '激活中'"></j-installment-process>
   </div>
-<scroller class="block-3" height="calc( 100% - 190px - 44px )" :lock-x="true" :scrollbar-y="true">
+<scroller class="block-3" height="calc( 100% - 177px - 44px )" :lock-x="true" :scrollbar-y="true">
   <div>
     <div style="width:100%" :style="{'height':getScreenWidth() * 1.872 + 'px'}"><img src="/static/temp/分期.jpg" width="100%">
     </div>
