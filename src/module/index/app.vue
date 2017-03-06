@@ -434,16 +434,16 @@ body {
     </div>-->
 
 <!-- 居头条 -->
-    <!-- <div class="headline">
+    <div class="headline" v-tap="goto('./head-list.html')">
       <div class="headline-logo"><img src="./headline.jpg"></div>
       <div class="carousel-wrapper">
         <swiper class="headline-swipper" loop auto show-dots="false" :list="headlineList" :interval="1500" direction="vertical" height="55px" :index="headlineIndex" @on-index-change="headlineOnChange" >
         </swiper>
       </div>
-    </div> -->
-    <div class="longpic" v-tap="goto('./bannerfirst.html')">
-      <img src="./long.png">
     </div>
+    <!-- <div class="longpic" v-tap="goto('./bannerfirst.html')">
+      <img src="./long.png">
+    </div> -->
 
  </div>
   <!-- module end -->
@@ -525,6 +525,7 @@ import {
   FlexboxItem
 } from 'vux-components/flexbox'
 import axios from 'axios'
+
 Lib.M.auth(axios, false)
 
 export default {
