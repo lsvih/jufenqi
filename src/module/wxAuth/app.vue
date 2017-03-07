@@ -27,14 +27,11 @@ export default {
         data.loginAt = new Date().getTime()
         data.expiredAt = String(Number(data.loginAt) + Number(data.expiresIn * 1000 - 60 * 1000 * 100))
         window.localStorage.setItem("user", JSON.stringify(data))
-        // 这里没有定义type是什么，会报错的呀
-        // if (type === 1) {
           if (JSON.parse(localStorage.getItem('user')).profile.mobile) {
             location.href = decodeURIComponent(this.lastUrl)
           } else {
             location.href = `./phonenum.html?url=${encodeURIComponent(this.lastUrl)}`
           }
-        // }
       }).catch((err) => {
         alert("微信登录失败，请稍后重试")
         throw err

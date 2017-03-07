@@ -11,7 +11,7 @@ body {
     position: relative;
     height: 215px;
     background-image: url('/static/images/usercenter/user-bg.png');
-    background-size: 100% auto;
+    background-size: 100% 100%;
     color: #fff;
     box-shadow: inset 0px -9px 40px -4px rgba(0, 0, 0, 0.1);
     z-index: 100;
@@ -202,7 +202,7 @@ body {
     <div class="manager" v-if="managerService"><img src="/static/images/usercenter/manager-final.png"></div>
     <div class="user-balance">贷款金额: {{loan|currency "" 2}}(元)</div>
     <!-- 设置页 -->
-    <!-- <div class="setting"><img src="/static/images/usercenter/setting.png"></div> -->
+    <div class="setting" v-tap="goto('./user-setting.html')"><img src="/static/images/usercenter/setting.png"></div>
   </flexbox-item>
 </flexbox>
 <flexbox class="block-2">
