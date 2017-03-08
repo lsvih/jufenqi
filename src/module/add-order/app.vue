@@ -319,14 +319,14 @@ export default {
           })
           groups.map((e) => {
             shop.brands.map((brand) => {
-              if (brand.clerk != null) {
+              if (brand.clerk != null && (shop.id == e.storeId)) {
                 e.orders.push({
                   brandId: Number(brand.id),
                   clerkId: Number(brand.clerk.id),
                   normalAmount: brand.normalAmount?Number(brand.normalAmount):0,
                   specialAmount: brand.specialAmount?Number(brand.specialAmount):0
                 })
-              } else {
+              } else if (shop.id == e.storeId) {
                 e.orders.push({
                   brandId: Number(brand.id),
                   normalAmount: brand.normalAmount?Number(brand.normalAmount):0,

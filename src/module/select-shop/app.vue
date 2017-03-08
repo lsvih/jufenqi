@@ -144,11 +144,13 @@ export default {
           orders: [] 
         })
         orderList.map((order) => {
-          shop.brands.map((brand) => {
-            order.orders.push({
-              brandId: brand.id
+          if (order.storeId == shop.id) {
+            shop.brands.map((brand) => {
+              order.orders.push({
+                brandId: brand.id
+              })
             })
-          })
+          }
         })
       })
       let appointTime = new Date(this.appoint_at)
