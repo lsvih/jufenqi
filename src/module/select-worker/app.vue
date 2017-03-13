@@ -1,3 +1,116 @@
+<style lang="less">
+a {
+    text-decoration: none;
+}
+::-webkit-input-placeholder {
+    text-align: left;
+}
+body {
+    background-color: #eee;
+    margin: 0;
+}
+.to-calculate {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 44px;
+    text-align: center;
+    line-height: 44px;
+    background-color: #e2e2e2;
+    color: #fff;
+    z-index: 5;
+}
+.btn-active {
+    background-color: #ff9736 !important;
+}
+.cell-item {
+    position: relative;
+    height: 80px;
+    .shop-logo {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        width: 120px;
+        height: 80px;
+    }
+    .shop-name {
+        position: absolute;
+        top: 10px;
+        left: 145px;
+        font-size: 12px;
+        color: #393939;
+    }
+    .shop-address {
+        position: absolute;
+        top: 44px;
+        left: 145px;
+        font-size: 12px;
+        color: #999;
+    }
+    .shop-rank {
+        position: absolute;
+        bottom: 10px;
+        left: 145px;
+        font-size: 12px;
+        color: #ff9736;
+    }
+    .shop-is-favorite {
+        position: absolute;
+        top: 70px;
+        right: 15px;
+        width: 80px;
+        height: 20px;
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+    .worker-logo {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        width: 80px;
+        height: 80px;
+    }
+    .worker-name {
+        position: absolute;
+        top: 10px;
+        left: 100px;
+        font-size: 12px;
+        color: #393939;
+    }
+    .worker-address {
+        position: absolute;
+        top: 44px;
+        left: 100px;
+        font-size: 12px;
+        color: #999;
+    }
+    .worker-rank {
+        position: absolute;
+        bottom: 10px;
+        left: 100px;
+        font-size: 12px;
+        color: #ff9736;
+    }
+    .worker-is-favorite {
+        position: absolute;
+        top: 70px;
+        right: 15px;
+        width: 80px;
+        height: 20px;
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+.vux-popup-picker-header {
+    color: #ff9736 !important;
+}
+</style>
+
 <template>
 <div>
   <popup-picker title="地区" :data="area" :columns="3" :show-cell="false" :show.sync="showSelect" :value.sync="areaSelect" show-name v-ref:area></popup-picker>
@@ -196,112 +309,3 @@ export default {
   }
 }
 </script>
-<style lang="less">
-a {
-    text-decoration: none;
-}
-::-webkit-input-placeholder {
-    text-align: left;
-}
-body {
-    background-color: #eee;
-    margin: 0;
-}
-.to-calculate {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 44px;
-    text-align: center;
-    line-height: 44px;
-    background-color: #e2e2e2;
-    color: #fff;
-    z-index: 5;
-}
-.btn-active {
-    background-color: #88C928!important;
-}
-.cell-item {
-    position: relative;
-    height: 80px;
-    .shop-logo {
-        position: absolute;
-        top: 10px;
-        left: 15px;
-        width: 120px;
-        height: 80px;
-    }
-    .shop-name {
-        position: absolute;
-        top: 10px;
-        left: 145px;
-        font-size: 12px;
-        color: #393939;
-    }
-    .shop-address {
-        position: absolute;
-        top: 44px;
-        left: 145px;
-        font-size: 12px;
-        color: #999;
-    }
-    .shop-rank {
-        position: absolute;
-        bottom: 10px;
-        left: 145px;
-        font-size: 12px;
-        color: #3ba794;
-    }
-    .shop-is-favorite {
-        position: absolute;
-        top: 70px;
-        right: 15px;
-        width: 80px;
-        height: 20px;
-        img {
-            height: 100%;
-            width: 100%;
-        }
-    }
-    .worker-logo {
-        position: absolute;
-        top: 10px;
-        left: 15px;
-        width: 80px;
-        height: 80px;
-    }
-    .worker-name {
-        position: absolute;
-        top: 10px;
-        left: 100px;
-        font-size: 12px;
-        color: #393939;
-    }
-    .worker-address {
-        position: absolute;
-        top: 44px;
-        left: 100px;
-        font-size: 12px;
-        color: #999;
-    }
-    .worker-rank {
-        position: absolute;
-        bottom: 10px;
-        left: 100px;
-        font-size: 12px;
-        color: #3ba794;
-    }
-    .worker-is-favorite {
-        position: absolute;
-        top: 70px;
-        right: 15px;
-        width: 80px;
-        height: 20px;
-        img {
-            height: 100%;
-            width: 100%;
-        }
-    }
-}
-</style>

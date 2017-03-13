@@ -1,128 +1,3 @@
-<template>
-    <div class="topPic">
-      <img :src="imgUrl+schemes.showImg">
-      <div class="houseprice">{{schemes.showTitle}}</div>
-    </div>
-  <!--  <div class="methodShow">
-      <p>方案展示</p>
-    </div> -->
-    <div class="contentWrapper">
-      <div class="contentTab">
-        <li v-tap="tabIndex = $index" v-for="space in schemes.spaces" :class="{select:tabIndex==$index}">{{space.type.name}}</li>
-      </div>
-      <div class="content" v-html="schemes.spaces[tabIndex].descriptionRich"></div>
-    <div class="itemList" v-if="render" :style="{height:schemes.spaces[tabIndex].products.length > 4?'188px':'128px'}">
-      <div class="item-name-before"></div><div class="item-name">空间包含物品</div>
-      <div class="item-wrapper">
-        <div class="item" v-for="product in schemes.spaces[tabIndex].products">
-          <div class="item-icon"><img :src="imgUrl+product.coverImg"></div>
-          <div class="item-con">{{product.name}}</div>
-        </div>
-      </div>
-
-    </div>
-    <div class="form">
-    <div class="item-name-before"></div><div class="item-name">预约咨询</div>
-    <img src="./name.jpg" class="name">
-    <img src="./phone.jpg" class="phone">
-      <input type="text" v-model="name" placeholder="请输入您的姓名">
-      <input type="number" v-model="phone" placeholder="请输入您的手机号码">
-      <div class="btn" v-tap="isFinished()?submit():return"><div class="btn-text">提交</div><img v-if='isFinished()' :src="btnImgA"><img v-else :src="btnImg"></div>
-    </div>
-</template>
-
-<script>
-import Lib from 'assets/Lib.js'
-import JFooter from 'components/j-footer'
-import {
-  Flexbox,
-  FlexboxItem
-} from 'vux-components/flexbox'
-import Loading from 'vux-components/loading'
-import Scroller from 'vux-components/scroller'
-import axios from 'axios'
-import Swiper from 'vux-components/swiper'
-import btnImg from './btn.jpg'
-import btnImgA from './btn-active.jpg'
-Lib.M.auth(axios)
-export default {
-	name: 'app',
-	components: {
-		Swiper,
-    JFooter,
-    Flexbox,
-    FlexboxItem
-	},
-	data() {
-		return {
-      id:Lib.M.GetRequest().id,
-      imgUrl:Lib.C.imgUrl,
-      tabIndex: 0,
-      schemes:{},
-      name:'',
-      phone:'',
-      btnImg,
-      btnImgA,
-      render:false
-		}
-	},
-  ready(){
-    axios.get(`${Lib.C.picpApi}schemes/${this.id}?expand=spaces`).then((res) => {
-      this.schemes = res.data.data
-      let spaceIdArr = []
-      res.data.data.spaces.forEach((space)=>{
-        spaceIdArr.push(space.id)
-      })
-      axios.get(`${Lib.C.picpApi}/spaces?expand=spaceProducts&filter=id:${spaceIdArr.join(',')}`).then((res) => {
-          res.data.data.map((a)=>{
-              this.schemes.spaces[findIdIndex(a.id,this.schemes.spaces)].products = a.spaceProducts.map((e) => {
-                return e.product
-              })
-          })
-          this.render = true
-    }).catch((err) => {
-      throw err //error
-    })
-    }).catch((err) => {
-      throw err //error
-    })
-  },
-  methods:{
-    isFinished(){
-      let reg = /^1[3|4|5|7|8]\d{9}$/
-      return this.name&&reg.test(this.phone)
-    },
-    submit(){
-      if(!this.name){
-        alert("请输入您的称呼")
-        return
-      }
-      let reg = /^1[3|4|5|7|8]\d{9}$/
-      if(!reg.test(this.phone)){
-        alert("请输入正确的手机号码")
-        return
-      }
-      axios.post(`${Lib.C.homeApi}form-infos`,{
-        formName:this.id,
-        fullname:this.name,
-        mobile:this.phone
-      }).then((res) => {
-          alert('您的信息已提交，我们会在24小时之内处理您的提交请求')
-    }).catch((err) => {
-      throw err //error
-    })
-    }
-  }
-}
-
-
-function findIdIndex(id,array){
-  for(let i =0;i<array.length;i++){
-    if(array[i].id == id) return i
-  }
-  return -1
-}
-</script>
 <style lang="less">
 .topPic {
   width: 100%;
@@ -163,7 +38,7 @@ function findIdIndex(id,array){
       padding: 15px 0;
     }
     .select {
-      background-color: rgb(152, 212, 72);
+      background-color: #ff9736 !important;
       color:#fff!important;
     }
   }
@@ -334,3 +209,128 @@ function findIdIndex(id,array){
   }
 }
 </style>
+
+<template>
+    <div class="topPic">
+      <img :src="imgUrl+schemes.showImg">
+      <div class="houseprice">{{schemes.showTitle}}</div>
+    </div>
+  <!--  <div class="methodShow">
+      <p>方案展示</p>
+    </div> -->
+    <div class="contentWrapper">
+      <div class="contentTab">
+        <li v-tap="tabIndex = $index" v-for="space in schemes.spaces" :class="{select:tabIndex==$index}">{{space.type.name}}</li>
+      </div>
+      <div class="content" v-html="schemes.spaces[tabIndex].descriptionRich"></div>
+    <div class="itemList" v-if="render" :style="{height:schemes.spaces[tabIndex].products.length > 4?'188px':'128px'}">
+      <div class="item-name-before"></div><div class="item-name">空间包含物品</div>
+      <div class="item-wrapper">
+        <div class="item" v-for="product in schemes.spaces[tabIndex].products">
+          <div class="item-icon"><img :src="imgUrl+product.coverImg"></div>
+          <div class="item-con">{{product.name}}</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="form">
+    <div class="item-name-before"></div><div class="item-name">预约咨询</div>
+    <img src="./name.jpg" class="name">
+    <img src="./phone.jpg" class="phone">
+      <input type="text" v-model="name" placeholder="请输入您的姓名">
+      <input type="number" v-model="phone" placeholder="请输入您的手机号码">
+      <div class="btn" v-tap="isFinished()?submit():return"><div class="btn-text">提交</div><img v-if='isFinished()' :src="/static/images/btn-active-org.png"><img v-else :src="btnImg"></div>
+    </div>
+</template>
+
+<script>
+import Lib from 'assets/Lib.js'
+import JFooter from 'components/j-footer'
+import {
+  Flexbox,
+  FlexboxItem
+} from 'vux-components/flexbox'
+import Loading from 'vux-components/loading'
+import Scroller from 'vux-components/scroller'
+import axios from 'axios'
+import Swiper from 'vux-components/swiper'
+import btnImg from './btn.jpg'
+
+Lib.M.auth(axios)
+export default {
+	name: 'app',
+	components: {
+		Swiper,
+    JFooter,
+    Flexbox,
+    FlexboxItem
+	},
+	data() {
+		return {
+      id:Lib.M.GetRequest().id,
+      imgUrl:Lib.C.imgUrl,
+      tabIndex: 0,
+      schemes:{},
+      name:'',
+      phone:'',
+      btnImg,
+      render:false
+		}
+	},
+  ready(){
+    axios.get(`${Lib.C.picpApi}schemes/${this.id}?expand=spaces`).then((res) => {
+      this.schemes = res.data.data
+      let spaceIdArr = []
+      res.data.data.spaces.forEach((space)=>{
+        spaceIdArr.push(space.id)
+      })
+      axios.get(`${Lib.C.picpApi}/spaces?expand=spaceProducts&filter=id:${spaceIdArr.join(',')}`).then((res) => {
+          res.data.data.map((a)=>{
+              this.schemes.spaces[findIdIndex(a.id,this.schemes.spaces)].products = a.spaceProducts.map((e) => {
+                return e.product
+              })
+          })
+          this.render = true
+    }).catch((err) => {
+      throw err //error
+    })
+    }).catch((err) => {
+      throw err //error
+    })
+  },
+  methods:{
+    isFinished(){
+      let reg = /^1[3|4|5|7|8]\d{9}$/
+      return this.name&&reg.test(this.phone)
+    },
+    submit(){
+      if(!this.name){
+        alert("请输入您的称呼")
+        return
+      }
+      let reg = /^1[3|4|5|7|8]\d{9}$/
+      if(!reg.test(this.phone)){
+        alert("请输入正确的手机号码")
+        return
+      }
+      axios.post(`${Lib.C.homeApi}form-infos`,{
+        formName:this.id,
+        fullname:this.name,
+        mobile:this.phone
+      }).then((res) => {
+          alert('您的信息已提交，我们会在24小时之内处理您的提交请求')
+    }).catch((err) => {
+      throw err //error
+    })
+    }
+  }
+}
+
+
+function findIdIndex(id,array){
+  for(let i =0;i<array.length;i++){
+    if(array[i].id == id) return i
+  }
+  return -1
+}
+</script>

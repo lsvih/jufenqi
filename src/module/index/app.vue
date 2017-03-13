@@ -97,7 +97,7 @@ body {
         top: 14px;
         height: 20px;
         width: 3px;
-        background-color: #3BA794;
+        background-color: #ff9736;
     }
     .module-title {
         color: #393939;
@@ -132,7 +132,7 @@ body {
             font-weight: 200;
         }
         .module-detail {
-            color: #3BA794;
+            color: #ff9736;
             font-size: 12px;
             float: right;
             margin-right: 15px;

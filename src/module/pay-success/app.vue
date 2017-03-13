@@ -1,13 +1,13 @@
 <template>
 <div class="apply-success">
   <div>
-    <img src="success.png">
+    <img src="/static/images/success-orange.png">
     <div class="ins-status"><p v-for="i in info(type)">{{i}}</p></div>
   </div>
 
 </div>
 
-<x-button slot="right" style="background-color:#88C928;color:#fff;margin:50px 20px;width:calc( 100% - 40px )" v-tap="back(type)">返回</x-button>
+<x-button slot="right" style="background-color:#ff9736;color:#fff;margin:50px 20px;width:calc( 100% - 40px )" v-tap="back(type)">返回</x-button>
 
 <j-tel style="margin-top:30px"></j-tel>
 </template>

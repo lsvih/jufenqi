@@ -1,32 +1,3 @@
-<template>
-<div class="upload-area">
-  <div class="dot"></div>
-  <div class="area-title">{{title}}</div>
-  <div class="area-line" style="width: calc( 100% - 30px );"></div>
-  <div class="l-t-block cor-block"></div>
-  <div class="r-t-block cor-block"></div>
-  <div class="l-b-block cor-block"></div>
-  <div class="r-b-block cor-block"></div>
-  <img src="../assets/img/camera.png">
-  <div class="description">{{value.split("|")[0]}}<span>{{value.split("|")[1]}}</span>{{value.split("|")[2]}}</div>
-</div>
-</template>
-
-<script>
-export default {
-  components: {},
-  props: {
-    title: {
-      type: String
-    },
-    value: {
-      type: String
-    }
-  },
-
-}
-</script>
-
 <style scoped lang="less">
 .upload-area {
     width: 100%;
@@ -40,7 +11,7 @@ export default {
         height: 6px;
         width: 6px;
         border-radius: 3px;
-        background-color: #3BA794;
+        background-color: #ff9736;
     }
     .area-title {
         position: absolute;
@@ -100,7 +71,36 @@ export default {
     width: 100%;
     text-align: center;
     span {
-        color: #3BA794;
+        color: #ff9736;
     }
 }
 </style>
+
+<template>
+<div class="upload-area">
+  <div class="dot"></div>
+  <div class="area-title">{{title}}</div>
+  <div class="area-line" style="width: calc( 100% - 30px );"></div>
+  <div class="l-t-block cor-block"></div>
+  <div class="r-t-block cor-block"></div>
+  <div class="l-b-block cor-block"></div>
+  <div class="r-b-block cor-block"></div>
+  <img src="/static/images/camera-orange.png">
+  <div class="description">{{value.split("|")[0]}}<span>{{value.split("|")[1]}}</span>{{value.split("|")[2]}}</div>
+</div>
+</template>
+
+<script>
+export default {
+  components: {},
+  props: {
+    title: {
+      type: String
+    },
+    value: {
+      type: String
+    }
+  },
+
+}
+</script>

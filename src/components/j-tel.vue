@@ -1,12 +1,12 @@
 <template>
 <div class="tel-line">
-  <div class="tel"><img src="../assets/img/tel.png"><span>客服中心</span></div>
+  <div class="tel"><img src="/static/images/telephone.png"><span>客服中心</span></div>
 </div>
 </template>
 <style scoped lang="less">
 .tel-line{
   width: 100%;
-  color:#3BA794;
+  color:#ff9736;
   text-align: center;
   .tel{
     position: absolute;
@@ -17,7 +17,7 @@
     height: 20px;
     line-height: 24px;
     text-align: center;
-    border: 1px solid #3BA794;
+    border: 1px solid #ff9736;
     border-radius: 11px;
     img{
       width: 10px;

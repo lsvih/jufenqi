@@ -1,11 +1,40 @@
-<template>
-<to-upload-photo title="身份证正面" value="点击拍摄身份证|正面" v-tap="getInfo(1)" v-if="cardF.local == null"></to-upload-photo>
-<img style="height:225px;width:calc(100% - 30px);margin-left:15px;" :src="cardF.local" v-if="cardF.local != null">
-<to-upload-photo style="margin-top:10px;" title="身份证背面" value="点击拍摄身份证|背面" v-tap="getInfo(2)" v-if="cardB.local == null"></to-upload-photo>
-<img style="height:225px;width:calc(100% - 30px);margin-left:15px;" :src="cardB.local" v-if="cardB.local != null">
-<to-upload-photo style="margin-top:10px;" title="上传手持身份证正面照" value="点击拍摄|手持|身份证正面照" v-tap="getInfo(3)" v-if="cardP.local == null"></to-upload-photo>
-<img style="height:225px;width:calc(100% - 30px);margin-left:15px;" :src="cardP.local" v-if="cardP.local != null">
+<style>
+body {
+  background-color: #eee;
+}
+.btn-active{
+  background-color: #ff9736!important;
+}
 
+.upload-bac{
+  width: 100%;
+  height: 225px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.upload-img{
+  position: absolute;
+  top: 56px;
+  height: 157px;
+  left: 17px;
+  width: calc(100% - 34px);
+  z-index: 1;
+}
+</style>
+
+<template>
+  <div class="upload-bac">
+  <to-upload-photo title="身份证正面" value="点击拍摄身份证|正面" :tipshow="tipShow.cardF" v-tap="getInfo(1)"></to-upload-photo>
+    <img class="upload-img" :src="cardF.local" v-if="cardF.local != null">
+  </div>
+  <div class="upload-bac">
+    <to-upload-photo style="margin-top:10px;" title="身份证背面" :tipshow="tipShow.cardB" value="点击拍摄身份证|背面" v-tap="getInfo(2)"></to-upload-photo>
+    <img class="upload-img" :src="cardB.local" v-if="cardB.local != null">
+  </div>
+  <div class="upload-bac">
+    <to-upload-photo style="margin-top:10px;" title="上传手持身份证正面照" :tipshow="tipShow.cardP" value="点击拍摄|手持|身份证正面照" v-tap="getInfo(3)"></to-upload-photo>
+    <img class="upload-img" :src="cardP.local" v-if="cardP.local != null">
+  </div>
 <x-button slot="right" :class="{'btn-active':isFilled()}" style="background-color:#e2e2e2;color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="isFilled()?nextStep():return">提交</x-button>
 <loading :show="showLoading" text="正努力加载.."></loading>
 <j-tel style="padding-bottom:40px;"></j-tel>
@@ -25,7 +54,12 @@ export default {
       cardF:{local:null,server:null},
       cardB:{local:null,server:null},
       cardP:{local:null,server:null},
-      showLoading: false
+      showLoading: false,
+      tipShow: {
+        cardF: false,
+        cardB: false,
+        cardP: false
+      }
     }
   },
   components: {
@@ -53,12 +87,15 @@ export default {
             let thisId = res.localIds[0]
             if(type == 1){
               that.cardF.local = thisId
+              that.tipShow.cardF = true
             }
             if(type == 2){
               that.cardB.local = thisId
+              that.tipShow.cardB = true
             }
             if(type == 3){
               that.cardP.local = thisId
+              that.tipShow.cardP = true
             }
             wx.uploadImage({
               localId: thisId, // 需要上传的图片的本地ID，由chooseImage接口获得
@@ -108,11 +145,3 @@ function wxReady(obj) {
 }
 </script>
 
-<style>
-body{
-  background-color: #eee;
-}
-.btn-active{
-  background-color: rgb(136,201,40)!important;
-}
-</style>

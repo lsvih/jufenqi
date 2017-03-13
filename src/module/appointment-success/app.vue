@@ -1,14 +1,14 @@
 <template>
 <div class="apply-success">
   <div>
-    <img src="success.png">
+    <img src="/static/images/success-orange.png">
     <div class="ins-status">预约成功</div>
   </div>
 
 </div>
 
-<x-button slot="right" style="background-color:#88C928;color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="gotoOrderList()">返回订单列表</x-button>
-<x-button slot="right" style="background-color:#fff;color:#88C928;border:1px solid #88C928;margin:20px 20px;width:calc( 100% - 40px )" v-tap="goto('./index.html')">返回首页</x-button>
+<x-button slot="right" style="background-color:#ff9736;color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="gotoOrderList()">返回订单列表</x-button>
+<x-button slot="right" style="background-color:#fff;color:#ff9736;border:1px solid #ff9736;margin:20px 20px;width:calc( 100% - 40px )" v-tap="goto('./index.html')">返回首页</x-button>
 
 <j-tel style="margin-top:30px"></j-tel>
 </template>

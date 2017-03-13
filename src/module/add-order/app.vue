@@ -136,6 +136,9 @@ input,button,select,textarea {
   line-height: 0px;
   color: #f97c36;
 }
+.vux-popup-picker-header {
+    color: #ff9736 !important;
+}
 </style>
 
 <template>

@@ -1,3 +1,12 @@
+<style>
+body{
+  background-color: #eee;
+}
+.btn-active{
+  background-color: #ff9736 !important;
+}
+</style>
+
 <template>
 <j-apply-process :step="3">
 </j-apply-process>
@@ -68,12 +77,3 @@ export default {
   }
 }
 </script>
-
-<style>
-body{
-  background-color: #eee;
-}
-.btn-active{
-  background-color: rgb(136,201,40)!important;
-}
-</style>

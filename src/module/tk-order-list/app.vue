@@ -1,7 +1,36 @@
+<style>
+html {
+  height: 100%;
+}
+
+body {
+  background-color: #eee;
+  height: 100%;
+}
+</style>
+<style scoped lang="less">
+.content {
+    padding-top: 44px;
+}
+header {
+    position: fixed;
+    height: 44px;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 30;
+}
+.tab-active {
+    color: #ff9736 !important;
+    border-color: #ff9736 !important;
+    font-size: 12px!important;
+}
+</style>
+
 <template>
 <div>
   <header>
-    <tab active-color='#88C929' :index.sync="index">
+    <tab active-color='#ff9736' :index.sync="index">
       <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 0" v-tap="index = 0">退款申请</tab-item>
       <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 1" v-tap="index = 1">已确认</tab-item>
       <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 2" v-tap="index = 2">退款中</tab-item>
@@ -197,32 +226,3 @@ export default {
   }
 }
 </script>
-
-<style>
-html {
-  height: 100%;
-}
-
-body {
-  background-color: #eee;
-  height: 100%;
-}
-</style>
-<style scoped lang="less">
-.content {
-    padding-top: 44px;
-}
-header {
-    position: fixed;
-    height: 44px;
-    width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 30;
-}
-.tab-active {
-    color: #88C929 !important;
-    border-color: #88C929 !important;
-    font-size: 12px!important;
-}
-</style>

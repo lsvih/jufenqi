@@ -77,6 +77,9 @@ body {
         line-height: 40px;
     }
 }
+.vux-popup-picker-header {
+    color: #ff9736 !important;
+}
 </style>
 
 <template>

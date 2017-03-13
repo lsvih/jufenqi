@@ -1,3 +1,158 @@
+<style>
+body {
+  background-color: #eee;
+}
+
+article {
+  padding: 15px;
+  font-size: 12px;
+  color: #393939;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 44px;
+  width: 100%;
+  background-color: #fff;
+}
+
+.content {
+  padding-bottom: 44px;
+}
+</style>
+<style scoped lang="less">
+.worker-product-list {
+    height: auto;
+    padding: 10px 15px 20px;
+    position: relative;
+    .worker-product-item {
+        height: auto;
+        margin-right: 10px;
+        display: inline-block;
+        float: left;
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+header {
+    position: relative;
+    height: 160px;
+    width: 100%;
+    background-color: #fff;
+    .cart {
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        top: 13px;
+        right: 11px;
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+    .worker-logo {
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        height: 80px;
+        width: 80px;
+        margin-left: -40px;
+        border-radius: 40px;
+        border: 1px solid #ddd;
+        overflow: hidden;
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+    .worker-name {
+        position: absolute;
+        top: 106px;
+        left: 0;
+        width: 100%;
+        height: 16px;
+        font-size: 16px;
+        color: #393939;
+        text-align: center;
+    }
+    .worker-description {
+        position: absolute;
+        bottom: 16px;
+        left: 0;
+        width: 100%;
+        height: 12px;
+        font-size: 12px;
+        color: #727272;
+        text-align: center;
+        .worker-rank {
+            margin-right: 20px;
+        }
+    }
+}
+footer {
+    .shop-list {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 68%;
+        height: 44px;
+        background-color: #ff9736;
+        line-height: 44px;
+        color: #fff;
+        text-align: center;
+        font-size: 16px;
+    }
+    .icon-item {
+        position: absolute;
+        bottom: 0;
+        font-size: 12px;
+        color: #eee;
+        width: 16%;
+        height: 44px;
+        img {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            margin-left: -10px;
+        }
+        div {
+            position: absolute;
+            width: 100%;
+            height: 12px;
+            line-height: 12px;
+            bottom: 4px;
+            text-align: center;
+            color: #999;
+        }
+    }
+    .icon-item:first-child {
+        left: 0;
+    }
+    .icon-item:nth-child(2) {
+        left: 16%;
+    }
+}
+.detail-num {
+    color: #5965B2;
+}
+.line {
+    margin-top: 10px;
+}
+.worker-demo {
+  width: 100%;
+  margin-bottom: 44px;
+  img{
+    width: 100%;
+  }
+}
+</style>
+
 <template>
 <!-- <header>
   <div class="cart" v-tap="goto('./cart.html?type=2')"><img src="cart.png"></div>
@@ -245,158 +400,3 @@ function findIdObj(id,array){
   }
 }
 </script>
-
-<style>
-body {
-  background-color: #eee;
-}
-
-article {
-  padding: 15px;
-  font-size: 12px;
-  color: #393939;
-}
-
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  height: 44px;
-  width: 100%;
-  background-color: #fff;
-}
-
-.content {
-  padding-bottom: 44px;
-}
-</style>
-<style scoped lang="less">
-.worker-product-list {
-    height: auto;
-    padding: 10px 15px 20px;
-    position: relative;
-    .worker-product-item {
-        height: auto;
-        margin-right: 10px;
-        display: inline-block;
-        float: left;
-        img {
-            height: 100%;
-            width: 100%;
-        }
-    }
-}
-header {
-    position: relative;
-    height: 160px;
-    width: 100%;
-    background-color: #fff;
-    .cart {
-        position: absolute;
-        height: 20px;
-        width: 20px;
-        top: 13px;
-        right: 11px;
-        img {
-            height: 100%;
-            width: 100%;
-        }
-    }
-    .worker-logo {
-        position: absolute;
-        top: 16px;
-        left: 50%;
-        height: 80px;
-        width: 80px;
-        margin-left: -40px;
-        border-radius: 40px;
-        border: 1px solid #ddd;
-        overflow: hidden;
-        img {
-            height: 100%;
-            width: 100%;
-        }
-    }
-    .worker-name {
-        position: absolute;
-        top: 106px;
-        left: 0;
-        width: 100%;
-        height: 16px;
-        font-size: 16px;
-        color: #393939;
-        text-align: center;
-    }
-    .worker-description {
-        position: absolute;
-        bottom: 16px;
-        left: 0;
-        width: 100%;
-        height: 12px;
-        font-size: 12px;
-        color: #727272;
-        text-align: center;
-        .worker-rank {
-            margin-right: 20px;
-        }
-    }
-}
-footer {
-    .shop-list {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 68%;
-        height: 44px;
-        background-color: #88C929;
-        line-height: 44px;
-        color: #fff;
-        text-align: center;
-        font-size: 16px;
-    }
-    .icon-item {
-        position: absolute;
-        bottom: 0;
-        font-size: 12px;
-        color: #eee;
-        width: 16%;
-        height: 44px;
-        img {
-            width: 20px;
-            height: 20px;
-            position: absolute;
-            top: 4px;
-            left: 50%;
-            margin-left: -10px;
-        }
-        div {
-            position: absolute;
-            width: 100%;
-            height: 12px;
-            line-height: 12px;
-            bottom: 4px;
-            text-align: center;
-            color: #999;
-        }
-    }
-    .icon-item:first-child {
-        left: 0;
-    }
-    .icon-item:nth-child(2) {
-        left: 16%;
-    }
-}
-.detail-num {
-    color: #5965B2;
-}
-.line {
-    margin-top: 10px;
-}
-.worker-demo {
-  width: 100%;
-  margin-bottom: 44px;
-  img{
-    width: 100%;
-  }
-}
-</style>

@@ -1,3 +1,38 @@
+<style scoped lang="less">
+.apply-header {
+  background-color: #eee;
+    height: 92px;
+    width: 100%;
+    font-size: 12px;
+    .apply-step {
+        position: absolute;
+        top: 37px;
+        left: 50%;
+        margin-left: -145px;
+    }
+    .step {
+        text-align: center;
+        display: inline-block;
+        width: 90px;
+        height: 30px;
+        color: #CFCFCF;
+        .bottom-line {
+            height: 5px;
+            width: 100%;
+            background-color: #CFCFCF;
+            border-radius: 5px;
+        }
+
+    }
+}
+.active {
+    color: #000!important;
+}
+.active .bottom-line {
+    background-color: #ff9736 !important;
+}
+</style>
+
 <template>
 <div class="apply-header">
   <div class="apply-step">
@@ -30,38 +65,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="less">
-.apply-header {
-  background-color: #eee;
-    height: 92px;
-    width: 100%;
-    font-size: 12px;
-    .apply-step {
-        position: absolute;
-        top: 37px;
-        left: 50%;
-        margin-left: -145px;
-    }
-    .step {
-        text-align: center;
-        display: inline-block;
-        width: 90px;
-        height: 30px;
-        color: #CFCFCF;
-        .bottom-line {
-            height: 5px;
-            width: 100%;
-            background-color: #CFCFCF;
-            border-radius: 5px;
-        }
-
-    }
-}
-.active {
-    color: #000!important;
-}
-.active .bottom-line {
-    background-color: rgb(136,201,40)!important;
-}
-</style>

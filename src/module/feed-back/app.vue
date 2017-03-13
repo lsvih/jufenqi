@@ -2,7 +2,7 @@
 <group>
      <x-textarea :sync.value="content" :max="200" placeholder="请输入您的反馈" :height="200" :rows="8" :cols="30" style="font-size:12px;"></x-textarea>
 </group>
-<x-button slot="right" style="background-color:rgb(136,201,40);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="submit">提交</x-button>
+<x-button slot="right" style="background-color:#ff9736;color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="submit">提交</x-button>
 </template>
 
 <script>

@@ -69,7 +69,7 @@ footer {
         right: 0;
         width: 68%;
         height: 44px;
-        background-color: #88C929;
+        background-color: #ff9736;
         line-height: 44px;
         color: #fff;
         text-align: center;
