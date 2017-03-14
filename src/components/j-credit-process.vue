@@ -1,43 +1,3 @@
-<template>
-  <div style="width:100%;height:30px;position:relative;">
-<div class="credit-process">
-  <div class="credit-step">
-    <div class="step" v-bind:class="{'active':thisStep>=1}">
-      <div class="circle"></div>
-      <div class="step-text">额度申请</div>
-      <div class="step-line"></div>
-    </div>
-    <div class="step" style="margin:0 10px;" v-bind:class="{'active':thisStep>=2}">
-      <div class="circle"></div>
-      <div class="step-text">额度激活</div>
-      <div class="step-line"></div>
-    </div>
-    <div class="step" v-bind:class="{'active':thisStep>=3}">
-      <div class="circle"></div>
-      <div class="step-text">装修启动</div>
-    </div>
-  </div>
-</div>
-</div>
-</template>
-
-<script>
-export default {
-  components: {},
-  props: {
-    step: {
-      type: Number,
-      default: 1
-    }
-  },
-  computed: {
-    thisStep(v) {
-      return this.step
-    }
-  }
-}
-</script>
-
 <style scoped lang="less">
 .credit-process {
     width: 90%;
@@ -87,9 +47,49 @@ export default {
     left: calc( ~"100% - 40px ");
 }
 .active .circle{
-  border-color:rgba(136,201,40,.5)!important;
+  border-color:rgba(255,151,54,.5)!important;
 }
 .active .step-text{
   color:#000!important;
 }
 </style>
+
+<template>
+<div style="width:100%;height:30px;position:relative;">
+<div class="credit-process">
+  <div class="credit-step">
+    <div class="step" v-bind:class="{'active':thisStep>=1}">
+      <div class="circle"></div>
+      <div class="step-text">额度申请</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step" style="margin:0 10px;" v-bind:class="{'active':thisStep>=2}">
+      <div class="circle"></div>
+      <div class="step-text">额度激活</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step" v-bind:class="{'active':thisStep>=3}">
+      <div class="circle"></div>
+      <div class="step-text">装修启动</div>
+    </div>
+  </div>
+</div>
+</div>
+</template>
+
+<script>
+export default {
+  components: {},
+  props: {
+    step: {
+      type: Number,
+      default: 1
+    }
+  },
+  computed: {
+    thisStep(v) {
+      return this.step
+    }
+  }
+}
+</script>

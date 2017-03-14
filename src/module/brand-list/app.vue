@@ -1,3 +1,57 @@
+<style>
+body {
+  background-color: #fff;
+}
+</style>
+<style scoped lang="less">
+.select {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 40px;
+    width: 100%;
+    background-color: #fff;
+    text-align: center;
+    font-size: 12px;
+    color: #393939;
+    line-height: 40px;
+    img {
+        width: 6px;
+        height: 4px;
+        margin-left: 8px;
+        vertical-align: middle;
+    }
+}
+.content {
+    margin-top: 50px;
+    height: auto;
+    background-color: #fff;
+    width: 100%;
+    .brand {
+        position: relative;
+        display:inline-block;
+        img {
+            position: absolute;
+            top:20px;
+            left:12.5px;
+            width: calc(~"100% - 25px");
+        }
+        .brand-name{
+            position: absolute;
+            bottom: 10px;
+            left:0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color:#393939;
+        }
+    }
+}
+.vux-popup-picker-header {
+    color: #ff9736 !important;
+}
+</style>
+
 <template>
 <div class="select" v-tap="showSelect = true">
   {{$refs.cate.getNameValues()||'品类'}}<img src="./select.png"></div>
@@ -90,54 +144,3 @@ export default {
   }
 }
 </script>
-
-<style>
-body {
-  background-color: #fff;
-}
-</style>
-<style scoped lang="less">
-.select {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 40px;
-    width: 100%;
-    background-color: #fff;
-    text-align: center;
-    font-size: 12px;
-    color: #393939;
-    line-height: 40px;
-    img {
-        width: 6px;
-        height: 4px;
-        margin-left: 8px;
-        vertical-align: middle;
-    }
-}
-.content {
-    margin-top: 50px;
-    height: auto;
-    background-color: #fff;
-    width: 100%;
-    .brand {
-        position: relative;
-        display:inline-block;
-        img {
-            position: absolute;
-            top:20px;
-            left:12.5px;
-            width: calc(~"100% - 25px");
-        }
-        .brand-name{
-            position: absolute;
-            bottom: 10px;
-            left:0;
-            width: 100%;
-            text-align: center;
-            font-size: 12px;
-            color:#393939;
-        }
-    }
-}
-</style>

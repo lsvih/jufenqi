@@ -1,7 +1,7 @@
 <template>
 <div>
   <header>
-    <tab active-color='#88C929' :index.sync="index">
+    <tab active-color='#ff9736' :index.sync="index">
       <tab-item active-class="tab-active" :selected="tab === '品牌'" v-tap="tab = '品牌'">品牌</tab-item>
       <tab-item active-class="tab-active" :selected="tab === '工长'" v-tap="tab = '工长'">工长</tab-item>
       <!-- <tab-item active-class="tab-active" :selected="tab === '软装'" v-tap="tab = '软装'">软装</tab-item> -->
@@ -271,8 +271,8 @@ header {
     z-index: 30;
 }
 .tab-active {
-    color: #88C929 !important;
-    border-color: #88C929 !important;
+    color: #ff9736 !important;
+    border-color: #ff9736 !important;
 }
 
 .no-data-container {

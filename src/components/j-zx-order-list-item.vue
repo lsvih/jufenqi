@@ -1,109 +1,3 @@
-<template>
-<div class="order">
-  <div class="status">
-    <img :src="statusImg">
-    <div class="status-name">{{Status.zx[order.status].name}}</div>
-    <div class="order-date">{{getTime(order.createdAt)}}</div>
-  </div>
-  <div class="content">
-    <div class="user-info">
-      <div class="user-name">{{order.customerName||order.appt.customerName}}</div>
-      <div class="user-tel" v-tap="goto('tel:'+order.customerMobile||order.appt.customerMobile)">{{order.customerMobile||order.appt.customerMobile}}</div>
-      <div class="more" v-tap="goto('./zx-order.html?orderNo='+order.orderNo)">查看详情</div>
-    </div>
-    <div class="address">{{order.orderLocation}}{{order.orderAddress}}</div>
-    <!-- 相关人员 -->
-    <div class="people">
-      <img class="type" :src="managerImg"> {{order.manager.nickname}}
-      <img class="tel" :src="telImg" v-tap="goto('tel:'+order.manager.mobile)">
-    </div>
-    <div class="people">
-      <img class="type" :src="projectManagerImg"> {{order.projectManager.nickname}}
-      <img class="tel" :src="telImg" v-tap="goto('tel:'+order.projectManager.mobile)">
-    </div>
-    <div v-if="order.planList">
-      <div class="people" v-for="plan in order.planList">
-        <img class="type" :src="foremanImg"> {{plan.foreman.nickname}}
-      </div>
-    </div>
-    <div class="people" v-else>
-      <img class="type" :src="foremanImg"> {{order.foreman.nickname}}
-    </div>
-
-
-    <!-- 用户操作的按钮 -->
-    <div v-if="order.status==1||order.status==7" class="operate">
-      <!-- <div class="bottom" v-if="order.status==2">继续支付</div> -->
-      <!-- <div class="bottom" v-if="order.status==4||order.status==6">退款</div>-->
-      <div class="bottom" v-if="order.status==7" v-tap="deleteOrder(order.orderNo)">删除</div>
-      <div class="bottom" v-if="order.status==1" v-tap="cancel(order.orderNo)">取消预约</div>
-      <!-- <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div> -->
-    </div>
-  </div>
-</div>
-
-
-
-</template>
-
-
-
-
-<script>
-import Lib from 'assets/Lib.js'
-import statusImg from 'common/assets/images/status.png'
-import managerImg from 'common/assets/images/role/manager.png'
-import foremanImg from 'common/assets/images/role/foreman.png'
-import projectManagerImg from 'common/assets/images/role/project-manager.png'
-import telImg from 'common/assets/images/tel.png'
-import Status from 'common/status'
-import axios from 'axios'
-Lib.M.auth(axios)
-export default {
-  data() {
-    return {
-      statusImg,
-      managerImg,
-      foremanImg,
-      projectManagerImg,
-      telImg,
-      Status,
-    }
-  },
-  props: {
-    data: {
-      type: Object,
-      default: {}
-    }
-  },
-  computed: {
-    order() {
-      return this.data
-    }
-  },
-  methods: {
-    getTime(timeStamp) {
-      var d = new Date(timeStamp * 1000);
-      var Y = d.getFullYear() + '-';
-      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-';
-      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate());
-      return Y + M + D
-    },
-    goto(url) {
-      location.href = url
-    },
-    cancel(orderNo){
-      this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
-      this.$parent.$parent.$parent.$parent.showConfirm.cancel = true
-    },
-    deleteOrder(orderNo){
-      this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
-      this.$parent.$parent.$parent.$parent.showConfirm.delete = true
-    }
-  },
-  ready() {}
-}
-</script>
 <style scoped lang="less">
 .order {
     width: 100%;
@@ -173,7 +67,7 @@ export default {
             }
             .more {
                 position: absolute;
-                color: #3ba794;
+                color: #ff9736;
                 right: 15px;
                 top: 19px;
                 font-size: 12px;
@@ -253,3 +147,110 @@ export default {
     }
 }
 </style>
+
+<template>
+<div class="order">
+  <div class="status">
+    <img :src="statusImg">
+    <div class="status-name">{{Status.zx[order.status].name}}</div>
+    <div class="order-date">{{getTime(order.createdAt)}}</div>
+  </div>
+  <div class="content">
+    <div class="user-info">
+      <div class="user-name">{{order.customerName||order.appt.customerName}}</div>
+      <div class="user-tel" v-tap="goto('tel:'+order.customerMobile||order.appt.customerMobile)">{{order.customerMobile||order.appt.customerMobile}}</div>
+      <div class="more" v-tap="goto('./zx-order.html?orderNo='+order.orderNo)">查看详情</div>
+    </div>
+    <div class="address">{{order.orderLocation}}{{order.orderAddress}}</div>
+    <!-- 相关人员 -->
+    <div class="people">
+      <img class="type" :src="managerImg"> {{order.manager.nickname}}
+      <img class="tel" :src="telImg" v-tap="goto('tel:'+order.manager.mobile)">
+    </div>
+    <div class="people">
+      <img class="type" :src="projectManagerImg"> {{order.projectManager.nickname}}
+      <img class="tel" :src="telImg" v-tap="goto('tel:'+order.projectManager.mobile)">
+    </div>
+    <div v-if="order.planList">
+      <div class="people" v-for="plan in order.planList">
+        <img class="type" :src="foremanImg"> {{plan.foreman.nickname}}
+      </div>
+    </div>
+    <div class="people" v-else>
+      <img class="type" :src="foremanImg"> {{order.foreman.nickname}}
+    </div>
+
+
+    <!-- 用户操作的按钮 -->
+    <div v-if="order.status==1||order.status==7" class="operate">
+      <!-- <div class="bottom" v-if="order.status==2">继续支付</div> -->
+      <!-- <div class="bottom" v-if="order.status==4||order.status==6">退款</div>-->
+      <div class="bottom" v-if="order.status==7" v-tap="deleteOrder(order.orderNo)">删除</div>
+      <div class="bottom" v-if="order.status==1" v-tap="cancel(order.orderNo)">取消预约</div>
+      <!-- <div class="bottom" v-if="order.status==5" v-tap="receive(order.orderNo)">确认收货</div> -->
+    </div>
+  </div>
+</div>
+
+
+
+</template>
+
+
+
+
+<script>
+import Lib from 'assets/Lib.js'
+import statusImg from 'common/assets/images/status-org.png'
+import managerImg from 'common/assets/images/role/manager.png'
+import foremanImg from 'common/assets/images/role/foreman.png'
+import projectManagerImg from 'common/assets/images/role/project-manager.png'
+import telImg from 'common/assets/images/tel-org.png'
+import Status from 'common/status'
+import axios from 'axios'
+Lib.M.auth(axios)
+export default {
+  data() {
+    return {
+      statusImg,
+      managerImg,
+      foremanImg,
+      projectManagerImg,
+      telImg,
+      Status,
+    }
+  },
+  props: {
+    data: {
+      type: Object,
+      default: {}
+    }
+  },
+  computed: {
+    order() {
+      return this.data
+    }
+  },
+  methods: {
+    getTime(timeStamp) {
+      var d = new Date(timeStamp * 1000);
+      var Y = d.getFullYear() + '-';
+      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-';
+      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate());
+      return Y + M + D
+    },
+    goto(url) {
+      location.href = url
+    },
+    cancel(orderNo){
+      this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
+      this.$parent.$parent.$parent.$parent.showConfirm.cancel = true
+    },
+    deleteOrder(orderNo){
+      this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
+      this.$parent.$parent.$parent.$parent.showConfirm.delete = true
+    }
+  },
+  ready() {}
+}
+</script>

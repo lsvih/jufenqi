@@ -1,3 +1,15 @@
+<style>
+body {
+  background-color: #eee;
+}
+.btn-active{
+  background-color: #ff9736 !important;
+}
+.vux-popup-picker-header {
+    color: #ff9736 !important;
+}
+</style>
+
 <template>
 <div style="padding-bottom:60px;">
 <j-apply-process :step="2">
@@ -156,12 +168,3 @@ export default {
   }
 }
 </script>
-
-<style>
-body {
-  background-color: #eee;
-}
-.btn-active{
-  background-color: rgb(136,201,40)!important;
-}
-</style>
