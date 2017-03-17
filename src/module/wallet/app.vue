@@ -39,7 +39,7 @@ body {
     .amount {
       font-size: 33px;
       font-weight: 500;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
     .get-money {
       width: 80px;
@@ -49,6 +49,16 @@ body {
       border: 1px solid #fff;
       border-radius: 5px;
       margin: 0 auto 10px auto;
+    }
+    .hint {
+      position: absolute;
+      font-size: 12px;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-weight: 300;
+      width: 100%
     }
     .tel {
       position: absolute;
@@ -169,6 +179,7 @@ body {
       <p class="amount-title">我的钱包</p>
       <p class="amount">{{balance}}<span>元</span></p>
       <div class="get-money" v-tap="withdrawShow = true">提现</div>
+      <span class="hint">注：单笔提现额度最高为20000元</span>
       <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
     </div>
     <div class="coupon-detail">
@@ -313,7 +324,7 @@ export default {
       })
     },
     isFilled() {
-      return this.withdrawAmount !== null
+      return Number(this.withdrawAmount) > 0 && Number(this.withdrawAmount) <= 20000
     }
     
   }
