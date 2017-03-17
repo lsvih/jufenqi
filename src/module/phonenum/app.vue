@@ -39,10 +39,11 @@ body {
 		background-color: #f7f7f7;
 		margin: 0;
 		padding-top: 51px;
-		input {
+		.infoInput {
 		    display: block;
 		    width: calc(~"100% - 76px");
 		    // height: 28px;
+		    outline: none;
 		    border-style: solid;
 		    border-color: #eceff1;
 		    border-width: 0 0 1px 0;
@@ -123,6 +124,25 @@ body {
 				z-index: 1;
 			}
 		}
+		.contact {
+			display: flex;
+			padding-left: 30px;
+			height: 30px;
+			line-height: 30px;
+			input {
+				outline: none;
+				margin-right: 5px;
+			}
+			div {
+				font-size: 14px;
+				font-weight: 300;
+				height: 30px;
+				line-height: 13px;
+				span {
+					color: #ff9736;
+				}
+			}
+		}
 	}
 }
 </style>
@@ -138,11 +158,11 @@ body {
 		</div>
 		<div class="input-wrapper">
 			<div class="phone-wrapper">
-				<input type="number" name="" placeholder="请输入手机号码" @focus="moveUpDown(1)" @blur="moveUpDown(0)" v-model="myPhoneNum">
+				<input class="infoInput" type="number" name="" placeholder="请输入手机号码" @focus="moveUpDown(1)" @blur="moveUpDown(0)" v-model="myPhoneNum">
 				<img src="phone.png" class="icon-phone">
 			</div>
 			<div class="identify-wrapper">
-				<input type="number" placeholder="请输入验证码" @focus="moveUpDown(1)" @blur="moveUpDown(0)" v-model="myVerti" id="verti">
+				<input class="infoInput" type="number" placeholder="请输入验证码" @focus="moveUpDown(1)" @blur="moveUpDown(0)" v-model="myVerti" id="verti">
 				<img src="identify.png" class="icon-test">
 				<div v-if="!isSendId" class="sendid" v-tap="send()">发送验证码</div>
 				<div v-if="isSendId" class="sendid" v-tap="moveUpDown(1)" style="color: #b5b5b8">{{time}}秒后可重试</div>
@@ -150,6 +170,10 @@ body {
 			<div class="error">
 				<img src="error.png" v-if="codeError" v-model="myPhoneNum">
 				<div v-if="codeError">验证码错误</div>
+			</div>
+			<div class="contact">
+				<input type="checkbox" v-tap="confirm()" v-model="myConfirm">
+				<div class="text" v-tap="confirm()">我已同意<span v-tap="goto('./contact.html')">居分期用户协议</span></div>
 			</div>
 			<div class="btn" v-tap="isFinished?submit():return">
 				<img v-if="isFinished()" src="btn-active.png">
@@ -180,7 +204,8 @@ export default {
 			lastUrl: Lib.M.GetRequest().url ? unescape(Lib.M.GetRequest().url) : './index.html',
 			time: 60,
 			timekeeper: null,
-			codeError: false
+			codeError: false,
+			myConfirm: false
 		}
 	},
 	methods: {
@@ -198,13 +223,19 @@ export default {
 				}
 			}, 1000)
 		},
+		goto(url) {
+			window.location.href = './contact.html'
+		},
+		confirm() {
+			this.myConfirm = !this.myConfirm
+		},
 		isTruePhoneNum() {
 			let reg = /^1[3|4|5|7|8]\d{9}$/
 			return reg.test(this.myPhoneNum)
 		},
 		isFinished() {
 			let regVerti = /^\d{6}$/
-			return this.isTruePhoneNum()&&regVerti.test(this.myVerti)
+			return this.isTruePhoneNum()&&regVerti.test(this.myVerti)&&this.myConfirm
 		},
 		moveUpDown(e) {
 			if (e) {

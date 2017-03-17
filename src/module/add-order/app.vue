@@ -128,16 +128,12 @@ input,button,select,textarea {
   }
 }
 .active {
-  background: -webkit-radial-gradient(ellipse at center, rgb(151, 197, 93),rgb(153, 197, 102)) !important; 
-  background: radial-gradient(ellipse at center, rgb(151, 197, 93),rgb(153, 197, 102)) !important; 
+  background-color: #ff9736 !important;
 }
 .little-cell {
   height: 12px;
   line-height: 0px;
   color: #f97c36;
-}
-.vux-popup-picker-header {
-    color: #ff9736 !important;
 }
 </style>
 
@@ -174,10 +170,11 @@ input,button,select,textarea {
           </div>
           <div class="price">
             <span class="label">特价</span>
-            <input type="number" v-model="brand.specialAmount" placeholder="请输入特价金额">
-            <p>将为您贴息<span>{{brand.specialAmount?(brand.specialAmount*0.04):0 | currency '￥'}}</span>元，返点券<span>{{brand.specialAmount?(brand.specialAmount*4):0}}</span>点</p>
+            <input type="number" v-model="brand.specialAmount" placeholder="请输入特价金额" v-if="isBoloni()">
+            <input type="number" v-if="!isBoloni()" readonly style="background-color: #eee;">
+            <p v-if="isBoloni()">将为您贴息<span>{{brand.specialAmount?(brand.specialAmount*0.04):0 | currency '￥'}}</span>元，返点券<span>{{brand.specialAmount?(brand.specialAmount*4):0}}</span>点</p>
             <p style="color: #fc9736; margin-top: 11px;">注：所有贴息、返券按照实际支付金额计算</p>
-          </div> 
+          </div>
         </div>
         <div class="cell">
           <span class="label" v-tap="addBrand(shop.id)">
@@ -194,6 +191,12 @@ input,button,select,textarea {
       </div>
     </div>
     <div class="totalprice">
+      <div class="price-calc">
+        <div class="price" v-if='!isBoloni()'>
+          <span class="label">真实姓名</span>
+          <input type="text" v-model="realName" placeholder="请输入您的真实姓名">
+        </div> 
+      </div>
       <div class="cell" style="margin-bottom: 0">
         <div class="label" >使用{{tempCoupon()}}点券抵{{tempCoupon()/100 | currency '￥' 2}}元</div>
         <div class="brand-name">
@@ -259,12 +262,17 @@ export default {
     //若用户办理过分期，则取相应银行利率，否则默认为8%
     axios.get(`http://wx.jufenqi.com:8080/loanapplicant/api/loan-applications?filter=userId:${this.userId}&expand=bankBranchPeriod`)
     .then((res) => {
-      this.interestRate = res.data.data.bankBranchPeriod?res.data.data.bankBranchPeriod.interestRate:0.08
+      if (this.source == '博洛尼') {
+        this.interestRate = 0.04
+      } else {
+        this.interestRate = res.data.data.bankBranchPeriod?res.data.data.bankBranchPeriod.interestRate:0.08
+      }
     }).catch((err) => {
       console.log(err)
     })
     //获取用户点券信息
     this.getCoupon()
+    console.log(this.source)
   },
   data() {
     return {
@@ -287,11 +295,13 @@ export default {
       myCoupon: [],
       couponAmount: null,
       isCouponUsed: false,
-
+      realName: null,
       telImg,
       from: Lib.M.GetRequest().from || false,
       //银行利率
       interestRate: 0.08,
+      //来源
+      source: JSON.parse(localStorage.getItem('user')).profile.source ? JSON.parse(localStorage.getItem('user')).profile.source : null
     }
   },
   methods: {
@@ -302,15 +312,27 @@ export default {
         this.shopList.$remove(shop)
       },
       isFinished() {
-        if (!this.shopList.length) return false
-          for (let shop of this.shopList) {
-            if(shop.brands.length === 0) return false
-              for (let brand of shop.brands) {
-                if (brand.specialAmount == null && brand.normalAmount == null) return false
-                if (brand.specialAmount == '' && brand.normalAmount == '') return false
-              }
-          }
-          return true
+        if (this.source !== null) {
+          if (!this.shopList.length) return false
+            for (let shop of this.shopList) {
+              if(shop.brands.length === 0) return false
+                for (let brand of shop.brands) {
+                  if (brand.specialAmount == null && brand.normalAmount == null) return false
+                    if (brand.specialAmount == '' && brand.normalAmount == '') return false
+                    }
+                  } 
+        } if (this.source == '博洛尼') {
+          if (this.realName == null || this.realName == '') return false
+            if (!this.shopList.length) return false
+            for (let shop of this.shopList) {
+              if(shop.brands.length === 0) return false
+                for (let brand of shop.brands) {
+                  if (brand.specialAmount == null && brand.normalAmount == null) return false
+                    if (brand.specialAmount == '' && brand.normalAmount == '') return false
+                    }
+                  }
+        }
+        return true
       },
       submit() {
         let groups = []
@@ -343,7 +365,8 @@ export default {
         axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${!this.from?'':'?apptNo='+this.from}`, {
           customerId: JSON.parse(localStorage.user).userId,
           groups: groups,
-          useCoupon: this.isCouponUsed
+          useCoupon: this.isCouponUsed,
+          realName: this.realName ? this.realName : null
         // {
         //   id: this.myCoupon.id?this.myCoupon.id:null
         // }
@@ -547,6 +570,9 @@ export default {
     },
     checkBox() {
       this.isCouponUsed = !this.isCouponUsed
+    },
+    isBoloni() {
+      return this.source == null
     }
   }
 
