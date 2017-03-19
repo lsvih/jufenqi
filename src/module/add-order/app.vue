@@ -260,6 +260,8 @@ export default {
   },
   ready() {
     //若用户办理过分期，则取相应银行利率，否则默认为8%
+    this.getSource()
+
     axios.get(`http://wx.jufenqi.com:8080/loanapplicant/api/loan-applications?filter=userId:${this.userId}&expand=bankBranchPeriod`)
     .then((res) => {
       if (this.source == '博洛尼') {
@@ -301,7 +303,7 @@ export default {
       //银行利率
       interestRate: 0.08,
       //来源
-      source: JSON.parse(localStorage.getItem('user')).profile.source ? JSON.parse(localStorage.getItem('user')).profile.source : null
+      source: null
     }
   },
   methods: {
@@ -570,6 +572,13 @@ export default {
     },
     checkBox() {
       this.isCouponUsed = !this.isCouponUsed
+    },
+    getSource() {
+      axios.get(`${Lib.C.userApi}customerProfiles?filter=userId:${this.userId}`).then((res) => {
+        this.source = res.data.data[0].source
+      }).catch((err) => {
+        alert('获取信息不足，请稍后再试。。')
+      })
     },
     isBoloni() {
       return this.source == '博洛尼'
