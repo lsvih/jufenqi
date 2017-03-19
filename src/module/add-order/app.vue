@@ -166,13 +166,13 @@ input,button,select,textarea {
           <div class="price">
             <span class="label">正价</span>
             <input type="number" v-model="brand.normalAmount" placeholder="请输入正价金额">
-            <p>将为您贴息<span>{{brand.normalAmount?(brand.normalAmount*interestRate): 0 | currency '￥'}}</span>元</p>
+            <p v-if="!isBoloni()">将为您贴息<span>{{brand.normalAmount?(brand.normalAmount*interestRate): 0 | currency '￥'}}</span>元</p>
           </div>
-          <div class="price">
+          <div class="price" v-if="!isBoloni()">
             <span class="label">特价</span>
-            <input type="number" v-model="brand.specialAmount" placeholder="请输入特价金额" v-if="isBoloni()">
-            <input type="number" v-if="!isBoloni()" readonly style="background-color: #eee;">
-            <p v-if="isBoloni()">将为您贴息<span>{{brand.specialAmount?(brand.specialAmount*0.04):0 | currency '￥'}}</span>元，返点券<span>{{brand.specialAmount?(brand.specialAmount*4):0}}</span>点</p>
+            <input type="number" v-model="brand.specialAmount" placeholder="请输入特价金额">
+            <!-- <input type="number" v-if="!isBoloni()" readonly style="background-color: #eee;"> -->
+            <p >将为您贴息<span>{{brand.specialAmount?(brand.specialAmount*0.04):0 | currency '￥'}}</span>元，返点券<span>{{brand.specialAmount?(brand.specialAmount*4):0}}</span>点</p>
             <p style="color: #fc9736; margin-top: 11px;">注：所有贴息、返券按照实际支付金额计算</p>
           </div>
         </div>
@@ -192,9 +192,9 @@ input,button,select,textarea {
     </div>
     <div class="totalprice">
       <div class="price-calc">
-        <div class="price" v-if='!isBoloni()'>
+        <div class="price">
           <span class="label">真实姓名</span>
-          <input type="text" v-model="realName" placeholder="请输入您的真实姓名">
+          <input type="text" v-model="realName" placeholder="请输入贷款人姓名">
         </div> 
       </div>
       <div class="cell" style="margin-bottom: 0">
@@ -272,7 +272,7 @@ export default {
     })
     //获取用户点券信息
     this.getCoupon()
-    console.log(this.source)
+    console.log(this.isBoloni())
   },
   data() {
     return {
@@ -312,16 +312,16 @@ export default {
         this.shopList.$remove(shop)
       },
       isFinished() {
-        if (this.source !== null) {
-          if (!this.shopList.length) return false
-            for (let shop of this.shopList) {
-              if(shop.brands.length === 0) return false
-                for (let brand of shop.brands) {
-                  if (brand.specialAmount == null && brand.normalAmount == null) return false
-                    if (brand.specialAmount == '' && brand.normalAmount == '') return false
-                    }
-                  } 
-        } if (this.source == '博洛尼') {
+        // if (this.source !== null) {
+        //   if (!this.shopList.length) return false
+        //     for (let shop of this.shopList) {
+        //       if(shop.brands.length === 0) return false
+        //         for (let brand of shop.brands) {
+        //           if (brand.specialAmount == null && brand.normalAmount == null) return false
+        //             if (brand.specialAmount == '' && brand.normalAmount == '') return false
+        //             }
+        //           } 
+        // } if (this.source == '博洛尼') {
           if (this.realName == null || this.realName == '') return false
             if (!this.shopList.length) return false
             for (let shop of this.shopList) {
@@ -331,7 +331,7 @@ export default {
                     if (brand.specialAmount == '' && brand.normalAmount == '') return false
                     }
                   }
-        }
+        // }
         return true
       },
       submit() {
@@ -572,7 +572,7 @@ export default {
       this.isCouponUsed = !this.isCouponUsed
     },
     isBoloni() {
-      return this.source == null
+      return this.source == '博洛尼'
     }
   }
 
