@@ -146,7 +146,9 @@
     <div class="amount-detail">合计消费：￥{{order.sumTotalAmount}}元</div>
   </div>
   <div class="info-btn" :class="{'end-first': order.status == 3}">
-    <div class="order-time" v-if="order.status > 3">支付方式：全款支付</div>
+    <div class="order-time" v-if="order.status > 3&&order.appt.payMethod == 1">支付方式：全款支付</div>
+    <div class="order-time" v-if="order.status > 3&&order.appt.payMethod == 2">支付方式：分期支付</div>
+    <div class="order-time" v-if="order.status > 3&&order.appt.payMethod == 3">支付方式：微信支付</div>
     <div class="btn-wrapper" v-if="order.status == 3">
       <div class="btn" v-tap="cancel(order.groupNo)">取消订单</div>
       <div class="btn active" v-if="order.status == 2" v-tap="goto(`./pay.html?apptNo=${order.appt.apptNo}`)">支付</div>
