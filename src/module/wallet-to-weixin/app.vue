@@ -65,7 +65,7 @@ body {
     .hint {
       position: absolute;
       font-size: 12px;
-      bottom: 60px;
+      bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
       color: #fff;
@@ -74,7 +74,6 @@ body {
     }
   }
   .coupon-detail {
-
     .cell {
       height: 41px;
       background-color: #fff;
@@ -86,105 +85,61 @@ body {
         line-height: 41px;
       }
     }
-
-    .label {
-      height: 41px;
-      background-color: #fff;
-      padding: 0 16px;
-      font-size: 12px;
+    .input-wrapper {
+      width: calc(~"100% - 60px");
+      height: 44px;
+      line-height: 44px;
+      margin: 0 auto;
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 1px;
-      .amount-label {
-        line-height: 25px;
+      margin-top: 20vh;
+      margin-bottom: 16vh;
+      .input-label {
+        width: 50px;
+        height: 44px;
+        text-align: center;
+        font-size: 15px;
       }
-      .amount-time {
-        color: #393939;
-        line-height: 10px;
-      }
-      .amout-change {
-        line-height: 41px;
-        .orange {
-          color: #ff9736;
-          display: inline-block;
-          margin-right: 3px;
-        }
-        img {
-          transform: rotate(-90deg);
-          width: 16px;
-        }
+      input {
+        width: calc(~"100% - 100px");
+        padding: 0 16px;
+        font-size: 15px;
+        outline: none;
+        background-color: #fff;
+        border-radius: 5px;
+        border: 1px solid #999;
       }
     }
+    .submit_btn {
+      width: calc(~"100% - 150px");
+      height: 44px;
+      line-height: 44px;
+      background-color: #f5f5f5;
+      color: #999;
+      text-align: center;
+      margin: 0 auto;
+      border-radius: 5px;
+    }
+    .active {
+      background-color: #ff9736;
+      color: #fff;
+    }
   }
-}
-/*
- * dialog css
- */
-.setTapColor(@c:rgba(0,0,0,0)) {
-    -webkit-tap-highlight-color: @c;
-}
-.setTopLine(@c: #C7C7C7) {
-    content: " ";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 1px;
-    border-top: 1px solid @c;
-    color: @c;
-    transform-origin: 0 0;
-    transform: scaleY(0.5);
-}
-.setLeftLine(@c: #C7C7C7) {
-    content: " ";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1px;
-    height: 100%;
-    border-left: 1px solid @c;
-    color: @c;
-    transform-origin: 0 0;
-    transform: scaleX(0.5);
+  .tel {
+      position: absolute;
+      font-size: 12px;
+      color: #ff9736;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -10vh;
+      width: 60px;
+      height: 25px;
+      line-height: 25px;
+      border: 1px solid #ff9736;
+      border-radius: 5px;
+      text-align: center;
+  }
 }
 
-.weui_dialog_ft {
-    position: relative;
-    line-height: 42px;
-    margin-top: 20px;
-    font-size: 17px;
-    display: flex;
-    span {
-        display: block;
-        flex: 1;
-        color: #888;
-        text-decoration: none;
-        &:active {
-            background-color: @weuiDialogLinkActiveBc;
-        }
-    }
-    &:after {
-        content: " ";
-        .setTopLine(@weuiDialogLineColor);
-    }
-    .primary {
-        color: #f99736 !important;
-    }
-}
-#dialog-p {
-  font-size: 18px;
-  margin: 0;
-  padding: 13px 0;
-  position: relative;
-  background-color: #fff;
-  img {
-    width: 20px;
-    transform: rotate(-90deg);
-    position: absolute;
-    top: 19px;
-    right: 12px;
-  }
-}
 </style>
 
 <template>
@@ -192,15 +147,15 @@ body {
     <div class="amount-wrapper">
       <p class="amount-title">我的钱包</p>
       <p class="amount">{{balance}}<span>元</span></p>
-      <div class="get-money" v-tap="withdrawShow = true">提现</div>
+      <!-- <div class="get-money" v-tap="withdrawShow = true">提现</div> -->
       <div class="hint">注意：单笔提现额度为20000元</div>
-      <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
+      
     </div>
     <div class="coupon-detail">
-      <div class="cell">
-        <div class="cell-title">收支明细</div>
-      </div>
-      <div class="label" v-for="balance in balanceChanges">
+      <!-- <div class="cell">
+        <div class="cell-title">微信提现</div>
+      </div> -->
+      <!-- <div class="label" v-for="balance in balanceChanges">
         <div class="amount-label">
           <div class="amount-type">{{returnType(balance.type, typeList)}}</div>
           <div class="amount-time">{{getTime(balance.createdAt)}}</div>
@@ -209,34 +164,27 @@ body {
           <span v-if="showType(balance.type)" class="orange">+{{balance.amount}}元</span>
           <span v-if="!showType(balance.type)">{{balance.amount}}元</span>
           <img src="./select.png">
-         
         </div>
+      </div> -->
+      <div class="input-wrapper">
+        <div class="input-label">金额：</div>
+        <input type="number" placeholder="请输入您的提现金额" v-model="withdrawAmount">
       </div>
+      <div class="submit_btn" :class="{'active': isFilled()}" v-tap="isFilled()?withdrawPost():return">确认提现</div>
+      <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
     </div>
   </div>
-<Dialog :show.sync="withdrawShow" >
-  <p id="dialog-p" style="border-bottom: 1px solid #f5f5f5;" v-tap="goto('./wallet-to-weixin.html')">
-    微信提现
-    <img src="./select.png">
-  </p>
-  <p id="dialog-p" style="border-bottom: 1px solid #f5f5f5;" v-tap="goto('./wallet-to-card.html')">
-    银行卡提现
-    <img src="./select.png">
-  </p>
-  <p id="dialog-p" v-tap="withdrawShow = false">取消</p>
-  
-  <!-- <group>
+<!-- <Dialog :show.sync="withdrawShow" >
+  <p style="font-size: 18px;">提现申请</p>
+  <group>
     <x-input title="提现金额" :value.sync="refundApply.normalAmount" type="number" placeholder="请输入微信提现金额"></x-input>
     
   <div class="weui_dialog_ft">
     <span @click="withdrawShow = false" style="border-right: 1px solid #D5D5D6;">取消</span>
     <span :class="{'primary': isFilled()}" @click="isFilled()?withdrawPost(tempOrderNo):return">确认申请</span>
   </div>
-  </group> -->
-</Dialog>
-<!-- <confirm :show.sync="withdrawShow" title=""  confirm-text="微信提现" cancel-text="银行卡提现" @on-confirm="x @on-cancel="goto('./wallet-to-card.html')">
-  <p style="text-align:center;" >请选择您的提现方式</p>
-</confirm> -->
+  </group>
+</Dialog> -->
 </template>
 
 <script>
@@ -245,7 +193,6 @@ import axios from 'axios'
 import Dialog from 'vux-components/dialog'
 import Group from 'vux-components/group'
 import XInput from 'vux-components/x-input'
-import Confirm from 'vux-components/confirm'
 
 Lib.M.auth(axios)
 
@@ -255,7 +202,7 @@ export default {
       balance: 0,
       balanceChanges: [],
       withdrawShow: false,
-      withdrawAmount: 0,
+      withdrawAmount: '',
       typeList: [{
         id: 1, value: '贴息'
       },{
@@ -276,8 +223,7 @@ export default {
   components: {
     Dialog,
     Group,
-    XInput,
-    Confirm
+    XInput
   },
   ready() {
     axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
@@ -292,9 +238,7 @@ export default {
     goto(url) {
       location.href = url
     },
-    replace(url) {
-      location.replace(url)
-    },
+
     /**
      * 通过点券的type获取typeList中的点券类型
      */
@@ -314,28 +258,6 @@ export default {
       return Y + M + D
     },
     /**
-     * v-if判断点券的amount
-     */
-    showType(type) {
-      let result 
-      switch (type) {
-        case 1:
-        case 2:
-        case 5:
-        case 7:
-          result = true
-          break
-        case 3:
-        case 4:
-        case 6: 
-          result = false
-          break
-        default:
-          result = true
-      }
-      return result
-    },
-    /**
      * 提交提现申请
      */
     withdrawPost() {
@@ -346,17 +268,19 @@ export default {
         withCredentials: true,
         responseType: true
       }).then((res) => {
-        alert("提现申请已提交")
-        this.wallet = res.data.data.balance
-        this.withdrawShow = false
+        alert("提现申请已提交!")
+        // location.replace('./wallet.html')
+        location.href = './usercenter.html'
       }).catch((res) => {
         alert("提现失败，请稍后再试")
       })
     },
+    // isFilled() {
+    //   return this.withdrawAmount !== null
+    // },
     isFilled() {
-      return this.withdrawAmount !== null
+      return Number(this.withdrawAmount) >= 0 && Number(this.withdrawAmount) <= 20000
     }
-    
   }
 }
 
