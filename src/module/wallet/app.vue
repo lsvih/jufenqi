@@ -65,7 +65,7 @@ body {
     .hint {
       position: absolute;
       font-size: 12px;
-      bottom: 60px;
+      bottom: 78px;
       left: 50%;
       transform: translateX(-50%);
       color: #fff;
