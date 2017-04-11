@@ -39,7 +39,6 @@ body {
     .amount {
       font-size: 33px;
       font-weight: 500;
-      margin-bottom: 20px;
     }
     .get-money {
       width: 80px;
@@ -63,11 +62,9 @@ body {
       border-radius: 5px;
     }
     .hint {
-      position: absolute;
       font-size: 12px;
-      bottom: 78px;
-      left: 50%;
-      transform: translateX(-50%);
+      margin-bottom: 8px;
+      text-align: center;
       color: #fff;
       font-weight: 300;
       width: 100%;
@@ -192,8 +189,9 @@ body {
     <div class="amount-wrapper">
       <p class="amount-title">我的钱包</p>
       <p class="amount">{{balance}}<span>元</span></p>
-      <div class="get-money" v-tap="withdrawShow = true">提现</div>
       <div class="hint">注意：单笔提现额度为20000元</div>
+      <div class="get-money" v-tap="withdrawShow = true">提现</div>
+      
       <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
     </div>
     <div class="coupon-detail">
