@@ -171,23 +171,12 @@ body {
       </div>
       <div class="input-wrapper" style="margin-bottom: 5vh;">
         <div class="input-label">银行：</div>
-        <div class="input-fake" v-tap="bankShow = true">{{depositBank || '请选择银行卡所属银行'}}</div>
-        <!-- <input type="text" placeholder="请选择银行卡所属银行" v-tap="bankShow = true" v-model="depositBank" readonly> -->
+        <!-- <div class="input-fake" v-tap="bankShow = true">{{depositBank || '请选择银行卡所属银行'}}</div> -->
+        <input type="text" placeholder="请输入银行卡所属银行支行" v-model="depositBank">
       </div>
       <div class="submit_btn" :class="{'active': isFilled()}" v-tap="isFilled()?withdrawPost():return">确认提现</div>
   </div>
-<!-- <Dialog :show.sync="withdrawShow" >
-  <p style="font-size: 18px;">提现申请</p>
-  <group>
-    <x-input title="提现金额" :value.sync="refundApply.normalAmount" type="number" placeholder="请输入微信提现金额"></x-input>
-    
-  <div class="weui_dialog_ft">
-    <span @click="withdrawShow = false" style="border-right: 1px solid #D5D5D6;">取消</span>
-    <span :class="{'primary': isFilled()}" @click="isFilled()?withdrawPost(tempOrderNo):return">确认申请</span>
-  </div>
-  </group>
-</Dialog> -->
-<popup-picker title="银行" :data="bank" :columns="1" :show-cell="false" :show.sync="bankShow" :value.sync="tmpDepositBank" show-name v-ref:bank @on-hide="selectBank()"></popup-picker>
+<!-- <popup-picker title="银行" :data="bank" :columns="1" :show-cell="false" :show.sync="bankShow" :value.sync="tmpDepositBank" show-name v-ref:bank @on-hide="selectBank()"></popup-picker> -->
 </template>
 
 <script>
