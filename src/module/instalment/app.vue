@@ -118,7 +118,7 @@
     margin: 0 auto 18px;
     padding: 0;
     text-align: center;
-    line-height: 103px;
+    line-height: 107px;
     font-size: 15px;
     color: #ff9736;
     font-weight: bold;
@@ -197,7 +197,7 @@
     margin: 0 auto 18px;
     padding: 0;
     text-align: center;
-    line-height: 103px;
+    line-height: 107px;
     font-size: 15px;
     color: #ff9736;
     font-weight: bold;
@@ -232,7 +232,7 @@
     width: 103px;
     border-radius: 50%;
     border: 1px solid #fff;
-    line-height: 103px;
+    line-height: 107px;
     font-size: 15px;
     font-weight: bold;
   }
