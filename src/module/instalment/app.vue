@@ -373,7 +373,7 @@
   <div class="down-part">
   <scroller class="block-3" height="calc( 100% - 190px - 44px )" :lock-x="true" :scrollbar-y="false" v-if="thisStatus == '未申请'||thisStatus == '激活失败'||thisStatus == '申请失败'">
       <div>
-        <div style="width:100%" :style="{'height':getScreenWidth() * 1.872 + 'px'}"><img src="/static/temp/分期.jpg" width="100%">
+        <div style="width:100%" :style="{'height':getScreenWidth() * 1.872 + 'px'}"><img src="/static/temp/ins-ad.jpg" width="100%">
         </div>
       </div>
     </scroller>
