@@ -67,7 +67,7 @@ export default {
   .btn {
     text-align: center;
     position: absolute;
-    bottom: 10px;
+    bottom: 10%;
     left: 75px;
     margin: auto;
     width: calc(~"100% - 150px");
