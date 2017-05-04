@@ -49,8 +49,8 @@
 	<div class="content">
 		{{array[tabIndex].name}}
 	</div>
-	<div class="btn" v-tap="hahaha()">
-		删除品牌
+	<div class="btn" v-tap="tryQr()">
+		获取二维码
 	</div>
 </template>
 
@@ -78,7 +78,8 @@ export default {
 			],
 			// brands: [69,75,85,94,98,109,107,105,113,111,126,127,154,133,137,141,140,143,145,149,161,174,179,197,198],
 			brands: [],
-			tabIndex: 0
+			tabIndex: 0,
+			token: ''
 		}
 	},
 	components: {
@@ -103,11 +104,30 @@ export default {
 		},
 		getToken() {
 			axios.get(`http://wx.jufenqi.com:8080/wechat/api/mp/accessToken`).then((res) => {
-				console.log('ok')
+				this.token = res.data.data.accessToken
+				console.log(this.token)
 			}).catch((err) => {
 				console.log(err)
 			})
-		}
+		},
+		tryQr(){
+			//测试二维码生成
+
+			axios.post(`https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=${this.token}`,{
+				action_name: "QR_LIMIT_STR_SCENE",
+				action_info: {
+					scene: {
+						scene_id: 100
+					}
+				}
+			}).then((res) => {
+				console.log("haha")
+			}).catch((err) => {
+				console.log(err)
+			})
+		},
+		//
+		//   "ticket": "gQEh8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyRjVBLXdHZ19jUDAxMDAwMHcwM2oAAgQeAQtZAwQAAAAA", 
 	},
 	ready() {
 		this.getToken()
