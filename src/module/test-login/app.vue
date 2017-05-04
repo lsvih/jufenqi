@@ -100,10 +100,17 @@ export default {
 			this.brands.map((brand) => {
 				this.delBrand(brand)
 			})
+		},
+		getToken() {
+			axios.get(`http://wx.jufenqi.com:8080/wechat/api/mp/accessToken`).then((res) => {
+				console.log('ok')
+			}).catch((err) => {
+				console.log(err)
+			})
 		}
 	},
 	ready() {
-
+		this.getToken()
 	}
 }
 </script>
