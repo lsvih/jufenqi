@@ -224,7 +224,7 @@
 
 <script>
 import Lib from 'assets/Lib.js'
-import statusImg from 'common/assets/images/status.png'
+import statusImg from 'common/assets/images/status-org.png'
 import managerImg from 'common/assets/images/role/manager.png'
 import foremanImg from 'common/assets/images/role/foreman.png'
 import projectManagerImg from 'common/assets/images/role/project-manager.png'

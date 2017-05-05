@@ -86,7 +86,9 @@ import qkImg from './qk.png'
 import fqImg from './fq.png'
 import ylImg from './yl.png'
 import axios from 'axios'
+
 Lib.M.auth(axios)
+
 export default {
   components: {
     JRadio,

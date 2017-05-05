@@ -202,11 +202,15 @@ export default {
 			isSendId: false,
 			loading: false,
 			lastUrl: Lib.M.GetRequest().url ? unescape(Lib.M.GetRequest().url) : './index.html',
+			source: Lib.M.GetRequest().source ? unescape(Lib.M.GetRequest().source) : '',
 			time: 60,
 			timekeeper: null,
 			codeError: false,
 			myConfirm: false
 		}
+	},
+	ready() {
+		console.log(this.source)
 	},
 	methods: {
 		active() {

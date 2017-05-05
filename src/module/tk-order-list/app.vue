@@ -25,6 +25,9 @@ header {
     border-color: #ff9736 !important;
     font-size: 12px!important;
 }
+.weui_btn_dialog.primary {
+  color: #ff9736 !important;
+}
 </style>
 
 <template>

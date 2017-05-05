@@ -63,7 +63,7 @@ header {
 .weui_dialog_ft {
     position: relative;
     line-height: 42px;
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 17px;
     display: flex;
     span {
@@ -82,6 +82,13 @@ header {
     .primary {
         color: #f99736 !important;
     }
+}
+.weui_textarea {
+  padding-left: 5px;
+  text-indent: 5px;
+  &::placeholder {
+    text-indent: 5px;
+  }
 }
 </style>
 
@@ -192,9 +199,12 @@ header {
   <group>
     <x-input title="正价退款" :value.sync="refundApply.normalAmount" type="number" placeholder="请输入正价退款金额"></x-input>
     <x-input title="特价退款" :value.sync="refundApply.specialAmount" type="number" placeholder="请输入特价退款金额"></x-input>
-
+    
     <x-textarea :max="50" :value.sync="refundApply.reason" placeholder="请输入您的退款理由" :rows="4" :height="110"></x-textarea>
-  
+    <div style="display: flex; margin: 0; height: 20px; padding-left: 25px;">
+      <img src="/static/images/contactHint.png" style="width: 15px; height: 15px; margin-right: 5px; margin-top: 2px">
+      <div v-tap="goto('./contact.html')" style="line-height: 19px; font-size: 12px; color: #ff9736;">居分期用户协议</div>
+    </div>
   <div class="weui_dialog_ft">
     <span @click="confirmRefund = false" style="border-right: 1px solid #D5D5D6;">取消</span>
     <span :class="{'primary': isFilled()}" @click="isFilled()?refundPost(tempOrderNo):return">确认申请</span>

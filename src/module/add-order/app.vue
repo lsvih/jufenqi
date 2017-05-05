@@ -135,6 +135,27 @@ input,button,select,textarea {
   line-height: 0px;
   color: #f97c36;
 }
+.corp-tip {
+  font-size: 12px;
+  height: 20px;
+  display: flex;
+  padding-left: 13px;
+  margin-bottom: 46px;
+  .tip-text {
+    line-height: 19px;
+    color: #ff9736;
+  }
+  img {
+    width: 15px;
+    height: 15px;
+    display: block;
+    margin-right: 5px;
+    margin-top: 2px;
+  }
+}
+.vux-flexbox-item {
+  color: #ff9736 !important;
+}
 </style>
 
 <template>
@@ -166,13 +187,13 @@ input,button,select,textarea {
           <div class="price">
             <span class="label">正价</span>
             <input type="number" v-model="brand.normalAmount" placeholder="请输入正价金额">
-            <p v-if="!isBoloni()">将为您贴息<span>{{brand.normalAmount?(brand.normalAmount*interestRate): 0 | currency '￥'}}</span>元</p>
+            <p>将为您贴息<span>{{brand.normalAmount?(brand.normalAmount*brand.rate.normalRate): 0 | currency '￥'}}</span>元</p>
           </div>
-          <div class="price" v-if="!isBoloni()">
+          <div class="price" v-if="isSpecial(brand.id)">
             <span class="label">特价</span>
             <input type="number" v-model="brand.specialAmount" placeholder="请输入特价金额">
             <!-- <input type="number" v-if="!isBoloni()" readonly style="background-color: #eee;"> -->
-            <p >将为您贴息<span>{{brand.specialAmount?(brand.specialAmount*0.04):0 | currency '￥'}}</span>元，返点券<span>{{brand.specialAmount?(brand.specialAmount*4):0}}</span>点</p>
+            <p >将为您贴息<span>{{brand.specialAmount?(brand.specialAmount*brand.rate.specialRate):0 | currency '￥'}}</span>元，返点券<span>{{brand.specialAmount?Math.round(brand.specialAmount*brand.rate.couponRate*100):0}}</span>点</p>
             <p style="color: #fc9736; margin-top: 11px;">注：所有贴息、返券按照实际支付金额计算</p>
           </div>
         </div>
@@ -212,15 +233,16 @@ input,button,select,textarea {
           {{countAllAmount('normalAmount')|currency '￥' 2}}
         </div>
       </div>
-      <div class="cell" style="margin-bottom: 80px;">
+      <div class="cell" style="margin-bottom: 10px;">
         <div class="label">特价金额小计</div>
         <div class="brand-amount">
           {{countAllAmount('specialAmount')|currency '￥' 2}}
         </div>
       </div>
     </div>
-    <div class="triangle">
-      
+    <div class="corp-tip">
+      <img src="/static/images/contactHint.png">
+      <div class="tip-text" v-tap="goto('./contact.html')">居分期用户协议</div>
     </div>
     
   </div>
@@ -259,22 +281,13 @@ export default {
     Cell
   },
   ready() {
-    //若用户办理过分期，则取相应银行利率，否则默认为8%
-    this.getSource()
-
-    axios.get(`http://wx.jufenqi.com:8080/loanapplicant/api/loan-applications?filter=userId:${this.userId}&expand=bankBranchPeriod`)
-    .then((res) => {
-      if (this.source == '博洛尼') {
-        this.interestRate = 0.04
-      } else {
-        this.interestRate = res.data.data.bankBranchPeriod?res.data.data.bankBranchPeriod.interestRate:0.08
-      }
-    }).catch((err) => {
-      console.log(err)
-    })
     //获取用户点券信息
     this.getCoupon()
-    console.log(this.isBoloni())
+    // console.log(this.setRate(12))
+    // this.setRate(12)
+    // console.log(this.source)
+    this.addRate()
+
   },
   data() {
     return {
@@ -284,6 +297,7 @@ export default {
       showSelectClerk: false,
       showSelectCoupon: false,
       shopList: shopInfoPipe(JSON.parse(localStorage.temp)),
+      brandLength: [],
       tempBrandList: [],
       tempBrandOperateType: null,
       // tempBrandOperateType为品牌操作的类型，值为0时为添加品牌，值为1时为修改品牌
@@ -295,6 +309,7 @@ export default {
       tempSelectedClerk: [],
       // 点券
       myCoupon: [],
+      specialBrandId: [11, 12, 186, 128, '11', '12', '186', '128'],
       couponAmount: null,
       isCouponUsed: false,
       realName: null,
@@ -303,7 +318,8 @@ export default {
       //银行利率
       interestRate: 0.08,
       //来源
-      source: null
+      source: null,
+      intRate: {}
     }
   },
   methods: {
@@ -314,16 +330,6 @@ export default {
         this.shopList.$remove(shop)
       },
       isFinished() {
-        // if (this.source !== null) {
-        //   if (!this.shopList.length) return false
-        //     for (let shop of this.shopList) {
-        //       if(shop.brands.length === 0) return false
-        //         for (let brand of shop.brands) {
-        //           if (brand.specialAmount == null && brand.normalAmount == null) return false
-        //             if (brand.specialAmount == '' && brand.normalAmount == '') return false
-        //             }
-        //           } 
-        // } if (this.source == '博洛尼') {
           if (this.realName == null || this.realName == '') return false
             if (!this.shopList.length) return false
             for (let shop of this.shopList) {
@@ -408,9 +414,9 @@ export default {
         this.tempBrandList = []
         res.data.data.storeBrands.map((e) => {
           this.tempBrandList.push({
-            name: e.brand.name,
-            value: String(e.brand.id),
-          })
+              name: e.brand.name,
+              value: String(e.brand.id),
+            })
         })
         this.showSelectBrand = true
         this.showLoading = false
@@ -434,6 +440,7 @@ export default {
             normalAmount: null,
             specialAmount: null
           })
+          this.addRate()
           this.tempAddBrand = []
         } else {
           this.shopList[findIdIndex(this.tempSelectedShop, this.shopList)].brands[this.tempSelectedBrand].name = getValue(this.tempAddBrand[0], this.tempBrandList, 'name')
@@ -573,16 +580,23 @@ export default {
     checkBox() {
       this.isCouponUsed = !this.isCouponUsed
     },
-    getSource() {
-      axios.get(`${Lib.C.userApi}customerProfiles?filter=userId:${this.userId}`).then((res) => {
-        this.source = res.data.data[0].source
-      }).catch((err) => {
-        alert('获取信息不足，请稍后再试。。')
+    isSpecial(id) {
+      if (this.specialBrandId.indexOf(id) == -1) {
+        return true
+      }
+      return false
+    },
+    addRate() {
+      this.shopList.map((shop) => {
+        shop.brands.map((brand) => {
+          axios.get(`http://wx.jufenqi.com:8080/materialorder/api/materialOrders/rates?userId=${this.userId}&brandId=${brand.id}`).then((res) => {
+            brand.rate = res.data.data
+          }).catch((err) => {
+            console.log(err)
+          })
+        })
       })
     },
-    isBoloni() {
-      return this.source == '博洛尼'
-    }
   }
 
 }
