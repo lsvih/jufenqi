@@ -62,6 +62,7 @@ html {
   justify-content: space-between;
   color: #393939;
   margin-bottom: 1px;
+  position: relative;
   img {
     transform: rotate(-90deg);
     width: 13px;
@@ -78,6 +79,28 @@ html {
     font-weight: 300;
     line-height: 44px;
   }
+  .abso {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 44px;
+    font-size: 14px;
+    color: #999;
+    font-weight: 300;
+  }
+}
+.logout {
+  width: 50px;
+  text-align: center;
+  height: 30px;
+  font-size: 12px;
+  color: #ccc;
+  line-height: 40px;
+  border-bottom: 1px solid #ccc;
+  margin: 70px auto;
 }
 /*
  * dialog css
@@ -153,6 +176,11 @@ html {
     <div class="right">
       修改手机
       <img src="./select.png">
+    </div>
+  </div>
+  <div class="cell" v-tap="goto('./logout.html')" style="margin-top: 80px;">
+    <div class="abso">
+      退出登录
     </div>
   </div>
 <Dialog :show.sync="nameChange" >
