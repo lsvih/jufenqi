@@ -101,6 +101,7 @@ header {
       <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 2" v-tap="index = 2">待确认</tab-item>
       <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 3" v-tap="index = 3">待收货</tab-item>
       <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 4" v-tap="index = 4">已完成</tab-item>
+      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 5" v-tap="index = 5">继续支付</tab-item>
     </tab>
   </header>
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
@@ -165,7 +166,7 @@ header {
         </scroller>
       </div>
     </swiper-item>
-<!--     <swiper-item>
+    <swiper-item>
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" :lock-x="true" scrollbar-y v-ref:listf>
           <div>
@@ -176,7 +177,7 @@ header {
           </div>
         </scroller>
       </div>
-    </swiper-item> -->
+    </swiper-item>
   </swiper>
 </div>
 <confirm :show.sync="showConfirm.cancelAppt" title="" confirm-text="是" cancel-text="否" @on-confirm="cancelAppt(tempApptNo)">
@@ -296,7 +297,7 @@ export default {
     //中订单
     axios.get(`${Lib.C.mOrderApi}materialGroups`, {
       params: {
-        filter: 'customerId:' + JSON.parse(localStorage.getItem("user")).userId + '|status:[3,6]',
+        filter: 'customerId:' + JSON.parse(localStorage.getItem("user")).userId + '|status:[1,6]',
         sort: 'createdAt,DESC',
         size: 1000
       }
@@ -307,7 +308,7 @@ export default {
             // this.list0.push(order)
             break;
           case 2:
-            this.list1.push(order)
+            this.list5.push(order)
             break;
           case 3:
             this.list1.push(order)

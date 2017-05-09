@@ -54,10 +54,7 @@ export default {
   data() {
     return {
       type: Lib.M.GetRequest().type
-      // 1为全款支付
-      // 2为分期支付
-      // 3为微信支付
-      // 4为信用卡支付
+
     }
   },
   components: {

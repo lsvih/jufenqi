@@ -66,6 +66,7 @@ body {
     <j-radio :options="payments" @on-change="selectPay"></j-radio>
   </group>
   <div class="tip">注：您选择信用卡支付后，将由专人与您联系，进行刷卡操作</div>
+  <j-tel style="margin-top:30px"></j-tel>
   <div class="submit-btn" v-bind:class="{'active':payMethod!=0}" v-tap="payMethod!=0?pay():return">确认</div>
 </div>
 <loading :show="showLoading" text="请稍后.."></loading>
@@ -86,7 +87,7 @@ import qkImg from './qk.png'
 import fqImg from './fq.png'
 import ylImg from './yl.png'
 import axios from 'axios'
-
+import JTel from 'components/j-tel'
 Lib.M.auth(axios)
 
 export default {
@@ -94,7 +95,8 @@ export default {
     JRadio,
     Group,
     Loading,
-    Confirm
+    Confirm,
+    JTel
   },
   ready() {
     this.showLoading = true
@@ -197,6 +199,9 @@ export default {
             if(err.response.data.code == 40303){
               this.showLoading = false
               this.showLoan = true
+            } else if (err.response.data.code == 40311) {
+              this.showLoading = false
+              alert('后台未确定分期方案，请联系客服为您选择')
             }else{
               throw err
             }
