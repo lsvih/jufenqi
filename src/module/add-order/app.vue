@@ -309,7 +309,7 @@ export default {
       tempSelectedClerk: [],
       // 点券
       myCoupon: [],
-      specialBrandId: [11, 12, 186, 128, '11', '12', '186', '128'],
+      specialBrandId: [11, 12, 186, 128, 222, 236, '11', '12', '186', '128', '222', '236'],
       couponAmount: null,
       isCouponUsed: false,
       realName: null,
