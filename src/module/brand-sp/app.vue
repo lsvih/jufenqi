@@ -91,7 +91,7 @@ export default {
     Loading
   },
   ready() {
-    this.getBrand()
+    this.getData(36)
     let that = this
     axios.get(`${Lib.C.merApi}categories`).then((res) => {
       res.data.data.map((e) => {
@@ -140,15 +140,6 @@ export default {
     },
     getScreenWidth() {
       return document.body.clientWidth
-    },
-    getBrand() {
-      axios.get(`http://wx.jufenqi.com:8080/merchant/api/brands?filter=id:186,222,236`).then((res) => {
-        this.brandList = res.data.data
-        this.showLoading = false
-      }).catch((err) => {
-        this.showLoading = false
-        throw err
-      })
     }
   }
 }
