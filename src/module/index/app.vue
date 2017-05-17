@@ -576,8 +576,8 @@ export default {
         img: '/static/images/icon/装修必读.png'
       }, {
         id: 3,
-        name: '博洛尼家装',
-        url: 'brand-detail.html?id=186',
+        name: '装修公司',
+        url: 'brand-sp.html',
         img: '/static/images/icon/博洛尼.png'
       }, {
         id: 4,
