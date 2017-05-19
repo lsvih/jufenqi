@@ -272,7 +272,8 @@ import axios from 'axios'
 import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
 
-Lib.M.auth(axios)
+Lib.M.auth(axios, true)
+
 export default {
   components: {
     PopupPicker,
