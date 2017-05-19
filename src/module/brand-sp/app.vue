@@ -73,7 +73,7 @@ import PopupPicker from 'vux-components/popup-picker'
 import Loading from 'vux-components/loading'
 import axios from 'axios'
 
-Lib.M.auth(axios, true)
+Lib.M.auth(axios)
 
 export default {
   data() {
