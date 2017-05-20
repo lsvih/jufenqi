@@ -72,7 +72,9 @@ import Lib from 'assets/Lib.js'
 import PopupPicker from 'vux-components/popup-picker'
 import Loading from 'vux-components/loading'
 import axios from 'axios'
+
 Lib.M.auth(axios)
+
 export default {
   data() {
     return {
