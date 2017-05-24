@@ -46,6 +46,7 @@
         font-weight: 300;
         border: 1px solid #ebebeb;
         border-radius: 5px;
+        color: #999;
         img {
           display: block;
           width: 10px;
@@ -55,6 +56,7 @@
       }
       .selected {
         border: 1px solid #ff9736;
+        color: #393939;
       }
     }
   }
@@ -123,8 +125,8 @@
           <div class="left">总价：<span style="color: #ff9736;">{{getTrue() * 500}}</span> 元</div>
           <div class="right" :class="{'active': getTrue() > 0}">
             立即支付
-            <div class="btn" v-tap="allTrue(0)" v-if="showBtn">全选</div>
-            <div class="btn" v-tap="allTrue(1)" v-if="!showBtn">反选</div>
+            <div class="btn" v-tap="allTrue(0)" v-if="!showBtn()">全选</div>
+            <div class="btn" v-tap="allTrue(2)" v-if="showBtn()">反选</div>
           </div>
           
         </div>
@@ -185,7 +187,6 @@ export default {
       showLoading: false,
       showSelect: false,
       selectedBrand: [],
-      showBtn: true
     }
   },
   methods: {
@@ -206,12 +207,16 @@ export default {
         this.list.map((e) => {
           e.show = true
         })
-      } else {
+      } else if (type == 1){
         this.list.map((e) => {
           e.show = !e.show
         })
+      } else {
+        this.list.map((e) => {
+          e.show = false
+        })
       }
-      this.showBtn = !this.showBtn
+      console.log(this.showBtn())
     },
     getBrand(id) {
       this.tmpBrands = []
@@ -253,6 +258,13 @@ export default {
       }
       this.showSelect = false
       this.selectedBrand = []
+    },
+    showBtn() {
+      let a = true
+      this.list.map((e) => {
+        a = a && e.show
+      })
+      return a
     }
   },
   components: {
