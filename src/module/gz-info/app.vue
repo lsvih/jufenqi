@@ -50,7 +50,7 @@
           display: block;
           width: 10px;
           height: 6px;
-          margin: 12px 0 0 5px;
+          margin: 12px 0 0 2px;
         }
       }
       .selected {
