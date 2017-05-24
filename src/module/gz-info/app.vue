@@ -35,16 +35,26 @@
         }
       }
       .con {
-        // width: 100%;
         width: calc(~"100% - 20px");
+        display: flex;
+        justify-content: center;
         margin: 0 auto;
         height: 30px;
         line-height: 30px;
         text-align: center;
         font-size: 12px;
         font-weight: 300;
-        border: 1px solid #ff9736;
+        border: 1px solid #ebebeb;
         border-radius: 5px;
+        img {
+          display: block;
+          width: 10px;
+          height: 6px;
+          margin: 12px 0 0 5px;
+        }
+      }
+      .selected {
+        border: 1px solid #ff9736;
       }
     }
   }
@@ -103,14 +113,18 @@
             <img :src="cate.cateurl" v-tap="cate.show = !cate.show">
             <img src="/static/images/success-orange.png" class="checked" v-if="cate.show">
           </div>
-          <div class="con" v-tap="getBrand(cate.cateId)">{{cate.brand}}</div>
+          <div class="con" v-tap="cate.show?getBrand(cate.cateId):return" :class="{'selected': cate.show}">
+            <span>{{cate.brand}}</span>
+            <img src="/static/arrow.png">
+          </div>
         </div>
         
         <div class="bot">
           <div class="left">总价：<span style="color: #ff9736;">{{getTrue() * 500}}</span> 元</div>
           <div class="right" :class="{'active': getTrue() > 0}">
             立即支付
-            <div class="btn" v-tap="allTrue(0)">全选</div>
+            <div class="btn" v-tap="allTrue(0)" v-if="showBtn">全选</div>
+            <div class="btn" v-tap="allTrue(1)" v-if="!showBtn">反选</div>
           </div>
           
         </div>
@@ -170,7 +184,8 @@ export default {
       tmpBrands: [],
       showLoading: false,
       showSelect: false,
-      selectedBrand: []
+      selectedBrand: [],
+      showBtn: true
     }
   },
   methods: {
@@ -196,6 +211,7 @@ export default {
           e.show = !e.show
         })
       }
+      this.showBtn = !this.showBtn
     },
     getBrand(id) {
       this.tmpBrands = []
@@ -204,7 +220,7 @@ export default {
         res.data.data.categoryBrands.map((e) => {
           if (e.brand) {
             this.tmpBrands.push({
-              name: e.brand.name,
+              name: e.brand.name.indexOf('-') == -1?e.brand.name:e.brand.name.split('-')[0],
               value: [e.brand.id, e.id].join(',')
             })
           }
@@ -226,11 +242,11 @@ export default {
             this.list.map((e) => {
               if (tmpExpand == cate.id && e.cateId == cate.category.id) {
                 e.brandId = res.data.data.id
-                e.brand = res.data.data.name
+                e.brand = res.data.data.name.indexOf('-') == -1?res.data.data.name:res.data.data.name.split('-')[0]
               }
             })
           })
-          
+
         }).catch((err) => {
           throw err
         })
