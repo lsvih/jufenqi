@@ -305,6 +305,8 @@ export default {
       return a
     },
     pay(type) {
+      let that = this
+      this.showLoading = true
       this.getPostBody(type)
       axios.post(`${Lib.C.mOrderApi}predeposits`, this.result).then((res) => {  
         let paymentId = res.data.data.paymentId
@@ -321,10 +323,12 @@ export default {
                     location.href = './my-event.html'
                   } else if (result === 'fail') {
                     alert('支付失败')
-                    location.href = './zc-order-list.html?type=5'
+                    that.showLoading = false
+                    // location.href = './gz-info.html'
                   } else if (result === 'cancel') {
                     alert('支付失败')
-                    location.href = './zc-order-list.html?type=5'
+                    // location.href = './gz-info.html'
+                    that.showLoading = false
                   }
                 })
               }).catch((err) => {
@@ -351,7 +355,7 @@ export default {
       this.list.map((e) => {
         if (e.show) {
           this.result.brands.push({
-            amount: 500,
+            amount: 0.01,
             brandId: e.brandId,
             categoryId: e.cateId,
           })
