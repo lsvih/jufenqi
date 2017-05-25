@@ -10,12 +10,6 @@ body {
 }
 </style>
 <style lang="less">
-/* dialog var */
-@weuiDialogBackgroundColor: #FAFAFC;
-@weuiDialogLineColor: #D5D5D6;
-@weuiDialogLinkColor: #3CC51F;
-@weuiDialogLinkActiveBc: #EEEEEE;
-
 .content {
   width: 100%;
   height: 100%;
@@ -109,6 +103,7 @@ body {
         line-height: 44px;
         justify-content: space-between;
         border-top: 1px solid #ebebeb;
+        visibility: hidden;
         .refund-btn {
           height: 100%;
           background-color: #ff9736;
@@ -145,74 +140,6 @@ body {
     }
   }
 }
-/*
- * dialog css
- */
-.setTapColor(@c:rgba(0,0,0,0)) {
-    -webkit-tap-highlight-color: @c;
-}
-.setTopLine(@c: #C7C7C7) {
-    content: " ";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 1px;
-    border-top: 1px solid @c;
-    color: @c;
-    transform-origin: 0 0;
-    transform: scaleY(0.5);
-}
-.setLeftLine(@c: #C7C7C7) {
-    content: " ";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1px;
-    height: 100%;
-    border-left: 1px solid @c;
-    color: @c;
-    transform-origin: 0 0;
-    transform: scaleX(0.5);
-}
-
-.weui_dialog_ft {
-    position: relative;
-    line-height: 42px;
-    margin-top: 20px;
-    font-size: 17px;
-    display: flex;
-    span {
-        display: block;
-        flex: 1;
-        color: #888;
-        text-decoration: none;
-        &:active {
-            background-color: @weuiDialogLinkActiveBc;
-        }
-    }
-    &:after {
-        content: " ";
-        .setTopLine(@weuiDialogLineColor);
-    }
-    .primary {
-        color: #f99736 !important;
-    }
-}
-#dialog-p {
-  font-size: 18px;
-  margin: 0;
-  padding: 13px 0;
-  position: relative;
-  background-color: #fff;
-  img {
-    width: 20px;
-    transform: rotate(-90deg);
-    position: absolute;
-    top: 19px;
-    right: 12px;
-  }
-}
 </style>
 
 <template>
@@ -220,8 +147,7 @@ body {
     <div class="amount-wrapper">
       <p class="amount-title">一日特价团</p>
       <p class="amount">{{totalAmount}}<span>元</span></p>
-      <div class="hint">注意：标红品牌享受两年贴息服务</div>
-      <div class="get-money" v-tap="withdrawShow = true">退款</div>
+      <div class="hint">注意：本次活动不包括装修公司及家电品牌</div>
       
       <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
     </div>
@@ -244,22 +170,9 @@ body {
           <div class="refund-btn" v-tap="refund(cate.payMethod, cate.cateId, cate.brandId)">退款</div>
         </div>
       </div>
+      <div class="label" style="background-color: #ebebeb"></div>
     </div>
   </div>
-<Dialog :show.sync="withdrawShow" >
-  <p id="dialog-p" style="border-bottom: 1px solid #f5f5f5;" v-tap="goto('./wallet-to-weixin.html')">
-    微信退款
-    <img src="./select.png">
-  </p>
-  <p id="dialog-p" style="border-bottom: 1px solid #f5f5f5;" v-tap="goto('./wallet-to-card.html')">
-    银行卡退款
-    <img src="./select.png">
-  </p>
-  <p id="dialog-p" v-tap="withdrawShow = false">取消</p>
-</Dialog>
-<!-- <confirm :show.sync="withdrawShow" title=""  confirm-text="微信提现" cancel-text="银行卡提现" @on-confirm="x @on-cancel="goto('./wallet-to-card.html')">
-  <p style="text-align:center;" >请选择您的提现方式</p>
-</confirm> -->
 </template>
 
 <script>
@@ -371,6 +284,10 @@ export default {
       let ret = {}
       if (e) {
         ret.borderTop = 'none'
+        ret.visibility = 'visible'
+
+      } else{
+        ret.transitionDelay = '0.3s';
       }
       return ret
     },
