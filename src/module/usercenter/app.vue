@@ -234,8 +234,8 @@ body {
   </flexbox>
   <flexbox class="block-3 vux-1px-t">
     <flexbox-item class="icon-item vux-1px-r">
-      <img src="/static/images/usercenter/repayment.png">
-      <div class="icon-item-name">我的还款</div>
+      <img src="/static/images/usercenter/repayment.png" v-tap="goto('./my-event.html')">
+      <div class="icon-item-name">我的活动</div>
     </flexbox-item>
     <flexbox-item class="icon-item vux-1px-r vux-1px-t" v-tap="goto('./coupon.html')">
       <img src="/static/images/usercenter/coupon.png">
