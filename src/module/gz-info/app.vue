@@ -352,6 +352,7 @@ export default {
     getPostBody(payM) {
       this.result.brands = []
       this.result.payMethod = payM
+      this.result.userId = JSON.parse(localStorage.user).userId
       this.list.map((e) => {
         if (e.show) {
           this.result.brands.push({
