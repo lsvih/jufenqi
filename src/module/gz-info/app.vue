@@ -337,8 +337,10 @@ export default {
               alert("网络连接中断，请稍候再试")
               throw err
             })
+        } else {
+          alert('支付成功')
+          location.href = './my-event.html'
         }
-        location.href = './my-event.html'
       }).catch((err) => {
         throw err
       })
