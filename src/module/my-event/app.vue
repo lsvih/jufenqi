@@ -4,7 +4,7 @@ html {
   margin: 0;
 }
 body {
-  background-color: #eee;
+  background-color: #ebebeb;
   padding: 0;
   margin: 0;
 }
@@ -81,26 +81,53 @@ body {
       margin-bottom: 1px;
       .cell-title {
         line-height: 41px;
+        font-size: 14px;
       }
     }
 
     .label {
-      height: 41px;
+      height: 50px;
       background-color: #fff;
+      z-index: 10;
+      position: relative;
       padding: 0 16px;
       font-size: 12px;
       display: flex;
       justify-content: space-between;
-      margin-bottom: 1px;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid #ebebeb;
+      .more {
+        position: absolute;
+        bottom: -44px;
+        box-sizing: border-box;
+        padding-left: 16px;
+        left: 0;
+        width: 100%;
+        display: flex;
+        height: 44px;
+        background-color: #ebebeb;
+        line-height: 44px;
+        justify-content: space-between;
+        border-top: 1px solid #ebebeb;
+        .refund-btn {
+          height: 100%;
+          background-color: #ff9736;
+          width: 17%;
+          line-height: 44px;
+          text-align: center;
+          color: #fff;
+        }
+
+      }
       .amount-label {
-        line-height: 25px;
+        line-height: 32px;
       }
       .amount-time {
         color: #393939;
         line-height: 10px;
       }
       .amout-change {
-        line-height: 41px;
+        line-height: 50px;
         .orange {
           color: #ff9736;
           display: inline-block;
@@ -109,6 +136,10 @@ body {
         img {
           transform: rotate(-90deg);
           width: 16px;
+          transition: all 0.3s ease;
+        }
+        .origin {
+          transform: none;
         }
       }
     }
@@ -188,7 +219,7 @@ body {
   <div class="content">
     <div class="amount-wrapper">
       <p class="amount-title">一日特价团</p>
-      <p class="amount">{{balance}}<span>元</span></p>
+      <p class="amount">{{totalAmount}}<span>元</span></p>
       <div class="hint">注意：标红品牌享受两年贴息服务</div>
       <div class="get-money" v-tap="withdrawShow = true">退款</div>
       
@@ -196,18 +227,21 @@ body {
     </div>
     <div class="coupon-detail">
       <div class="cell">
-        <div class="cell-title">购买品牌品类</div>
+        <div class="cell-title">购买详情</div>
       </div>
-      <div class="label" v-for="balance in categoryBrands">
-        <div class="amount-label">
-          <div class="amount-type">品类：{{'heihei'}}</div>
-          <div class="amount-time">{{getTime(balance.createdAt)}}</div>
+      <div class="label" v-for="cate in categoryBrands" :style="marginBot(cate.show)">
+        <div class="amount-label" v-tap="cate.show = !cate.show">
+          <div class="amount-type"><span style="color: #ff9736">品类：</span>{{cate.cate}}</div>
+          <div class="amount-time"><span style="color: #ff9736">品牌：</span>{{cate.brand}}</div>
         </div>
-        <div class="amout-change">
-          <span v-if="showType(balance.type)" class="orange">品牌：{{balance.amount}}元</span>
-          <span v-if="!showType(balance.type)">{{balance.amount}}元</span>
-          <!-- <img src="./select.png"> -->
-         
+        <div class="amout-change" v-tap="cate.show = !cate.show">
+          <span>支付方式：<span style="color: #ff9736">{{cate.payMethod == 3?'微信支付':'线下刷卡'}}</span></span>
+          <!-- <span v-if="!showType(cate.type)">{{cate.amount}}元</span> -->
+          <img src="./select.png" :class="{'origin': cate.show}">
+        </div>
+        <div class="more" :style="setHeight(cate.show)">
+          <span>{{getTime(cate.createdAt)}}</span>
+          <div class="refund-btn" v-tap="refund(cate.payMethod, cate.cateId, cate.brandId)">退款</div>
         </div>
       </div>
     </div>
@@ -245,6 +279,8 @@ export default {
       categoryBrands: [],
       withdrawShow: false,
       withdrawAmount: 0,
+      totalAmount: 0,
+      user: JSON.parse(localStorage.user).userId,
       typeList: [{
         id: 1, value: '贴息'
       },{
@@ -269,12 +305,34 @@ export default {
     Confirm
   },
   ready() {
-    axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
-      this.balance = res.data.data.balance
-      this.categoryBrands = res.data.data.categoryBrands
+    axios.get(`${Lib.C.mOrderApi}predeposits?filter=userId:${this.user}`).then((res) => {
+      res.data.data.map((e) => {
+        this.totalAmount += e.amount
+        e.brands.map((brand) => {
+          this.categoryBrands.push({
+            preId: e.id,
+            cateId: brand.categoryId,
+            brandId: brand.brandId,
+            payMethod: e.payMethod,
+            used: brand.used,
+            createdAt: brand.createdAt,
+            show: false,
+            cate: null,
+            brand: null
+          })
+        })
+        this.categoryBrands.forEach((e) => {
+          axios.get(`${Lib.C.merApi}brands/${e.brandId}`).then((res) => {
+            e.brand = res.data.data.name
+          }).catch((err) => {throw err})
+        
+          axios.get(`${Lib.C.merApi}categories/${e.cateId}`).then((res) => {
+            e.cate = res.data.data.name
+          }).catch((err) => {throw err})
+        })
+      })
     }).catch((res) => {
-      alert("网络连接失败，请稍候重试")
-      window.location.reload()
+      throw arr
     })
   },
   methods: {
@@ -302,48 +360,22 @@ export default {
       var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate())
       return Y + M + D
     },
-    /**
-     * v-if判断点券的amount
-     */
-    showType(type) {
-      let result 
-      switch (type) {
-        case 1:
-        case 2:
-        case 5:
-        case 7:
-          result = true
-          break
-        case 3:
-        case 4:
-        case 6: 
-          result = false
-          break
-        default:
-          result = true
+    marginBot(e) {
+      let ret = {}
+      if (e) {
+        ret.marginBottom = '44px'
       }
-      return result
+      return ret
     },
-    /**
-     * 提交提现申请
-     */
-    withdrawPost() {
-      axios.post(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}/withdrawToWechat`, {}, {
-        params: {
-          amount: this.withdrawAmount
-        },
-        withCredentials: true,
-        responseType: true
-      }).then((res) => {
-        alert("提现申请已提交")
-        this.wallet = res.data.data.balance
-        this.withdrawShow = false
-      }).catch((res) => {
-        alert("提现失败，请稍后再试")
-      })
+    setHeight(e) {
+      let ret = {}
+      if (e) {
+        ret.borderTop = 'none'
+      }
+      return ret
     },
-    isFilled() {
-      return this.withdrawAmount !== null
+    refund(payM, cateId, brandId) {
+      console.log(`支付方式：${payM == 3?'3+微信支付':'1+线下刷卡'} & 品类: ${cateId} & 品牌：${brandId}`)
     }
     
   }

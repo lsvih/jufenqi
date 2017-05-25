@@ -358,7 +358,7 @@ export default {
           this.result.brands.push({
             amount: 0.01,
             brandId: e.brandId,
-            categoryId: e.cateId,
+            categoryId: e.cateId
           })
         }
       })
