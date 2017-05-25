@@ -25,6 +25,7 @@
         img {
           width: 100%;
           height: 100%;
+          border-radius: 5px;
         }
         .checked {
           width: 20px;
@@ -33,6 +34,12 @@
           right: 3px;
           top: 3px;
         }
+      }
+      .cate-act {
+        border: 1px solid #ff9736;
+        border-radius: 5px;
+        width: calc(~"100% - 1px");
+        height: calc(~"100% - 1px")
       }
       .con {
         width: calc(~"100% - 20px");
@@ -81,7 +88,6 @@
       color: #999;
       line-height: 45px;
       font-weight: 300;
-      position: relative;
     }
     .active {
       background-color: #ff9736;
@@ -98,12 +104,26 @@
     color: #ff9736;
     font-size: 14px;
     border-radius: 5px;
-    left: -60px;
+    right: 25vw;
     top: 0;
   }
 }
 .vux-flexbox-item {
   color: #ff9736 !important;
+}
+#dialog-p {
+  font-size: 18px;
+  margin: 0;
+  padding: 13px 0;
+  position: relative;
+  background-color: #fff;
+  img {
+    width: 20px;
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 19px;
+    right: 12px;
+  }
 }
 </style>
 
@@ -111,8 +131,8 @@
   <div class="event">
     <div class="brand-wrap">
         <div class="brand" v-for="cate in list" track-by="$index" >
-          <div class="cate">
-            <img :src="cate.cateurl" v-tap="cate.show = !cate.show">
+          <div class="cate" v-tap="cate.show = !cate.show" :class="{'cate-act': cate.show}">
+            <img :src="cate.cateurl">
             <img src="/static/images/success-orange.png" class="checked" v-if="cate.show">
           </div>
           <div class="con" v-tap="cate.show?getBrand(cate.cateId):return" :class="{'selected': cate.show}">
@@ -123,17 +143,29 @@
         
         <div class="bot">
           <div class="left">总价：<span style="color: #ff9736;">{{getTrue() * 500}}</span> 元</div>
-          <div class="right" :class="{'active': getTrue() > 0}">
+          <div class="right" :class="{'active': getTrue() > 0}" v-tap="getTrue()>0?payShow=true:return">
             立即支付
-            <div class="btn" v-tap="allTrue(0)" v-if="!showBtn()">全选</div>
-            <div class="btn" v-tap="allTrue(2)" v-if="showBtn()">反选</div>
           </div>
-          
+          <div class="btn" v-tap="allTrue(0)" v-if="!showBtn()">全选</div>
+          <div class="btn" v-tap="allTrue(2)" v-if="showBtn()">反选</div>
         </div>
     </div>
   </div>
   <loading :show="showLoading" text="正在加载品牌"></loading>
+
   <popup-picker title="选择品牌" :data="tmpBrands" :columns="1" :show-cell="false" :show.sync="showSelect" :value.sync="selectedBrand" @on-hide="onHide" show-name v-ref:cate></popup-picker>
+
+  <Dialog :show.sync="payShow" >
+  <p id="dialog-p" style="border-bottom: 1px solid #f5f5f5;" v-tap="pay(3)">
+    微信支付
+    <img src="./select.png">
+  </p>
+  <p id="dialog-p" style="border-bottom: 1px solid #f5f5f5;" v-tap="pay(1)">
+    线下刷卡
+    <img src="./select.png">
+  </p>
+  <p id="dialog-p" v-tap="payShow = false">取消</p>
+</Dialog>
 </template>
 
 <script>
@@ -141,6 +173,9 @@ import Lib from 'assets/Lib.js'
 import axios from 'axios'
 import PopupPicker from 'vux-components/popup-picker'
 import Loading from 'vux-components/loading'
+import Dialog from 'vux-components/dialog'
+import pingpp from 'pingpp-js'
+
 Lib.M.auth(axios)
 
 export default {
@@ -187,6 +222,9 @@ export default {
       showLoading: false,
       showSelect: false,
       selectedBrand: [],
+      payShow: false,
+      predepositNotifyUrl: 'http://materialorder/api/predeposits/noticePaymentResult',
+      result: {}
     }
   },
   methods: {
@@ -203,6 +241,7 @@ export default {
       return count
     },
     allTrue(type) {
+      this.payShow = false
       if (type == 0) {
         this.list.map((e) => {
           e.show = true
@@ -216,7 +255,6 @@ export default {
           e.show = false
         })
       }
-      console.log(this.showBtn())
     },
     getBrand(id) {
       this.tmpBrands = []
@@ -265,11 +303,71 @@ export default {
         a = a && e.show
       })
       return a
+    },
+    pay(type) {
+      let that = this
+      this.showLoading = true
+      this.getPostBody(type)
+      axios.post(`${Lib.C.mOrderApi}predeposits`, this.result).then((res) => {  
+        let paymentId = res.data.data.paymentId
+        let payData = new FormData()
+        payData.append('notifyUrl', this.predepositNotifyUrl)
+        if (type == 3) {
+          axios.get(`${Lib.C.userApi}wechatOpenIds/${JSON.parse(localStorage.user).userId}`).then((res) => {
+              let openId = res.data.data.openId
+              payData.append('openid', openId)
+              axios.post(`${Lib.C.payApi}pay/${paymentId}`, payData).then((res) => {
+                pingpp.createPayment(res.data.data, (result, err) => {
+                  if (result === 'success') {
+                    alert('支付成功')
+                    location.href = './my-event.html'
+                  } else if (result === 'fail') {
+                    alert('支付失败')
+                    that.showLoading = false
+                    // location.href = './gz-info.html'
+                  } else if (result === 'cancel') {
+                    alert('支付失败')
+                    // location.href = './gz-info.html'
+                    that.showLoading = false
+                  }
+                })
+              }).catch((err) => {
+                this.showLoading = false
+                alert("网络连接中断，请稍候再试")
+                throw err
+              })
+            }).catch((err) => {
+              this.showLoading = false
+              alert("网络连接中断，请稍候再试")
+              throw err
+            })
+        } else {
+          alert('支付成功')
+          location.href = './my-event.html'
+        }
+      }).catch((err) => {
+        throw err
+      })
+    },
+    getPostBody(payM) {
+      this.result.brands = []
+      this.result.payMethod = payM
+      this.result.userId = JSON.parse(localStorage.user).userId
+      this.list.map((e) => {
+        if (e.show) {
+          this.result.brands.push({
+            amount: 0.01,
+            brandId: e.brandId,
+            categoryId: e.cateId
+          })
+        }
+      })
     }
   },
   components: {
     PopupPicker,
-    Loading
+    Loading,
+    Dialog
   },
   ready() {
 

@@ -606,7 +606,9 @@ export default {
         img: '/static/images/icon/家电.png'
       }, {
         id: 9,
+        // name: '特价活动',
         name: '全部分类',
+        // url: './gz-info.html',
         url: './all-class.html',
         img: '/static/images/icon/全部分类.png'
       }],

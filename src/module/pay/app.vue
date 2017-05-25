@@ -138,11 +138,12 @@ export default {
               axios.post(`${Lib.C.payApi}pay/${paymentId}`, payData).then((res) => {
                 pingpp.createPayment(res.data.data, (result, err) => {
                   if (result === 'success') {
-                    axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/waitPayment`).then((res) => {
-                      location.href = './pay-success.html?type=3'
-                    }).catch((err) => {
-                      throw err
-                    })
+                    // axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/waitPayment`).then((res) => {
+                    //   location.href = './pay-success.html?type=3'
+                    // }).catch((err) => {
+                    //   throw err
+                    // })
+                    location.href = './pay-success.html?type=3'
                   } else if (result === 'fail') {
                     alert('支付失败')
                     location.href = './zc-order-list.html?type=5'
