@@ -288,6 +288,7 @@ export default {
     // this.setRate(12)
     // console.log(this.source)
     this.addRate()
+    this.getSpBrands([2, 36])
 
   },
   data() {
@@ -311,6 +312,7 @@ export default {
       // 点券
       myCoupon: [],
       specialBrandId: [11, 12, 186, 128, 222, 236, '11', '12', '186', '128', '222', '236'],
+      spList: [],
       couponAmount: null,
       isCouponUsed: false,
       realName: null,
@@ -582,10 +584,23 @@ export default {
       this.isCouponUsed = !this.isCouponUsed
     },
     isSpecial(id) {
-      if (this.specialBrandId.indexOf(id) == -1) {
-        return true
+      if (this.spList.indexOf(id) == -1) {
+        return false
       }
-      return false
+    },
+    getSpBrands(Array) {
+      Array.map((e) => {
+        axios.get(`${Lib.C.merApi}categories/${e}?expand=categoryBrands`).then((res) => {
+          res.data.data.categoryBrands.map((b) => {
+            let brand = b.brand.id
+            this.spList.push(brand)
+            this.spList.push(String(brand))
+          })
+        }).catch((err) => {
+          throw err
+        })
+      })
+      
     },
     addRate() {
       this.shopList.map((shop) => {

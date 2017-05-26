@@ -4,7 +4,7 @@ html {
   margin: 0;
 }
 body {
-  background-color: #ebebeb;
+  background-color: #fff;
   padding: 0;
   margin: 0;
 }
@@ -167,12 +167,15 @@ body {
         </div>
         <div class="more" :style="setHeight(cate.show)">
           <span>{{getTime(cate.createdAt)}}</span>
-          <div class="refund-btn" v-tap="refund(cate.payMethod, cate.cateId, cate.brandId)">退款</div>
+          <div class="refund-btn" v-tap="refund(cate.payMethod, cate.preId)">退款</div>
         </div>
       </div>
-      <div class="label" style="background-color: #ebebeb"></div>
+      <div class="label" style="border-bottom: none"></div>
     </div>
   </div>
+  <!-- <confirm :show.sync="confirmShow" title=""  confirm-text="是" cancel-text="否" @on-confirm="refund(cate.payMethod, cate.preId)" @on-cancel="confirmShow = false">
+  <p style="text-align:center;" >确定退款？退款将按照原路返回</p> -->
+</confirm>
 </template>
 
 <script>
@@ -194,21 +197,7 @@ export default {
       withdrawAmount: 0,
       totalAmount: 0,
       user: JSON.parse(localStorage.user).userId,
-      typeList: [{
-        id: 1, value: '贴息'
-      },{
-        id: 2, value: '返现'
-      },{
-        id: 3, value: '银行卡提现'
-      },{
-        id: 4, value: '微信提现'
-      },{
-        id: 5, value: '退款'
-      },{
-        id: 6, value: '退款扣返现'
-      },{
-        id: 7, value: '提现返还'
-      }]
+      confirmShow: false
     }
   },
   components: {
@@ -223,7 +212,7 @@ export default {
         this.totalAmount += e.amount
         e.brands.map((brand) => {
           this.categoryBrands.push({
-            preId: e.id,
+            preId: brand.id,
             cateId: brand.categoryId,
             brandId: brand.brandId,
             payMethod: e.payMethod,
@@ -291,8 +280,8 @@ export default {
       }
       return ret
     },
-    refund(payM, cateId, brandId) {
-      console.log(`支付方式：${payM == 3?'3+微信支付':'1+线下刷卡'} & 品类: ${cateId} & 品牌：${brandId}`)
+    refund(payM, preId) {
+      console.log(`支付方式：${payM == 3?'3+微信支付':'1+线下刷卡'} & 退款ID：${preId}`)
     }
     
   }
