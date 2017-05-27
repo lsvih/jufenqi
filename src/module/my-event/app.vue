@@ -72,14 +72,23 @@ body {
 
     .cell {
       height: 41px;
-      background-color: #fff;
       font-size: 12px;
       color: #393939;
       padding-left: 16px;
       margin-bottom: 1px;
       .cell-title {
-        line-height: 41px;
+        line-height: 50px;
         font-size: 14px;
+        position: relative;
+        padding-left: 10px;
+        .cell-heihei {
+          width: 2px;
+          height: 12px;
+          background-color: #ff9736;
+          top: 19px;
+          left: 0px;
+          position: absolute;
+        }
       }
     }
 
@@ -216,6 +225,7 @@ body {
   margin: 10px auto;
   background-color: #efefef;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
   .cate-wrapper {
     display: flex;
     justify-content: space-between;
@@ -224,6 +234,7 @@ body {
     background-color: #fff;
     line-height: 40px;
     color: #393939;
+    border-radius: 5px 5px 0 0; 
     .cate-label {
       display: flex;
       line-height: 40px;
@@ -241,7 +252,7 @@ body {
         }
       }
       .name {
-        font-size: 14px;
+        font-size: 12px;
         
       }
     }
@@ -275,7 +286,7 @@ body {
         }
       }
       .name {
-        font-size: 14px;
+        font-size: 15px;
       }
     }
     .end {
@@ -292,6 +303,8 @@ body {
     font-size: 12px;
     color: #999;
     padding: 0 10px;
+    font-weight: 300;
+    border-radius: 0 0 5px 5px; 
     .rufund-btn {
       height: 100%;
     }
@@ -310,24 +323,11 @@ body {
     </div>
     <div class="coupon-detail">
       <div class="cell">
-        <div class="cell-title">购买记录</div>
-      </div>
-      <!-- <div class="label" v-for="cate in categoryBrands" :style="marginBot(cate.show)">
-        <div class="amount-label" v-tap="cate.show = !cate.show">
-          <div class="amount-type"><span style="color: #ff9736">品类：</span>{{cate.cate}}</div>
-          <div class="amount-time"><span style="color: #ff9736">品牌：</span>{{cate.brand}}</div>
-        </div>
-        <div class="amout-change" >
-          <span style="color: #ff9736;" v-tap="showConfirm(cate.payMethod, cate.preId)">{{cate.refunded?'已退款':'退款'}}</span>
-          <span v-if="!showType(cate.type)">{{cate.amount}}元</span>
-          <img src="./select.png" :class="{'origin': cate.show}" v-tap="cate.show = !cate.show">
-        </div>
-        <div class="more" :style="setHeight(cate.show)">
-          <span>购买时间：{{getTime(cate.createdAt)}}</span>
-          <span>支付方式：<span style="color: #ff9736">{{cate.payMethod == 3?'微信支付':'线下刷卡'}}</span></span>
+        <div class="cell-title">
+          <div class="cell-heihei"></div>
+          购买记录
         </div>
       </div>
-      <div class="label" style="border-bottom: none"></div> -->
       <div class="p-card" v-for="cate in categoryBrands">
         <div class="cate-wrapper">
           <div class="cate-label">
@@ -344,8 +344,8 @@ body {
           <div class="end">{{getTime(cate.createdAt)}}</div>
         </div>
         <div class="tip">
-          <span>支付方式：{{cate.payMethod == 3? '微信支付': '线下刷卡'}}</span>
-          <div class="rufund-btn" v-tap="showConfirm(cate.payMethod, cate.preId)">{{cate.refunded?'已退款':'申请退款'}}</div>
+          <span>支付方式：<span :style="setColor(cate.payMethod)">{{cate.payMethod == 3? '微信支付': '线下刷卡'}}</span></span>
+          <div class="rufund-btn" v-tap="showConfirm(cate.payMethod, cate.preId)">{{cate.refunded?'已申请退款':'申请退款'}}</div>
         </div>
       </div>
     </div>
@@ -510,6 +510,15 @@ export default {
     hideShow() {
       this.dialogShow = false
       this.confirmShow = true
+    },
+    setColor(payM) {
+      let ret = {}
+      if (payM == 3) {
+        ret.color = '#46b42d'
+      } else {
+        ret.color = '#ff9736'
+      }
+      return ret
     }
   }
 }
