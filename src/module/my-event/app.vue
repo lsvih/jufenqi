@@ -4,12 +4,16 @@ html {
   margin: 0;
 }
 body {
-  background-color: #fff;
+  background-color: #efefef;
   padding: 0;
   margin: 0;
 }
 </style>
 <style lang="less">
+@weuiDialogBackgroundColor: #FAFAFC;
+@weuiDialogLineColor: #D5D5D6;
+@weuiDialogLinkColor: #3CC51F;
+@weuiDialogLinkActiveBc: #EEEEEE;
 .content {
   width: 100%;
   height: 100%;
@@ -94,7 +98,7 @@ body {
         position: absolute;
         bottom: -44px;
         box-sizing: border-box;
-        padding-left: 16px;
+        padding: 0 16px;
         left: 0;
         width: 100%;
         display: flex;
@@ -104,18 +108,10 @@ body {
         justify-content: space-between;
         border-top: 1px solid #ebebeb;
         visibility: hidden;
-        .refund-btn {
-          height: 100%;
-          background-color: #ff9736;
-          width: 17%;
-          line-height: 44px;
-          text-align: center;
-          color: #fff;
-        }
-
       }
       .amount-label {
         line-height: 32px;
+        width: 80%;
       }
       .amount-time {
         color: #393939;
@@ -123,10 +119,14 @@ body {
       }
       .amout-change {
         line-height: 50px;
+        position: relative;
         .orange {
           color: #ff9736;
           display: inline-block;
           margin-right: 3px;
+        }
+        span {
+          z-index: 100;
         }
         img {
           transform: rotate(-90deg);
@@ -137,6 +137,163 @@ body {
           transform: none;
         }
       }
+    }
+  }
+}
+/*
+ * dialog css
+ */
+.setTapColor(@c:rgba(0,0,0,0)) {
+    -webkit-tap-highlight-color: @c;
+}
+.setTopLine(@c: #C7C7C7) {
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 1px;
+    border-top: 1px solid @c;
+    color: @c;
+    transform-origin: 0 0;
+    transform: scaleY(0.5);
+}
+.setLeftLine(@c: #C7C7C7) {
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    border-left: 1px solid @c;
+    color: @c;
+    transform-origin: 0 0;
+    transform: scaleX(0.5);
+}
+
+.weui_dialog_ft {
+    position: relative;
+    line-height: 42px;
+    margin-top: 20px;
+    font-size: 17px;
+    display: flex;
+    span {
+        display: block;
+        flex: 1;
+        color: #888;
+        text-decoration: none;
+        &:active {
+            background-color: @weuiDialogLinkActiveBc;
+        }
+    }
+    &:after {
+        content: " ";
+        .setTopLine(@weuiDialogLineColor);
+    }
+    .primary {
+        color: #f99736 !important;
+    }
+}
+#dialog-p {
+  font-size: 18px;
+  margin: 0;
+  padding: 13px 0;
+  position: relative;
+  background-color: #fff;
+  img {
+    width: 20px;
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 19px;
+    right: 12px;
+  }
+}
+/**
+ * 活动页卡片
+ */
+.p-card {
+  width: calc(~"100% - 32px");
+  margin: 10px auto;
+  background-color: #efefef;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  .cate-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    height: 40px;
+    background-color: #fff;
+    line-height: 40px;
+    color: #393939;
+    .cate-label {
+      display: flex;
+      line-height: 40px;
+      .img-wrapper {
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        margin-top: 5px;
+        margin-right: 10px;
+        img {
+          width: 100%;
+          height: 100%;
+          display: block;
+          border-radius: 5px;
+        }
+      }
+      .name {
+        font-size: 14px;
+        
+      }
+    }
+    .end {
+      font-size: 12px;
+      line-height: 40px;
+    }
+  }
+  .brand-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    height: 60px;
+    background-color: #f8f8f8;
+    line-height: 40px;
+    color: #393939;
+    .brand-label {
+      display: flex;
+      line-height: 60px;
+      .img-wrapper {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+        margin-top: 15px;
+        img {
+          width: 100%;
+          height: 100%;
+          display: block;
+          border-radius: 50%;
+        }
+      }
+      .name {
+        font-size: 14px;
+      }
+    }
+    .end {
+      font-size: 12px;
+      line-height: 60px;
+    }
+  }
+  .tip {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    line-height: 40px;
+    background-color: #fff;
+    font-size: 12px;
+    color: #999;
+    padding: 0 10px;
+    .rufund-btn {
+      height: 100%;
     }
   }
 }
@@ -153,29 +310,62 @@ body {
     </div>
     <div class="coupon-detail">
       <div class="cell">
-        <div class="cell-title">购买详情</div>
+        <div class="cell-title">购买记录</div>
       </div>
-      <div class="label" v-for="cate in categoryBrands" :style="marginBot(cate.show)">
+      <!-- <div class="label" v-for="cate in categoryBrands" :style="marginBot(cate.show)">
         <div class="amount-label" v-tap="cate.show = !cate.show">
           <div class="amount-type"><span style="color: #ff9736">品类：</span>{{cate.cate}}</div>
           <div class="amount-time"><span style="color: #ff9736">品牌：</span>{{cate.brand}}</div>
         </div>
-        <div class="amout-change" v-tap="cate.show = !cate.show">
-          <span>支付方式：<span style="color: #ff9736">{{cate.payMethod == 3?'微信支付':'线下刷卡'}}</span></span>
-          <!-- <span v-if="!showType(cate.type)">{{cate.amount}}元</span> -->
-          <img src="./select.png" :class="{'origin': cate.show}">
+        <div class="amout-change" >
+          <span style="color: #ff9736;" v-tap="showConfirm(cate.payMethod, cate.preId)">{{cate.refunded?'已退款':'退款'}}</span>
+          <span v-if="!showType(cate.type)">{{cate.amount}}元</span>
+          <img src="./select.png" :class="{'origin': cate.show}" v-tap="cate.show = !cate.show">
         </div>
         <div class="more" :style="setHeight(cate.show)">
-          <span>{{getTime(cate.createdAt)}}</span>
-          <div class="refund-btn" v-tap="refund(cate.payMethod, cate.preId)">退款</div>
+          <span>购买时间：{{getTime(cate.createdAt)}}</span>
+          <span>支付方式：<span style="color: #ff9736">{{cate.payMethod == 3?'微信支付':'线下刷卡'}}</span></span>
         </div>
       </div>
-      <div class="label" style="border-bottom: none"></div>
+      <div class="label" style="border-bottom: none"></div> -->
+      <div class="p-card" v-for="cate in categoryBrands">
+        <div class="cate-wrapper">
+          <div class="cate-label">
+            <div class="img-wrapper"><img :src="cate.cateImg"></div>
+            <div class="name">{{cate.cate}}</div>
+          </div>
+          <div class="end"></div>
+        </div>
+        <div class="brand-wrapper">
+          <div class="brand-label">
+            <div class="img-wrapper"><img :src="cate.brandImg"></div>
+            <div class="name">{{cate.brand}}</div>
+          </div>
+          <div class="end">{{getTime(cate.createdAt)}}</div>
+        </div>
+        <div class="tip">
+          <span>支付方式：{{cate.payMethod == 3? '微信支付': '线下刷卡'}}</span>
+          <div class="rufund-btn" v-tap="showConfirm(cate.payMethod, cate.preId)">{{cate.refunded?'已退款':'申请退款'}}</div>
+        </div>
+      </div>
     </div>
   </div>
-  <!-- <confirm :show.sync="confirmShow" title=""  confirm-text="是" cancel-text="否" @on-confirm="refund(cate.payMethod, cate.preId)" @on-cancel="confirmShow = false">
-  <p style="text-align:center;" >确定退款？退款将按照原路返回</p> -->
-</confirm>
+  <confirm :show.sync="confirmShow" title=""  confirm-text="是" cancel-text="否" @on-confirm="refund(refundId)" @on-cancel="confirmShow = false">
+  <p style="text-align:center;" >确定退款？退款将按照原路返回</p>
+  </confirm>
+
+  <dialog :show.sync="dialogShow" >
+  <p style="font-size: 18px;">线下刷卡退款申请</p>
+  <group>
+    <x-input title="姓名" :value.sync="refundBody.accountName" type="text" placeholder="请输入您的姓名"></x-input>
+    <x-input title="银行卡号" :value.sync="refundBody.bankcardNo" type="text" placeholder="请输入银行卡号"></x-input>
+    <x-input title="开户行" :value.sync="refundBody.depositBank" type="text" placeholder="请输入您的开户行"></x-input>
+  <div class="weui_dialog_ft">
+    <span @click="dialogShow = false" style="border-right: 1px solid #D5D5D6;">取消</span>
+    <span :class="{'primary': isFilled()}" @click="isFilled()?hideShow(): return">确认申请</span>
+  </div>
+  </group>
+</dialog>
 </template>
 
 <script>
@@ -197,7 +387,12 @@ export default {
       withdrawAmount: 0,
       totalAmount: 0,
       user: JSON.parse(localStorage.user).userId,
-      confirmShow: false
+      confirmShow: false,
+      refundMethod: null,
+      refundId: null,
+      refundBody: {},
+      dialogShow: false,
+      imgUrl: 'http://ohej1hvbm.bkt.clouddn.com/'
     }
   },
   components: {
@@ -217,19 +412,25 @@ export default {
             brandId: brand.brandId,
             payMethod: e.payMethod,
             used: brand.used,
+            refunded: brand.refunded,
             createdAt: brand.createdAt,
             show: false,
             cate: null,
-            brand: null
+            cateImg: null,
+            brand: null,
+            brandImg: null,
+            confirmShow: false
           })
         })
         this.categoryBrands.forEach((e) => {
           axios.get(`${Lib.C.merApi}brands/${e.brandId}`).then((res) => {
             e.brand = res.data.data.name
+            e.brandImg = this.imgUrl + res.data.data.logoImg
           }).catch((err) => {throw err})
         
           axios.get(`${Lib.C.merApi}categories/${e.cateId}`).then((res) => {
             e.cate = res.data.data.name
+            e.cateImg = this.imgUrl + res.data.data.showImg
           }).catch((err) => {throw err})
         })
       })
@@ -280,10 +481,36 @@ export default {
       }
       return ret
     },
-    refund(payM, preId) {
-      console.log(`支付方式：${payM == 3?'3+微信支付':'1+线下刷卡'} & 退款ID：${preId}`)
+    refund(preId) {
+      this.showLoading = true
+      axios.post(`${Lib.C.mOrderApi}predeposit-brands/${preId}/refund`, this.refundBody).then((res) => {
+        alert('您的退款已经发起成功！')
+        this.showLoading = false
+        location.reload()
+      }).catch((err) => {
+        alert('网络连接失败，请稍后再试')
+        this.showLoading = false
+      })
+    },
+    showConfirm(payM, preId) {
+      if (payM == 3) {
+        this.confirmShow = true
+      } else {
+        this.dialogShow = true
+      }       
+      this.refundId = preId
+    },
+    isBankcard() {
+      let reg = /^(\d{16}|\d{19})$/
+      return reg.test(this.refundBody.bankcardNo)
+    },
+    isFilled() {
+      return this.refundBody.accountName && this.isBankcard() && this.refundBody.depositBank
+    },
+    hideShow() {
+      this.dialogShow = false
+      this.confirmShow = true
     }
-    
   }
 }
 
