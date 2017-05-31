@@ -316,7 +316,7 @@ body {
   <div class="content">
     <div class="amount-wrapper">
       <p class="amount-title">一日特价团</p>
-      <p class="amount">{{totalAmount}}<span>元</span></p>
+      <p class="amount">{{totalAmount.toFixed(2)}}<span>元</span></p>
       <div class="hint">注意：本次活动不包括装修公司及家电品牌</div>
       
       <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>

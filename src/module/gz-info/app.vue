@@ -196,9 +196,9 @@ export default {
       },{
         cateurl: '/static/weiyu.jpg',
         cateId: 31,
-        brand: '法恩莎',
+        brand: '箭牌',
         show: false,
-        brandId: 33
+        brandId: 228
       },{
         cateurl: '/static/diaoding.jpg',
         cateId: 16,
@@ -214,8 +214,14 @@ export default {
       },{
         cateurl: '/static/mumen.jpg',
         cateId: 25,
-        brand: '霍尔茨',
-        brandId: 61,
+        brand: '圣象木门',
+        brandId: 212,
+        show: false,
+      },{
+        cateurl: '/static/chugui.jpg',
+        cateId: 6,
+        brand: '澳比德',
+        brandId: 238,
         show: false,
       }],
       tmpBrands: [],
