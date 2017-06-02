@@ -413,22 +413,24 @@ export default {
       res.data.data.map((e) => {
         this.totalAmount += e.amount
         e.brands.map((brand) => {
-          this.categoryBrands.push({
-            preId: brand.id,
-            cateId: brand.categoryId,
-            brandId: brand.brandId,
-            payMethod: e.payMethod,
-            used: brand.used,
-            refunded: brand.refunded,
-            createdAt: brand.createdAt,
-            status: e.status,
-            show: false,
-            cate: null,
-            cateImg: null,
-            brand: null,
-            brandImg: null,
-            confirmShow: false
-          })
+          if (e.status > 1) {
+            this.categoryBrands.push({
+              preId: brand.id,
+              cateId: brand.categoryId,
+              brandId: brand.brandId,
+              payMethod: e.payMethod,
+              used: brand.used,
+              refunded: brand.refunded,
+              createdAt: brand.createdAt,
+              status: e.status,
+              show: false,
+              cate: null,
+              cateImg: null,
+              brand: null,
+              brandImg: null,
+              confirmShow: false
+            })
+          }
         })
         this.categoryBrands.forEach((e) => {
           axios.get(`${Lib.C.merApi}brands/${e.brandId}`).then((res) => {

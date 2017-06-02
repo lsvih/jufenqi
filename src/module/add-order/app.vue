@@ -623,11 +623,13 @@ export default {
       axios.get(`${Lib.C.mOrderApi}predeposits?filter=userId:${this.userId}`).then((res) => {
         res.data.data.map((e) => {
           e.brands.map((brand) => {
-            this.preCates.push({
-              cateId: brand.categoryId,
-              used: brand.used,
-              preAmount: brand.amount
-            })
+            if (e.status == 3) {
+              this.preCates.push({
+                cateId: brand.categoryId,
+                used: brand.used,
+                preAmount: brand.amount
+              })
+            }
             this.preCates.map((e) => {
               this.shopList.map((shop) => {
                 shop.brands.map((brand) => {
