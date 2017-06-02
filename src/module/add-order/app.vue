@@ -159,7 +159,7 @@ input,button,select,textarea {
 </style>
 
 <template>
-  <div class="add-order">
+  <div class="add-order" v-if="render">
     <div class="order-con" v-for="shop in shopList">
       <div class="shop-name">
         <p class="name">{{shop.name}}</p>
@@ -196,6 +196,12 @@ input,button,select,textarea {
             <p >将为您贴息<span>{{brand.specialAmount?(brand.specialAmount*brand.rate.specialRate):0 | currency '￥'}}</span>元，返点券<span>{{brand.specialAmount?Math.round(brand.specialAmount*brand.rate.couponRate*100):0}}</span>点</p>
             <p style="color: #fc9736; margin-top: 11px;">注：所有贴息、返券按照实际支付金额计算</p>
           </div>
+          <div class="price" v-if="isUsed(brand.used)" >
+            <span class="label">活动减免</span>
+            <!-- <input type="number" v-model="brand.preAmount" placeholder="您的活动减免" readonly> -->
+            <span style="color: #ff9736; font-size: 13px">{{brand.preAmount}}元</span>
+            <!-- <p>将为您贴息<span>{{brand.normalAmount?(brand.normalAmount*brand.rate.normalRate): 0 | currency '￥'}}</span>元</p> -->
+          </div>
         </div>
         <div class="cell">
           <span class="label" v-tap="addBrand(shop.id)">
@@ -206,7 +212,7 @@ input,button,select,textarea {
             <div class="brand-name">
               小计：
             </div>
-            <div class="brand-amount">{{countBrandAmount(shop, $index)|currency '￥' 2}}</div>
+            <div class="brand-amount">{{countBrandAmount(shop, $index, brand.used)|currency '￥' 2}}</div>
           </div>
         </div>
       </div>
@@ -227,6 +233,7 @@ input,button,select,textarea {
       <div class="cell little-cell">
         <div class="label">注：点券返还金额无法超过购买总价</div>
       </div>
+      
       <div class="cell">
         <div class="label">正价金额小计</div>
         <div class="brand-amount">
@@ -289,7 +296,9 @@ export default {
     // console.log(this.source)
     this.addRate()
     this.getSpBrands([2, 36])
-
+    this.getPre()
+    // this.isUsed(99)
+    console.log(this.shopList)
   },
   data() {
     return {
@@ -312,7 +321,7 @@ export default {
       // 点券
       myCoupon: [],
       specialBrandId: [11, 12, 186, 128, 222, 236, '11', '12', '186', '128', '222', '236'],
-      spList: [],
+      spList: [11, '11', 12, '12', 128, '128'],
       couponAmount: null,
       isCouponUsed: false,
       realName: null,
@@ -322,7 +331,10 @@ export default {
       interestRate: 0.08,
       //来源
       source: null,
-      intRate: {}
+      intRate: {},
+      preCates: [],
+      eventDiscount: 0,
+      render: false
     }
   },
   methods: {
@@ -342,7 +354,6 @@ export default {
                     if (brand.specialAmount == '' && brand.normalAmount == '') return false
                     }
                   }
-        // }
         return true
       },
       submit() {
@@ -518,24 +529,14 @@ export default {
         this.tempAddClerk = []
       }
     },
-    // onSelectedCoupon() {
-    //   if (this.tempAddCoupon.length) {
-    //     this.myCoupon = {
-    //       couponAmount:  Number(getValue(this.tempAddCoupon[0],this.tempCouponList, 'name').split(' ')[0]),
-    //       id: getValue(this.tempAddClerk[0], this.tempCouponList, 'value')
-    //     }
-    //     this.myCoupon = {
-    //       couponAmount:  Number(getValue(this.tempAddCoupon[0],this.testList, 'name').split(' ')[0]),
-    //       id: getValue(this.tempAddClerk[0], this.testList, 'value')
-    //     }
-    //   }
-    //   this.tempAddCoupon = [] 
-    //   this.tempCouponList = []
-    // },
-    countBrandAmount(shop, brandId) {
+    countBrandAmount(shop, brandId, use) {
+      let pre = Number(shop.brands[brandId].preAmount)?Number(shop.brands[brandId].preAmount):0
+      if (use == true) {
+        pre = 0
+      }
       let result = 0
-      result = Number(shop.brands[brandId].normalAmount) + Number(shop.brands[brandId].specialAmount)
-      return result
+      result = Number(shop.brands[brandId].normalAmount) + Number(shop.brands[brandId].specialAmount) - pre
+      return result<0?0:result
     },
     countAllAmount(type) {
       switch (type) {
@@ -546,7 +547,7 @@ export default {
             special_result += Number(brand.specialAmount) 
           })
         })
-        return special_result
+        return special_result<0?0:special_result
         break;
         case 'normalAmount':
         let normal_result = 0
@@ -555,16 +556,18 @@ export default {
             normal_result += Number(brand.normalAmount)
           })
         })
-        return normal_result 
+        return normal_result<0?0:normal_result
         break;
         default:
         let all_result = 0
+        let that = this
         this.shopList.map((shop) => {
-          shop.brands.map((brand) => {
-            all_result += (Number(brand.specialAmount) + Number(brand.normalAmount))
+          shop.brands.map((brand, index) => {
+            // all_result += (Number(brand.specialAmount) + Number(brand.normalAmount))
+            all_result += that.countBrandAmount(shop, index, brand.used)
           })
         })
-        return (all_result)
+        return (all_result<0?0:all_result)
         break;
       }
     },
@@ -585,6 +588,8 @@ export default {
     },
     isSpecial(id) {
       if (this.spList.indexOf(id) == -1) {
+        return true
+      } else {
         return false
       }
     },
@@ -613,6 +618,40 @@ export default {
         })
       })
     },
+    getPre() {
+      let that = this
+      axios.get(`${Lib.C.mOrderApi}predeposits?filter=userId:${this.userId}`).then((res) => {
+        res.data.data.map((e) => {
+          e.brands.map((brand) => {
+            this.preCates.push({
+              cateId: brand.categoryId,
+              used: brand.used,
+              preAmount: brand.amount
+            })
+            this.preCates.map((e) => {
+              this.shopList.map((shop) => {
+                shop.brands.map((brand) => {
+                  if (brand.cateId == e.cateId) {
+                    brand.used = e.used,
+                    brand.preAmount = e.preAmount
+                  }
+                })
+              })
+              this.render = true
+            })
+          })
+        })
+      }).catch((err) => {
+        throw err
+      })
+    },
+    isUsed(use) {
+      if (typeof(use) == "undefined" || use == true) {
+        return false
+      } else {
+        return true
+      }
+    }
   }
 
 }

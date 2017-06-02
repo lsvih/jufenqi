@@ -245,6 +245,7 @@ export default {
     return {
       img: Lib.C.imgUrl,
       id: Lib.M.GetRequest().id,
+      cateId: Number(Lib.M.GetRequest().cateId),
       brand: {},
       cartImg,
       cartAImg,
@@ -279,17 +280,20 @@ export default {
         })
       }
       let info = JSON.parse(localStorage.info)
+      console.log(info)
       if (!isIdIn(storeId, info.storeInfo)) {
         info.storeInfo.push(storeData)
       }
       if (!isIdIn(brandId, info.brandInfo)) {
         let t = JSON.parse(JSON.stringify(this.brand))
         delete t.stores
-        info.brandInfo.push(t)
+        console.log(t)
+        // info.brandInfo.push(t)
+        info.brandInfo.push(this.brand)
       }
       localStorage.info = JSON.stringify(info)
       this.showToast = true
-
+      // console.log(this.brand)
       function isIdIn(id, array) {
         for (let i = 0; i < array.length; i++) {
           if (array[i].id == id) return true
@@ -357,7 +361,8 @@ export default {
       storeData.brands = []
       storeData.brands.push({
         id: brandId,
-        name: this.brand.name
+        name: this.brand.name,
+        cateId: this.cateId
       })
       let result = []
       result.push(storeData)
@@ -376,6 +381,8 @@ export default {
       this.brand.stores = this.brand.storeBrands.map((e) => {
         return e.store
       })
+      this.brand.cateId = this.cateId
+      // console.log(this.brand)
     }).catch((err) => {
       throw err
     })

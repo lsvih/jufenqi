@@ -107,7 +107,7 @@ export default {
           this.orders.push({
             storeId: order.storeId,
             name: order.storeName,
-            amount: order.totalAmount
+            amount: order.totalAmount - order.predepositAmount
           })
         } else {
           this.orders[findStoreIdIndex(order.storeId, this.orders)].amount += Number(order.totalAmount)

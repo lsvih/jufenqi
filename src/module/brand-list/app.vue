@@ -136,7 +136,7 @@ export default {
       }
     },
     goBandDetail(id) {
-      location.href = `brand-detail.html?id=${id}`
+      location.href = `brand-detail.html?id=${id}&cateId=${this.cateId}`
     },
     getScreenWidth() {
       return document.body.clientWidth

@@ -362,7 +362,7 @@ export default {
       this.list.map((e) => {
         if (e.show) {
           this.result.brands.push({
-            amount: 0.01,
+            amount: 500,
             brandId: e.brandId,
             categoryId: e.cateId
           })

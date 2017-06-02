@@ -450,7 +450,6 @@ export default {
       this.selectShop.map((e) => {
         result.push(this.shopList[findIdIndex(e, this.shopList)])
       })
-      console.log(this.selectShop)
       localStorage.temp = JSON.stringify(result)
       this.goto('./add-order.html')
     },
@@ -465,14 +464,24 @@ export default {
 
 function shopInfoPipe(sbList) {
   let result = []
-  sbList.map((e) => {
-    if (!isIdIn(e[1], result)) {
-      result.push(infoPipe('store', e[1]))
-      result[result.length - 1].brands = [infoPipe('brand', e[0])]
+  for(let i=0; i<sbList.length; i++){
+    // console.log(sbList[i])
+    if (!isIdIn(sbList[i][1], result)) {
+      result.push(infoPipe('store', sbList[i][1]))
+      if(typeof(result[0]) == "undefined"){
+        console.log("haha")
+        result = []
+      }
+      else{
+        result[result.length - 1].brands = [infoPipe('brand', sbList[i][0])]
+      }
     } else {
-      result[findIdIndex(e[1], result)].brands.push(infoPipe('brand', e[0]))
+      result[findIdIndex(sbList[i][1], result)].brands.push(infoPipe('brand', sbList[i][0]))
     }
-  })
+  }
+  // sbList.map((e) => {
+    
+  // })
   return result
 
   function isIdIn(id, array) {
@@ -484,10 +493,26 @@ function shopInfoPipe(sbList) {
 
   function infoPipe(type, id) {
     let info = JSON.parse(localStorage.info)
+    // console.log(info)
     let a = info[type + "Info"]
     for (let i of a) {
-      if (i.id == id) return i
+      if (i.id == id) 
+        return i
     }
+    // let b = {}
+    // a.map(function(e){
+    //   if(e.id == id){
+    //     b = e
+    //   }
+    // })
+    // console.log(b)
+    // if(JSON.stringify(b) == "{}"){
+    //   console.log("haha")
+    // }
+    // else{
+    //   return b
+    // }
+    
   }
 
 
