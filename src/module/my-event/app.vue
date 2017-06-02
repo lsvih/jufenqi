@@ -411,7 +411,9 @@ export default {
   ready() {
     axios.get(`${Lib.C.mOrderApi}predeposits?filter=userId:${this.user}`).then((res) => {
       res.data.data.map((e) => {
-        this.totalAmount += e.amount
+        if (e.status > 1) {
+          this.totalAmount += e.amount
+        }
         e.brands.map((brand) => {
           if (e.status > 1) {
             this.categoryBrands.push({
