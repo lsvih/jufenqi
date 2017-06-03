@@ -159,7 +159,7 @@ input,button,select,textarea {
 </style>
 
 <template>
-  <div class="add-order" v-if="render">
+  <div class="add-order">
     <div class="order-con" v-for="shop in shopList">
       <div class="shop-name">
         <p class="name">{{shop.name}}</p>
@@ -199,7 +199,7 @@ input,button,select,textarea {
           <div class="price" v-if="isUsed(brand.used)" >
             <span class="label">活动减免</span>
             <!-- <input type="number" v-model="brand.preAmount" placeholder="您的活动减免" readonly> -->
-            <span style="color: #ff9736; font-size: 13px">{{brand.preAmount}}元</span>
+            <span style="color: #ff9736; font-size: 13px">{{brand.preAmount || 0}}元</span>
             <!-- <p>将为您贴息<span>{{brand.normalAmount?(brand.normalAmount*brand.rate.normalRate): 0 | currency '￥'}}</span>元</p> -->
           </div>
         </div>
@@ -334,7 +334,6 @@ export default {
       intRate: {},
       preCates: [],
       eventDiscount: 0,
-      render: false
     }
   },
   methods: {
@@ -623,11 +622,12 @@ export default {
       axios.get(`${Lib.C.mOrderApi}predeposits?filter=userId:${this.userId}`).then((res) => {
         res.data.data.map((e) => {
           e.brands.map((brand) => {
-            if (e.status == 3) {
+            if (e.status == 3 && brand.refunded == false) {
               this.preCates.push({
                 cateId: brand.categoryId,
                 used: brand.used,
-                preAmount: brand.amount
+                preAmount: brand.amount,
+
               })
             }
             this.preCates.map((e) => {
@@ -639,7 +639,6 @@ export default {
                   }
                 })
               })
-              this.render = true
             })
           })
         })
@@ -680,6 +679,8 @@ function shopInfoPipe(shops) {
       if (!brand.clerk) brand.clerk = null
       if (brand.specialAmount === undefined) brand.specialAmount = null
       if (brand.normalAmount === undefined) brand.normalAmount = null
+      if (brand.used === undefined) brand.used = null
+      if (brand.preAmount === undefined) brand.preAmount = null
     })
   })
   return shops
