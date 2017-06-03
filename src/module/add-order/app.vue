@@ -647,7 +647,7 @@ export default {
       })
     },
     isUsed(use) {
-      if (typeof(use) == "undefined" || use == true) {
+      if (typeof(use) == "undefined" || use == true || use == null) {
         return false
       } else {
         return true
