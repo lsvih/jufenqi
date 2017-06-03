@@ -459,15 +459,15 @@ body {
   <!-- Video module -->
   <div class="module-item">
     <!-- 视频 -->
-    <div class="videoWrapper">
+    <!-- <div class="videoWrapper">
       <video class="video-true" id="adVideo" controls="controls" preload="none" width="100%" height="200" src="http://ohej1hvbm.bkt.clouddn.com/movie.mp4" allowfullscreen></video>
       <div class="video-bg"><img src="/static/images/cover.jpg"></div>
       <div class="video-fake-btn" v-tap="playVideo()"><img src="/static/images/player.png"></div>
       <div class="mask"></div>
-    </div>
-    <!-- <div class="event-img">
-      <img src="/static/63event.png" v-tap="goto('gz-info.html')">
     </div> -->
+    <div class="event-img">
+      <img src="/static/63event.png" v-tap="goto('gz-info.html')">
+    </div>
   </div>
   <!-- module end -->
   <!-- Operative module -->

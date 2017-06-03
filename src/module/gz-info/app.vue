@@ -188,17 +188,29 @@ export default {
         brandId: 99,
         show: false,
       },{
+        cateurl: '/static/weiyu.jpg',
+        cateId: 31,
+        brand: '箭牌',
+        show: false,
+        brandId: 228
+      },{
         cateurl: '/static/diban.jpg',
         cateId: 11,
         brand: '德尔',
         brandId: 16,
         show: false,
       },{
-        cateurl: '/static/weiyu.jpg',
-        cateId: 31,
-        brand: '法恩莎',
+        cateurl: '/static/chugui.jpg',
+        cateId: 6,
+        brand: '澳比德',
+        brandId: 238,
         show: false,
-        brandId: 33
+      },{
+        cateurl: '/static/mumen.jpg',
+        cateId: 25,
+        brand: '圣象木门',
+        brandId: 212,
+        show: false,
       },{
         cateurl: '/static/diaoding.jpg',
         cateId: 16,
@@ -211,13 +223,7 @@ export default {
         brand: '顶固',
         brandId: 27,
         show: false,
-      },{
-        cateurl: '/static/mumen.jpg',
-        cateId: 25,
-        brand: '霍尔茨',
-        brandId: 61,
-        show: false,
-      }],
+      },],
       tmpBrands: [],
       showLoading: false,
       showSelect: false,
@@ -356,7 +362,7 @@ export default {
       this.list.map((e) => {
         if (e.show) {
           this.result.brands.push({
-            amount: 0.01,
+            amount: 500,
             brandId: e.brandId,
             categoryId: e.cateId
           })

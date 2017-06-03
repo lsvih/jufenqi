@@ -259,7 +259,12 @@ body {
     .end {
       font-size: 12px;
       line-height: 40px;
+      color: #999;
+      font-weight: 300;
     }
+    .end-active {
+        color: #ff9736 !important;
+      }
   }
   .brand-wrapper {
     display: flex;
@@ -293,6 +298,7 @@ body {
       font-size: 12px;
       line-height: 60px;
     }
+    
   }
   .tip {
     display: flex;
@@ -316,7 +322,7 @@ body {
   <div class="content">
     <div class="amount-wrapper">
       <p class="amount-title">一日特价团</p>
-      <p class="amount">{{totalAmount}}<span>元</span></p>
+      <p class="amount">{{totalAmount.toFixed(2)}}<span>元</span></p>
       <div class="hint">注意：本次活动不包括装修公司及家电品牌</div>
       
       <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
@@ -334,7 +340,7 @@ body {
             <div class="img-wrapper"><img :src="cate.cateImg"></div>
             <div class="name">{{cate.cate}}</div>
           </div>
-          <div class="end"></div>
+          <div class="end"><span :class="{'end-active': !cate.used}">{{cate.used?'已使用':'未使用'}}</span></div>
         </div>
         <div class="brand-wrapper">
           <div class="brand-label">
@@ -345,13 +351,14 @@ body {
         </div>
         <div class="tip">
           <span>支付方式：<span :style="setColor(cate.payMethod)">{{cate.payMethod == 3? '微信支付': '线下刷卡'}}</span></span>
-          <div class="rufund-btn" v-tap="showConfirm(cate.payMethod, cate.preId)">{{cate.refunded?'已申请退款':'申请退款'}}</div>
+          <div class="rufund-btn" v-tap="!cate.refunded?showConfirm(cate.payMethod, cate.preId, cate.used):hasRefunded()" v-if="cate.status == 3">{{cate.refunded?'已申请退款':'申请退款'}}</div>
+          <div class="refund-btn" v-if="cate.status == 2">待确认</div>
         </div>
       </div>
     </div>
   </div>
   <confirm :show.sync="confirmShow" title=""  confirm-text="是" cancel-text="否" @on-confirm="refund(refundId)" @on-cancel="confirmShow = false">
-  <p style="text-align:center;" >确定退款？退款将按照原路返回</p>
+  <p style="text-align:center;">确定退款？退款将按照原路返回</p>
   </confirm>
 
   <dialog :show.sync="dialogShow" >
@@ -404,23 +411,28 @@ export default {
   ready() {
     axios.get(`${Lib.C.mOrderApi}predeposits?filter=userId:${this.user}`).then((res) => {
       res.data.data.map((e) => {
-        this.totalAmount += e.amount
+        if (e.status > 1) {
+          this.totalAmount += e.amount
+        }
         e.brands.map((brand) => {
-          this.categoryBrands.push({
-            preId: brand.id,
-            cateId: brand.categoryId,
-            brandId: brand.brandId,
-            payMethod: e.payMethod,
-            used: brand.used,
-            refunded: brand.refunded,
-            createdAt: brand.createdAt,
-            show: false,
-            cate: null,
-            cateImg: null,
-            brand: null,
-            brandImg: null,
-            confirmShow: false
-          })
+          if (e.status > 1) {
+            this.categoryBrands.push({
+              preId: brand.id,
+              cateId: brand.categoryId,
+              brandId: brand.brandId,
+              payMethod: e.payMethod,
+              used: brand.used,
+              refunded: brand.refunded,
+              createdAt: brand.createdAt,
+              status: e.status,
+              show: false,
+              cate: null,
+              cateImg: null,
+              brand: null,
+              brandImg: null,
+              confirmShow: false
+            })
+          }
         })
         this.categoryBrands.forEach((e) => {
           axios.get(`${Lib.C.merApi}brands/${e.brandId}`).then((res) => {
@@ -492,10 +504,14 @@ export default {
         this.showLoading = false
       })
     },
-    showConfirm(payM, preId) {
-      if (payM == 3) {
+    showConfirm(payM, preId, isUse) {
+      if (isUse == true) {
+        alert('您已使用过该预存卡片！')
+        this.confirmShow = false
+        this.dialogShow = false
+      } else if (payM == 3 && isUse == false) {
         this.confirmShow = true
-      } else {
+      } else if(payM == 1 && isUse == false) {
         this.dialogShow = true
       }       
       this.refundId = preId
@@ -510,6 +526,9 @@ export default {
     hideShow() {
       this.dialogShow = false
       this.confirmShow = true
+    },
+    hasRefunded() {
+      alert('您已申请过退款！')
     },
     setColor(payM) {
       let ret = {}
