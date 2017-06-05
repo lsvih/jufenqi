@@ -610,7 +610,15 @@ export default {
       this.shopList.map((shop) => {
         shop.brands.map((brand) => {
           axios.get(`http://wx.jufenqi.com:8080/materialorder/api/materialOrders/rates?userId=${this.userId}&brandId=${brand.id}`).then((res) => {
-            brand.rate = res.data.data
+            if (brand.id == 144) {
+              brand.rate = {
+                couponRate: 0.032,
+                normalRate: 0.064,
+                specialRate: 0.032
+              }
+            } else {
+              brand.rate = res.data.data
+            }
           }).catch((err) => {
             console.log(err)
           })
