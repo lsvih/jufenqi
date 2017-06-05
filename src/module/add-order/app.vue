@@ -612,9 +612,9 @@ export default {
           axios.get(`http://wx.jufenqi.com:8080/materialorder/api/materialOrders/rates?userId=${this.userId}&brandId=${brand.id}`).then((res) => {
             if (brand.id == 144) {
               brand.rate = {
-                couponRate: 0.032,
-                normalRate: 0.064,
-                specialRate: 0.032
+                couponRate: 0,
+                normalRate: 0.04,
+                specialRate: 0.04
               }
             } else {
               brand.rate = res.data.data
