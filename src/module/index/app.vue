@@ -584,8 +584,8 @@ export default {
         img: '/static/images/icon/有图有价.png'
       }, {
         id: 2,
-        name: '装修必读',
-        url: 'readme.html',
+        name: '新手指引',
+        url: 'bannerfirst.html',
         img: '/static/images/icon/装修必读.png'
       }, {
         id: 3,
