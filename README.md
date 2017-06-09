@@ -12,6 +12,16 @@ Depend on [jufenqi-common](http://github.com/lsvih/jufenqi-common)
 ## Usage
 
 ```sh
+$ git clone https://github.com/lsvih/jufenqi.git
+
+$ git clone https://github.com/lsvih/jufenqi-common.git
+
+$ cd jufenqi-common
+
+$ npm install
+
+$ cd ../jufenqi
+
 $ npm install
 
 $ npm run dev
