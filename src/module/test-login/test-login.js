@@ -8,7 +8,5 @@ new Vue({
   components: { App }
 })
 
-
-
-//window.localStorage.user = "{'user':'15','id':15}"
+// window.localStorage.user = "{'user':'15','id':15}"
 // For logout

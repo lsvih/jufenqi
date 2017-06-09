@@ -89,4 +89,3 @@ for (var pathname in pages) {
 
   module.exports.plugins.push(new HtmlWebpackPlugin(conf))
 }
-
