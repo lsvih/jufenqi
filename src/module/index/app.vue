@@ -687,7 +687,7 @@ export default {
             id: e.id,
             url: `./banner-con.html?id=${e.id}`,
             img: Lib.C.imgUrl + e.coverImg
-          }) 
+          })
         } else {
             this.newBannerList.push({
               id: e.id,
@@ -721,7 +721,7 @@ export default {
     },
     playVideo() {
       document.getElementById('adVideo').play()
-    }
+    },
   }
 }
 </script>

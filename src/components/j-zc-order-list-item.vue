@@ -101,13 +101,7 @@ export default {
     }
   },
   methods: {
-    getTime(timeStamp) {
-      var d = new Date(timeStamp * 1000)
-      var Y = d.getFullYear() + '-'
-      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-'
-      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate())
-      return Y + M + D
-    },
+    getTime:Lib.M.getTime,
     goto(url) {
       location.href = url
     },

@@ -15,7 +15,6 @@ body {
 @weuiDialogLineColor: #D5D5D6;
 @weuiDialogLinkColor: #3CC51F;
 @weuiDialogLinkActiveBc: #EEEEEE;
-
 .content {
   width: 100%;
   height: 100%;
@@ -191,7 +190,7 @@ body {
       <p class="amount">{{balance}}<span>元</span></p>
       <div class="hint">注意：单笔提现额度为20000元</div>
       <div class="get-money" v-tap="withdrawShow = true">提现</div>
-      
+
       <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
     </div>
     <div class="coupon-detail">
@@ -201,13 +200,13 @@ body {
       <div class="label" v-for="balance in balanceChanges">
         <div class="amount-label">
           <div class="amount-type">{{returnType(balance.type, typeList)}}</div>
-          <div class="amount-time">{{getTime(balance.createdAt)}}</div>
+          <div class="amount-time">{{Lib.C.getTime(balance.createdAt)}}</div>
         </div>
         <div class="amout-change">
           <span v-if="showType(balance.type)" class="orange">+{{balance.amount}}元</span>
           <span v-if="!showType(balance.type)">{{balance.amount}}元</span>
           <img src="./select.png">
-         
+
         </div>
       </div>
     </div>
@@ -222,19 +221,7 @@ body {
     <img src="./select.png">
   </p>
   <p id="dialog-p" v-tap="withdrawShow = false">取消</p>
-  
-  <!-- <group>
-    <x-input title="提现金额" :value.sync="refundApply.normalAmount" type="number" placeholder="请输入微信提现金额"></x-input>
-    
-  <div class="weui_dialog_ft">
-    <span @click="withdrawShow = false" style="border-right: 1px solid #D5D5D6;">取消</span>
-    <span :class="{'primary': isFilled()}" @click="isFilled()?withdrawPost(tempOrderNo):return">确认申请</span>
-  </div>
-  </group> -->
 </Dialog>
-<!-- <confirm :show.sync="withdrawShow" title=""  confirm-text="微信提现" cancel-text="银行卡提现" @on-confirm="x @on-cancel="goto('./wallet-to-card.html')">
-  <p style="text-align:center;" >请选择您的提现方式</p>
-</confirm> -->
 </template>
 
 <script>
@@ -301,21 +288,12 @@ export default {
         if (array[i].id == type ) return array[i].value
       }
     },
-    /**
-     * 将时间戳格式化
-     */
-    getTime(timeStamp) {
-      var d = new Date(timeStamp * 1000)
-      var Y = d.getFullYear() + '-'
-      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-'
-      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate())
-      return Y + M + D
-    },
+    getTime:Lib.M.getTime,
     /**
      * v-if判断点券的amount
      */
     showType(type) {
-      let result 
+      let result
       switch (type) {
         case 1:
         case 2:
@@ -325,7 +303,7 @@ export default {
           break
         case 3:
         case 4:
-        case 6: 
+        case 6:
           result = false
           break
         default:
@@ -354,9 +332,7 @@ export default {
     isFilled() {
       return this.withdrawAmount !== null
     }
-    
   }
 }
 
 </script>
-

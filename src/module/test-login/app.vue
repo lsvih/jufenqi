@@ -113,7 +113,7 @@ export default {
 			})
 		},
 		tryQr(){
-			
+
 			axios.post(`https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=${this.token}`,{
 				action_name: "QR_LIMIT_STR_SCENE",
 				action_info: {
@@ -127,18 +127,12 @@ export default {
 				console.log(err)
 			})
 		},
-		getTime(timeStamp) {
-			var d = new Date(timeStamp * 1000)
-			var Y = d.getFullYear() + '-'
-			var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-'
-			var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate())
-			return Y + M + D
-		},
+		getTime:Lib.M.getTime,
 		result(e) {
 			return e/100
 		}
 		//
-		//   "ticket": "gQEh8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyRjVBLXdHZ19jUDAxMDAwMHcwM2oAAgQeAQtZAwQAAAAA", 
+		//   "ticket": "gQEh8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyRjVBLXdHZ19jUDAxMDAwMHcwM2oAAgQeAQtZAwQAAAAA",
 	},
 	ready() {
 		this.getToken()

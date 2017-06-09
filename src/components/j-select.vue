@@ -6,10 +6,6 @@
 <script>
 import Lib from 'assets/Lib.js'
 export default {
-  data() {
-    return {
-    }
-  },
   props: {
     show: {
       type: Boolean,
@@ -27,12 +23,6 @@ export default {
     itemNum(){
       return this.num>5?5.5:this.num
     }
-  },
-  methods: {
-
-  },
-  ready() {
-
   }
 }
 </script>

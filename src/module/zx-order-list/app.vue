@@ -115,8 +115,6 @@ header {
   </swiper>
 </div>
 
-
-
 <confirm :show.sync="showConfirm.cancel" title="" confirm-text="是" cancel-text="否" @on-confirm="cancel(tempOrderNo)">
   <p style="text-align:center;">您确认要取消该预约吗?</p>
 </confirm>

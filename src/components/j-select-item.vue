@@ -4,24 +4,7 @@
 
 <script>
 import Lib from 'assets/Lib.js'
-export default {
-  data() {
-    return {
-    }
-  },
-  props: {
-
-  },
-  computed: {
-
-  },
-  methods: {
-
-  },
-  ready() {
-
-  }
-}
+export default {}
 </script>
 <style scoped lang="less">
 .drop-select-item{

@@ -92,7 +92,6 @@
 
 <script>
 export default {
-  components: {},
   props: {
     title: {
       type: String

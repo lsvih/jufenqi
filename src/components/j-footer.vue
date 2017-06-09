@@ -80,7 +80,7 @@ export default {
       return Lib.M.GetThisPage() == page
     },
     gotoPage(page) {
-      location.href = page + ".html"
+      location.href = `${page}.html`
     }
   },
   ready() {
@@ -88,4 +88,3 @@ export default {
   }
 }
 </script>
-

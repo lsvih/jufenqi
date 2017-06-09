@@ -63,6 +63,18 @@ var Rxports = {
       localStorage.removeItem('user')
       location.href = './wxAuth.html?url' + encodeURIComponent(location.href)
     }
+  },
+  /**
+   * 获取日期字符串
+   * @param {timeStamp}
+   * @return {string}
+   */
+  getTime: (timeStamp) => {
+    const d = new Date(timeStamp * 1000);
+    const Y = `${d.getFullYear()}-`;
+    const M = `${d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1}-`;
+    const D = (d.getDate() < 10 ? `0${d.getDate()}` : d.getDate());
+    return Y + M + D
   }
 }
 

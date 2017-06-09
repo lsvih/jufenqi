@@ -234,7 +234,7 @@ body {
     background-color: #fff;
     line-height: 40px;
     color: #393939;
-    border-radius: 5px 5px 0 0; 
+    border-radius: 5px 5px 0 0;
     .cate-label {
       display: flex;
       line-height: 40px;
@@ -253,7 +253,7 @@ body {
       }
       .name {
         font-size: 12px;
-        
+
       }
     }
     .end {
@@ -298,7 +298,7 @@ body {
       font-size: 12px;
       line-height: 60px;
     }
-    
+
   }
   .tip {
     display: flex;
@@ -310,7 +310,7 @@ body {
     color: #999;
     padding: 0 10px;
     font-weight: 300;
-    border-radius: 0 0 5px 5px; 
+    border-radius: 0 0 5px 5px;
     .rufund-btn {
       height: 100%;
     }
@@ -324,7 +324,7 @@ body {
       <p class="amount-title">一日特价团</p>
       <p class="amount">{{totalAmount.toFixed(2)}}<span>元</span></p>
       <div class="hint">注意：本次活动不包括装修公司及家电品牌</div>
-      
+
       <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
     </div>
     <div class="coupon-detail">
@@ -439,7 +439,7 @@ export default {
             e.brand = res.data.data.name
             e.brandImg = this.imgUrl + res.data.data.logoImg
           }).catch((err) => {throw err})
-        
+
           axios.get(`${Lib.C.merApi}categories/${e.cateId}`).then((res) => {
             e.cate = res.data.data.name
             e.cateImg = this.imgUrl + res.data.data.showImg
@@ -465,16 +465,7 @@ export default {
         if (array[i].id == type ) return array[i].value
       }
     },
-    /**
-     * 将时间戳格式化
-     */
-    getTime(timeStamp) {
-      var d = new Date(timeStamp * 1000)
-      var Y = d.getFullYear() + '-'
-      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-'
-      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate())
-      return Y + M + D
-    },
+    getTime:Lib.M.getTime,
     marginBot(e) {
       let ret = {}
       if (e) {
@@ -513,7 +504,7 @@ export default {
         this.confirmShow = true
       } else if(payM == 1 && isUse == false) {
         this.dialogShow = true
-      }       
+      }
       this.refundId = preId
     },
     isBankcard() {
@@ -543,4 +534,3 @@ export default {
 }
 
 </script>
-
