@@ -60,10 +60,6 @@ export default {
     JTel,
     Loading
   },
-  ready() {
-
-
-  },
   methods: {
     isExist() {
       return !localStorage.getItem("apply-info")

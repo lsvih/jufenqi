@@ -23,15 +23,6 @@ export default {
     XTextarea,
     Group,
     XButton,
-  },
-  ready() {
-
-
-  },
-  methods: {
-
-
-
   }
 }
 </script>

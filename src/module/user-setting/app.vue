@@ -41,13 +41,13 @@ html {
     position: absolute;
     top: 150px;
     left: 50%;
-    transform: translateX(-50%); 
+    transform: translateX(-50%);
   }
   .to-usercenter {
     font-size: 12px;
     position: absolute;
     left: 50%;
-    transform: translateX(-50%); 
+    transform: translateX(-50%);
     color: #fff;
     top: 180px;
   }
@@ -56,7 +56,7 @@ html {
 .cell {
   height: 44px;
   line-height: 44px;
-  background-color: #fff;  
+  background-color: #fff;
   padding: 0 16px;
   display: flex;
   justify-content: space-between;
@@ -255,7 +255,7 @@ export default {
     nameChangePost() {
       let temp = JSON.parse(localStorage.getItem('user'))
       temp.profile.nickname = this.nickname
-      axios.post(`${Lib.C.userApi}customerProfiles/update`, 
+      axios.post(`${Lib.C.userApi}customerProfiles/update`,
         temp.profile
       ).then((res) => {
         temp.profile = res.data.data
@@ -332,4 +332,3 @@ export default {
   }
 }
 </script>
-

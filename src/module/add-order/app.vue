@@ -37,7 +37,7 @@ input,button,select,textarea {
 .cell {
   height: 44px;
   line-height: 44px;
-  background-color: #fff;  
+  background-color: #fff;
   padding: 0 16px;
   display: flex;
   justify-content: space-between;
@@ -222,7 +222,7 @@ input,button,select,textarea {
         <div class="price">
           <span class="label">真实姓名</span>
           <input type="text" v-model="realName" placeholder="请输入贷款人姓名">
-        </div> 
+        </div>
       </div>
       <div class="cell" style="margin-bottom: 0">
         <div class="label" >使用{{tempCoupon()}}点券抵{{tempCoupon()/100 | currency '￥' 2}}元</div>
@@ -233,7 +233,7 @@ input,button,select,textarea {
       <div class="cell little-cell">
         <div class="label">注：点券返还金额无法超过购买总价</div>
       </div>
-      
+
       <div class="cell">
         <div class="label">正价金额小计</div>
         <div class="brand-amount">
@@ -251,7 +251,7 @@ input,button,select,textarea {
       <img src="/static/images/contactHint.png">
       <div class="tip-text" v-tap="goto('./contact.html')">居分期用户协议</div>
     </div>
-    
+
   </div>
   <div class="btn-wrapper">
     <div class="money-wrapper">
@@ -383,9 +383,9 @@ export default {
           })
         })
         // 如果订单来自备选清单
-        axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${!this.from?'':'?apptNo='+this.from}`, {
+        axios.post(`${Lib.C.mOrderApi}materialAppts/submitOrders${!this.from?'':`?apptNo=${this.from}`}`, {
           customerId: JSON.parse(localStorage.user).userId,
-          groups: groups,
+          groups,
           useCoupon: this.isCouponUsed,
           realName: this.realName ? this.realName : null
         // {
@@ -543,7 +543,7 @@ export default {
         let special_result = 0
         this.shopList.map((shop) => {
           shop.brands.map((brand) => {
-            special_result += Number(brand.specialAmount) 
+            special_result += Number(brand.specialAmount)
           })
         })
         return special_result<0?0:special_result
@@ -586,7 +586,7 @@ export default {
       this.isCouponUsed = !this.isCouponUsed
     },
     isSpecial(id) {
-      if (this.spList.indexOf(id) == -1) {
+      if (!this.spList.includes(id)) {
         return true
       } else {
         return false
@@ -604,7 +604,6 @@ export default {
           throw err
         })
       })
-      
     },
     addRate() {
       this.shopList.map((shop) => {

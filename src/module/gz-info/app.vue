@@ -140,7 +140,7 @@
             <img src="/static/arrow.png">
           </div>
         </div>
-        
+
         <div class="bot">
           <div class="left">总价：<span style="color: #ff9736;">{{getTrue() * 500}}</span> 元</div>
           <div class="right" :class="{'active': getTrue() > 0}" v-tap="getTrue()>0?payShow=true:return">
@@ -269,7 +269,7 @@ export default {
         res.data.data.categoryBrands.map((e) => {
           if (e.brand) {
             this.tmpBrands.push({
-              name: e.brand.name.indexOf('-') == -1?e.brand.name:e.brand.name.split('-')[0],
+              name: !e.brand.name.includes('-')?e.brand.name:e.brand.name.split('-')[0],
               value: [e.brand.id, e.id].join(',')
             })
           }
@@ -291,7 +291,7 @@ export default {
             this.list.map((e) => {
               if (tmpExpand == cate.id && e.cateId == cate.category.id) {
                 e.brandId = res.data.data.id
-                e.brand = res.data.data.name.indexOf('-') == -1?res.data.data.name:res.data.data.name.split('-')[0]
+                e.brand = !res.data.data.name.includes('-')?res.data.data.name:res.data.data.name.split('-')[0]
               }
             })
           })
@@ -314,7 +314,7 @@ export default {
       let that = this
       this.showLoading = true
       this.getPostBody(type)
-      axios.post(`${Lib.C.mOrderApi}predeposits`, this.result).then((res) => {  
+      axios.post(`${Lib.C.mOrderApi}predeposits`, this.result).then((res) => {
         let paymentId = res.data.data.paymentId
         let payData = new FormData()
         payData.append('notifyUrl', this.predepositNotifyUrl)
@@ -375,8 +375,5 @@ export default {
     Loading,
     Dialog
   },
-  ready() {
-
-  }
 }
 </script>

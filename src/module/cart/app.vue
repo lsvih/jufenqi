@@ -23,7 +23,7 @@ body {
         position: absolute;
         font-size: 12px;
         left: 15px;
-        bottom: 9px;        
+        bottom: 9px;
     }
     .shop-del {
         position: absolute;
@@ -379,16 +379,16 @@ export default {
   },
   methods: {
     isSelect(type, id) {
-      let listName = 'select' + type
-      let list = eval("this." + listName)
+      let listName = `select${type}`
+      let list = eval(`this.${listName}`)
       return !!~list.indexOf(id)
     },
     getScreenHeight() {
       return document.body.clientHeight
     },
     selectItem(type, id) {
-      let listName = 'select' + type
-      let list = eval("this." + listName)
+      let listName = `select${type}`
+      let list = eval(`this.${listName}`)
       if (this.isSelect(type, id)) {
         list.$remove(id)
       } else {
@@ -418,7 +418,7 @@ export default {
       })
     },
     isSelected(type) {
-      return !!this['select' + type].length
+      return !!this[`select${type}`].length
     },
     deleteShop(id) {
       let tempData = JSON.parse(localStorage.getItem("cart"))
@@ -480,7 +480,7 @@ function shopInfoPipe(sbList) {
     }
   }
   // sbList.map((e) => {
-    
+
   // })
   return result
 
@@ -494,9 +494,9 @@ function shopInfoPipe(sbList) {
   function infoPipe(type, id) {
     let info = JSON.parse(localStorage.info)
     // console.log(info)
-    let a = info[type + "Info"]
+    let a = info[`${type}Info`]
     for (let i of a) {
-      if (i.id == id) 
+      if (i.id == id)
         return i
     }
     // let b = {}
@@ -512,7 +512,7 @@ function shopInfoPipe(sbList) {
     // else{
     //   return b
     // }
-    
+
   }
 
 

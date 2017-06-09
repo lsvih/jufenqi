@@ -5,7 +5,7 @@
     font-size: 18px;
     font-weight: 600;
     text-align: center;
-    margin-top: 10px; 
+    margin-top: 10px;
   }
   .subtitle {
     font-size: 16px;
@@ -123,10 +123,6 @@ export default {
       bannerContent: {},
       title: ""
     }
-  },
-  components: {
-  },
-  ready() {
   }
 }
 </script>

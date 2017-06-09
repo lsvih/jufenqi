@@ -73,7 +73,7 @@ body {
       top: 160px;
       left: 49px;
       font-size: 15px;
-    } 
+    }
 }
 .block-2 {
     background-color: @bac;
@@ -349,7 +349,7 @@ export default {
       }
     }).catch((err) => {
       alert('获取信息失败，请稍后重试。。')
-    }) 
+    })
   },
   methods: {
     stopLoading() {

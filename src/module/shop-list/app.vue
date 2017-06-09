@@ -146,8 +146,6 @@ function findIsShop(brandId, shopId, shopList) {
         if (brand.id === brandId) return true
       }
       return false
-    } else {
-      return false
     }
   }
   return false

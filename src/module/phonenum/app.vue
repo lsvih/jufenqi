@@ -243,11 +243,11 @@ export default {
 		},
 		moveUpDown(e) {
 			if (e) {
-				document.getElementById("myLogo").style.top = 11 + 'px'
-				document.getElementById("myContent").style.top = 108 + 'px'
+				document.getElementById("myLogo").style.top = `${11}px`
+				document.getElementById("myContent").style.top = `${108}px`
 			} else {
-				document.getElementById("myLogo").style.top = 56 + 'px'
-				document.getElementById("myContent").style.top = 197 + 'px'
+				document.getElementById("myLogo").style.top = `${56}px`
+				document.getElementById("myContent").style.top = `${197}px`
 			}
 		},
 		send() {

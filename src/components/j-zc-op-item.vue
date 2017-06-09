@@ -172,9 +172,6 @@
 </div>
 </template>
 
-
-
-
 <script>
 import Lib from 'assets/Lib.js'
 import statusImg from 'common/assets/images/status.png'
