@@ -143,7 +143,7 @@ export default {
       axios.get(`${Lib.C.merApi}categories`, {
         params: {
           size: 1000,
-          filter: "parent:" + id
+          filter: `parent:${id}`
         },
         withCredentials: true,
       }).then((res) => {

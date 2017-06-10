@@ -22,7 +22,6 @@
             background-color: #CFCFCF;
             border-radius: 5px;
         }
-
     }
 }
 .active {

@@ -83,7 +83,7 @@ export default {
           count: 1, // 默认9
           sizeType: ['original', 'compressed'],
           sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
-          success: function(res) {
+          success(res) {
             let thisId = res.localIds[0]
             if(type == 1){
               that.cardF.local = thisId
@@ -100,8 +100,8 @@ export default {
             wx.uploadImage({
               localId: thisId, // 需要上传的图片的本地ID，由chooseImage接口获得
               isShowProgressTips: 1, // 默认为1，显示进度提示
-              success: function(res) {
-                var serverId = res.serverId; // 返回图片的服务器端ID
+              success(res) {
+                const serverId = res.serverId; // 返回图片的服务器端ID
                 if(type == 1){
                   that.cardF.server = serverId
                 }
@@ -144,4 +144,3 @@ function wxReady(obj) {
   wx.config(obj)
 }
 </script>
-

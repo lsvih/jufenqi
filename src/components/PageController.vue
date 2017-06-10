@@ -160,7 +160,7 @@ export default {
       } else {
         _this.changePage(_this.prevIndex);
       }
-      timer = setTimeout(function() {
+      timer = setTimeout(() => {
         clearTimeout(timer);
         timer = null;
       }, 300);
@@ -168,26 +168,26 @@ export default {
     // if (Object.hasOwnProperty.call(window,'onmousewheel')) {
     if (Object.hasOwnProperty.call(window,'onmousewheel')) {
       // 监听滚轮事件
-      window.addEventListener('mousewheel',function (event) {   // IE/Opera/Chrome
+      window.addEventListener('mousewheel',event => {   // IE/Opera/Chrome
         let direction = event.wheelDelta > 0 ? 'up':'down';
         scrollHandler(direction);
       },false);
     } else {
-      window.addEventListener('DOMMouseScroll',function (event) {   // Firefox
+      window.addEventListener('DOMMouseScroll',event => {   // Firefox
         let direction = event.detail > 0 ? 'up':'down';
         scrollHandler(direction);
       },false);
     }
     // 移动端触摸事件处理
-    window.addEventListener('touchstart', function (event) {
+    window.addEventListener('touchstart', event => {
       start = event.touches[0].clientY;
     })
-    window.addEventListener('touchmove', function (event) {
+    window.addEventListener('touchmove', event => {
       event.preventDefault();
     })
-    window.addEventListener('touchend', function (event) {
+    window.addEventListener('touchend', event => {
       let spacing = event.changedTouches[0].clientY - start;
-      let direction;      
+      let direction;
       if (spacing > 50) {
         direction = 'up';
         scrollHandler(direction);

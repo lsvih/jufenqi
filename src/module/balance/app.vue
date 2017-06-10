@@ -38,9 +38,6 @@ export default {
   components: {
     Group,Cell
   },
-  methods: {
-
-  }
 }
 </script>
 

@@ -149,23 +149,9 @@ body {
       <p class="amount">{{balance}}<span>元</span></p>
       <!-- <div class="get-money" v-tap="withdrawShow = true">提现</div> -->
       <div class="hint">注意：单笔提现额度为20000元</div>
-      
+
     </div>
     <div class="coupon-detail">
-      <!-- <div class="cell">
-        <div class="cell-title">微信提现</div>
-      </div> -->
-      <!-- <div class="label" v-for="balance in balanceChanges">
-        <div class="amount-label">
-          <div class="amount-type">{{returnType(balance.type, typeList)}}</div>
-          <div class="amount-time">{{getTime(balance.createdAt)}}</div>
-        </div>
-        <div class="amout-change">
-          <span v-if="showType(balance.type)" class="orange">+{{balance.amount}}元</span>
-          <span v-if="!showType(balance.type)">{{balance.amount}}元</span>
-          <img src="./select.png">
-        </div>
-      </div> -->
       <div class="input-wrapper">
         <div class="input-label">金额：</div>
         <input type="number" placeholder="请输入您的提现金额" v-model="withdrawAmount">
@@ -174,17 +160,6 @@ body {
       <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
     </div>
   </div>
-<!-- <Dialog :show.sync="withdrawShow" >
-  <p style="font-size: 18px;">提现申请</p>
-  <group>
-    <x-input title="提现金额" :value.sync="refundApply.normalAmount" type="number" placeholder="请输入微信提现金额"></x-input>
-    
-  <div class="weui_dialog_ft">
-    <span @click="withdrawShow = false" style="border-right: 1px solid #D5D5D6;">取消</span>
-    <span :class="{'primary': isFilled()}" @click="isFilled()?withdrawPost(tempOrderNo):return">确认申请</span>
-  </div>
-  </group>
-</Dialog> -->
 </template>
 
 <script>
@@ -248,16 +223,6 @@ export default {
       }
     },
     /**
-     * 将时间戳格式化
-     */
-    getTime(timeStamp) {
-      var d = new Date(timeStamp * 1000)
-      var Y = d.getFullYear() + '-'
-      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-'
-      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate())
-      return Y + M + D
-    },
-    /**
      * 提交提现申请
      */
     withdrawPost() {
@@ -285,4 +250,3 @@ export default {
 }
 
 </script>
-

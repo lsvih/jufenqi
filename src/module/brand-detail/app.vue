@@ -399,6 +399,4 @@ function findSameBrand(id, brandList) {
   }
   return false
 }
-
 </script>
-

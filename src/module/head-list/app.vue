@@ -13,7 +13,7 @@ body {
 }
 .scroll-box {
   overflow-x: scroll;
-  -webkit-overflow-scrolling: touch; 
+  -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -195,7 +195,7 @@ export default {
     getHeadlist(name) {
       axios.get(`http://wx.jufenqi.com:8080/content/api/headline-list`, {
         params: {
-          filter: 'tabName:' + name
+          filter: `tabName:${name}`
         }
       }).then((res) => {
         this.headList = res.data.data

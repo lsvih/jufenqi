@@ -99,7 +99,7 @@ body {
           <span v-if="showType(coupon.type)" class="orange">+{{coupon.amount}}点</span>
           <span v-if="!showType(coupon.type)">{{coupon.amount}}点</span>
           <img src="./select.png">
-         
+
         </div>
       </div>
     </div>
@@ -154,21 +154,12 @@ export default {
         if (array[i].id == type ) return array[i].value
       }
     },
-    /**
-     * 将时间戳格式化
-     */
-    getTime(timeStamp) {
-      var d = new Date(timeStamp * 1000)
-      var Y = d.getFullYear() + '-'
-      var M = (d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1) + '-'
-      var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate())
-      return Y + M + D
-    },
+    getTime:Lib.M.getTime,
     /**
      * v-if判断点券的amount
      */
     showType(type) {
-      let result 
+      let result
       switch (type) {
         case 1:
         case 2:
@@ -176,7 +167,7 @@ export default {
           result = true
           break
         case 4:
-        case 5: 
+        case 5:
           result = false
           break
         default:
@@ -186,6 +177,4 @@ export default {
     }
   }
 }
-
 </script>
-

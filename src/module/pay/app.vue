@@ -194,7 +194,7 @@ export default {
         axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/pay`, {
           payMethod: this.payMethod
         }).then((res)=>{
-          location.href = './pay-success.html?type='+this.payMethod
+          location.href = `./pay-success.html?type=${this.payMethod}`
         }).catch((err)=>{
           if(err.response){
             if(err.response.data.code == 40303){
@@ -261,4 +261,3 @@ function findStoreIdIndex(id, array) {
   return -1
 }
 </script>
-

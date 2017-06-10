@@ -1,24 +1,11 @@
 <template>
-  <waterfall
-      class="waterfall-container"
-       line="v"
-       :line-gap="getScreenWidth()/2"
-       :watch="items"
-     >
-       <!-- each component is wrapped by a waterfall slot -->
-       <waterfall-slot
-         v-for="item in items"
-         :width="item.width"
-         :height="item.height"
-         :order="$index"
-         move-class="item-move"
-         transition="wf"
-       >
-<img class="item" :index="item.index" :src="item.img">
-         </div>
-       </waterfall-slot>
-     </waterfall>
-
+<waterfall class="waterfall-container" line="v" :line-gap="getScreenWidth()/2" :watch="items">
+  <!-- each component is wrapped by a waterfall slot -->
+  <waterfall-slot v-for="item in items" :width="item.width" :height="item.height" :order="$index" move-class="item-move" transition="wf">
+    <img class="item" :index="item.index" :src="item.img">
+    </div>
+  </waterfall-slot>
+</waterfall>
 </template>
 
 <script>
@@ -33,7 +20,7 @@ export default {
       isBusy: false
     }
   },
-  ready(){
+  ready() {
     console.log(this.items)
   },
   components: {
@@ -45,12 +32,12 @@ export default {
       console.log(document.body.clientWidth)
       return document.body.clientWidth
     },
-    ItemFactory:function(e){
+    ItemFactory(e) {
+      let lastIndex = 0;
 
-      var lastIndex = 0
-
-      function generateRandomItems (count) {
-        var items = [], i
+      function generateRandomItems(count) {
+        const items = [];
+        var i;
         for (let i = 0; i < count; i++) {
           let w = 100 + ~~(Math.random() * 50)
           let h = 100 + ~~(Math.random() * 50)
@@ -63,30 +50,27 @@ export default {
         }
         return items
       }
-      return  generateRandomItems(e)
+      return generateRandomItems(e)
 
     },
-    addItems: function () {
-            if (!this.isBusy && this.items.length < 500) {
-              this.isBusy = true
-              this.items.push.apply(this.items, ItemFactory.get(50))
-            }
-          },
-          shuffle: function () {
-            this.items.sort(function () {
-              return Math.random() - 0.5
-            })
-          }
-
-
+    addItems() {
+      if (!this.isBusy && this.items.length < 500) {
+        this.isBusy = true
+        this.items.push(...ItemFactory.get(50))
+      }
+    },
+    shuffle() {
+      this.items.sort(() => Math.random() - 0.5)
+    }
   }
 }
 </script>
 
 <style>
-body{
+body {
   background-color: #eee;
-  }</style>
+}
+</style>
 
 <style lang="less" scoped>
 .apply-success {
@@ -122,9 +106,9 @@ body{
         color: #727272;
     }
 }
-.item{
-  height:calc( ~"100% - 8px" );
-  padding:8px 4px 0 4px;
-  width: calc( ~"100% - 8px" );
+.item {
+    height: calc( ~"100% - 8px" );
+    padding: 8px 4px 0;
+    width: calc( ~"100% - 8px" );
 }
 </style>

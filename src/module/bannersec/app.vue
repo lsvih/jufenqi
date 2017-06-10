@@ -34,21 +34,6 @@ export default {
     PopupPicker,
     Loading
   },
-  ready() {
-    // this.getData(this.cateId)
-    // let that = this
-    // axios.get(`${Lib.C.merApi}categories`).then((res) => {
-    //   res.data.data.map((e) => {
-    //     that.categories.push({
-    //       name: e.name,
-    //       value: String(e.id),
-    //       parent: e.parent === null ? 0 : String(e.parent.id)
-    //     })
-    //   })
-    // }).catch((err) => {
-    //   throw err //error
-    // })
-  },
   methods: {
     goto(url) {
       window.location.href = url

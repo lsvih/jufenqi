@@ -16,8 +16,6 @@ export default {
       title: ""
     }
   },
-  components: {
-  },
   ready() {
     axios.get(`${Lib.C.homeApi}operations?filter=id:${this.id}`).then((res) => {
       this.bannerContent = res.data.data[0]

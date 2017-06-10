@@ -25,7 +25,6 @@ export default {
       zoom: 15,
       center: [116.39, 39.9]
     })
-    console.log(map)
   }
 }
 </script>

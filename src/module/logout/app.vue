@@ -40,9 +40,7 @@
     <img src="/static/images/success-orange.png">
     <div class="ins-status"><p v-for="i in info()">{{i}}</p></div>
   </div>
-
 </div>
-
 
 </template>
 
@@ -54,7 +52,6 @@ export default {
   data() {
     return {
       type: Lib.M.GetRequest().type
-
     }
   },
   components: {
