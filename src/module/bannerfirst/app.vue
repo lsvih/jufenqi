@@ -8,10 +8,10 @@
 }
 .slide {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     img {
         width: 100%;
-        height: auto;
+        height: 100%;
         display: block;
 
     }
@@ -46,17 +46,17 @@
 
 <template>
 <div class="swiper-container">
-  <swiper :options="swiperOption">
+  <swiper :options="swiperOption" v-ref:mySwiper>
     <swiper-slide v-for="img in imgFirst">
-      <div class="slide" :style="setBack(img.imgUrl)"></div>
+      <div class="slide" :style="setBack(img.imgUrl)" ></div>
     </swiper-slide>
     <swiper-slide v-for="img in imgList" track-by="$index">
       <div class="slide" :style="setBack(img.imgUrl)"><img :src="img.icon"></div>
     </swiper-slide>
   </swiper>
 </div>
-<!-- <img src="/static/help/icon2.png" class="img-left"> -->
-<!-- <img src="/static/help/icon1.png" class="img-right"> -->
+<!-- <img src="/static/help/icon2.png" class="img-left">
+<img src="/static/help/icon1.png" class="img-right"> -->
 </template>
 
 <script>
@@ -127,14 +127,16 @@ export default {
       }, {
         imgUrl: '/static/help/7.png',
         icon: '/static/help/item.png'
-      }, ]
+      },]
     }
   },
   components: {
     swiper,
     swiperSlide
   },
-  ready() {},
+  ready() {
+    console.log(document.body.clientHeight)
+  },
   methods: {
     setBack(img) {
       return {
@@ -149,7 +151,9 @@ export default {
       }
     },
     getScreenHeight() {
-      return document.body.clientHeight
+      let ret = {}
+      ret.height = this.slideHeight + 'px'
+      return ret
     }
   }
 }
