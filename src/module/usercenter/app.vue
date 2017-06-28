@@ -74,6 +74,19 @@ body {
       left: 49px;
       font-size: 15px;
     }
+    .user-service {
+      position: absolute;
+      top: 160px;
+      right: 40px;
+      width: 50px;
+      height: 20px;
+      line-height: 20px;
+      font-weight: 300;
+      font-size: 12px;
+      border-radius: 5px;
+      border: 1px solid #fff;
+      text-align: center;
+    }
 }
 .block-2 {
     background-color: @bac;
@@ -191,6 +204,23 @@ body {
       background-color: #fff;
     }
 }
+// .vux-flexbox-item {
+//   color: #ff9736 !important;
+// }
+#dialog-p {
+  font-size: 18px;
+  margin: 0;
+  padding: 13px 0;
+  position: relative;
+  background-color: #fff;
+  img {
+    width: 20px;
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 19px;
+    right: 12px;
+  }
+}
 </style>
 
 <template>
@@ -201,6 +231,8 @@ body {
     <div class="user-name">{{userName}}</div>
     <div class="manager" v-if="managerService"><img src="/static/images/usercenter/manager-final.png"></div>
     <div class="user-balance">贷款金额: {{loan|currency "" 2}}(元)</div>
+    <div class="user-service" v-tap="showDialog()" v-if="hasServed">{{serveText}}</div>
+    <div class="user-service" v-if="hasPayed">{{serveText}}</div>
     <!-- 设置页 -->
     <div class="setting" v-tap="goto('./user-setting.html')"><img src="/static/images/usercenter/setting.png"></div>
   </flexbox-item>
@@ -299,7 +331,23 @@ body {
 <!-- <div class="exit" v-tap="exit">
 退出登录</div> -->
 <div class="block-f"></div>
+<Dialog :show.sync="payShow" >
+  <p id="dialog-p" style="border-bottom: 1px solid #f5f5f5;" v-tap="pay(3)">
+    微信支付
+    <img src="./select.png">
+  </p>
+  <p id="dialog-p" style="border-bottom: 1px solid #f5f5f5;" v-tap="pay(1)">
+    线下刷卡
+    <img src="./select.png">
+  </p>
+  <p id="dialog-p" style="border-bottom: 1px solid #f5f5f5;" v-tap="goto('./contact.html')">
+    服务协议
+    <img src="./select.png">
+  </p>
+  <p id="dialog-p" v-tap="payShow = false">取消</p>
+</Dialog>
 <j-footer></j-footer>
+<loading :show="showLoading" text="请稍后。。"></loading>
 </template>
 
 <script>
@@ -307,6 +355,8 @@ import Lib from 'assets/Lib.js'
 import JFooter from 'components/j-footer'
 import Group from 'vux-components/group/'
 import Cell from 'vux-components/cell/'
+import Dialog from 'vux-components/dialog/'
+import Loading from 'vux-components/loading'
 import {
   Flexbox,
   FlexboxItem
@@ -322,7 +372,13 @@ export default {
       wallet: 0,
       userIcon: JSON.parse(localStorage.getItem('user')).profile.profileImage,
       userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
-      managerService: false
+      managerService: false,
+      payShow: false,
+      predepositNotifyUrl: 'http://materialorder/api/loan-services/noticePaymentResult',
+      loanId: Lib.M.GetRequest().loanId ? Lib.M.GetRequest().loanId : null,
+      hasServed: false,
+      hasPayed: false,
+      serveText: '去激活'
     }
   },
   components: {
@@ -330,7 +386,9 @@ export default {
     Flexbox,
     FlexboxItem,
     Group,
-    Cell
+    Cell,
+    Dialog,
+    Loading
   },
   ready() {
     axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
@@ -350,6 +408,7 @@ export default {
     }).catch((err) => {
       alert('获取信息失败，请稍后重试。。')
     })
+    this.isServed()
   },
   methods: {
     stopLoading() {
@@ -363,6 +422,70 @@ export default {
     },
     exit() {
       localStorage.clear()
+    },
+    showDialog() {
+      this.payShow = true;
+    },
+    // 提交服务费
+    pay(loanType) {
+      let that = this
+      this.showLoading = true
+      axios.post(`${Lib.C.loanApi}loan-services/${this.loanId}/pay`, {paymethod: loanType}).then((res) => {
+        let paymentId = res.data.data.paymentId
+        let payData = new FormData()
+        payData.append('notifyUrl', this.predepositNotifyUrl)
+        if (loanType == 3) {
+          axios.get(`${Lib.C.userApi}wechatOpenIds/${JSON.parse(localStorage.user).userId}`).then((res) => {
+              let openId = res.data.data.openId
+              payData.append('openid', openId)
+              axios.post(`${Lib.C.payApi}pay/${paymentId}`, payData).then((res) => {
+                pingpp.createPayment(res.data.data, (result, err) => {
+                  if (result === 'success') {
+                    alert('支付成功')
+                    location.reload()
+                  } else if (result === 'fail') {
+                    alert('支付失败，请稍后重试。。')
+                    that.showLoading = false
+                    // location.href = './gz-info.html'
+                  } else if (result === 'cancel') {
+                    alert('支付失败，请稍后重试。。')
+                    // location.href = './gz-info.html'
+                    that.showLoading = false
+                  }
+                })
+              }).catch((err) => {
+                this.showLoading = false
+                alert("网络连接中断，请稍候再试")
+                throw err
+              })
+            }).catch((err) => {
+              this.showLoading = false
+              alert("网络连接中断，请稍候再试")
+              throw err
+            })
+        } else {
+          alert('支付成功')
+          location.reload()
+        }
+      }).catch((err) => {
+        throw err
+      })
+    },
+    isServed() {
+          axios.get(`http://wx.jufenqi.com:8080/materialorder/api/materialOrders/rates?userId=${JSON.parse(localStorage.user).userId}&brandId=186`).then((res) => {
+            if (res.data.data.loanServiceId !== null && res.data.data.loanServicePayed === false ) {
+              // alert('您需要先交服务费！')
+              // location.href = `./usercenter.html?loanServiceId=${res.data.data.loanServiceId}`
+              this.loanId = res.data.data.loanServiceId
+              this.hasServed = true
+            } else if (res.data.data.loanServiceId !== null && res.data.data.loanServicePayed === true) {
+              this.hasPayed = true
+              this.serveText = '已激活'
+            }
+            
+          }).catch((err) => {
+            console.log(err)
+          })
     }
   }
 }

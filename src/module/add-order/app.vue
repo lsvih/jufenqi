@@ -609,12 +609,17 @@ export default {
       this.shopList.map((shop) => {
         shop.brands.map((brand) => {
           axios.get(`http://wx.jufenqi.com:8080/materialorder/api/materialOrders/rates?userId=${this.userId}&brandId=${brand.id}`).then((res) => {
+            if (res.data.data.loanServiceId !== null && res.data.data.loanServicePayed === false ) {
+              alert('您需要先交服务费！')
+              location.href = `./usercenter.html?loanServiceId=${res.data.data.loanServiceId}`
+            }
             if (brand.id == 144) {
               brand.rate = {
                 couponRate: 0,
                 normalRate: 0.04,
                 specialRate: 0.04
               }
+
             } else {
               brand.rate = res.data.data
             }
