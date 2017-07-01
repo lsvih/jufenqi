@@ -294,9 +294,10 @@ export default {
     // console.log(this.setRate(12))
     // this.setRate(12)
     // console.log(this.source)
-    this.addRate()
+
     this.getSpBrands([2, 36])
     this.getPre()
+    this.getLoanService()
     // this.isUsed(99)
     console.log(this.shopList)
   },
@@ -664,6 +665,23 @@ export default {
       } else {
         return true
       }
+    },
+    getLoanService() {
+      axios.get(`${Lib.C.loanApi}loan-applications?filter=userId:${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+
+        res.data.data.map((e) => {
+          if (e.loanService !== null) {
+            if (e.loanService.needed == true && e.loanService.status == 0) {
+              console.log('heihei')
+              alert('您需要先交服务费！')
+              location.href="./user-setting.html"
+            } 
+          }
+        })
+        console.log(this.loanServes)
+      }).catch((err) => {
+        throw err
+      })
     }
   }
 

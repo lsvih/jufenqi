@@ -231,8 +231,6 @@ body {
     <div class="user-name">{{userName}}</div>
     <div class="manager" v-if="managerService"><img src="/static/images/usercenter/manager-final.png"></div>
     <div class="user-balance">贷款金额: {{loan|currency "" 2}}(元)</div>
-    <div class="user-service" v-tap="showDialog()" v-if="hasServed">{{serveText}}</div>
-    <div class="user-service" v-if="hasPayed">{{serveText}}</div>
     <!-- 设置页 -->
     <div class="setting" v-tap="goto('./user-setting.html')"><img src="/static/images/usercenter/setting.png"></div>
   </flexbox-item>
@@ -374,11 +372,10 @@ export default {
       userName: JSON.parse(localStorage.getItem('user')).profile.nickname,
       managerService: false,
       payShow: false,
-      predepositNotifyUrl: 'http://materialorder/api/loan-services/noticePaymentResult',
+      loanServiceNotifyUrl: 'http://materialorder/api/loan-services/noticePaymentResult',
       loanId: Lib.M.GetRequest().loanId ? Lib.M.GetRequest().loanId : null,
       hasServed: false,
-      hasPayed: false,
-      serveText: '去激活'
+      hasPayed: false
     }
   },
   components: {
@@ -433,7 +430,7 @@ export default {
       axios.post(`${Lib.C.loanApi}loan-services/${this.loanId}/pay`, {paymethod: loanType}).then((res) => {
         let paymentId = res.data.data.paymentId
         let payData = new FormData()
-        payData.append('notifyUrl', this.predepositNotifyUrl)
+        payData.append('notifyUrl', this.loanServiceNotifyUrl)
         if (loanType == 3) {
           axios.get(`${Lib.C.userApi}wechatOpenIds/${JSON.parse(localStorage.user).userId}`).then((res) => {
               let openId = res.data.data.openId
@@ -465,10 +462,11 @@ export default {
             })
         } else {
           alert('支付成功')
-          location.reload()
+          location.reload();
         }
       }).catch((err) => {
         throw err
+        this.showLoading = false
       })
     },
     isServed() {

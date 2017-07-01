@@ -178,6 +178,13 @@ html {
       <img src="./select.png">
     </div>
   </div>
+  <div class="cell" v-tap="goto('./my-serve.html')">
+    <div class="label">我的服务费</div>
+    <div class="right">
+      {{serveText}}
+      <img src="./select.png">
+    </div>
+  </div>
   <div class="cell" v-tap="goto('./logout.html')" style="margin-top: 80px;">
     <div class="abso">
       退出登录
@@ -234,7 +241,8 @@ export default {
       vertiCode: '',
       time: 0,
       timekeeper: null,
-      isSendId: false
+      isSendId: false,
+      serveText: ''
     }
   },
   components: {
@@ -244,6 +252,7 @@ export default {
     Loading
   },
   ready() {
+    this.getLoan()
   },
   methods: {
     goto(url) {
@@ -327,6 +336,23 @@ export default {
         if (code == 90205) {
           alert('验证码已过期，请重新发送')
         }
+      })
+    },
+    getLoan() {
+      axios.get(`${Lib.C.loanApi}loan-applications?filter=userId:${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+
+        res.data.data.map((e) => {
+          if (e.loanService !== null) {
+            if (e.loanService.needed == true && e.loanService.status == 0) {
+              this.serveText = '未激活'
+            } else if (e.loanService.needed == true && e.loanService.status == 1) {
+              this.serveText = '已激活'
+            }
+          }
+        })
+        console.log(this.loanServes)
+      }).catch((err) => {
+        throw err
       })
     }
   }
