@@ -284,7 +284,7 @@ export default {
      * 一系列判断
      */
     isBankcard() {
-      let reg = /^(\d{16}|\d{19})$/
+      let reg = /^(\d{16}|\d{17}|\d{18}|\d{19})$/
       return reg.test(this.bankcardNo)
     },
     isFilled() {
