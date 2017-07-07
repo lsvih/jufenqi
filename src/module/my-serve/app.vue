@@ -399,6 +399,7 @@ import Dialog from 'vux-components/dialog'
 import Group from 'vux-components/group'
 import XInput from 'vux-components/x-input'
 import Confirm from 'vux-components/confirm'
+import pingpp from 'pingpp-js'
 
 Lib.M.auth(axios)
 
