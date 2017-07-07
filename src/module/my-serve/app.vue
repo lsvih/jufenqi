@@ -420,6 +420,8 @@ export default {
       serveText: '未激活',
       loanServes: [],
       payShow: true,
+      // predepositNotifyUrl: 'http://materialorder/api/predeposits/noticePaymentResult',
+      loanServiceNotifyUrl: 'http://materialorder/api/loan-services/noticePaymentResult'
     }
   },
   components: {
@@ -480,7 +482,6 @@ export default {
             }
           }
         })
-        console.log(this.loanServes)
       }).catch((err) => {
         throw err
       })
@@ -488,7 +489,7 @@ export default {
     pay(loanType) {
       let that = this
       this.showLoading = true
-      axios.post(`${Lib.C.loanApi}loan-services/${this.loanId}/pay`, {paymethod: loanType}).then((res) => {
+      axios.post(`${Lib.C.loanApi}loan-services/${this.loanId}/pay`, {payMethod: loanType}).then((res) => {
         let paymentId = res.data.data.paymentId
         let payData = new FormData()
         payData.append('notifyUrl', this.loanServiceNotifyUrl)
@@ -496,6 +497,7 @@ export default {
           axios.get(`${Lib.C.userApi}wechatOpenIds/${JSON.parse(localStorage.user).userId}`).then((res) => {
               let openId = res.data.data.openId
               payData.append('openid', openId)
+              console.log(payData)
               axios.post(`${Lib.C.payApi}pay/${paymentId}`, payData).then((res) => {
                 pingpp.createPayment(res.data.data, (result, err) => {
                   if (result === 'success') {
@@ -504,6 +506,7 @@ export default {
                   } else if (result === 'fail') {
                     alert('支付失败，请稍后重试。。')
                     that.showLoading = false
+
                     // location.href = './gz-info.html'
                   } else if (result === 'cancel') {
                     alert('支付失败，请稍后重试。。')
@@ -523,7 +526,7 @@ export default {
             })
         } else {
           alert('支付成功')
-          location.reload();
+          // location.reload();
         }
       }).catch((err) => {
         throw err
