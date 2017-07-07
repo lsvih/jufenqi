@@ -420,8 +420,7 @@ export default {
       serveText: '未激活',
       loanServes: [],
       payShow: true,
-      // predepositNotifyUrl: 'http://materialorder/api/predeposits/noticePaymentResult',
-      loanServiceNotifyUrl: 'http://materialorder/api/loan-services/noticePaymentResult'
+      loanServiceNotifyUrl: 'http://loanapplicant/api/loan-services/noticePaymentResult'
     }
   },
   components: {
