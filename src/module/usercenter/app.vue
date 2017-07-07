@@ -405,7 +405,6 @@ export default {
     }).catch((err) => {
       alert('获取信息失败，请稍后重试。。')
     })
-    this.isServed()
   },
   methods: {
     stopLoading() {

@@ -526,7 +526,7 @@ export default {
             })
         } else {
           alert('支付成功')
-          // location.reload();
+          location.href='./usercenter.html'
         }
       }).catch((err) => {
         throw err
