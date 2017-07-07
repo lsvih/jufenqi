@@ -672,13 +672,12 @@ export default {
         res.data.data.map((e) => {
           if (e.loanService !== null) {
             if (e.loanService.needed == true && e.loanService.status == 0) {
-              console.log('heihei')
+              console.log('服务费存在')
               alert('您需要先交服务费！')
               location.href="./user-setting.html"
             } 
           }
         })
-        console.log(this.loanServes)
       }).catch((err) => {
         throw err
       })
