@@ -345,7 +345,7 @@ body {
   <div class="content">
     <div class="amount-wrapper">
       <p class="amount-title">我的服务费</p>
-      <p class="amount">{{loanServiceAmount? loanServiceAmount: balance*0.01}}<span>元</span></p>
+      <p class="amount">{{loanServiceAmount ? loanServiceAmount : balance*0.01}}<span>元</span></p>
       <div class="hint">{{serveText}}</div>
 
       <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
@@ -356,12 +356,12 @@ body {
         <div class="cate-wrapper">
           <div class="cate-label">
             <!-- <div class="img-wrapper"><img :src="cate.cateImg"></div> -->
-            <div class="name">订单号：{{loan.serialNo}}</div>
+            <div class="name">服务订单号：{{loan.serialNo}}</div>
           </div>
           <div class="end"><span :class="{'end-active': !cate.used}">{{loan.status == 0?'未激活':'已激活'}}</span></div>
         </div>
         <div class="tip">
-          <span>支付方式：<span :style="setColor(cate.payMethod)">{{cate.payMethod == 3? '微信支付': '线下刷卡'}}</span></span>
+          <span>支付方式：<span>{{loan.payMethod == 3? '微信支付': '线下刷卡'}}</span></span>
           <div class="end">{{getTime(loan.createdAt)}}</div>
         </div>
       </div>
@@ -472,10 +472,12 @@ export default {
           if (e.loanService !== null) {
             if (e.loanService.needed == true && e.loanService.status == 0) {
               console.log('heihei')
-              this.loanServiceRate = e.loanService.rate/100
+              this.loanServiceRate = e.loanService.rate
               this.loanId = e.loanService.id,
               this.loanServiceAmount = e.loanQuota * this.loanServiceRate
             } else if (e.loanService.needed == true && e.loanService.status == 1) {
+              this.loanServiceRate = e.loanService.rate
+              this.loanServiceAmount = e.loanQuota * this.loanServiceRate
               this.serveText = '已激活',
               this.loanServes.push(e.loanService),
               this.payShow = false

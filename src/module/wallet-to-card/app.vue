@@ -96,6 +96,7 @@ body {
       margin: 0 auto;
       display: flex;
       margin-bottom: 2vh;
+      position: relative;
       .input-label {
         width: 70px;
         height: 44px;
@@ -120,6 +121,17 @@ body {
         border-radius: 5px;
         border: 1px solid #999;
         color: #777;
+      }
+      .tip-line {
+        position: absolute;
+        width: calc(~"100% - 70px");
+        height: 20px;
+        font-size: 12px;
+        font-weight: 300;
+        span {
+          color: #ff9736;
+        }
+        left: 70px;
       }
     }
     .submit_btn {
@@ -169,10 +181,12 @@ body {
         <div class="input-label">卡号：</div>
         <input type="number" placeholder="请输入您的银行卡号" v-model="bankcardNo">
       </div>
-      <div class="input-wrapper" style="margin-bottom: 5vh;">
+      <div class="input-wrapper" style="margin-bottom: 7vh;">
         <div class="input-label">银行：</div>
         <!-- <div class="input-fake" v-tap="bankShow = true">{{depositBank || '请选择银行卡所属银行'}}</div> -->
-        <input type="text" placeholder="请输入银行卡所属银行支行" v-model="depositBank">
+        <input type="text" placeholder="请输入银行卡所属银行支行" v-model="depositBank" class="bank-tap">
+        <div class="tip-line" style="bottom: -7px"><span>注意：</span>输入格式为（开户行-银行网点）</div>
+        <div class="tip-line" style="bottom: -22px"><span>示例：</span>中国工商银行大兴支行</div>
       </div>
       <div class="submit_btn" :class="{'active': isFilled()}" v-tap="isFilled()?withdrawPost():return">确认提现</div>
   </div>
