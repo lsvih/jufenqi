@@ -127,7 +127,7 @@ body {
         width: calc(~"100% - 70px");
         height: 20px;
         font-size: 12px;
-        font-weight: 300;
+        font-weight: 300; 
         span {
           color: #ff9736;
         }

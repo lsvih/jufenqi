@@ -187,7 +187,7 @@ input,button,select,textarea {
           <div class="price">
             <span class="label">正价</span>
             <input type="number" v-model="brand.normalAmount" placeholder="请输入正价金额">
-            <p>将为您贴息<span>{{brand.normalAmount?(brand.normalAmount*brand.rate.normalRate): 0 | currency '￥'}}</span>元</p>
+            <p v-if="isHongTai(brand.id)">将为您贴息<span>{{brand.normalAmount?(brand.normalAmount*brand.rate.normalRate): 0 | currency '￥'}}</span>元</p>
           </div>
           <div class="price" v-if="isSpecial(brand.id)">
             <span class="label">特价</span>
@@ -294,7 +294,7 @@ export default {
     // console.log(this.setRate(12))
     // this.setRate(12)
     // console.log(this.source)
-
+    this.addRate()
     this.getSpBrands([2, 36])
     this.getPre()
     this.getLoanService()
@@ -610,10 +610,7 @@ export default {
       this.shopList.map((shop) => {
         shop.brands.map((brand) => {
           axios.get(`http://wx.jufenqi.com:8080/materialorder/api/materialOrders/rates?userId=${this.userId}&brandId=${brand.id}`).then((res) => {
-            if (res.data.data.loanServiceId !== null && res.data.data.loanServicePayed === false ) {
-              alert('您需要先交服务费！')
-              location.href = `./usercenter.html?loanServiceId=${res.data.data.loanServiceId}`
-            }
+ 
             if (brand.id == 144) {
               brand.rate = {
                 couponRate: 0,
@@ -681,6 +678,9 @@ export default {
       }).catch((err) => {
         throw err
       })
+    },
+    isHongTai(id) {
+      return id != 254
     }
   }
 

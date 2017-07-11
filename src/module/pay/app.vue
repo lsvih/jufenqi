@@ -52,6 +52,9 @@ body {
         }
     }
 }
+.vux-flexbox-item {
+  color: #ff9736 !important;
+}
 </style>
 
 <template>
@@ -74,6 +77,7 @@ body {
 <confirm :show.sync="showLoan" title="" confirm-text="办理分期" cancel-text="其他支付方式" @on-confirm="goto('./instalment.html')">
   <p style="text-align:center;">您尚未办理分期，是否办理分期？</p>
 </confirm>
+<popup-picker title="银行" :data="tempBankList" :columns="1" :show-cell="false" :show.sync="showSelectBank" :value.sync="tempAddBank" @on-hide="onSelectedBank" show-name></popup-picker>
 </template>
 <script>
 import pingpp from 'pingpp-js'
@@ -88,6 +92,7 @@ import fqImg from './fq.png'
 import ylImg from './yl.png'
 import axios from 'axios'
 import JTel from 'components/j-tel'
+import PopupPicker from 'vux-components/popup-picker'
 Lib.M.auth(axios)
 
 export default {
@@ -96,7 +101,8 @@ export default {
     Group,
     Loading,
     Confirm,
-    JTel
+    JTel,
+    PopupPicker
   },
   ready() {
     this.showLoading = true
@@ -119,7 +125,8 @@ export default {
       this.showLoading = false
       alert("获取订单失败，请稍后再试")
       throw err //error
-    })
+    }),
+    this.getLoanApplication()
   },
   methods: {
     pay() {
@@ -191,9 +198,12 @@ export default {
           throw err
         })
       } else {
-        axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/pay`, {
-          payMethod: this.payMethod
-        }).then((res)=>{
+        let postBody = {}
+        postBody.payMethod = this.payMethod
+        if (this.payMethod == 2) {
+          postBody.bankBranchPeriodId = this.bankBranchPeriodId
+        }
+        axios.post(`${Lib.C.mOrderApi}materialAppts/${this.apptNo}/pay`, postBody).then((res)=>{
           location.href = `./pay-success.html?type=${this.payMethod}`
         }).catch((err)=>{
           if(err.response){
@@ -214,9 +224,43 @@ export default {
     },
     selectPay(e) {
       this.payMethod = Number(e)
+      if (e == 2 && this.tempBankList.length >1) {
+        this.showSelectBank = true
+      }
     },
     goto(url){
       location.href = url
+    },
+    getLoanApplication() {
+      axios.get(`${Lib.C.loanApi}loan-applications?filter=userId:${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+        console.log('分期方案', res.data.data)
+        let result = res.data.data
+        if (result.length > 0) {
+
+
+          result.map((e) => {
+            if (e.bankBranchPeriod !== null&&e.bankBranch !== null&&e.statusEnum == 3) {
+              this.tempBankList.push({
+                name: `${e.bankBranch.name}${e.bankBranchPeriod.name}`,
+                value: String(e.bankBranchPeriod.id)
+              })
+            }
+          })
+          if (this.tempBankList.length == 1) {
+            this.bankBranchPeriodId = Number(this.tempBankList[0].value)
+            this.payments[1].description = this.tempBankList[0].name
+          }
+        }
+      }).catch((err) => {
+        throw err
+      })
+    },
+    onSelectedBank() {
+      this.bankBranchPeriodId = Number(this.tempAddBank[0])
+      this.bankSelected = findValue(this.tempAddBank[0], this.tempBankList)
+      this.payments[1].description = this.bankSelected
+      this.tempAddBank = []
+      this.showSelectBank = false
     }
   },
   data() {
@@ -249,7 +293,12 @@ export default {
       // }],
       showLoan:false,
       payMethod: 0,
-      orders: []
+      orders: [],
+      tempBankList: [],
+      showSelectBank: false,
+      tempAddBank: [],
+      bankBranchPeriodId: null,
+      bankSelected: ''
     }
   }
 }
@@ -259,5 +308,12 @@ function findStoreIdIndex(id, array) {
     if (array[i].storeId == id) return i
   }
   return -1
+}
+function findValue(val, arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (val == arr[i].value) {
+      return arr[i].name
+    }
+  }
 }
 </script>

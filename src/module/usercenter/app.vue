@@ -230,7 +230,7 @@ body {
     <span class="hello">你好</span>
     <div class="user-name">{{userName}}</div>
     <div class="manager" v-if="managerService"><img src="/static/images/usercenter/manager-final.png"></div>
-    <div class="user-balance">贷款金额: {{loan|currency "" 2}}(元)</div>
+    <div class="user-balance" v-tap="goto('./loan-application.html')">贷款金额: {{loan|currency "" 2}}(元) > </div>
     <!-- 设置页 -->
     <div class="setting" v-tap="goto('./user-setting.html')"><img src="/static/images/usercenter/setting.png"></div>
   </flexbox-item>
@@ -468,22 +468,6 @@ export default {
         this.showLoading = false
       })
     },
-    isServed() {
-          axios.get(`http://wx.jufenqi.com:8080/materialorder/api/materialOrders/rates?userId=${JSON.parse(localStorage.user).userId}&brandId=186`).then((res) => {
-            if (res.data.data.loanServiceId !== null && res.data.data.loanServicePayed === false ) {
-              // alert('您需要先交服务费！')
-              // location.href = `./usercenter.html?loanServiceId=${res.data.data.loanServiceId}`
-              this.loanId = res.data.data.loanServiceId
-              this.hasServed = true
-            } else if (res.data.data.loanServiceId !== null && res.data.data.loanServicePayed === true) {
-              this.hasPayed = true
-              this.serveText = '已激活'
-            }
-            
-          }).catch((err) => {
-            console.log(err)
-          })
-    }
   }
 }
 </script>
