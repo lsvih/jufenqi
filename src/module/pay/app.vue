@@ -239,7 +239,7 @@ export default {
 
 
           result.map((e) => {
-            if (e.bankBranchPeriod !== null&&e.bankBranch !== null) {
+            if (e.bankBranchPeriod !== null&&e.bankBranch !== null&&e.statusEnum == 3) {
               this.tempBankList.push({
                 name: `${e.bankBranch.name}${e.bankBranchPeriod.name}`,
                 value: String(e.bankBranchPeriod.id)
@@ -247,7 +247,8 @@ export default {
             }
           })
           if (this.tempBankList.length == 1) {
-            this.bankBranchPeriodId = Number(this.tempAddBank[0])
+            this.bankBranchPeriodId = Number(this.tempBankList[0].value)
+            this.payments[1].description = this.tempBankList[0].name
           }
         }
       }).catch((err) => {
@@ -259,6 +260,7 @@ export default {
       this.bankSelected = findValue(this.tempAddBank[0], this.tempBankList)
       this.payments[1].description = this.bankSelected
       this.tempAddBank = []
+      this.showSelectBank = false
     }
   },
   data() {

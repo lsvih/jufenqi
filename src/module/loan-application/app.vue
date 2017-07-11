@@ -369,22 +369,6 @@ body {
       新增贷款
     </div>
   </div>
- <!--  <confirm :show.sync="confirmShow" title=""  confirm-text="是" cancel-text="否" @on-confirm="refund(refundId)" @on-cancel="confirmShow = false">
-  <p style="text-align:center;">确定退款？退款将按照原路返回</p>
-  </confirm> -->
-
-<!--   <dialog :show.sync="dialogShow" >
-  <p style="font-size: 18px;">线下刷卡退款申请</p>
-  <group>
-    <x-input title="姓名" :value.sync="refundBody.accountName" type="text" placeholder="请输入您的姓名"></x-input>
-    <x-input title="银行卡号" :value.sync="refundBody.bankcardNo" type="text" placeholder="请输入银行卡号"></x-input>
-    <x-input title="开户行" :value.sync="refundBody.depositBank" type="text" placeholder="请输入您的开户行"></x-input>
-  <div class="weui_dialog_ft">
-    <span @click="dialogShow = false" style="border-right: 1px solid #D5D5D6;">取消</span>
-    <span :class="{'primary': isFilled()}" @click="isFilled()?hideShow(): return">确认申请</span>
-  </div>
-  </group>
-</dialog> -->
 </template>
 
 <script>
@@ -420,89 +404,14 @@ export default {
     goto(url) {
       location.href = url
     },
-    replace(url) {
-      location.replace(url)
-    },
-    /**
-     * 通过点券的type获取typeList中的点券类型
-     */
-    returnType(type, array) {
-      for (let i = 0; i < array.length; i++ ) {
-        if (array[i].id == type ) return array[i].value
-      }
-    },
     getTime:Lib.M.getTime,
-    marginBot(e) {
-      let ret = {}
-      if (e) {
-        ret.marginBottom = '44px'
-      }
-      return ret
-    },
-    setHeight(e) {
-      let ret = {}
-      if (e) {
-        ret.borderTop = 'none'
-        ret.visibility = 'visible'
-
-      } else{
-        ret.transitionDelay = '0.3s';
-      }
-      return ret
-    },
-    refund(preId) {
-      this.showLoading = true
-      axios.post(`${Lib.C.mOrderApi}predeposit-brands/${preId}/refund`, this.refundBody).then((res) => {
-        alert('您的退款已经发起成功！')
-        this.showLoading = false
-        location.reload()
-      }).catch((err) => {
-        alert('网络连接失败，请稍后再试')
-        this.showLoading = false
-      })
-    },
-    showConfirm(payM, preId, isUse) {
-      if (isUse == true) {
-        alert('您已使用过该预存卡片！')
-        this.confirmShow = false
-        this.dialogShow = false
-      } else if (payM == 3 && isUse == false) {
-        this.confirmShow = true
-      } else if(payM == 1 && isUse == false) {
-        this.dialogShow = true
-      }
-      this.refundId = preId
-    },
-    isBankcard() {
-      let reg = /^(\d{16}|\d{19})$/
-      return reg.test(this.refundBody.bankcardNo)
-    },
-    isFilled() {
-      return this.refundBody.accountName && this.isBankcard() && this.refundBody.depositBank
-    },
-    hideShow() {
-      this.dialogShow = false
-      this.confirmShow = true
-    },
-    hasRefunded() {
-      alert('您已申请过退款！')
-    },
-    setColor(payM) {
-      let ret = {}
-      if (payM == 3) {
-        ret.color = '#46b42d'
-      } else {
-        ret.color = '#ff9736'
-      }
-      return ret
-    },
     getLoanApplication() {
       axios.get(`${Lib.C.loanApi}loan-applications?filter=userId:${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
         console.log('分期方案', res.data.data)
         let result = res.data.data
         if (result.length > 0) {
           result.map((e) => {
-            if (e.bankBranchPeriod !== null&&e.bankBranch !== null) {
+            if (e.bankBranchPeriod !== null&&e.bankBranch !== null&&e.statusEnum == 3) {
               this.totalAmount += e.loanQuota
 
               this.loanApps.push({
