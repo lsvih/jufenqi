@@ -9,8 +9,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 export default {
   data() {
     return {
-      lastUrl: Lib.M.GetRequest().url ? decodeURIComponent(Lib.M.GetRequest().url) : decodeURIComponent('./index.html'),
-      code: Lib.M.GetRequest().code,
+      lastUrl: this.GetRequest().url ? decodeURIComponent(this.GetRequest().url) : decodeURIComponent('./index.html'),
+      code: this.GetRequest().code,
       appId: "wx4b13962d7d02786e"
     }
   },
@@ -40,6 +40,19 @@ export default {
     } else {
       // location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${encodeURIComponent(location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirec`
       console.log('没有code')
+    }
+  },
+  methods: {
+    GetRequest() {
+      let url = window.location.search
+      let theRequest = {}
+      if (url.includes('?')) {
+        let strs = url.substr(1).split('&')
+        for (let str of strs) {
+          theRequest[str.split('=')[0]] = decodeURIComponent(str.split('=')[1])
+        }
+      }
+      return theRequest
     }
   }
 }
