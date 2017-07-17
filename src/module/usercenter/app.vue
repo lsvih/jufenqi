@@ -70,9 +70,12 @@ body {
     }
     .user-balance {
       position: absolute;
-      top: 160px;
-      left: 49px;
+      top: 165px;
+      left: 70px;
       font-size: 15px;
+      padding: 4px 6px;
+      border: 1px solid #fff;
+      border-radius: 3px;
     }
     .user-service {
       position: absolute;
@@ -230,7 +233,8 @@ body {
     <span class="hello">你好</span>
     <div class="user-name">{{userName}}</div>
     <div class="manager" v-if="managerService"><img src="/static/images/usercenter/manager-final.png"></div>
-    <div class="user-balance" v-tap="goto('./loan-application.html')">贷款金额: {{loan|currency "" 2}}(元) > </div>
+    <!-- <div class="user-balance" v-tap="goto('./loan-application.html')">贷款金额: {{loan|currency "" 2}}(元) ></div> -->
+    <div class="user-balance" v-tap="goto('./loan-application.html')">贷款详情</div>
     <!-- 设置页 -->
     <div class="setting" v-tap="goto('./user-setting.html')"><img src="/static/images/usercenter/setting.png"></div>
   </flexbox-item>
