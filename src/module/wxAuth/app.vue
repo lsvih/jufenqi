@@ -15,6 +15,7 @@ export default {
     }
   },
   ready() {
+    console.log(this.code)
     if (this.code) {
       axios.post(`${Lib.C.userApi}auth/loginUsingWechat`, {}, {
         params: {
@@ -37,7 +38,8 @@ export default {
         throw err
       })
     } else {
-      location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${encodeURIComponent(location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirec`
+      // location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${encodeURIComponent(location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirec`
+      console.log('没有code')
     }
   }
 }
