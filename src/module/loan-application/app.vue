@@ -335,7 +335,7 @@ body {
       <p class="amount">{{totalAmount.toFixed(2)}}<span>元</span></p>
       <!-- <div class="hint">注意：本次活动不包括装修公司及家电品牌</div> -->
 
-      <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span>
+      <!-- <span class="tel" v-tap="goto('tel:40000390808')">客服电话</span> -->
     </div>
     <div class="coupon-detail">
       <div class="cell">
@@ -365,7 +365,7 @@ body {
         </div>
       </div>
     </div>
-    <div class="add-loan" v-tap="goto('./activation-step1.html')">
+    <div class="add-loan" v-tap="goto('tel:40000390808')">
       新增贷款
     </div>
   </div>

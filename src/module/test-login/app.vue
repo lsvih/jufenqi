@@ -81,7 +81,8 @@ export default {
 			brands: [],
 			tabIndex: 0,
 			token: '',
-			dates: [1496654976,1493449436]
+			dates: [1483587082,1483592155]
+
 		}
 	},
 	components: {

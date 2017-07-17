@@ -1,4 +1,4 @@
-const Rxports = {
+var Rxports = {
   /**
    * 获得当前页面的文件名
    */
@@ -13,7 +13,8 @@ const Rxports = {
   GetRequest: () => {
     let url = window.location.search
     let theRequest = {}
-    if (url.includes('?')) {
+    // if (url.includes('?')) {
+    if (url.indexOf('?') !== -1) {
       let strs = url.substr(1).split('&')
       for (let str of strs) {
         theRequest[str.split('=')[0]] = decodeURIComponent(str.split('=')[1])
