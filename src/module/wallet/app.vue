@@ -255,6 +255,10 @@ export default {
         id: 6, value: '退款扣返现'
       },{
         id: 7, value: '提现返还'
+      },{
+        id: 8, value: '预存活动微信超时退款'
+      },{
+        id: 9, value: '主材订单微信超时退款'
       }]
     }
   },
