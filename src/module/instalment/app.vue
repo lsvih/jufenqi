@@ -312,11 +312,11 @@
 
   <div class="ins-header-goapply" v-if="thisStatus == '未申请'">
     <p v-tap="goto('./ins-apply.html')">去申请</p>
-    <span>最高可贷款60万元，24期免息</span>
+    <span>最高可贷款40万元，享受12期贴息服务</span>
   </div>
   <div class="ins-header-applyfalse" v-if="thisStatus == '激活失败' || thisStatus == '申请失败'">
     <p v-tap="goto('./ins-apply.html')">重新申请</p>
-    <span>最高可贷款60万元，24期免息</span>
+    <span>最高可贷款40万元，享受12期贴息服务</span>
     <strong>—— 申请失败 ——</strong>
   </div>
 

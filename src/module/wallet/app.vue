@@ -274,7 +274,7 @@ export default {
       this.balanceChanges = res.data.data.balanceChanges
     }).catch((res) => {
       alert("网络连接失败，请稍候重试")
-      window.location.reload()
+
     })
   },
   methods: {

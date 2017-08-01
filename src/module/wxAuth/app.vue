@@ -37,7 +37,6 @@ export default {
         throw err
       })
     } else {
-      alert('登录失败！')
       location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${encodeURIComponent(location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirec`
     }
   }

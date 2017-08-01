@@ -677,11 +677,19 @@ export default {
     axios.get(`${Lib.C.homeApi}operations?filter=operationName:banner`).then((res) => {
       res.data.data.map((e) => {
         if (e.linkUrl) {
-          this.newBannerList.push({
-            id: e.id,
-            url: e.linkUrl,
-            img: Lib.C.imgUrl + e.coverImg
-          })
+          if (e.title !== '') {
+            this.newBannerList.push({
+              id: e.id,
+              url: e.linkUrl,
+              img: Lib.C.imgUrl + e.coverImg
+            })
+          } else if (e.title == '') {
+            this.newBannerList.push({
+              id: e.id,
+              url: e.linkUrl,
+              img: Lib.C.imgUrl + 'banner-3.jpg'
+            })
+          }
         } else if (!e.linkUrl&&e.descriptionRich) {
           this.newBannerList.push({
             id: e.id,
