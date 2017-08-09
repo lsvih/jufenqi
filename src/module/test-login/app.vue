@@ -106,9 +106,8 @@ export default {
 			})
 		},
 		getToken() {
-			axios.get(`http://wx.jufenqi.com:8080/wechat/api/mp/accessToken`).then((res) => {
-				this.token = res.data.data.accessToken
-				console.log(this.token)
+			axios.get(`http://awiclass.monoame.com/api/command.php?type=get&name=post`).then((res) => {
+				console.log(res)
 			}).catch((err) => {
 				console.log(err)
 			})

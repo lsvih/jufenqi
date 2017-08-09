@@ -225,6 +225,7 @@ export default {
     selectPay(e) {
       this.payMethod = Number(e)
       if (e == 2 && this.tempBankList.length >1) {
+        document.activeElement.blur();
         this.showSelectBank = true
       }
     },
@@ -259,6 +260,7 @@ export default {
       this.bankBranchPeriodId = Number(this.tempAddBank[0])
       this.bankSelected = findValue(this.tempAddBank[0], this.tempBankList)
       this.payments[1].description = this.bankSelected
+      console.log(this.tempBankList, this.tempAddBank, this.bankSelected)
       this.tempAddBank = []
       this.showSelectBank = false
     }
