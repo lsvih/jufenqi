@@ -185,6 +185,13 @@ html {
       <img src="./select.png">
     </div>
   </div>
+  <div class="cell" v-tap="goto('./address.html')">
+    <div class="label">我的收货地址</div>
+    <div class="right">
+      进入地址管理
+      <img src="./select.png">
+    </div>
+  </div>
   <div class="cell" v-tap="goto('./logout.html')" style="margin-top: 80px;">
     <div class="abso">
       退出登录
