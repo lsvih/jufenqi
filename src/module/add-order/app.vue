@@ -717,6 +717,8 @@ function shopInfoPipe(shops) {
 function readRequest(obj) {
   let arr = [], storeData = {};
   storeData.id = obj.storeId,
+  storeData.name = obj.storeName,
+  storeData.address = obj.address,
   storeData.brands = [],
   storeData.push({
     id: obj.brandId,
