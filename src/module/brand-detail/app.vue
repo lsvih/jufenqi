@@ -368,7 +368,7 @@ export default {
       result.push(storeData)
 
       window.localStorage.setItem('temp', JSON.stringify(result))
-      location.href = './add-order.html'
+      location.href = `./add-order.html?storeId=${shopId}&brandId=${brandId}&cateId=${this.cateId}&brandName=${this.brand.name}`
     }
   },
   ready() {
@@ -386,6 +386,7 @@ export default {
     }).catch((err) => {
       throw err
     })
+    console.log(this.cateId)
   }
 }
 /**

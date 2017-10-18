@@ -200,7 +200,7 @@ body {
       <div class="label" v-for="balance in balanceChanges">
         <div class="amount-label">
           <div class="amount-type">{{returnType(balance.type, typeList)}}</div>
-          <div class="amount-time">{{Lib.C.getTime(balance.createdAt)}}</div>
+          <div class="amount-time">{{getTime(balance.createdAt)}}</div>
         </div>
         <div class="amout-change">
           <span v-if="showType(balance.type)" class="orange">+{{balance.amount}}元</span>
@@ -338,5 +338,4 @@ export default {
     }
   }
 }
-
 </script>

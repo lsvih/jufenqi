@@ -308,7 +308,7 @@ export default {
       showSelectBrand: false,
       showSelectClerk: false,
       showSelectCoupon: false,
-      shopList: shopInfoPipe(JSON.parse(localStorage.temp)),
+      shopList: localStorage.temp ? shopInfoPipe(JSON.parse(localStorage.temp)) : readRequest(Lib.M.GetRequest()),
       brandLength: [],
       tempBrandList: [],
       tempBrandOperateType: null,
@@ -681,7 +681,7 @@ export default {
     },
     isHongTai(id) {
       return id != 254
-    }
+    },
   }
 
 }
@@ -713,5 +713,22 @@ function shopInfoPipe(shops) {
     })
   })
   return shops
+}
+function readRequest(obj) {
+  let arr = [], storeData = {};
+  storeData.id = obj.storeId,
+  storeData.brands = [],
+  storeData.push({
+    id: obj.brandId,
+    name: obj.brandName,
+    cateId: obj.cateId,
+    clerk: null,
+    specialAmount: null,
+    normalAmount: null,
+    used: null,
+    preAmount: null
+  })
+  arr.push(storeData)
+  return arr
 }
 </script>
