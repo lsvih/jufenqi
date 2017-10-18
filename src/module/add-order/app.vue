@@ -308,6 +308,7 @@ export default {
       showSelectBrand: false,
       showSelectClerk: false,
       showSelectCoupon: false,
+      // localStorage.temp ? shopInfoPipe(JSON.parse(localStorage.temp)) : 
       shopList: localStorage.temp ? shopInfoPipe(JSON.parse(localStorage.temp)) : readRequest(Lib.M.GetRequest()),
       brandLength: [],
       tempBrandList: [],
@@ -720,7 +721,7 @@ function readRequest(obj) {
   storeData.name = obj.storeName,
   storeData.address = obj.address,
   storeData.brands = [],
-  storeData.push({
+  storeData.brands.push({
     id: obj.brandId,
     name: obj.brandName,
     cateId: obj.cateId,
