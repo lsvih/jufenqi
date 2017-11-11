@@ -192,6 +192,13 @@ html {
       <img src="./select.png">
     </div>
   </div>
+  <div class="cell" v-tap="goto('./tips.html')">
+    <div class="label">关于居分期</div>
+    <div class="right">
+      查看
+      <img src="./select.png">
+    </div>
+  </div>
   <div class="cell" v-tap="goto('./logout.html')" style="margin-top: 80px;">
     <div class="abso">
       退出登录
