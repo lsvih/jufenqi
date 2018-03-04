@@ -150,11 +150,15 @@ p {
     height: 44px;
     text-align: center;
     line-height: 44px;
-    background-color: #ff9736;
-    color: #fff;
+    background-color: #ddd;
+    color: #ccc;
     position: fixed;
     left: 0;
     bottom: 0;
+  }
+  .payed {
+    background-color: #ff9736;
+    color: #fff;
   }
   .vux-popup-picker-header {
     color: #ff9736 !important;
@@ -180,12 +184,12 @@ p {
         </p>
         <p>
           
-          <!-- <span>
-            骚气粉
-          </span> -->
         </p>
         <span>
           ¥{{price}}
+        </span>
+        <span style="bottom: 28px;" v-if="pointNeed == 'true'">
+            所需积分{{bonusPointCost}}
         </span>
         <div>
           <p v-tap="getShopCountNum(false)" style="color: #999;">
@@ -229,7 +233,7 @@ p {
       </div>
     </div>
   </div>
-  <div class="pay-btn" v-tap="pay()">
+  <div class="pay-btn" :class="{'payed': isFinished()}" v-tap="isFinished()?pay():false">
     立即支付
   </div>
   <popup-picker title="地区" :data="addresses" :columns="1" :show-cell="false" :show.sync="showSelect" :value.sync="areaSelect"show-name @on-hide="onSelectedAddress" v-ref:addresses></popup-picker>
@@ -246,7 +250,7 @@ p {
   export default {
     data () {
       return {
-        shopCountNum: 0,
+        shopCountNum: 1,
         itemId: Lib.M.GetRequest().itemId,
         imgUrl: Lib.C.imgUrl,
         ItemNotifyUrl: 'http://materialorder/api/item-orders/noticePaymentResult',
@@ -265,7 +269,9 @@ p {
         areaSelect: [],
         addressDefault: '',
         addressId: null,
-        showLoading: false
+        showLoading: false,
+        bonusPointCost: '',
+        bonusPoints: '',
       }
     },
     components: {
@@ -274,7 +280,9 @@ p {
     },
     methods: {
       goto(url) {
-        location.href = './address.html'
+        let last = location.href
+        last = last.replace('=','~')
+        location.href = `./address.html?last=${last}`
       },
       getShopCountNum: function(isAdd){
         if(isAdd){
@@ -300,7 +308,8 @@ p {
           this.bannerImgs = this.imgUrl + result.bannerImgs
           this.available = result.available
           this.itemName = result.itemName
-          this.itemText = '不错的产品'
+          this.itemText = result.itemText
+          this.bonusPointCost = result.bonusPointsCost
         }).catch((err) => {
           alert('获取信息失败，请稍后再试。。')
           throw err
@@ -321,12 +330,27 @@ p {
               this.addressId = e.id
             }
           })
+          console.log(this.addresses)
           if (this.addresses.length == 0) {
             this.addressDefault = `您现在还没有收货地址`
+            this.addressId = null
           }
+          if (this.addresses.length == 1) {
+            let e = this.addresses[0]
+            this.addressDefault = e.name
+            this.addressId = Number(e.value)
+          }
+          console.log(this.addressDefault)
         }).catch((err) => {
           throw err
         })
+      },
+      isTruePhone() {
+        let reg = /^1[3|4|5|7|8]\d{9}$/
+        return reg.test(Number(this.userMobile))
+      },
+      isFinished() {
+        return this.userName&&this.addressId&&this.isTruePhone()
       },
       _show() {
         document.activeElement.blur();
@@ -348,58 +372,80 @@ p {
         let payBody = {}
         payBody.amount = this.price
         payBody.count = this.shopCountNum
-        payBody.userAddressId = this.addressId
-        payBody.itemId = this.itemId
+        payBody.userAddress = {id: this.addressId}
+        payBody.item = {id: this.itemId}
         payBody.userId = JSON.parse(localStorage.getItem('user')).userId
         payBody.payMethod = 3
-        axios.post(`${Lib.C.mOrderApi}item-orders/submit`, payBody).then((res) => {
-          let orderNo = res.data.data.orderNo
-          axios.post(`${Lib.C.mOrderApi}item-orders/${orderNo}/pay`,{
-            payMethod: 3
-          }).then((res) => {
-            let paymentId = res.data.data.paymentId
-            let payData = new FormData()
-          payData.append('notifyUrl', this.ItemNotifyUrl)
-            axios.get(`${Lib.C.userApi}wechatOpenIds/${JSON.parse(localStorage.user).userId}`).then((res) => {
-              let openId = res.data.data.openId
-              payData.append('openid', openId)
-              axios.post(`${Lib.C.payApi}pay/${paymentId}`, payData).then((res) => {
-                pingpp.createPayment(res.data.data, (result, err) => {
-                  if (result === 'success') {
-                    alert('支付成功！')
-                    that.showLoading = false
-                    // location.href = './pay-success.html?type=3'
-                  } else if (result === 'fail') {
-                    alert('支付失败')
-                    that.showLoading = false
-                    // location.href = './zc-order-list.html?type=5'
-                  } else if (result === 'cancel') {
-                    alert('支付取消')
-                    that.showLoading = false
-                    // location.href = './zc-order-list.html?type=5'
-                  }
+        payBody.name = this.userName
+        payBody.mobile = this.userMobile
+        if (this.bonusPoints > this.bonusPointCost || this.bonusPointCost == 0) {
+          axios.post(`${Lib.C.mOrderApi}item-orders/submit`, payBody).then((res) => {
+            let orderNo = res.data.data.orderNo
+            axios.post(`${Lib.C.mOrderApi}item-orders/${orderNo}/pay`,{
+              payMethod: 3
+            }).then((res) => {
+              if (payBody.amount > 0) {
+                let paymentId = res.data.data.paymentId
+                let payData = new FormData()
+                payData.append('notifyUrl', this.ItemNotifyUrl)
+                axios.get(`${Lib.C.userApi}wechatOpenIds/${JSON.parse(localStorage.user).userId}`).then((res) => {
+                  let openId = res.data.data.openId
+                  payData.append('openid', openId)
+                  axios.post(`${Lib.C.payApi}pay/${paymentId}`, payData).then((res) => {
+                    pingpp.createPayment(res.data.data, (result, err) => {
+                      if (result === 'success') {
+                        alert('支付成功！')
+                        that.showLoading = false
+                        location.href="./dp-order-list.html"
+                        // location.href = './pay-success.html?type=3'
+                      } else if (result === 'fail') {
+                        alert('支付失败')
+                        that.showLoading = false
+                        // location.href = './zc-order-list.html?type=5'
+                      } else if (result === 'cancel') {
+                        alert('支付取消')
+                        that.showLoading = false
+                        // location.href = './zc-order-list.html?type=5'
+                      }
+                    })
+                  }).catch((err) => {
+                    this.showLoading = false
+                    alert("网络连接中断，请稍候再试")
+                    throw err
+                  })
+                }).catch((err) => {
+                  this.showLoading = false
+                  alert("网络连接中断，请稍候再试")
+                  throw err
                 })
-              }).catch((err) => {
-                this.showLoading = false
-                alert("网络连接中断，请稍候再试")
-                throw err
-              })
+              } else {
+                alert ('兑换成功！')
+                location.href="./dp-order-list.html"
+              }
             }).catch((err) => {
               this.showLoading = false
-              alert("网络连接中断，请稍候再试")
-              throw err
             })
           }).catch((err) => {
             this.showLoading = false
           })
-        }).catch((err) => {
+        } else {
+          alert('您的积分不足哦')
           this.showLoading = false
+        }
+      },
+      getPoint() {
+        axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+          this.bonusPoints = res.data.data.bonusPoints
+          console.log(this.bonusPointChanges)
+        }).catch((err) => {
+          console.log(err)
         })
       }
     },
     ready() {
       this.getItemInfo(this.itemId)
       this.getAddress()
+      this.getPoint()
     }
   }
 </script>

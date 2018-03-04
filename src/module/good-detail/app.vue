@@ -113,6 +113,9 @@ p {
       <span>
         {{originalPrice}} 元
       </span>
+      <div style="width: fit-content; color: #fff; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px;" v-if="pointNeed == 'true'">
+        所需积分{{bonusPointsCost}}
+      </div>
       <p>
         已抢{{turnoverCount}}件
       </p>
@@ -160,7 +163,9 @@ p {
         bannerImgs: '',
         available: null,
         itemName: '',
-        itemText: ''
+        itemText: '',
+        bonusPointsCost: '',
+        pointNeed: Lib.M.GetRequest().pointNeed
       }
     },
     methods: {
@@ -179,7 +184,8 @@ p {
         this.bannerImgs = this.imgUrl + result.bannerImgs
         this.available = result.available
         this.itemName = result.itemName
-        this.itemText = '不错的产品'
+        this.itemText = result.itemText
+        this.bonusPointsCost = result.bonusPointsCost
       }).catch((err) => {
         alert('获取信息失败，请稍后再试。。')
         throw err

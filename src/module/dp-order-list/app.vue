@@ -96,16 +96,16 @@ header {
 <div>
   <header>
     <tab active-color='#ff9736' :index.sync="index">
-      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 0" v-tap="index = 0">已预约</tab-item>
-      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 1" v-tap="index = 1">待支付</tab-item>
-      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 2" v-tap="index = 2">待确认</tab-item>
-      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 3" v-tap="index = 3">待收货</tab-item>
-      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 4" v-tap="index = 4">已完成</tab-item>
-      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 5" v-tap="index = 5">继续支付</tab-item>
+     <!--  <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 0" v-tap="index = 0">已预约</tab-item> -->
+      <!-- <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 0" v-tap="index = 0">已取消</tab-item> -->
+      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 0" v-tap="index = 0">待支付</tab-item>
+      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 1" v-tap="index = 1">待确认</tab-item>
+      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 2" v-tap="index = 2">待收货</tab-item>
+      <tab-item style="font-size:12px" active-class="tab-active" :selected="index == 3" v-tap="index = 3">已完成</tab-item>
     </tab>
   </header>
   <swiper :index.sync="index" :height="getScreenHeight()+'px'" :show-dots="false">
-    <swiper-item height="100%">
+    <!-- <swiper-item height="100%">
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'"  scrollbar-y v-ref:lista>
           <div>
@@ -116,8 +116,8 @@ header {
           </div>
         </scroller>
       </div>
-    </swiper-item>
-    <swiper-item height="100%">
+    </swiper-item> -->
+    <swiper-item>
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" lock-x scrollbar-y v-ref:listb>
           <div>
@@ -166,18 +166,18 @@ header {
         </scroller>
       </div>
     </swiper-item>
-    <swiper-item>
+    <!-- <swiper-item>
       <div class="tab-swiper vux-center content">
         <scroller :height="getScreenHeight()-44+'px'" :lock-x="true" scrollbar-y v-ref:listf>
           <div>
-            <no-data v-if="list5.length==0"></no-data>
+            <no-data v-if="list1.length==0"></no-data>
             <div v-else>
               <j-zc-op-item v-for="order in list5" :data="order"></j-zc-op-item>
             </div>
           </div>
         </scroller>
       </div>
-    </swiper-item>
+    </swiper-item> -->
   </swiper>
 </div>
 <confirm :show.sync="showConfirm.cancelAppt" title="" confirm-text="是" cancel-text="否" @on-confirm="cancelAppt(tempApptNo)">
@@ -224,7 +224,7 @@ import Swiper from 'vux-components/swiper'
 import SwiperItem from 'vux-components/swiper-item'
 import JZcOrderListItem from 'components/j-zc-order-list-item'
 import JZcItem from 'components/j-zc-item'
-import JZcOpItem from 'components/j-zc-op-item'
+import JZcOpItem from 'components/j-dp-op-item'
 import Scroller from 'vux-components/scroller'
 import NoData from 'common/components/no-data'
 import Confirm from 'vux-components/confirm'
@@ -295,97 +295,56 @@ export default {
     })
     console.log(this.list0)
     //中订单
-    axios.get(`${Lib.C.mOrderApi}materialGroups`, {
+    axios.get(`${Lib.C.mOrderApi}item-orders`, {
       params: {
-        filter: `customerId:${JSON.parse(localStorage.getItem("user")).userId}|status:[1,6]`,
+        filter: `userId:${JSON.parse(localStorage.getItem("user")).userId}|status:[1,6]`,
         sort: 'createdAt,DESC',
         size: 1000
       }
     }).then((res) => {
       res.data.data.map((order) => {
         switch (order.status) {
+          // case 1:
+          //   // this.list0.push(order)
+          //   break;
           case 1:
-            // this.list0.push(order)
-            break;
-          case 2:
-            this.list5.push(order)
-            break;
-          case 3:
             this.list1.push(order)
             break;
-          case 4:
+          case 2:
             this.list2.push(order)
             break;
-          case 5:
+          case 3:
             this.list3.push(order)
             break;
-          case 6:
+          case 4:
             this.list4.push(order)
             break;
+          // case 6:
+          //   this.list4.push(order)
+          //   break;
           default:
             break;
         }
       })
       this.$nextTick(()=> {
-        this.$refs.lista.reset()
+        // this.$refs.lista.reset()
         this.$refs.listb.reset()
         this.$refs.listc.reset()
         this.$refs.listd.reset()
         this.$refs.liste.reset()
       })
+      console.log(this.list2)
     }).catch((err) => {
       throw err
     })
-    // 小订单
-    // axios.get(`${Lib.C.mOrderApi}materialOrders`, {
-    //   params: {
-    //     filter: 'customerId:' + JSON.parse(localStorage.getItem("user")).userId + '|status:[4,6]',
-    //     sort: 'createdAt,DESC',
-    //     size: 1000
-    //   }
-    // }).then((res) => {
-    //   res.data.data.map((order) => {
-    //     switch (order.status) {
-    //       case 1:
-    //         this.list0.push(order)
-    //         break;
-    //       case 2:
-    //         this.list5.push(order)
-    //         break;
-    //       case 3:
-    //         this.list1.push(order)
-    //         break;
-    //       case 4:
-    //         this.list2.push(order)
-    //         break;
-    //       case 5:
-    //         this.list3.push(order)
-    //         break;
-    //       case 6:
-    //         this.list4.push(order)
-    //         break;
-    //       default:
-    //         break;
-    //     }
-    //   })
-    //   this.$nextTick(() => {
-    //     this.$refs.lista.reset()
-    //     this.$refs.listb.reset()
-    //     this.$refs.listc.reset()
-    //     this.$refs.listd.reset()
-    //     this.$refs.liste.reset()
-    //     this.$refs.listf.reset()
-    //   })
-    // }).catch((err) => {
-    //   throw err
-    // })
+
   },
   methods: {
     getScreenHeight() {
       return document.body.clientHeight
     },
     receive(groupNo) {
-      axios.post(`${Lib.C.mOrderApi}materialGroups/${groupNo}/receive`).then((res) => {
+      axios.post(`${Lib.C.mOrderApi}item-orders/${groupNo}/receive`).then((res) => {
         alert('确认收货成功！')
         location.reload()
       }).catch((res) => {

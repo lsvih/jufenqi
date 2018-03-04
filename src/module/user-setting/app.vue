@@ -18,7 +18,7 @@ html {
 .user-container {
   width: 100%;
   height: 215px;
-  background-image: url('/static/images/usercenter/user-bg.png');
+  background-image: url('/static/new/usercenter/01.png');
   background-size: 100% 100%;
   position: relative;
   .img-wrapper {
@@ -37,7 +37,7 @@ html {
   }
   .name-wrapper {
     font-size: 20px;
-    color: @font;
+    color: #fff;
     position: absolute;
     top: 150px;
     left: 50%;

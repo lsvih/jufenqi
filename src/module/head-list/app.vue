@@ -126,17 +126,17 @@ body {
         </div> -->
         <!-- :height="getScreenHeight()-44+'px'" lock-x scrollbar-y -->
         <!-- <scroller> -->
-        <div class="item-others" v-for="headline in headList">
+        <div class="item-others">
+          <div class="img-wrapper">
+            <img src="/static/new/index/banner01.png">
+          </div>
           <div class="text-wrapper" v-tap="gotoDetail(headline.id)">
             <div class="text-content">
-              {{titleTransform(headline.title)}}
+              哈哈哈
             </div>
             <div class="text-source">
-              来源：{{headline.source}}
+              来源：嘿嘿
             </div>
-          </div>
-          <div class="img-wrapper">
-            <img :src="headline.coverImg">
           </div>
         </div>
         <!-- </scroller> -->
@@ -168,7 +168,7 @@ export default {
     Swiper
   },
   ready() {
-    this.getTabs()
+
   },
   methods: {
     getTabs() {

@@ -413,7 +413,6 @@ export default {
           result.map((e) => {
             if (e.bankBranchPeriod !== null&&e.bankBranch !== null&&e.statusEnum == 3) {
               this.totalAmount += e.loanQuota
-
               this.loanApps.push({
                 bankName: e.bankBranch.name,
                 period: e.bankBranchPeriod.name,

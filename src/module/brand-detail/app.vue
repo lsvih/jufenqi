@@ -1,6 +1,6 @@
 <style>
 body {
-  background-color: #eee;
+  background-color: #f4f4f4;
 }
 
 article {
@@ -31,20 +31,27 @@ header {
     position: fixed;
     top: 0;
     left: 0;
-    height: 180px;
     width: 100%;
-    background-image: url('./bg.png');
-    background-size: 100% 100%;
     z-index: 5;
+    background-color: #f4f4f4;
+    .img-wp {
+        width: 96%;
+        margin-top: 20px;
+        position: relative;
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+    }
     .brand-logo {
         position: absolute;
-        top: 24px;
-        left: calc(~"50% - 50px");
-        height: 100px;
-        width: 100px;
+        top: 50%;
+        left: 20px;
+        height: 60px;
+        width: 60px;
+        transform: translateY(-50%);
         border-radius: 50%;
-        overflow: hidden;
-        box-shadow: rgba(0, 0, 0, .4) 0 2px 4px 2px;
         img {
             height: 100%;
             width: 100%;
@@ -52,13 +59,25 @@ header {
     }
     .brand-name {
         position: absolute;
-        top: 134px;
-        left: 0;
-        width: 100%;
+        top: 18%;
+        left: 100px;
         height: 16px;
         font-size: 16px;
         color: #fff;
-        text-align: center;
+        font-weight: 300;
+    }
+    .brand-intro {
+        position: absolute;
+        top: 51px;
+        left: 100px;
+        width: calc(~"100% - 120px");
+        font-size: 12px;
+        color: #fff;
+        font-weight: 300;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
     }
 }
 footer {
@@ -124,51 +143,43 @@ footer {
 .content {
     .store {
         position: relative;
-        height: 120px;
-        width: 100%;
-        border-bottom: 1px solid #eee;
+        height: 100px;
+        width: calc(~"100% - 40px");
         background-color: #fff;
-        line-height: 15px;
         z-index: 1;
+        margin: 0px auto 20px auto;
+        border-radius: 10px;
         .add {
           position: absolute;
-          width: 72px;
-          height: 28px;
-          right: 15px;
-          bottom: 5px;
-          border: 1px solid #EBA844;
+          right: 16px;
+          bottom: 20px;
+          border: 1px solid #ff9736;
           border-radius: 5px;
-          line-height: 28px;
+          padding: 2px 3px;
           font-size: 12px;
-          color: #EBA844;
-          text-align: center;
+          color: #ff9736;
         }
         .added {
           position: absolute;
-          width: 72px;
-          height: 28px;
-          right: 15px;
-          bottom: 5px;
-          border: 1px solid #EBA844;
+          right: 16px;
+          bottom: 20px;
+          border: 1px solid #ff9736;
           border-radius: 5px;
-          line-height: 28px;
+          padding: 2px 3px;
           font-size: 12px;
-          background-color: #EBA844;
+          background-color: #ff9736;
           color: #fff;
-          text-align: center;
         }
         .buy {
           position: absolute;
-          width: 72px;
-          height: 28px;
-          right: 97px;
-          bottom: 5px;
-          border: 1px solid #EBA844;
+          right: 16px;
+          top: 20px;
           border-radius: 5px;
-          line-height: 28px;
+          border: 1px solid rgb(235,103,96);
+          padding: 2px 3px;
           font-size: 12px;
-          color: #EBA844;
-          text-align: center;
+          color: #fff;
+          background-color: rgb(235,103,96);
         }
         .store-logo {
             position: absolute;
@@ -183,35 +194,49 @@ footer {
         }
         .store-name {
             position: absolute;
-            top: 14px;
-            left: 145px;
-            width: calc(~"100% - 165px");
-            color: #393939;
-            font-size: 14px;
-            font-weight: bold;
+            top: 21px;
+            left: 16px;
+            color: #333;
+            font-size: 16px;
+            font-weight: 300;
         }
         .store-address {
             position: absolute;
-            top: 45px;
-            left: 145px;
-            width: calc(~"100% - 165px");
+            top: 60px;
+            left: 16px;
             font-size: 12px;
             color: #999;
+            display: flex;
+            font-weight: 300;
+            width: calc(~"100% - 56px - 32px");
+            .img-wp {
+              width: 10px;
+              height: 12px;
+              margin: 2px 4px 0 0;
+              img {
+                display: block;
+                width: 100%;
+              }
+            }
         }
     }
 }
 </style>
 
 <template>
-<header :style="{backgroundImage:'url('+ bgImg +')'}">
-  <div class="brand-logo"><img :src="img + brand.logoImg"></div>
-  <div class="brand-name">{{brand.name}}</div>
+<header :style="{height: getScreenWidth()*231/720 +'px'}">
+  <div class="img-wp" :style="{height: getScreenWidth()*0.96*231/720 + 'px'}">
+    <img src="/static/new/brande/bg.png">
+    <div class="brand-logo"><img :src="img + brand.logoImg"></div>
+    <div class="brand-name" :style="{top: getScreenWidth()*0.21*0.96*231/720 + 'px'}">{{brand.name}}</div>
+    <div class="brand-intro" :style="{top: getScreenWidth()*0.43*0.96*231/720 + 'px'}">{{transfer(brand.intro)}}</div>
+  </div>
 </header>
-<div class="content">
+<div class="content" :style="{paddingTop: getScreenWidth()*231/720 + 40 +'px'}">
   <div class="store" v-for="store in brand.stores" track-by="$index">
-    <div class="store-logo"><img src="./placeholder.png"></div>
     <div class="store-name">{{store.name}}</div>
-    <div class="store-address">{{store.address}}</div>
+    <div class="store-address">
+      <div class="img-wp"><img src="/static/new/brande/add.png"></div>{{store.address}}</div>
     <div class="buy" v-tap="addOrder(id,store.id,store)">立即购买</div>
     <div class="added" v-if="~cart.indexOf(store.id)" v-tap="delCart(id,store.id)">已加入</div>
     <div class="add" v-else v-tap="addCart(id,store.id,store)">加入备选</div>
@@ -219,7 +244,7 @@ footer {
 
 </div>
 <footer>
-  <div class="icon-item"><img src="share.png">
+  <!-- <div class="icon-item"><img src="share.png">
     <div>分享</div>
   </div>
   <div class="icon-item" v-if="thisIsFavorite" v-tap="cancelFavorite()"><img src="favorite-fill.png">
@@ -227,8 +252,8 @@ footer {
   </div>
   <div class="icon-item" v-else v-tap="addFavorite()"><img src="favorite.png">
     <div>收藏</div>
-  </div>
-  <div class="footer-line"></div>
+  </div> -->
+  <!-- <div class="footer-line"></div> -->
   <div class="cart-list" v-tap="goto('./cart.html')"><img :src="cart.length?cartAImg:cartImg">备选订单</div>
 </footer>
 </template>
@@ -369,6 +394,15 @@ export default {
 
       window.localStorage.setItem('temp', JSON.stringify(result))
       location.href = `./add-order.html?storeId=${shopId}&brandId=${brandId}&cateId=${this.cateId}&brandName=${this.brand.name}&storeName=${storeData.name}&address=${storeData.address}`
+    },
+    transfer(str) {
+      let arr = []
+      str.split('').map((e) => {
+        if (e != ' ' || e != "  ") {
+          arr.push(e)
+        }
+      })
+      return arr.join('')
     }
   },
   ready() {

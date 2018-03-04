@@ -429,6 +429,7 @@ export default {
       addressDetail: '',
       showSelect: false,
       addresses: [],
+      last: Lib.M.GetRequest().last.replace('~', '='),
       area: [{
         name: '北京',
         value: '北京',
@@ -520,6 +521,7 @@ export default {
   },
   ready() {
     this.getAddress()
+    console.log(this.last)
   },
   methods: {
     goto(url) {
@@ -565,7 +567,11 @@ export default {
       result.address = this.addressDetail
       axios.post(`${Lib.C.mOrderApi}user-addresses`, result).then((res) => {
         alert('添加地址成功！')
-        location.reload()
+        if (this.last) {
+          location.href = this.last
+        } else {
+          location.reload()
+        }
       }).catch((err) => {
         alert('添加失败，请稍后再试！')
         throw err
@@ -574,7 +580,11 @@ export default {
     changeDefaultAddress(id) {
       axios.post(`${Lib.C.mOrderApi}user-addresses/${id}/set-default`).then((res) => {
         alert('已经设置为默认地址！')
-        location.reload()
+        if (this.last) {
+          location.href = this.last
+        } else {
+          location.reload()
+        }
       }).catch((err) => {
         alert('设置失败，请稍后再试！')
         throw err

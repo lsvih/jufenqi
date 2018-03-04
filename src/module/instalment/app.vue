@@ -1,5 +1,6 @@
 <style scoped lang="less">
 @import '~vux/dist/styles/1px.css';
+
 .block-1 {
     position: relative;
     height: 130px;
@@ -102,9 +103,9 @@
   padding: 20px 0;
 }
 .ins-header-bac{
-  background-image: url('http://ohej1hvbm.bkt.clouddn.com/ins-bg.png');
+  background-image: url('/static/new/usercenter/01.png');
   height: 230px;
-  background-size: cover;
+  background-size: 100% auto;
   width: 100%;
 }
 .ins-header-goapply{
@@ -122,7 +123,7 @@
     font-size: 15px;
     color: #ff9736;
     font-weight: bold;
-    box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.1);
   }
   span{
     font-size: 14px;
@@ -201,7 +202,7 @@
     font-size: 15px;
     color: #ff9736;
     font-weight: bold;
-    box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.1);
   }
   span{
     font-size: 14px;
@@ -291,6 +292,144 @@
         }
     }
 }
+.content-wp {
+  position: relative;
+  background-color: #ff9736;
+  height: auto;
+  padding-bottom: 74px;
+  .form-wp {
+    background-color: #fff;
+    width: calc(~"100% - 30px");
+    border-radius: 8px;
+    box-shadow: 1px 5px 15px 2px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    padding: 40px 20px 30px 20px;
+    margin: -20px auto 0 auto;
+    .form-one {
+      .item-wp {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        .img-wp {
+          width: 25%;
+          margin-right: 20px;
+          img {
+            display: block;
+            width: 100%;
+          }
+        }
+        .right {
+          width: 73%;
+          text-align: left;
+          padding-top: 5px;
+          h3 {
+            color: #333;
+            font-size: 14px;
+            font-weight: 400;
+            margin: 0 0 10px 0;
+          }
+          p {
+            color: #666;
+            font-size: 12px;
+            font-weight: 300;
+            margin: 0;
+          }
+        }
+      }
+      &>input {
+        display: block;
+        width: 100%;
+        border: 1px solid #ddd;
+        outline: none;
+        font-size: 14px;
+        height: 36px;
+        line-height: 36px;
+        padding-left: 16px;
+        box-sizing: border-box;
+        font-weight: 300;
+        color: #333;
+        margin-bottom: 10px;
+        &::placeholder {
+          color: #ddd;
+        }
+      }
+      .input_inside {
+        display: block;
+        width: 100%;
+        border: 1px solid #ddd;
+        outline: none;
+        font-size: 14px;
+        height: 36px;
+        line-height: 36px;
+        padding-left: 16px;
+        box-sizing: border-box;
+        font-weight: 300;
+        color: #333;
+        margin-top: 5px;
+        &::placeholder {
+          color: #ddd;
+        }
+      }
+      .input-fake {
+        width: 100%;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        height: 36px;
+        line-height: 36px;
+        padding-left: 16px;
+        box-sizing: border-box;
+        font-weight: 300;
+        color: #ddd;
+        margin-bottom: 10px;
+      }
+      .quez {
+        color: #333;
+        font-size: 14px;
+        font-weight: 300;
+        &>p {
+          font-weight: 400;
+          font-size: 15px;
+        }
+      }
+      .btn {
+        width: 100%;
+        border: 1px solid #ff9736;
+        font-size: 14px;
+        height: 36px;
+        line-height: 36px;
+        text-align: center;
+        box-sizing: border-box;
+        font-weight: 300;
+        color: #ff9736;
+        margin-top: 20px;
+      }
+      .active {
+        color: #fff;
+        background-color: #ff9736;
+      }
+      .line-wp {
+        width: 100%;
+        height: 36px;
+        line-height: 36px;
+        display: flex;
+        font-size: 16px;
+        justify-content: center;
+        margin-bottom: 20px;
+        .line-left {
+          width: 30%;
+          color: #666;
+          text-align: right;
+          margin-right: 20px;
+        }
+        .line-right {
+          width: 60%;
+          color: #333;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
 </style>
 
 <template>
@@ -304,48 +443,161 @@
     <div class="ins-limit-apply" v-if="thisStatus == '未激活'" v-tap="goto('./activation-step1.html')">去激活</div>
     <div class="ins-limit-apply" v-if="thisStatus == '激活中'">激活中</div>
     <img class="bg" src="fq_bg.png" width="100%" height="auto"> -->
-
+<!--  -->
   <!-- </flexbox-item>
 </flexbox> -->
-<div class="ins-header-bac">
+<div class="content-wp">
 
 
-  <div class="ins-header-goapply" v-if="thisStatus == '未申请'">
-    <p v-tap="goto('./ins-apply.html')">去申请</p>
-    <span>最高可贷款40万元，享受12期贴息服务</span>
-  </div>
-  <div class="ins-header-applyfalse" v-if="thisStatus == '激活失败' || thisStatus == '申请失败'">
-    <p v-tap="goto('./ins-apply.html')">重新申请</p>
-    <span>最高可贷款40万元，享受12期贴息服务</span>
-    <strong>—— 申请失败 ——</strong>
-  </div>
-
-
-  <div class="ins-header-success" v-if="thisStatus == '已激活'">
-    <p>已贷款额度</p>
-    <div style="margin: 17px 0 5px; ">{{limit|currency "" 2}}<span>元</span>
+  <div class="ins-header-bac">
+    <div class="ins-header-goapply" v-if="thisStatus == '未申请'">
+      <p v-tap="changeStatus('申请中')">去申请</p>
+      <span>最高可贷款40万元，享受12期贴息服务</span>
     </div>
-    <span>{{expectInstalment}}期  每期{{(limit/expectInstalment)|currency "" 2}}  利息 0 (元)</span>
-    <strong style="margin-top: 20px">—— 审核成功 ——</strong>
-  </div>
+    <div class="ins-header-applyfalse" v-if="thisStatus == '激活失败' || thisStatus == '申请失败'">
+      <p v-tap="changeStatus('申请中')">重新申请</p>
+      <span>最高可贷款40万元，享受12期贴息服务</span>
+      <!-- <strong>—— 申请失败 ——</strong> -->
+    </div>
 
 
-  <div class="ins-header-wait" v-if="thisStatus == '未激活'">
-    <p>初审通过</p>
-    <div>待激活</div>
-    <span>请选择一家银行激活贷款</span>
-  </div>
+    <div class="ins-header-wait" v-if="thisStatus == '已激活'">
+      <p>您的分期已办理</p>
+      <!-- <div style="margin: 17px 0 5px; ">{{limit|currency "" 2}}<span>元</span>
+      </div> -->
+      <div>
+        已激活
+      </div>
+      <!-- <span>{{expectInstalment}}期  每期{{(limit/expectInstalment)|currency "" 2}}  利息 0 (元)</span> -->
+     </div> 
+          <!-- <strong style="margin-top: 20px">—— 审核成功 ——</strong> -->
+    <!-- </div> -->
+    <div class="ins-header-wait" v-if="thisStatus == '申请中'">
+      <p></p>
+      <div>申请中</div>
+      <span>请按照要求填写个人信息</span>
+    </div>
 
+    <div class="ins-header-wait" v-if="thisStatus == '未激活'">
+      <p>初审通过</p>
+      <div>待激活</div>
+    </div>
 
-  <div class="ins-header-success" v-if="thisStatus == '激活中'">
-    <p>期望贷款额度</p>
-    <div style="margin-bottom: 5px;">{{expectQuota|currency "" 2}}<span>元</span></div>
-    <span>期望{{expectInstalment}}期</span>
-    <strong style="margin-top: 20px;">—— 审核中。。 ——</strong>
-  </div>
+    </div>
+   <!--  <div class="ins-header-success" v-if="thisStatus == '激活中'">
+      <p>期望贷款额度</p>
+      <div style="margin-bottom: 5px;">{{expectQuota|currency "" 2}}<span>元</span></div>
+      <span>期望{{expectInstalment}}期</span>
+      <strong style="margin-top: 20px;">—— 审核中。。 ——</strong>
+    </div> -->
+
+    <div class="form-wp" :style="{top: getScreenWidth()*0.56 + 'px'}">
+      <div class="form-one" v-if="thisStatus == '未申请'||thisStatus == '激活失败' || thisStatus == '申请失败'">
+        <div class="item-wp" v-for="step in stepList">
+          <div class="img-wp"><img :src="step.img"></div>
+          <div class="right">
+            <h3>{{step.name}}</h3>
+            <p>{{step.des}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-one" v-if="thisStatus == '申请中'">
+        <input type="text" placeholder="请输入您的姓名" v-model="loanName">
+        <input type="number" placeholder="请输入您的手机号" v-model="loanMobile" keyboard="number">
+        <input type="text" placeholder="请输入您的身份证号" v-model="loanIdCard" keyboard="number">
+        <input type="text" placeholder="请输入您的期望额度" v-model="loanExpectQuota">
+        <div class="input-fake" v-tap="showAreaPicker = true" :style="changeColor($refs.areapicker.getNameValues())">{{$refs.areapicker.getNameValues()?$refs.areapicker.getNameValues():loanDis}}</div>
+        <input type="text" placeholder="请输入您房屋的详细地址" v-model="loanAdd">
+        <input type="text" placeholder="请输入您的月收入" v-model="loanMonth">
+        <div class="quez">
+          <p>请选择您的房屋情况</p>
+          <input type="radio" value="我有房产证" v-model="loanHouseSit" @click="changeShow(false)"><span>我有房产证</span>
+          <input type="radio" value="我有购房合同及发票" v-model="loanHouseSit" @click="changeShow(false)"><span>我有购房合同及发票</span>
+          <input type="radio" value="其他" v-model="loanHouseSit" @click="changeShow(true)"><span>其他</span>
+          <input type="text" class="input_inside" placeholder="请输入您房屋的情况" v-model="loanHouseChange" v-if="extraShow">
+        </div>
+        <div class="quez">
+          <p>您是否有社保</p>
+          <input type="radio" value="true" v-model="loanSocialSecurity"><span>是</span>
+          <input type="radio" value="false" v-model="loanSocialSecurity"><span>否</span>
+        </div>
+        <div class="btn" :class="{'active': isFinished()}" v-tap="isFinished()?submit():return">
+          立即申请
+        </div>
+      </div>
+      <div class="form-one" v-if="thisStatus == '未激活' || thisStatus == '激活中'">
+        <div v-for="l in loanApp">
+          <div class="line-wp">
+            <div class="line-left">姓名</div>
+            <div class="line-right">{{l.name}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">手机号</div>
+            <div class="line-right">{{l.mobile}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">身份证号</div>
+            <div class="line-right">{{l.idCardNo}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">房屋所在地</div>
+            <div class="line-right">{{l.dis}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">详细地址</div>
+            <div class="line-right">{{l.add}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">期望额度</div>
+            <div class="line-right">{{l.expect}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">月收入</div>
+            <div class="line-right">{{l.month}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-one" v-if="thisStatus == '已激活'">
+        <div v-for="l in loanApp">
+          <div class="line-wp">
+            <div class="line-left">姓名</div>
+            <div class="line-right">{{l.name}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">手机号</div>
+            <div class="line-right">{{l.mobile}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">房屋所在地</div>
+            <div class="line-right">{{l.dis}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">详细地址</div>
+            <div class="line-right">{{l.add}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">申办银行</div>
+            <div class="line-right">{{l.bank}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">银行网点</div>
+            <div class="line-right">{{l.branch}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">办理期数</div>
+            <div class="line-right">{{l.period}}</div>
+          </div>
+          <div class="line-wp">
+            <div class="line-left">申办额度</div>
+            <div class="line-right">{{l.loanQuota}}</div>
+          </div>
+        </div>
+      </div>
+    </div> 
+
+  
 </div>
-
-<div class="ins-list" v-if="thisStatus == '已激活' || thisStatus == '激活中'">
+<!-- <div class="ins-list" v-if="thisStatus == '已激活' || thisStatus == '激活中'">
   <div>
     <p>已消费金额(元)</p>
     <span>{{balance|currency "" 2}}元</span>   
@@ -354,7 +606,7 @@
     <p>可贷款总额(元)</p>
     <span>{{ins?ins:0|currency "" 2}}元</span>
   </div>
-</div>
+</div> -->
 <!-- <flexbox class="vux-1px-t block-2" v-if="thisStatus == '已激活'">
   <flexbox-item class="balance" >
     <div >可贷款总额度</div>
@@ -370,7 +622,7 @@
     <j-installment-process :step="3" v-if="thisStatus == '未激活'"></j-installment-process>
     <j-installment-process :step="5" v-if="thisStatus == '激活中'"></j-installment-process>
   </div> -->
-  <div class="down-part">
+  <!-- <div class="down-part">
   <scroller class="block-3" height="calc( 100% - 190px - 44px )" :lock-x="true" :scrollbar-y="false" v-if="thisStatus == '未申请'||thisStatus == '激活失败'||thisStatus == '申请失败'">
       <div>
         <div style="width:100%" :style="{'height':getScreenWidth() * 1.872 + 'px'}"><img src="/static/temp/ins-ad.jpg" width="100%">
@@ -387,8 +639,10 @@
         </div>
       </cell>
     </group>
-  </div> 
+  </div> -->
 
+<!-- <popup-picker title="地区" :data="addresses" :columns="1" :show-cell="false" :show.sync="showSelect" :value.sync="areaSelect" show-name @on-hide="onSelectedAddress" v-ref:addresses></popup-picker> -->
+<popup-picker title="地址" :data="areaList" :columns="3" :show.sync="showAreaPicker" :value.sync="areaSelect" v-ref:areapicker :show-cell="false"></popup-picker>
 <j-footer></j-footer>
 <loading :show="showLoading" text="正在更新您的额度信息，请稍候..."></loading>
 </template>
@@ -406,12 +660,15 @@ import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
 import axios from 'axios'
 import JInstallmentProcess from 'components/j-installment-process'
+import PopupPicker from 'vux-components/popup-picker'
 
 Lib.M.auth(axios, true)
 export default {
   data() {
     return {
       showLoading: false,
+      showAreaPicker: false,
+      extraShow: false,
       limit: 0,   //已贷款额度
       balance: 0,
       expectInstalment: 0, //期望分期数
@@ -446,9 +703,136 @@ export default {
           name: "激活失败"
         }
       ],
-      // thisStatus: "未激活",
-      thisStatus: "正在查询",
-      stepNum: 0
+      thisStatus: "未激活",
+      // thisStatus: "申请中",
+      stepNum: 0,
+      stepList: [{
+        name: '线上看品牌',
+        des: '关注居分期公众微信号，查看合作商户，找到您感兴趣的品牌及商铺信息。',
+        img: '/static/new/index/ins01.png',
+      },{
+        name: '线下挑商品',
+        des: '您可自行逛选，或由家居顾问配您逛选商品，随时提供专业建议。',
+        img: '/static/new/index/ins02.png',
+      },{
+        name: '支付',
+        des: '选好商品别着急，先与商家沟通价格再付款，请记得联系家居顾问刷卡才可享受分期优惠。',
+        img: '/static/new/index/ins03.png',
+      },{
+        name: '生成订单',
+        des: '支付后生成订单，您只需静待商品送货上门即可。',
+        img: '/static/new/index/ins04.png',
+      },],
+      loanName: '',      
+      loanMobile: JSON.parse(localStorage.user).profile.mobile,
+      loanIdCard: '',
+      loanMonth: '',
+      loanSituation: '',
+      loanDis: '请选择您房屋所在地',
+      loanAdd: '',
+      loanIsSS: '',
+      loanExpectQuota: '',
+      loanHouseSit: '',
+      loanSocialSecurity: null,
+      // loanHouseChange: '',
+      radioOne: [{
+        name: '我有房产证',
+        id: 0,
+        picked: false,
+      },{
+        name: '我有购房合同及发票',
+        id: 1,
+        picked: false,
+      },{
+        name: '其他',
+        id: 2,
+        picked: false,
+      },],
+      radioTwo: [{
+        name: '是',
+        id: 0,
+        picked: false,
+      },{
+        name: '否',
+        id: 1,
+        picked: false,
+      },],
+      wpHeight: 0,
+      areaList: [{
+                name: '北京',
+                value: 'beijing',
+                parent: 0
+            },{
+                name: '北京市',
+                value: 'bj',
+                parent: 'beijing'
+            }, {
+                name: '东城',
+                value: 'dc',
+                parent: 'bj'
+            }, {
+                name: '西城',
+                value: 'xc',
+                parent: 'bj'
+            }, {
+                name: '海淀',
+                value: 'hd',
+                parent: 'bj'
+            }, {
+                name: '朝阳',
+                value: 'cy',
+                parent: 'bj'
+            },{
+                name: '丰台',
+                value: 'ft',
+                parent: 'bj'
+            },{
+                name: '门头沟',
+                value: 'mtg',
+                parent: 'bj'
+            },{
+                name: '石景山',
+                value: 'sjs',
+                parent: 'bj'
+            },{
+                name: '房山',
+                value: 'fs',
+                parent: 'bj'
+            },{
+                name: '通州',
+                value: 'tz',
+                parent: 'bj'
+            },{
+                name: '顺义',
+                value: 'sy',
+                parent: 'bj'
+            },{
+                name: '昌平',
+                value: 'cp',
+                parent: 'bj'
+            },{
+                name: '大兴',
+                value: 'dx',
+                parent: 'bj'
+            },{
+                name: '怀柔',
+                value: 'hr',
+                parent: 'bj'
+            },{
+                name: '平谷',
+                value: 'pg',
+                parent: 'bj'
+            },{
+                name: '延庆',
+                value: 'yq',
+                parent: 'bj'
+            },{
+                name: '密云',
+                value: 'my',
+                parent: 'bj'
+            }],
+      areaSelect: [],
+      loanApp: [],
     }
   },
   components: {
@@ -459,7 +843,8 @@ export default {
     Loading,
     JInstallmentProcess,
     Group,
-    Cell
+    Cell,
+    PopupPicker
   },
   ready() {
     axios.get(`${Lib.C.loanApi}loan-applications`, {
@@ -468,22 +853,39 @@ export default {
         sort: "createdAt,desc"
       }
     }).then((res) => {
-      try {
+      if (res.data.data.length > 0) {
         this.thisStatus = this.getStatus(res.data.data[0].statusEnum)
-        this.ins = res.data.data[0].totalQuota
-        this.limit = res.data.data[0].loanQuota
-        this.expectInstalment = res.data.data[0].expectInstalment
-        this.expectQuota = res.data.data[0].expectQuota
-      } catch (e) {
-        this.thisStatus = "未申请"
-      }
-      if (this.thisStatus == '未激活') {
-        this.getBank()
+        let e = res.data.data[0]
+        console.log(e)
+        if (e.statusEnum == 3) {
+          this.loanApp.push({
+            name: e.fullname,
+            mobile: e.mobile,
+            dis: e.province + e.city + e.country,
+            add: e.address,
+            loanQuota: e.loanQuota,
+            totalQuota: e.totalQuota,
+            period: e.bankBranchPeriod.name,
+            branch: e.bankBranchPeriod.bankBranch.name,
+            bank: e.bankBranchPeriod.bankBranch.bank.name
+          })
+        } else if (e.statusEnum == 1||e.statusEnum == 2) {
+          this.loanApp.push({
+            name: e.fullname,
+            idCardNo: e.idCardNo,
+            mobile: e.mobile,
+            dis: e.province + e.city + e.country,
+            add: e.address,
+            expect: e.expectQuota,
+            month: e.monthlyIncome
+          })
+        }
+      } else {
+        this.thisStatus = '未申请'
       }
     }).catch((res) => {
       alert("查询贷款信息失败，请重试")
-    }),
-    this.getBalance()
+    })
   },
   methods: {
     getStatus(status) {
@@ -535,6 +937,92 @@ export default {
     },
     getScreenWidth() {
       return document.body.clientWidth
+    },
+    changeStatus(status) {
+      this.thisStatus = status
+    },
+    changeColor(val) {
+      let ret = {}
+      if (val) {
+        ret.color = '#333'
+      }
+      return ret
+    },
+    isIdCard() {
+      let creditReg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/
+      return creditReg.test(this.loanIdCard)
+    },
+    isTruePhoneNum() {
+      let reg = /^1[3|4|5|6|7|8]\d{9}$/
+      return reg.test(this.loanMobile)
+    },
+    isFinished() {
+      return this.loanName&&this.isIdCard()&&this.isTruePhoneNum()&&this.loanExpectQuota&&this.$refs.areapicker.getNameValues()&&this.loanAdd&&this.loanMonth&&this.loanHouseSit&&this.loanSocialSecurity != null
+    },
+    changeRadio(id, type) {
+      console.log(id, type)
+      if (type == 0) {
+        this.radioOne.map((e) => {
+          if (e.id == id) {
+            console.log('heihei')
+            // e.bool = true
+            this.radioOne[id].picked = true
+            this.loanHouseSit = e.name
+          } else {
+            console.log('没选的')
+            e.picked = false
+            // this.radioOne[id].bool = true
+            this.loanHouseSit = null
+          }
+          
+        })
+        console.log(this.radioOne)
+      } else {
+        this.radioTwo.map((e) => {
+          if (e.id == id) {
+            this.radioOne[id].bool = true
+            console.log('haha')
+            this.loanSocialSecurity = id==0?true:false
+          } else {
+            e.bool = false
+            this.loanSocialSecurity = null
+          }
+        })
+        console.log(this.radioTwo)
+      }
+    },
+    changeShow(bool) {
+      this.extraShow = bool
+    },
+    submit() {
+      let dis = this.$refs.areapicker.getNameValues().split(' ')
+      let data = {
+        userId: JSON.parse(window.localStorage.getItem("user")).userId,
+        fullname: this.loanName,
+        idCardNo: this.loanIdCard,
+        mobile: this.loanMobile,
+        province: dis[0],
+        city: dis[1],
+        country: dis[2],
+        address: this.loanAdd,
+        expectQuota: this.loanExpectQuota,
+        monthlyIncome: this.loanMonth,
+        socialSecurity: this.loanSocialSecurity == 'true'? true: false,
+        houseSituation: this.loanHouseSit=='其他'?this.loanHouseChange: this.loanHouseSit,
+        statusEnum: 0,
+      }
+      console.log(data)
+      axios.post(`${Lib.C.loanApi}user-application`, data).then((res) => {
+        data.id = res.data.data.id
+        // localStorage.setItem("apply-info", JSON.stringify(data))
+        if (res.data.data.statusEnum == 0) {
+          window.location.href = './ins-apply-failed.html'
+        } else {
+          window.location.href = './ins-apply-success.html?wait=true'
+        }
+      }).catch((res) => {
+        alert("提交申请失败，请稍候重试...")
+      })
     }
   }
 }
