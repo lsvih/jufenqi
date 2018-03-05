@@ -259,6 +259,8 @@ export default {
         id: 8, value: '预存活动微信超时退款'
       },{
         id: 9, value: '主材订单微信超时退款'
+      },{
+        id: 10, value: '单品生成贴息'
       }]
     }
   },

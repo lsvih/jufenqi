@@ -156,6 +156,9 @@
     <div class="btn-wrapper" v-if="order.status == 5">
       <div class="btn active" v-tap="receive(order.groupNo)">确认收货</div>
     </div>
+    <div class="btn-wrapper" v-if="order.status == 6">
+      <div class="btn active" v-tap="review(order.orders[0].orderNo)">添加评论</div>
+    </div>
     <div class="btn-wrapper" v-if="order.status == 2" style="position: absolute; right: 16px">
       <div class="btn" v-tap="cancel(order.groupNo)">取消订单</div>
       <div class="btn active" v-tap="gotoPay(order.appt.apptNo)">继续支付</div>
@@ -228,6 +231,10 @@ export default {
     refund(orderNo) {
       this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
       this.$parent.$parent.$parent.$parent.showConfirm.refund = true
+    },
+    review(orderNo) {
+      this.$parent.$parent.$parent.$parent.tempOrderNo = orderNo
+      this.$parent.$parent.$parent.$parent.showConfirm.review = true
     },
     gotoPay(apptNo) {
       location.href = `./pay.html?apptNo=${apptNo}`

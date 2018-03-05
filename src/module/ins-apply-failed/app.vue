@@ -8,7 +8,7 @@
 
 </div>
 
-<x-button slot="right" style="background-color:rgb(255, 59, 59);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="goto('./ins-apply.html')">重新申请</x-button>
+<x-button slot="right" style="background-color:rgb(255, 59, 59);color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="goto('./instalment.html')">重新申请</x-button>
 <x-button slot="right" plain style="border-color:#88c928;color:#88c928;margin:20px 20px;width:calc( 100% - 40px )" v-tap="goto('./index.html')">返回首页</x-button>
 
 <j-tel style="margin-top:30px"></j-tel>

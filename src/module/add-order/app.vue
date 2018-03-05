@@ -193,7 +193,7 @@ input,button,select,textarea {
             <span class="label">特价</span>
             <input type="number" v-model="brand.specialAmount" placeholder="请输入特价金额">
             <!-- <input type="number" v-if="!isBoloni()" readonly style="background-color: #eee;"> -->
-            <p >将为您贴息<span>{{brand.specialAmount?(brand.specialAmount*brand.rate.specialRate):0 | currency '￥'}}</span>元，返点券<span>{{brand.specialAmount?Math.round(brand.specialAmount*brand.rate.couponRate*100):0}}</span>点</p>
+            <p >将为您贴息<span>{{brand.specialAmount?(brand.specialAmount*brand.rate.specialRate):0 | currency '￥'}}</span>元<span></p>
             <p style="color: #fc9736; margin-top: 11px;">注：所有贴息、返券按照实际支付金额计算</p>
           </div>
           <div class="price" v-if="isUsed(brand.used)" >
@@ -204,10 +204,10 @@ input,button,select,textarea {
           </div>
         </div>
         <div class="cell">
-          <span class="label" v-tap="addBrand(shop.id)">
+          <!-- <span class="label" v-tap="addBrand(shop.id)">
             <img src="./add-brand.png">
             新增品牌
-          </span>
+          </span> -->
           <div class="money-wrapper">
             <div class="brand-name">
               小计：
@@ -224,15 +224,15 @@ input,button,select,textarea {
           <input type="text" v-model="realName" placeholder="请输入贷款人姓名">
         </div>
       </div>
-      <div class="cell" style="margin-bottom: 0">
+     <!--  <div class="cell" style="margin-bottom: 0">
         <div class="label" >使用{{tempCoupon()}}点券抵{{tempCoupon()/100 | currency '￥' 2}}元</div>
         <div class="brand-name">
           <input type="checkbox" v-model="isCouponUsed" v-tap="checkBox()">
         </div>
-      </div>
-      <div class="cell little-cell">
+      </div> -->
+      <!-- <div class="cell little-cell">
         <div class="label">注：点券返还金额无法超过购买总价</div>
-      </div>
+      </div> -->
 
       <div class="cell">
         <div class="label">正价金额小计</div>

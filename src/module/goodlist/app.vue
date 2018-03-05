@@ -69,47 +69,64 @@
     margin: 0;
   }
   .shop-list{
-    padding: 15px;
     overflow: hidden;
+    background-color: #f9f9f9;
+    .tabs {
+      width: 100%;
+      display: flex;
+      margin-bottom: 20px;
+      .tab {
+        width: 50%;
+        height: 44px;
+        line-height: 44px;
+        text-align: center;
+        color: #333;
+        background-color: #ccc;
+      }
+      .tab-act {
+        background-color: #ff9736;
+        color: #fff;
+      }
+    }
   }
   .goods-info{
+    box-shadow: 2px 2px 12px 1px rgba(0, 0, 0, 0.1);
+    width: calc(~"100% - 30px");
+    margin: 0 auto;
     &>img{
       width: 100%;
-      height: 184px;
+      height: auto;
+      display: block;
     }
     &>div{
       position: relative;
-      height: 32px;
-      line-height: 32px;
-      text-align: center;
+      height: 70px;
+      line-height: 30px;
+      text-align: left;
       font-size: 16px;
+      margin-bottom: 20px;
+      background-color: #fff;
+      text-indent: 15px;
       &>span{
         position: absolute;
-        left: 0;
         height: 20px;
         line-height: 20px;
-        text-align: center;
-        top: 50%;
-        margin-top: -10px;
-        border-radius: 8px;
-        border: 1px solid #ff9736;
+        bottom: 16px;
+        left: 0px;
         color: #ff9736;
         font-size: 12px;
-        display: inline-block;
-        padding: 0 4px;
       }
       &>div{
         position: absolute;
-        right: 0;
-        top: 50%;
-        margin-top: -8px;
-        width: 115px;
+        right: 15px;
+        top: 7px;
+        width: 120px;
         height: 16px;
         line-height: 16px;
         display: flex;
         justify-content: space-between;
         div{
-          width: 55px;
+          width: 60px;
           img{
             height: 16px;
             width: 16px;
@@ -146,11 +163,18 @@
             }
             p{
               color: #eb3416;
-              font-size: 16px;
+              font-size: 14px;
               font-weight: bold;
             }
           }
         }
+      }
+      &>p {
+        position: absolute;
+        width: fit-content;
+        color: #ff9736;
+        bottom: 10px;
+        right: 15px;
       }
     }
   }
@@ -158,33 +182,74 @@
 
 <template>
   <div class="shop-list">
-    <div class="goods-info" v-for="shopList in itemList">
-      <img :src="shopList.coverImg" v-tap="goto(shopList.id)">
-      <div>
+    <div class="tabs">
+      <div class="tab" v-for="tab in tabArr" track-by="$index" v-tap="tabIndex = $index" :class="{'tab-act': $index == tabIndex}">{{tab}}</div>
+    </div>
+    <div v-if="tabIndex == 0">
+      <div class="goods-info" v-for="shopList in itemList">
+      <img :src="shopList.coverImg">
+      <div v-tap="goto(shopList.id)">
         {{shopList.name}}
         <span>
           销量 {{shopList.sellOut}}
         </span>
         <div>
           <div>
-            <span>
+            <!-- <span>
               原
-            </span>
+            </span> -->
             <p>
               ¥{{shopList.countBefore}}
             </p>
           </div>
           <div>
-            <span>
+            <!-- <span>
               促
-            </span>
+            </span> -->
             <p>
               ¥{{shopList.countAfter}}
             </p>
           </div>
         </div>
+        <p>
+          所需积分{{shopList.bonusPointsCost}}
+        </p>
       </div>
     </div>
+    </div>
+    <div v-if="tabIndex == 1">
+      <div class="goods-info" v-for="shopList in freeList">
+      <img :src="shopList.coverImg">
+      <div v-tap="goto(shopList.id)">
+        {{shopList.name}}
+        <span>
+          销量 {{shopList.sellOut}}
+        </span>
+        <div>
+          <div>
+            <!-- <span>
+              原
+            </span> -->
+            <!-- <p>
+              ¥{{shopList.countBefore}}
+            </p> -->
+          </div>
+          <div>
+            <!-- <span>
+              促
+            </span> -->
+            <!-- <p>
+              ¥{{shopList.countAfter}}
+            </p> -->
+          </div>
+        </div>
+        <p>
+          所需积分{{shopList.bonusPointsCost}}
+        </p>
+      </div>
+    </div>
+    </div>
+    
   </div>
 </template>
 
@@ -194,7 +259,7 @@
   import Loading from 'vux-components/loading'
   import axios from 'axios'
   import picTwo from './bannertwo.png'
-  Lib.M.auth(axios)
+  Lib.M.auth(axios, true)
   export default {
     data () {
       return {
@@ -207,25 +272,40 @@
         //   countAfter: 1
         // }],
         itemList: [],
+        freeList: [],
+        point: 200,
+        tabArr: ['积分加价购', '积分直接换'],
+        tabIndex: 0,
       }
     },
     methods: {
       goto(id) {
-        location.href = `./good-detail.html?itemId=${id}`
+        location.href = `./good-detail.html?itemId=${id}&pointNeed=true`
       }
     },
     ready() {
-      axios.get(`${Lib.C.mOrderApi}items`).then((res) => {
+      axios.get(`${Lib.C.mOrderApi}items?filter=available:true&sort=createdAt,DESC&size=1000`).then((res) => {
         console.log(res.data.data)
         res.data.data.map((item) => {
-          this.itemList.push({
-            id: item.id,
-            coverImg: this.imgUrl + item.bannerImgs,
-            name: item.itemName,
-            sellOut: item.turnoverCount?item.turnoverCount:0,
-            countBefore: item.originalPrice,
-            countAfter: item.price
-          })
+          if (item.bonusPointsCost > 0 && item.price > 0) {
+            this.itemList.push({
+              id: item.id,
+              coverImg: this.imgUrl + item.bannerImgs,
+              name: item.itemName,
+              sellOut: item.turnoverCount?item.turnoverCount:0,
+              countBefore: item.originalPrice,
+              countAfter: item.price,
+              bonusPointsCost: item.bonusPointsCost,
+            })
+          } else if (item.bonusPointsCost > 0 && item.price == 0) {
+            this.freeList.push({
+              id: item.id,
+              coverImg: this.imgUrl + item.bannerImgs,
+              name: item.itemName,
+              sellOut: item.turnoverCount?item.turnoverCount:0,
+              bonusPointsCost: item.bonusPointsCost,
+            })
+          }
         })
       }).catch((err) => {
         alert('获取信息失败，请稍后再试。。')

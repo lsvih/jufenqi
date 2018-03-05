@@ -83,14 +83,14 @@ body {
 <template>
   <div class="content">
     <div class="amount-wrapper">
-      <p class="amount-title">我的点券</p>
-      <p class="amount">{{coupons[0].amount}}<span>点</span></p>
+      <p class="amount-title">我的积分</p>
+      <p class="amount">{{bonusPoints}}<span>分</span></p>
     </div>
     <div class="coupon-detail">
       <div class="cell">
-        <div class="cell-title">收支明细</div>
+        <div class="cell-title">积分变动明细</div>
       </div>
-      <div class="label" v-for="coupon in couponChanges">
+      <div class="label" v-for="coupon in bonusPointChanges">
         <div class="amount-label">
           <div class="amount-type">{{returnType(coupon.type, typeList)}}</div>
           <div class="amount-time">{{getTime(coupon.createdAt)}}</div>
@@ -114,33 +114,28 @@ Lib.M.auth(axios)
 export default {
   data() {
     return {
-      coupons: [],
-      couponChanges: [],
+      bonusPoints: '',
+      bonusPointChanges: [],
       typeList: [{
-        id: 1, value: '购物返还'
+        id: 0, value: '未知'
       },{
-        id: 2, value: '订单取消返还'
+        id: 1, value: '使用积分购买商品'
       },{
-        id: 3, value: '退款返还'
+        id: 2, value: '主材订单返积分'
       },{
-        id: 4, value: '购物使用'
+        id: 3, value: '退款扣积分'
       },{
-        id: 5, value: '退款扣取'
-      }]
+        id: 4, value: '注册抽奖获得积分'
+      },]
     }
   },
   components: {
   },
   ready() {
-    axios.get(`${Lib.C.mOrderApi}coupons`,{
-      params: {
-        filter: `userId:${JSON.parse(window.localStorage.getItem('user')).userId}`,
-        size: 10000
-      }
-    }).then((res) => {
-      this.coupons = res.data.data
-      this.couponChanges = res.data.data[0].couponChanges
-      console.log(this.couponChanges)
+    axios.get(`${Lib.C.walletApi}wallets/${JSON.parse(localStorage.getItem('user')).userId}`).then((res) => {
+      this.bonusPoints = res.data.data.bonusPoints
+      this.bonusPointChanges = res.data.data.bonusPointChanges
+      console.log(this.bonusPointChanges)
     }).catch((err) => {
       console.log(err)
     })
@@ -161,12 +156,12 @@ export default {
     showType(type) {
       let result
       switch (type) {
-        case 1:
         case 2:
-        case 3:
+        case 4:
           result = true
           break
-        case 4:
+        case 1:
+        case 3:
         case 5:
           result = false
           break

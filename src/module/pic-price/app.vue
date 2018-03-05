@@ -1,96 +1,3 @@
-<template>
-  <div id="app">
-    <div class="banner">
-      <swiper class="module-swiper" loop auto height="250px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000" :show-dots="false">
-      </swiper>
-    </div>
-    <div class="listWrapper">
-
-      <div v-for="style in styles">
-      <div class="houseStyle">
-        <div></div>
-        <span>{{ style.name }}</span>
-        <div></div>
-      </div>
-        <!-- <div class="group-title"></div> -->
-        <slider style="border-bottom: 5px solid #fbfbfb" :scale="0.84">
-          <div v-for="sp in style.schemes" class="group-slide-item md-whiteframe-3dp" layout="column">
-            <div v-tap="goto('./pic-price-con.html?id='+sp.id)" class="item-container">
-              <img :src="imgUrl + sp.coverImg"></img>
-              <div class="text-block">
-                <div class="title-group" layout="row">
-                  <div class="title" flex>{{ sp.coverTitle }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </slider>
-      </div>
-    </div>
-    </div>
-  </div>
-</template>
-
-<script>
-import Lib from 'assets/Lib.js'
-import JFooter from 'components/j-footer'
-import Swiper from 'vux-components/swiper'
-import axios from 'axios'
-import Slider from 'components/slider'
-import {
-  Flexbox,
-  FlexboxItem
-} from 'vux-components/flexbox'
-Lib.M.auth(axios)
-export default {
-  name: 'app',
-  components: {
-    Swiper,
-    JFooter,
-    Slider,
-    Flexbox
-  },
-  data () {
-    return {
-      imgUrl: Lib.C.imgUrl,
-      bannerIndex: 0,
-      bannerList: [],
-      styles: [],
-    }
-  },
-  ready() {
-    axios.get(`${Lib.C.picpApi}carousels?filter=enabled%3Atrue`).then((res)=>{
-      res.data.data.forEach((e)=>{
-        this.bannerList.push({
-          url: 'javascript:',
-          img: this.imgUrl + e.coverImg
-        })
-      })
-    }).catch((err)=>{
-      throw err
-    })
-    axios.get(`${Lib.C.picpApi}styles?expand=schemes`).then((res)=>{
-      this.styles = res.data.data
-    }).catch((err)=>{
-      throw err
-    })
-  },
-  methods: {
-    bannerOnChange(index) {
-      this.bannerIndex = index;
-    },
-    getScreenWidth() {
-      return document.body.clientWidth
-    },
-    gotoPriceCon(id, name) {
-      window.location.href = `pic-price-con.html?id=${id}&name=${encodeURIComponent(name)}`
-    },
-    goto(url) {
-      window.location.href = url
-    }
-  }
-}
-</script>
 <style>
 html {
   background-color: #ccc;
@@ -127,16 +34,28 @@ html {
     display: flex;
     justify-content: center;
     margin-bottom: 10px;
+    position: relative;
+    .left {
+      position: absolute;
+      left: -76px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .right {
+      position: absolute;
+      right: -76px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
     div {
       width: 75px;
-      height: 0.5px;
+      height: 1px;
       background-color: #ccc;
-      vertical-align: middle;
-      margin-top: 10px;
     }
     span {
-      display: inline-block;
+      display: block;
       padding: 0 7px;
+      position: relative;
     }
   }
   ul {
@@ -236,3 +155,119 @@ html {
     }
 
 </style>
+
+<template>
+  <div id="app">
+    <div class="banner">
+      <swiper class="module-swiper" loop auto height="250px" dots-class="dot-custom" :list="bannerList" :index="bannerIndex" @on-index-change="bannerOnChange" :show-desc-mask="false" dots-position="center" :interval="5000" :show-dots="false">
+      </swiper>
+    </div>
+    <div class="listWrapper">
+
+      <div v-for="style in styles">
+      <div class="houseStyle">
+        
+        <span>
+          <div class="left"></div>
+          {{ style.name }}
+          <div class="right"></div>
+        </span>
+        
+      </div>
+        <!-- <div class="group-title"></div> -->
+        <slider style="border-bottom: 5px solid #fbfbfb" :scale="0.84">
+          <div v-for="sp in style.schemes" class="group-slide-item md-whiteframe-3dp" layout="column">
+            <div v-tap="goto(style.url)" class="item-container">
+              <img :src="imgUrl + sp.componentImg"></img>
+              <div class="text-block">
+                <div class="title-group" layout="row">
+                  <div class="title" flex>{{ sp.name }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </slider>
+      </div>
+    </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import Lib from 'assets/Lib.js'
+import JFooter from 'components/j-footer'
+import Swiper from 'vux-components/swiper'
+import axios from 'axios'
+import Slider from 'components/slider'
+import {
+  Flexbox,
+  FlexboxItem
+} from 'vux-components/flexbox'
+Lib.M.auth(axios)
+export default {
+  name: 'app',
+  components: {
+    Swiper,
+    JFooter,
+    Slider,
+    Flexbox
+  },
+  data () {
+    return {
+      imgUrl: Lib.C.imgUrl,
+      bannerIndex: 0,
+      bannerList: [],
+      styles: [],
+    }
+  },
+  ready() {
+    axios.get(`${Lib.C.picpApi}carousels?filter=enabled%3Atrue`).then((res)=>{
+      res.data.data.forEach((e)=>{
+        this.bannerList.push({
+          url: 'javascript:',
+          img: this.imgUrl + e.coverImg
+        })
+      })
+    }).catch((err)=>{
+      throw err
+    })
+    // axios.get(`${Lib.C.picpApi}styles?expand=schemes`).then((res)=>{
+    //   this.styles = res.data.data
+    // }).catch((err)=>{
+    //   throw err
+    // })
+    this.getDecStyle()
+  },
+  methods: {
+    bannerOnChange(index) {
+      this.bannerIndex = index;
+    },
+    getScreenWidth() {
+      return document.body.clientWidth
+    },
+    gotoPriceCon(id, name) {
+      window.location.href = `pic-price-con.html?id=${id}&name=${encodeURIComponent(name)}`
+    },
+    goto(url) {
+      window.location.href = url
+    },
+    getDecStyle() {
+      axios.get(`http://wx.jufenqi.com:8080/content/api/decoration-styles`).then((res) => {
+        res.data.data.map((e) => {
+          this.styles.push({
+            id: e.id,
+            name: e.name,
+            img: Lib.C.imgUrl +e.decorationComponents[0].componentImg,
+            url: `./pic-price-con.html?id=${e.id}`,
+            schemes: e.decorationComponents
+          })
+        })
+      }).catch((err) => {
+        console.log(err)
+        throw err
+      })
+    },
+  }
+}
+</script>
+

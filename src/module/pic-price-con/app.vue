@@ -7,12 +7,13 @@
   }
   .houseprice {
     padding: 10px ;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     position: absolute;
     border-radius: 0 5px 5px 0;
     left: 0;
     bottom: 30px;
     color: #fff;
+    font-size: 30px;
   }
 }
 .methodShow {
@@ -28,18 +29,28 @@
 .contentWrapper {
   padding-bottom: 50px;
   .contentTab {
-    height: auto;
-    display: flex;
-    li {
-      flex: 1;
-      list-style: none;
-      text-align: center;
-      background-color: rgb(240, 239, 239);
-      padding: 15px 0;
+    text-align: center;
+    &>div {
+      margin: 15px auto;
+      width: calc(~"100% - 30px");
+      color: #666;
     }
-    .select {
-      background-color: #ff9736 !important;
-      color:#fff!important;
+    .space-wp {
+      
+      h3 {
+        color: #333;
+      }
+      img {
+        display: block;
+        width: calc(~"100% - 40px");
+        margin: 20px auto 10px auto;
+      }
+      div {
+        font-size: 14px;
+        color: #666;
+        margin: 15px auto;
+        width: calc(~"100% - 40px");
+      }
     }
   }
   .content {
@@ -212,34 +223,24 @@
 
 <template>
     <div class="topPic">
-      <img :src="imgUrl+schemes.showImg">
-      <div class="houseprice">{{schemes.showTitle}}</div>
+      <img :src="tabList[0].img">
+      <div class="houseprice">{{styleName}}</div>
     </div>
   <!--  <div class="methodShow">
       <p>方案展示</p>
     </div> -->
     <div class="contentWrapper">
       <div class="contentTab">
-        <li v-tap="tabIndex = $index" v-for="space in schemes.spaces" :class="{select:tabIndex==$index}">{{space.type.name}}</li>
-      </div>
-      <div class="content" v-html="schemes.spaces[tabIndex].descriptionRich"></div>
-    <div class="itemList" v-if="render" :style="{height:schemes.spaces[tabIndex].products.length > 4?'188px':'128px'}">
-      <div class="item-name-before"></div><div class="item-name">空间包含物品</div>
-      <div class="item-wrapper">
-        <div class="item" v-for="product in schemes.spaces[tabIndex].products">
-          <div class="item-icon"><img :src="imgUrl+product.coverImg"></div>
-          <div class="item-con">{{product.name}}</div>
+        <div>
+          {{des}}
         </div>
+        <div class="space-wp" v-for="space in tabList">
+          <h3>{{space.name}}</h3>
+          <img :src="space.img">
+          <div>{{space.dis}}</div>
+        </div>
+       <!--  <li v-tap="tabIndex = $index"  :class="{select:tabIndex==$index}" track-by="$index">{{space.name}}</li> -->
       </div>
-
-    </div>
-    <div class="form">
-    <div class="item-name-before"></div><div class="item-name">预约咨询</div>
-    <img src="./name.jpg" class="name">
-    <img src="./phone.jpg" class="phone">
-      <input type="text" v-model="name" placeholder="请输入您的姓名">
-      <input type="number" v-model="phone" placeholder="请输入您的手机号码">
-      <div class="btn" v-tap="isFinished()?submit():return"><div class="btn-text">提交</div><img v-if='isFinished()' :src="/static/images/btn-active-org.png"><img v-else :src="btnImg"></div>
     </div>
 </template>
 
@@ -274,54 +275,32 @@ export default {
       name:'',
       phone:'',
       btnImg,
-      render:false
+      render:false,
+      tabList: [],
+      styleName: '',
+      des: '',
 		}
 	},
   ready(){
-    axios.get(`${Lib.C.picpApi}schemes/${this.id}?expand=spaces`).then((res) => {
-      this.schemes = res.data.data
-      let spaceIdArr = []
-      res.data.data.spaces.forEach((space)=>{
-        spaceIdArr.push(space.id)
-      })
-      axios.get(`${Lib.C.picpApi}/spaces?expand=spaceProducts&filter=id:${spaceIdArr.join(',')}`).then((res) => {
-          res.data.data.map((a)=>{
-              this.schemes.spaces[findIdIndex(a.id,this.schemes.spaces)].products = a.spaceProducts.map((e) => {
-                return e.product
-              })
-          })
-          this.render = true
-    }).catch((err) => {
-      throw err //error
-    })
-    }).catch((err) => {
-      throw err //error
-    })
+    this.getDecStyleId(this.id)
   },
   methods:{
-    isFinished(){
-      let reg = /^1[3|4|5|7|8]\d{9}$/
-      return this.name&&reg.test(this.phone)
-    },
-    submit(){
-      if(!this.name){
-        alert("请输入您的称呼")
-        return
-      }
-      let reg = /^1[3|4|5|7|8]\d{9}$/
-      if(!reg.test(this.phone)){
-        alert("请输入正确的手机号码")
-        return
-      }
-      axios.post(`${Lib.C.homeApi}form-infos`,{
-        formName:this.id,
-        fullname:this.name,
-        mobile:this.phone
-      }).then((res) => {
-          alert('您的信息已提交，我们会在24小时之内处理您的提交请求')
-    }).catch((err) => {
-      throw err //error
-    })
+    getDecStyleId(id) {
+      axios.get(`http://wx.jufenqi.com:8080/content/api/decoration-styles/${id}`).then((res) => {
+        console.log(res.data.data)
+        this.styleName = res.data.data.name
+        this.des = res.data.data.description
+        res.data.data.decorationComponents.map((e) => {
+          this.tabList.push({
+            name: e.name,
+            dis: e.description,
+            img: Lib.C.imgUrl + e.componentImg
+          })
+        })
+      }).catch((err) => {
+        console.log(err)
+        throw err
+      })
     }
   }
 }

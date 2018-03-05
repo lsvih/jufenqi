@@ -43,15 +43,15 @@ body {
 <template>
 <div class="apply-success">
 
-  <div v-if="wating">
+ <!--  <div v-if="wating">
     <img src="/static/images/waiting-orange.png">
     <div class="ins-status">贷款申请中…</div>
     <div class="ins-tips">我们将在15秒内为您反馈申请结果，请耐心等待</div>
-  </div>
-  <div v-else>
+  </div> -->
+  <div>
     <img src="/static/images/success-orange.png">
     <div class="ins-status">贷款申请成功</div>
-    <div class="ins-tips">请在30天内激活您的申请额度，过期后需要重新申请</div>
+    <div class="ins-tips">我们的工作人员会在一个工作日内与您取得联系，请留意您的电话</div>
   </div>
   <j-credit-process :step="1" class="process">
   </j-credit-process>
@@ -60,8 +60,8 @@ body {
   </group>
 </div>
 
-<x-button slot="right" style="background-color:#ff9736;color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="nextStep(wating)">{{wating?"刷新结果":"激活额度"}}</x-button>
-<x-button slot="right" plain style="border-color:#ff9736;color:#ff9736;margin:20px 20px;width:calc( 100% - 40px )" v-tap="goto('./index.html')">返回首页</x-button>
+<!-- <x-button slot="right" style="background-color:#ff9736;color:#fff;margin:20px 20px;width:calc( 100% - 40px )" v-tap="nextStep(wating)">{{wating?"刷新结果":"激活额度"}}</x-button> -->
+<x-button slot="right" plain style="border-color:#ff9736;color:#ff9736;margin:20px 20px;width:calc( 100% - 40px )" v-tap="goto('./instalment.html')">返回分期页面</x-button>
 
 <j-tel style="margin-top:30px"></j-tel>
 </template>
@@ -77,7 +77,7 @@ export default {
   data() {
     return {
       wating: Lib.M.GetRequest().wait,
-      wantIns: JSON.parse(localStorage.getItem('apply-info')).expectQuota
+      // wantIns: JSON.parse(localStorage.getItem('apply-info')).expectQuota
     }
   },
   components: {

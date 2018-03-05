@@ -212,6 +212,15 @@ header {
   </div>
   </group>
 </Dialog>
+<Dialog :show.sync="showConfirm.review">
+  <p style="font-size: 18px;">订单评论</p>
+  <rater :value.sync="reviewApply.rate"></rater>
+  <x-textarea :max="100" :value.sync="reviewApply.text" placeholder="请输入您的评论" :rows="4" :height="110"></x-textarea>
+  <div class="weui_dialog_ft">
+    <span @click="confirmRefund = false" style="border-right: 1px solid #D5D5D6;">取消</span>
+    <span :class="{'primary': isReviewed()}" @click="isReviewed()?reviewPost(tempOrderNo):return">提交</span>
+  </div>
+</Dialog>
 </template>
 
 <script>
@@ -235,6 +244,7 @@ import XTextarea from 'vux-components/x-textarea'
 import XButton from 'vux-components/x-button'
 import {Flexbox, FlexboxItem} from 'vux-components/flexbox'
 import Group from 'vux-components/group'
+import Rater from 'vux-components/rater'
 Lib.M.auth(axios)
 export default {
   data() {
@@ -254,13 +264,18 @@ export default {
         cancel: false,
         delete: false,
         receive: false,
-        refund: false
+        refund: false,
+        review: false,
       },
       confirmRefund: false,
       refundApply: {
         reason: '',
         normalAmount: null,
         specialAmount: null
+      },
+      reviewApply: {
+        rate: null,
+        text: ''
       }
     }
   },
@@ -281,7 +296,8 @@ export default {
     FlexboxItem,
     Flexbox,
     Group,
-    JZcOpItem
+    JZcOpItem,
+    Rater,
   },
   ready() {
     this.index = Lib.M.GetRequest().type - 1 || 0
@@ -422,6 +438,9 @@ export default {
     isFilled() {
       return (this.refundApply.normalAmount !== null || this.refundApply.specialAmount !== null) && this.refundApply.reason !== ''
     },
+    isReviewed() {
+      return this.reviewApply.rate && this.reviewApply.text
+    },
     refundPost(orderNo) {
       axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/refund`,
         {
@@ -436,6 +455,20 @@ export default {
         alert('连接服务器失败，退款未能申请，请稍后再试！')
       })
     },
+    reviewPost(orderNo) {
+      axios.post(`${Lib.C.mOrderApi}brand-reviews`,
+        {
+          orderNo: orderNo,
+          rating: this.reviewApply.rate?this.reviewApply.rate:null,
+          review: this.reviewApply.text?this.reviewApply.text:null
+        }
+      ).then((res) => {
+        alert('您的评论已提交！')
+        location.reload()
+      }).catch((res) => {
+        alert('连接服务器失败，评论未能提交，请稍后再试！')
+      })
+    },    
     goto(url) {
       location.href = url
     }

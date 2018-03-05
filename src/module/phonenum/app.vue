@@ -158,7 +158,11 @@ body {
 		</div>
 		<div class="input-wrapper">
 			<div class="phone-wrapper">
-				<input class="infoInput" type="number" name="" placeholder="请输入手机号码" @focus="moveUpDown(1)" @blur="moveUpDown(0)" v-model="myPhoneNum">
+				<input class="infoInput" type="text" name="" placeholder="请输入您的姓名" @focus="moveUpDown(1)" @blur="moveUpDown(0)" v-model="myName">
+				<img src="name.png" class="icon-phone">
+			</div>
+			<div class="phone-wrapper">
+				<input class="infoInput" type="number" name="" placeholder="请输入您的手机号码" @focus="moveUpDown(1)" @blur="moveUpDown(0)" v-model="myPhoneNum">
 				<img src="phone.png" class="icon-phone">
 			</div>
 			<div class="identify-wrapper">
@@ -198,6 +202,7 @@ export default {
 	data() {
 		return {
 			user: JSON.parse(localStorage.getItem("user")),
+			myName: '',
 			myPhoneNum: '',
 			myVerti: '',
 			isSendId: false,
@@ -235,12 +240,12 @@ export default {
 			this.myConfirm = !this.myConfirm
 		},
 		isTruePhoneNum() {
-			let reg = /^1[3|4|5|7|8]\d{9}$/
+			let reg = /^1[3|4|5|6|7|8]\d{9}$/
 			return reg.test(this.myPhoneNum)
 		},
 		isFinished() {
 			let regVerti = /^\d{6}$/
-			return this.isTruePhoneNum()&&regVerti.test(this.myVerti)&&this.myConfirm
+			return this.isTruePhoneNum()&&regVerti.test(this.myVerti)&&this.myConfirm&&this.myName
 		},
 		moveUpDown(e) {
 			if (e) {
@@ -285,6 +290,7 @@ export default {
 			}
 		},
 	    submit() {
+	    	this.loading = true
 	    	if (!this.isTruePhoneNum()) {
 	    		alert('请输入正确的手机号码')
 	    	} else if (!this.isFinished()) {
@@ -303,7 +309,8 @@ export default {
 			    	data.loginAt = new Date().getTime()
 			    	data.expiredAt =String(Number(data.loginAt) + Number(data.expiresIn*1000 - 60*1000*100))
 			    	window.localStorage.setItem("user", JSON.stringify(data))
-			    	location.href = this.lastUrl
+			    	// location.href = this.lastUrl
+			    	this.postName(this.myName)
 			    }).catch((res) => {
 			    	this.loading = false
 			    	this.active()
@@ -320,6 +327,17 @@ export default {
 			    	}
 			    })
 			}
+		},
+		postName(name) {
+			let pro = JSON.parse(localStorage.user)
+			pro.profile.realName = name
+			axios.post(`${Lib.C.userApi}customerProfiles/update`, pro.profile).then((res) => {
+				window.localStorage.setItem("user", JSON.stringify(pro))
+				alert('绑定成功！')
+				location.href="./turntable.html"
+			}).catch((err) => {
+				alert('姓名绑定失败，请稍后再试！')
+			})
 		}
 	}
 }

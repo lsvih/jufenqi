@@ -1,6 +1,6 @@
 <style>
 body {
-  background-color: #fff;
+  background-color: #f4f4f4;
 }
 </style>
 <style scoped lang="less">
@@ -10,7 +10,7 @@ body {
 .block-1 {
     position: relative;
     height: 215px;
-    background-image: url('/static/images/usercenter/user-bg.png');
+    background-image: url('/static/new/usercenter/01.png');
     background-size: 100% 100%;
     color: #fff;
     box-shadow: inset 0px -9px 40px -4px rgba(0, 0, 0, 0.1);
@@ -35,8 +35,8 @@ body {
     }
     .user-icon {
         position: absolute;
-        top: 48px;
-        left: 49px;
+        top: 32px;
+        left: 26px;
         height: 70px;
         width: 70px;
         border-radius: 35px;
@@ -61,21 +61,21 @@ body {
     }
     .user-name {
       position: absolute;
-      top: 113px;
-      left: 49px;
-      font-size: 35px;
-      height: 16px;
+      top: 45px;
+      left: 113px;
+      font-size: 25px;
       width: auto;
-      font-weight: lighter;
     }
     .user-balance {
       position: absolute;
-      top: 165px;
-      left: 70px;
+      top: 51px;
+      right: 0px;
       font-size: 15px;
-      padding: 4px 6px;
-      border: 1px solid #fff;
-      border-radius: 3px;
+      img {
+        width: 100px;
+        height: auto;
+        display: block;
+      }
     }
     .user-service {
       position: absolute;
@@ -92,9 +92,11 @@ body {
     }
 }
 .block-2 {
-    background-color: @bac;
-    color: @font;
-    font-weight: 300;
+    color: #fff;
+    position: absolute;
+    z-index: 1000;
+    bottom: 0;
+    left: 0;
     .balance {
       padding: 10px 0;
     }
@@ -139,7 +141,7 @@ body {
     text-align: center;
     font-size: 12px;
     .balance-money {
-        font-size: 18px;
+        font-size: 20px;
     }
 }
 .apply {
@@ -224,38 +226,99 @@ body {
     right: 12px;
   }
 }
+.flexb {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  margin: 20px auto;
+  width: calc(~"100% - 20px");
+  height: 100px;
+  background-color: #fff;
+  align-items: center;
+  .item {
+    .img-wp {
+      width: 23px;
+      height: 23px;
+      margin: 0 auto 10px auto;
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+    }
+    
+    .text {
+      font-size: 14px;
+      color: #333;
+    }
+  }
+}
+.labell {
+  width: calc(~"100% - 20px");
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  line-height: 60px;
+  background-color: #fff;
+  margin: 0 auto;
+  .left {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    .icon-wp {
+      width: 20px;
+      height: 20px;
+      margin: 0 10px 0 20px;
+      img {
+        display: block;
+        width: 20px;
+        height: auto;
+      }
+    } 
+  }
+  .right {
+    width: 6px;
+    height: 12px;
+    margin-right: 20px;
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+}
 </style>
 
 <template>
 <flexbox>
   <flexbox-item class="block-1">
     <div class="user-icon"><img :src="userIcon"></div>
-    <span class="hello">你好</span>
     <div class="user-name">{{userName}}</div>
-    <div class="manager" v-if="managerService"><img src="/static/images/usercenter/manager-final.png"></div>
+    <!-- <div class="manager" v-if="managerService"><img src="/static/images/usercenter/manager-final.png"></div> -->
     <!-- <div class="user-balance" v-tap="goto('./loan-application.html')">贷款金额: {{loan|currency "" 2}}(元) ></div> -->
-    <div class="user-balance" v-tap="goto('./loan-application.html')">贷款详情</div>
+    <div class="user-balance" v-tap="goto('./loan-application.html')"><img src="/static/new/usercenter/06.png"></div>
     <!-- 设置页 -->
-    <div class="setting" v-tap="goto('./user-setting.html')"><img src="/static/images/usercenter/setting.png"></div>
-  </flexbox-item>
-</flexbox>
-<flexbox class="block-2">
-  <flexbox-item class="balance">
-    <!-- <flexbox-item class="balance" onclick="location.href='balance.html'"> -->
-    <div>已消费金额 (元)</div>
-    <div class="balance-money">{{balance|currency "" 2}}</div>
-  </flexbox-item>
-  <flexbox-item class="balance" onclick="location.href='wallet.html'">
-    <div>我的钱包 (元)</div>
-    <div class="balance-money">{{wallet|currency "" 2}}</div>
+    <!-- <div class="setting" ><img src="/static/images/usercenter/setting.png"></div> -->
+    <flexbox class="block-2">
+      <flexbox-item class="balance">
+        <!-- <flexbox-item class="balance" onclick="location.href='balance.html'"> -->
+          <div class="balance-money">{{balance|currency "" 2}}</div>
+          <div style="font-weight: 300;">已消费金额</div>
+        </flexbox-item>
+        <flexbox-item class="balance" onclick="location.href='wallet.html'">
+          <div class="balance-money">{{wallet|currency "" 2}}</div>
+          <div style="font-weight: 300;">我的钱包</div>
+        </flexbox-item>
+      </flexbox>
   </flexbox-item>
 </flexbox>
 
-<group class="mask-wrapper">
+
+<!-- <group class="mask-wrapper">
   <flexbox class="block-3 vux-1px-t">
-    <flexbox-item class="icon-item vux-1px-r" onclick="location.href='./zx-order-list.html'">
+    <flexbox-item class="icon-item vux-1px-r" onclick="location.href='./dp-order-list.html'">
       <img src="/static/images/usercenter/zx-order.png">
-      <div class="icon-item-name">装修订单</div>
+      <div class="icon-item-name">单品订单</div>
     </flexbox-item>
     <flexbox-item class="icon-item vux-1px-r vux-1px-t" onclick="location.href='./zc-order-list.html'">
       <img src="/static/images/usercenter/zc-order.png">
@@ -273,7 +336,7 @@ body {
     </flexbox-item>
     <flexbox-item class="icon-item vux-1px-r vux-1px-t" v-tap="goto('./coupon.html')">
       <img src="/static/images/usercenter/coupon.png">
-      <div class="icon-item-name">我的点券</div>
+      <div class="icon-item-name">我的积分</div>
     </flexbox-item>
     <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./favorite.html')">
       <img src="/static/images/usercenter/collection.png">
@@ -291,15 +354,144 @@ body {
     </flexbox-item>
     <flexbox-item class="icon-item vux-1px-t" v-tap="goto('./feed-back.html')">
       <img src="/static/images/usercenter/feedback.png">
-      <div class="icon-item-name">用户反馈</div>
+      <div class="icon-item-name">兑换礼品</div>
     </flexbox-item>
   </flexbox>
   <div class="mask-up"></div>
   <div class="mask-down"></div>
   <div class="mask-left"></div>
   <div class="mask-right"></div>
-</group>
-
+</group> -->
+<div class="flexb">
+  <div class="item">
+    <div class="img-wp" v-tap="goto('./pic-price.html')">
+      <img src="/static/new/usercenter/04.png">
+    </div>
+    <div class="text">查看案例</div>
+  </div>
+  <div class="item" v-tap="goto('./dp-order-list.html')">
+    <div class="img-wp">
+      <img src="/static/new/usercenter/09.png">
+    </div>
+    <div class="text">单品订单</div>
+  </div>
+  <div class="item" v-tap="goto('./zc-order-list.html')">
+    <div class="img-wp">
+      <img src="/static/new/usercenter/07.png">
+    </div>
+    <div class="text">主材订单</div>
+  </div>
+  <div class="item" v-tap="goto('./tk-order-list.html')">
+    <div class="img-wp">
+      <img src="/static/new/usercenter/08.png">
+    </div>
+    <div class="text">退款订单</div>
+  </div>
+</div>
+<div class="labell">
+    <div class="left" v-tap="goto('./goodlist.html')">
+      <div class="icon-wp">
+        <img src="/static/new/usercenter/mall.png">
+      </div>
+      <div>
+        积分商城
+      </div>
+    </div>
+    <div class="right"  v-tap="goto('./goodlist.html')">
+      <img src="/static/new/usercenter/20.png">
+    </div>
+</div>
+<div class="labell">
+    <div class="left" v-tap="goto('./coupon.html')">
+      <div class="icon-wp">
+        <img src="/static/new/usercenter/18.png">
+      </div>
+      <div>
+        我的积分
+      </div>
+    </div>
+    <div class="right"  v-tap="goto('./coupon.html')">
+      <img src="/static/new/usercenter/20.png">
+    </div>
+</div>
+<div class="labell">
+    <div class="left" v-tap="goto('./dp-list.html')">
+      <div class="icon-wp">
+        <img src="/static/new/usercenter/mall.png">
+      </div>
+      <div>
+        热卖单品
+      </div>
+    </div>
+    <div class="right"  v-tap="goto('./dp-list.html')">
+      <img src="/static/new/usercenter/20.png">
+    </div>
+</div>
+<div class="labell">
+    <div class="left" v-tap="goto('./vote.html')">
+      <div class="icon-wp">
+        <img src="/static/new/usercenter/gift.png">
+      </div>
+      <div>
+        注册礼品
+      </div>
+    </div>
+    <div class="right"  v-tap="goto('./vote.html')">
+      <img src="/static/new/usercenter/20.png">
+    </div>
+</div>
+<div class="labell">
+    <div class="left" v-tap="goto('./feed-back.html')">
+      <div class="icon-wp">
+        <img src="/static/new/usercenter/exchange.png">
+      </div>
+      <div>
+        兑换礼品
+      </div>
+    </div>
+    <div class="right" v-tap="goto('./feed-back.html')">
+      <img src="/static/new/usercenter/20.png">
+    </div>
+</div>
+<div class="labell">
+    <div class="left" v-tap="goto('http://kefu.easemob.com/webim/im.html?tenantId=33093')">
+      <div class="icon-wp">
+        <img src="/static/new/usercenter/25.png">
+      </div>
+      <div>
+        在线客服
+      </div>
+    </div>
+    <div class="right" v-tap="goto('http://kefu.easemob.com/webim/im.html?tenantId=33093')">
+      <img src="/static/new/usercenter/20.png">
+    </div>
+</div>
+<div class="labell">
+    <div class="left" v-tap="goto('tel:4000390808')">
+      <div class="icon-wp">
+        <img src="/static/new/usercenter/26.png">
+      </div>
+      <div>
+        电话咨询
+      </div>
+    </div>
+    <div class="right" v-tap="goto('tel:4000390808')">
+      <img src="/static/new/usercenter/20.png">
+    </div>
+</div>
+<div class="labell" style="margin-bottom: 64px;">
+    <div class="left" v-tap="goto('./user-setting.html')">
+      <div class="icon-wp">
+        <img src="/static/new/usercenter/30.png">
+      </div>
+      <div>
+        个人设置
+      </div>
+    </div>
+    <div class="right" v-tap="goto('./user-setting.html')">
+      <img src="/static/new/usercenter/20.png">
+    </div>
+</div>
 <!-- <group style="margin-top:-.6em;">
   <flexbox class="block-3 vux-1px-t">
     <flexbox-item class="icon-item vux-1px-r">
@@ -332,7 +524,6 @@ body {
 </group> -->
 <!-- <div class="exit" v-tap="exit">
 退出登录</div> -->
-<div class="block-f"></div>
 <Dialog :show.sync="payShow" >
   <p id="dialog-p" style="border-bottom: 1px solid #f5f5f5;" v-tap="pay(3)">
     微信支付
